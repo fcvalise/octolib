@@ -75,6 +75,9 @@ endif
 dox:
 	@doxygen ./doc/octolib.dox
 
+open_dox:
+	@open ./doc/generated/html/index.html
+
 tests: $(COMPLETE_TARGET)
 	@make -C tests
 	@./tests/tester.app
