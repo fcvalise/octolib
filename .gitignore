@@ -29,3 +29,6 @@
 
 # Generated documentation
 doc/generated/
+
+# Vim files
+*.swp
