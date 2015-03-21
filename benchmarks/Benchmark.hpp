@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 18:02:32 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/21 18:55:01 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/21 23:31:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <vector>
 # include <cmath>
 # include <numeric>
-
 
 class Benchmark
 {
@@ -46,10 +45,17 @@ class Benchmark
 		Duration	m_duration;
 	};
 public:
-	Benchmark(std::string const& name, std::size_t measureCount);
+	typedef std::function<float(float)>	RunFunction;
+
+	Benchmark(std::string const& name, RunFunction function);
+	Benchmark(Benchmark const&) = delete;
+	Benchmark& operator = (Benchmark const&) = delete;
+	Benchmark(Benchmark&&) = default;
+	Benchmark& operator = (Benchmark&&) = default;
 	~Benchmark();
 
-	void			runFunction(float functionRangeBegin, float functionRangeEnd, std::function<float(float)> func);
+	void			run(float functionRangeBegin, float functionRangeEnd, unsigned int measureCount);
+	void			run(std::function<float()> gen, unsigned int measureCount);
 	void			displayResults(std::ostream& os)const;
 private:
 	void			compileResults();
@@ -59,7 +65,7 @@ private:
 	std::vector<Measure>	m_measures;
 	std::string				m_name;
 	TimePoint				m_start;
-	std::size_t				m_measureCount;
+	RunFunction				m_function;
 	Duration				m_totalDuration;
 	Duration				m_averageDuration;
 	Measure					m_fastestMeasure;

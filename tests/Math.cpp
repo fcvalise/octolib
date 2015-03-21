@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 01:06:48 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/21 16:51:42 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/21 22:22:42 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,9 @@ BOOST_AUTO_TEST_CASE( exponential )
 
 BOOST_AUTO_TEST_CASE( cos )
 {
-	BOOST_CHECK_CLOSE( (octo::Cosinus<8, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-	BOOST_CHECK_CLOSE( (octo::Cosinus<9, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-	BOOST_CHECK_CLOSE( (octo::Cosinus<10, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-	BOOST_CHECK_CLOSE( (octo::Cosinus<11, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-	BOOST_CHECK_CLOSE( (octo::Cosinus<12, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-	BOOST_CHECK_CLOSE( (octo::Cosinus<13, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-	BOOST_CHECK_CLOSE( (octo::Cosinus<14, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-	BOOST_CHECK_CLOSE( (octo::Cosinus<15, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-	BOOST_CHECK_CLOSE( (octo::Cosinus<20, float>::compute(3.14f)), std::cos(3.14f), 0.001f );
-
+	BOOST_CHECK_CLOSE( (octo::cos<30>(3.14f)), std::cos(3.14f), 0.0001f );
+	BOOST_CHECK_CLOSE( (octo::cosHPA(3.14f)), std::cos(3.14f), 0.00001f );
+	BOOST_CHECK_CLOSE( (octo::cosLPA(3.14f)), std::cos(3.14f), 0.0001f );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

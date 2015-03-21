@@ -1,0 +1,66 @@
+==================================================
+ Suite pow
+==================================================
+ *** stl pow 2:
+ - measures count: 200000
+ - total: 5800440 ns
+ - average: 29 ns 
+ - fastest: 17 ns [input: -2.30497]
+ - slowest: 23883 ns [input: 1.2307]
+ *** octo pow 2:
+ - measures count: 200000
+ - total: 5528604 ns
+ - average: 27 ns 
+ - fastest: 17 ns [input: -6.28293]
+ - slowest: 42006 ns [input: 4.28831]
+ *** stl pow 3:
+ - measures count: 200000
+ - total: 13450823 ns
+ - average: 67 ns 
+ - fastest: 56 ns [input: 0.000139486]
+ - slowest: 17109 ns [input: -5.55683]
+ *** octo pow 3:
+ - measures count: 200000
+ - total: 5239704 ns
+ - average: 26 ns 
+ - fastest: 19 ns [input: -6.25077]
+ - slowest: 11572 ns [input: -1.13588]
+ *** stl pow 5:
+ - measures count: 200000
+ - total: 13305565 ns
+ - average: 66 ns 
+ - fastest: 56 ns [input: 0.0134598]
+ - slowest: 10988 ns [input: 6.22392]
+ *** octo pow 5:
+ - measures count: 200000
+ - total: 5640582 ns
+ - average: 28 ns 
+ - fastest: 20 ns [input: -6.28293]
+ - slowest: 12906 ns [input: -4.2035]
+==================================================
+ Suite cosinus
+==================================================
+ *** stl cos:
+ - measures count: 200000
+ - total: 8178010 ns
+ - average: 40 ns 
+ - fastest: 40 ns [input: -6.28306]
+ - slowest: 26057 ns [input: 1.88224]
+ *** cos using taylor series order 30:
+ - measures count: 200000
+ - total: 17036624 ns
+ - average: 85 ns 
+ - fastest: 52 ns [input: -2.10796]
+ - slowest: 56608 ns [input: 1.981]
+ *** cos using taylor series order 15:
+ - measures count: 200000
+ - total: 9413336 ns
+ - average: 47 ns 
+ - fastest: 34 ns [input: 0.821788]
+ - slowest: 15992 ns [input: -1.00112]
+ *** cos using taylor series order 7:
+ - measures count: 200000
+ - total: 8116892 ns
+ - average: 40 ns 
+ - fastest: 24 ns [input: -4.86421]
+ - slowest: 10426 ns [input: 3.25486]

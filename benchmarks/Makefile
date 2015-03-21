@@ -11,7 +11,8 @@ LIB_DIRS = ..
 LIBS = octo
 
 # sources
-SRC = main.cpp		\
+SRC = main.cpp				\
+	  BenchmarkSuite.cpp	\
 	  Benchmark.cpp
 
 # compiler

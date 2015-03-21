@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/21 18:09:38 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/21 22:19:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,19 @@
 namespace octo
 {
 	template <unsigned int P>
-	float	pow(float value)
+	inline float	pow(float value)
 	{
-		return (value * pow<P - 1>(value));
+		return ((P % 2u == 0u) ? pow<2u>(pow<P / 2u>(value)) : value * pow<2u>(pow<P / 2u>(value)));
 	}
 
 	template <>
-	float	pow<1u>(float value)
-	{
-		return (value);
-	}
+	float	pow<2u>(float value);
 
 	template <>
-	float	pow<0u>(float)
-	{
-		return (1.f);
-	}
+	float	pow<1u>(float value);
+
+	template <>
+	float	pow<0u>(float);
 
 	template <unsigned int N, class T>
 	struct	Factorial
@@ -65,7 +62,7 @@ namespace octo
 	};
 	
 	template <unsigned int N>
-	float	cos(float value)
+	inline float	cos(float value)
 	{
 		typedef typename std::conditional<((N / 2u) % 2u) == 0,
 				 std::integral_constant<int, 1>,
@@ -79,16 +76,13 @@ namespace octo
 	}
 
 	template <>
-	float	cos<1u>(float value)
-	{
-		return (value);
-	}
+	float	cos<1u>(float);
 
 	template <>
-	float	cos<0u>(float)
-	{
-		return (1.f);
-	}
+	float	cos<0u>(float);
+
+	float	cosLPA(float x);
+	float	cosHPA(float x);
 }
 
 #endif

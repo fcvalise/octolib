@@ -5,7 +5,7 @@ BUILD_DIR = ./builds
 OUTPUT_DIR = .
 
 # sources
-SRC = temp.cpp
+SRC = Math.cpp
 
 # compiler
 CC = g++
@@ -28,7 +28,7 @@ SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
 CFLAGS = $(COMMON_FLAGS)
 TARGET = lib$(LIB_NAME).a
 COMPLETE_TARGET = $(OUTPUT_DIR)/$(TARGET)
-MODE = debug
+MODE = release
 
 ifeq ($(MODE), debug)
 CFLAGS += $(DEBUG_FLAGS)
@@ -81,3 +81,7 @@ open_dox:
 tests: $(COMPLETE_TARGET)
 	@make -C tests
 	@./tests/tester.app
+
+benchmarks: $(COMPLETE_TARGET)
+	@make -C benchmarks
+	@./benchmarks/benchmark.app
