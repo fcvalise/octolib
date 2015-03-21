@@ -1,21 +1,18 @@
-TARGET = tester.app
-CORE_DIR = ../
+TARGET = benchmark.app
+CORE_DIR = ..
 INCLUDE_DIR = $(CORE_DIR)/includes
 SRC_DIR = .
 BUILD_DIR = ../builds/tester
 OUTPUT_DIR = .
 # libraries directories (ex: ../libft)
-LIB_DIRS = ../
+LIB_DIRS = ..
 
 # libraries (ex: ft, mlx, ...)
-LIBS = octo boost_unit_test_framework
+LIBS = octo
 
 # sources
-SRC = main.cpp			\
-	  Array2D.cpp		\
-	  Array3D.cpp		\
-	  Stack.cpp			\
-	  Math.cpp
+SRC = main.cpp		\
+	  Benchmark.cpp
 
 # compiler
 CC = g++
@@ -25,6 +22,8 @@ COMMON_FLAGS = -Werror -Wextra -Wall -std=c++11
 RELEASE_FLAGS = -O3
 # flags used in debug mode
 DEBUG_FLAGS = -g
+# flags used in profile mode
+PROFILE_FLAGS = -g -c -Wa
 # includes dirs paths
 INCLUDE_DIRS = $(addprefix -I, $(INCLUDE_DIR))
 
@@ -33,11 +32,14 @@ SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
 CFLAGS = $(COMMON_FLAGS)
 CLIBS_FLAGS =  $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS))
 COMPLETE_TARGET = $(OUTPUT_DIR)/$(TARGET)
-MODE = debug
+MODE = release
 
 ifeq ($(MODE), debug)
 CFLAGS += $(DEBUG_FLAGS)
 COLOR_ACTION = \033[1;32m
+else ifeq ($(MODE), profile)
+CFLAGS += $(PROFILE_FLAGS)
+COLOR_ACTION = \033[0;36m
 else
 CFLAGS += $(RELEASE_FLAGS)
 COLOR_ACTION = \033[0;34m
