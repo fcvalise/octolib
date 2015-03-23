@@ -6,17 +6,20 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/22 22:01:38 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/23 17:05:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <StateManager.hpp>
 #include <AbstractState.hpp>
+#include <AbstractTransition.hpp>
+#include <DefaultTransition.hpp>
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
 #include <cmath>
 
+// A state with a colored square
 class SquareState : public octo::AbstractState
 {
 public:
@@ -60,10 +63,12 @@ private:
 	sf::RectangleShape	m_square;
 };
 
+// A state with a with circle
 class CircleState : public octo::AbstractState
 {
 public:
-	explicit CircleState()
+	explicit CircleState() :
+		m_elapsed(0.f)
 	{
 		m_circle = sf::CircleShape(128.f);
 		m_circle.setOrigin(64.f, 64.f);
@@ -95,6 +100,8 @@ public:
 		float		x = 0.f;
 
 		m_elapsed += frameTime;
+		if (m_elapsed > 1.f)
+			m_elapsed -= 1.f;
 		x = (std::sin((m_elapsed / 0.5f) * M_PI) * 256.f) - 64.f;
 		m_circle.setPosition(x, -64.f);
 	}
@@ -124,21 +131,30 @@ int main()
 	sf::Event								event;
 	sf::View								view = window.getDefaultView();
 	octo::StateManager						manager;
+	std::vector<octo::StateManager::Key>	stateCycle{"circle", "red", "blue", "green"};
+	std::size_t								cyclePosition{0};
 
 	view.setCenter(0.f, 0.f);
 	window.setView(view);
-	// Simple registration for state with parameterless constructor
+	window.setVerticalSyncEnabled(true);
+	// Simple state registration for state with parameterless constructor
 	manager.registerState<CircleState>("circle");
-	// Registration with lambda
+	// State registration with lambda
 	manager.registerCreator("red", [](){return new SquareState(sf::Color::Red);});
 	manager.registerCreator("blue", [](){return new SquareState(sf::Color::Blue);});
 	manager.registerCreator("green", [](){return new SquareState(sf::Color::Green);});
+	// Transition registration
+	manager.registerTransition<octo::BlackFadeTransition>("black_f");
+	manager.registerTransition<octo::BlackVSlideTransition>("black_v");
+	manager.registerTransition<octo::BlackHSlideTransition>("black_h");
+
 	std::cout << " - Press P to push a new state (type the key).\n"
 				 " - Press C to change current state by a new state (type the key).\n"
+				 " - Press N to change current state by an other state.\n"
 				 " - Press backspace to pop the current state.\n"
 				 " - Press escape to quit\n\n";
 	std::cout << " - Available keys: circle, red, blue, green" << std::endl;
-	manager.push(queryKey("push"));
+	manager.push(stateCycle[cyclePosition]);
     while (manager.hasCurrentState())
     {
         while (window.pollEvent(event))
@@ -150,19 +166,24 @@ int main()
 			}
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
 			{
-				manager.push(queryKey("push"));
+				manager.push(queryKey("push"), "black_f", view);
 			}
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
 			{
-				manager.change(queryKey("change"));
+				manager.change(queryKey("change"), "black_f", view);
+			}
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::N)
+			{
+				cyclePosition = (cyclePosition + 1) % stateCycle.size();
+				manager.change(stateCycle[cyclePosition], "black_f", view);
 			}
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::BackSpace)
 			{
-				manager.pop();
+				manager.pop("black_v", view);
 			}
         }
 		manager.update(clock.restart().asSeconds());
-        window.clear();
+        window.clear(sf::Color(50, 50, 50));
 		manager.draw(window);
         window.display();
     }

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/22 21:50:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/23 17:01:59 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,29 @@
 
 namespace octo
 {
+	StateManager::StateManager() :
+		m_transitionDuration(0.8f)
+	{
+	}
+
 	void	StateManager::registerCreator(Key const& key, Creator creator)
 	{
 		m_factory.emplace(key, creator);
+	}
+
+	void	StateManager::push(Key const& stateKey, Key const& transitionKey, sf::View const& view)
+	{
+		if (hasCurrentState())
+		{
+			startTransition(transitionKey, view, [this, stateKey]()
+				{
+					push(stateKey);
+				});	
+		}
+		else
+		{
+			push(stateKey);
+		}
 	}
 
 	void	StateManager::push(Key const& key)
@@ -27,9 +47,53 @@ namespace octo
 		push(createState(key));
 	}
 
+	void	StateManager::push(StatePtr state)
+	{
+		pauseCurrentState();
+		m_stack.push(state);
+		startCurrentState();
+	}
+
+	void	StateManager::change(Key const& stateKey, Key const& transitionKey, sf::View const& view)
+	{
+		if (hasCurrentState())
+		{
+			startTransition(transitionKey, view, [this, stateKey]()
+				{
+					change(stateKey);
+				});
+		}
+		else
+		{
+			change(stateKey);
+		}
+	}
+
 	void	StateManager::change(Key const& key)
 	{
 		change(createState(key));
+	}
+
+	void	StateManager::change(StatePtr state)
+	{
+		if (hasCurrentState())
+		{
+			stopCurrentState();
+			m_stack.top() = state;
+			startCurrentState();
+		}
+		else
+		{
+			push(state);	
+		}
+	}
+
+	void	StateManager::pop(Key const& transitionKey, sf::View const& view)
+	{
+		startTransition(transitionKey, view, [this]()
+			{
+				pop();
+			});	
 	}
 
 	void	StateManager::pop()
@@ -44,31 +108,11 @@ namespace octo
 
 	void	StateManager::popAll()
 	{
+		m_transition.reset();
 		while (m_stack.empty() == false)
 		{
 			stopCurrentState();
 			m_stack.pop();
-		}
-	}
-
-	void	StateManager::push(StatePtr state)
-	{
-		pauseCurrentState();
-		m_stack.push(state);
-		startCurrentState();
-	}
-
-	void	StateManager::change(StatePtr state)
-	{
-		if (hasCurrentState())
-		{
-			stopCurrentState();
-			m_stack.top() = state;
-			startCurrentState();
-		}
-		else
-		{
-			push(state);	
 		}
 	}
 
@@ -125,12 +169,28 @@ namespace octo
 		return (StatePtr(it->second()));
 	}
 
+	void					StateManager::startTransition(Key const& key,
+														  sf::View const& view,
+														  AbstractTransition::Action action)
+	{
+		auto	it = m_transitionFactory.find(key);
+
+		assert(it != m_transitionFactory.end());
+		m_transition.reset(it->second(view, action));
+		m_transition->setDuration(m_transitionDuration * 0.5f, m_transitionDuration * 0.5f);
+	}
+
 	StateManager::StatePtr	StateManager::currentState()const
 	{
 		if (m_stack.empty())
 			return (nullptr);
 		else
 			return (m_stack.top());
+	}
+
+	void	StateManager::setTransitionDuration(float duration)
+	{
+		m_transitionDuration = duration;
 	}
 
 	void	StateManager::update(float frameTime)
@@ -141,6 +201,11 @@ namespace octo
 		{
 			current->update(frameTime);
 		}
+		if (m_transition)
+		{
+			if (m_transition->update(frameTime) == false)
+				m_transition.reset();
+		}
 	}
 
 	void	StateManager::draw(sf::RenderTarget& render)const
@@ -150,6 +215,10 @@ namespace octo
 		if (current)
 		{
 			current->draw(render);
+		}
+		if (m_transition)
+		{
+			m_transition->draw(render);
 		}
 	}
 }

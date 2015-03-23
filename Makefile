@@ -5,10 +5,15 @@ BUILD_DIR = ./builds
 OUTPUT_DIR = .
 
 # sources
-SRC = 	$(STATE_SYSTEM_SRC)
+SRC = 	$(STATE_SYSTEM_SRC)					\
+		$(MATH_SRC)
+
+MATH_SRC =			Interpolations.cpp
 
 STATE_SYSTEM_SRC =	AbstractState.cpp		\
-					StateManager.cpp
+					AbstractTransition.cpp	\
+					StateManager.cpp		\
+					DefaultTransition.cpp
 
 # compiler
 CC = g++
