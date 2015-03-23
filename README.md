@@ -16,3 +16,9 @@ Octodyssey's core library
 Then index page can be quickly opened under MacOS with:
 
 	$> make open_dox
+
+### Building the tests
+They are units tests in tests/ directory and graphics interactives
+tests in graphics_tests/ directory.  
+
+Each graphics tests have his own Makefile to build it.
