@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 17:01:59 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/23 17:24:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ namespace octo
 	{
 	}
 
-	void	StateManager::registerCreator(Key const& key, Creator creator)
+	void	StateManager::registerStateCreator(Key const& key, StateCreator creator)
 	{
-		m_factory.emplace(key, creator);
+		m_stateFactory.emplace(key, creator);
 	}
 
 	void	StateManager::push(Key const& stateKey, Key const& transitionKey, sf::View const& view)
@@ -163,9 +163,9 @@ namespace octo
 	
 	StateManager::StatePtr	StateManager::createState(Key const& key)const
 	{
-		auto	it = m_factory.find(key);
+		auto	it = m_stateFactory.find(key);
 
-		assert(it != m_factory.end());
+		assert(it != m_stateFactory.end());
 		return (StatePtr(it->second()));
 	}
 
@@ -220,5 +220,23 @@ namespace octo
 		{
 			m_transition->draw(render);
 		}
+	}
+	
+	StateManager::KeyList	StateManager::availableStateKeys()const
+	{
+		KeyList	results(m_stateFactory.size());
+
+		for (auto const& pair : m_stateFactory)
+			results.push_back(pair.first);
+		return (results);
+	}
+
+	StateManager::KeyList	StateManager::availableTransitionKeys()const
+	{
+		KeyList	results(m_transitionFactory.size());
+
+		for (auto const& pair : m_transitionFactory)
+			results.push_back(pair.first);
+		return (results);
 	}
 }

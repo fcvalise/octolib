@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 16:27:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/23 17:46:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <functional>
 # include <map>
 # include <stack>
+# include <vector>
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -43,11 +44,13 @@ namespace octo
 	class StateManager
 	{
 		typedef AbstractTransition::Action									Action;
-		typedef std::function<AbstractState*(void)>							Creator;
+		typedef std::function<AbstractState*(void)>							StateCreator;
 		typedef std::function<AbstractTransition*(sf::View const&, Action)>	TransitionCreator;
 	public:
-		typedef std::string	Key;
+		typedef std::string			Key;
+		typedef std::vector<Key>	KeyList;
 
+		/*!	Construct an empty state manager */
 		StateManager();
 
 		/*!	Register a new state class
@@ -60,7 +63,7 @@ namespace octo
 		void			registerState(Key const& key);
 
 		/*!	Register a state creator */
-		void			registerCreator(Key const& key, Creator creator);
+		void			registerStateCreator(Key const& key, StateCreator creator);
 
 		/*!	Register a new transition class
 		 *	\tparam T	Type of transition
@@ -111,12 +114,14 @@ namespace octo
 		void			setTransitionDuration(float duration);
 
 		bool			hasCurrentState()const;
+		KeyList			availableStateKeys()const;
+		KeyList			availableTransitionKeys()const;
 
 		void			update(float frameTime);
 		void			draw(sf::RenderTarget& render)const;
 	private:
 		typedef std::shared_ptr<AbstractState>		StatePtr;
-		typedef std::map<Key, Creator>				Factory;
+		typedef std::map<Key, StateCreator>			StateFactory;
 		typedef std::map<Key, TransitionCreator>	TransitionFactory;
 		typedef std::stack<StatePtr>				StateStack;
 		typedef std::unique_ptr<AbstractTransition>	TransitionPtr;
@@ -132,7 +137,7 @@ namespace octo
 		StatePtr		currentState()const;
 		void			startTransition(Key const& key, sf::View const& view, Action action);
 	private:
-		Factory				m_factory;
+		StateFactory		m_stateFactory;
 		TransitionFactory	m_transitionFactory;
 		StateStack			m_stack;
 		TransitionPtr		m_transition;
@@ -145,7 +150,7 @@ namespace octo
 		static_assert( std::is_base_of<AbstractState, S>::value,
 					   "class S must be derived from octo::AbstractState" );
 
-		m_factory[key] = [](){return (new S);};
+		m_stateFactory[key] = [](){return (new S);};
 	}
 
 	template <class T>

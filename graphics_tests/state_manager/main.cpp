@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 17:05:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/23 17:32:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ public:
 	explicit CircleState() :
 		m_elapsed(0.f)
 	{
-		m_circle = sf::CircleShape(128.f);
+		m_circle = sf::CircleShape(128.f, 64);
 		m_circle.setOrigin(64.f, 64.f);
 		m_circle.setFillColor(sf::Color::White);
 	}
@@ -140,9 +140,9 @@ int main()
 	// Simple state registration for state with parameterless constructor
 	manager.registerState<CircleState>("circle");
 	// State registration with lambda
-	manager.registerCreator("red", [](){return new SquareState(sf::Color::Red);});
-	manager.registerCreator("blue", [](){return new SquareState(sf::Color::Blue);});
-	manager.registerCreator("green", [](){return new SquareState(sf::Color::Green);});
+	manager.registerStateCreator("red", [](){return new SquareState(sf::Color::Red);});
+	manager.registerStateCreator("blue", [](){return new SquareState(sf::Color::Blue);});
+	manager.registerStateCreator("green", [](){return new SquareState(sf::Color::Green);});
 	// Transition registration
 	manager.registerTransition<octo::BlackFadeTransition>("black_f");
 	manager.registerTransition<octo::BlackVSlideTransition>("black_v");

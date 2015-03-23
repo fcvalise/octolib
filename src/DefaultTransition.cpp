@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 15:03:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 15:15:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/23 17:25:54 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace octo
 	
 	void	BlackFadeTransition::updateTransition(float, float timePosition)
 	{
-		m_shape.setFillColor(linearInterpolation(sf::Color::Transparent,
+		m_shape.setFillColor(cosinusInterpolation(sf::Color::Transparent,
 												 sf::Color::Black,
 												 timePosition));
 	}

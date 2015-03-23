@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 00:24:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 15:55:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/23 17:29:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@ namespace octo
 					m_action();
 					m_currentTime = m_outDuration;
 					m_status = Status::Out;
+					updateTransition(frameTime, 1.f);	
 				}
 				else
 				{
-					updateTransition(frameTime, m_currentTime / m_inDuration);	
+					updateTransition(frameTime, std::min(m_currentTime / m_inDuration, 1.f));	
 					m_currentTime += frameTime;
 				}
 				break;
@@ -55,11 +56,12 @@ namespace octo
 				if (m_currentTime <= 0.f)
 				{
 					m_status = Status::Finished;
+					updateTransition(frameTime, 0.f);	
 					return (false);
 				}
 				else
 				{
-					updateTransition(frameTime, m_currentTime / m_outDuration);	
+					updateTransition(frameTime, std::max(m_currentTime / m_outDuration, 0.f));
 					m_currentTime -= frameTime;
 				}
 				break;
