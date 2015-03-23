@@ -1,79 +1,79 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Stack.hpp                                          :+:      :+:    :+:   */
+/*   Queue.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/04 01:29:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/20 23:15:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/23 18:00:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STACK_HPP
-# define STACK_HPP
+#ifndef QUEUE_HPP
+# define QUEUE_HPP
 # include <memory>
 
 namespace octo
 {
-	/*!	\class Stack
-	 *	\brief Generic LIFO stack
+	/*!	\class Queue
+	 *	\brief Generic FIFO queue
 	 *
-	 *	Stack is implemented as circular buffer.<br>
-	 *	You must define the maximum size of the stack when instanciated.
+	 *	Queue is implemented as circular buffer.<br>
+	 *	You must define the maximum size of the queue when instanciated.
 	 */
 	template <class T>
-	class Stack
+	class Queue
 	{
-		Stack(Stack const&) = delete;
-		Stack& operator = (Stack const&) = delete;
+		Queue(Queue const&) = delete;
+		Queue& operator = (Queue const&) = delete;
 	public:
-		/*!	Create an empty stack.
-		 *	\param maxSize Max size of stack
+		/*!	Create an empty queue.
+		 *	\param maxSize Max size of queue
 		 */
-		explicit Stack(std::size_t maxSize);
+		explicit Queue(std::size_t maxSize);
 
 		/*!	Move constructor */
-		Stack(Stack<T>&& other) = default;
+		Queue(Queue<T>&& other) = default;
 
 		/*!	Move assignment operator */
-		Stack<T>&	operator = (Stack<T>&& other) = default;
+		Queue<T>&	operator = (Queue<T>&& other) = default;
 
-		/*!	Push a value on the top of the stack */
+		/*!	Push a value on the top of the queue */
 		void			push(T const& value);
 
-		/*!	Push a value on the top of the stack */
+		/*!	Push a value on the top of the queue */
 		void			push(T&& value);
 
-		/*!	Create a value on the top of the stack */
+		/*!	Create a value on the top of the queue */
 		template <class ... A>
 		void			emplace(A&&... args);
 
-		/*! Pop a value from the top of the stack
+		/*! Pop a value from the top of the queue
 		 *
-		 *	\warning never call this method on an empty stack, since
+		 *	\warning never call this method on an empty queue, since
 		 *	will cause an undefined behavior.
 		 */
 		void			pop();
 
 		/*!	Constant access to the top.
 		 *
-		 *	\warning never call this method on an empty stack, since
+		 *	\warning never call this method on an empty queue, since
 		 *	will cause an undefined behavior.
 		 */
 		T const&		top()const;
 
-		/*!	Access to the top of the stack.
+		/*!	Access to the top of the queue.
 		 *
-		 *	\warning never call this method on an empty stack, since
+		 *	\warning never call this method on an empty queue, since
 		 *	will cause an undefined behavior.
 		 */
 		T&				top();
 
-		/*!	Indicate if the stack is empty */
+		/*!	Indicate if the queue is empty */
 		bool			empty()const;
 
-		/*!	Get the number of element pushed on the stack */
+		/*!	Get the number of element pushed on the queue */
 		std::size_t		size()const;
 
 		/*!	Remove all values pushed */
@@ -87,5 +87,5 @@ namespace octo
 		std::size_t				m_tail;
 	};
 }
-#include "Stack.hxx"
+#include "Queue.hxx"
 #endif

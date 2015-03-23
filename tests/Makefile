@@ -14,7 +14,7 @@ LIBS = octo boost_unit_test_framework
 SRC = main.cpp			\
 	  Array2D.cpp		\
 	  Array3D.cpp		\
-	  Stack.cpp
+	  Queue.cpp
 
 # compiler
 CC = g++
