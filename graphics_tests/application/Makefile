@@ -1,21 +1,17 @@
-TARGET = tester.app
-CORE_DIR = ../
-INCLUDE_DIR = $(CORE_DIR)/includes
+TARGET = test.app
+CORE_DIR = ../..
+INCLUDE_DIR = ./ $(CORE_DIR)/includes
 SRC_DIR = .
-BUILD_DIR = ../builds/tester
+BUILD_DIR = ./builds
 OUTPUT_DIR = .
 # libraries directories (ex: ../libft)
-LIB_DIRS = ../
+LIB_DIRS = $(CORE_DIR)
 
 # libraries (ex: ft, mlx, ...)
-LIBS = octo boost_unit_test_framework
+LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 
 # sources
-SRC = main.cpp			\
-	  OptionParser.cpp	\
-	  Array2D.cpp		\
-	  Array3D.cpp		\
-	  Queue.cpp
+SRC = application_example.cpp
 
 # compiler
 CC = g++
@@ -27,6 +23,7 @@ RELEASE_FLAGS = -O3
 DEBUG_FLAGS = -g
 # includes dirs paths
 INCLUDE_DIRS = $(addprefix -I, $(INCLUDE_DIR))
+
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.cpp=.o))
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -48,7 +45,7 @@ COLOR_OBJECT = \033[0m
 
 all: print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) core_library $(OBJS)
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(CLIBS_FLAGS) 
 
@@ -79,5 +76,15 @@ else
 	@echo " - Making $(TARGET): $(CFLAGS)"
 endif
 
-run:
-	$(COMPLETE_TARGET) --log_level=test_suite
+core_library:
+	@make -s -C $(CORE_DIR) MODE=$(MODE)
+
+clean_core_library:
+	@make -s -C $(CORE_DIR) clean MODE=$(MODE)
+
+fclean_core_library:
+	@make -s -C $(CORE_DIR) fclean MODE=$(MODE)
+
+run_reinc:
+	@echo " - Running reinc"
+	@reinc -B $(BUILD_DIR) --include-dirs ./ ../core/ -v

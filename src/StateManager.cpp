@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 17:24:45 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/24 21:26:44 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ namespace octo
 		m_stateFactory.emplace(key, creator);
 	}
 
-	void	StateManager::push(Key const& stateKey, Key const& transitionKey, sf::View const& view)
+	void	StateManager::push(Key const& stateKey, Key const& transitionKey)
 	{
 		if (hasCurrentState())
 		{
-			startTransition(transitionKey, view, [this, stateKey]()
+			startTransition(transitionKey, [this, stateKey]()
 				{
 					push(stateKey);
-				});	
+				});
 		}
 		else
 		{
@@ -54,11 +54,11 @@ namespace octo
 		startCurrentState();
 	}
 
-	void	StateManager::change(Key const& stateKey, Key const& transitionKey, sf::View const& view)
+	void	StateManager::change(Key const& stateKey, Key const& transitionKey)
 	{
 		if (hasCurrentState())
 		{
-			startTransition(transitionKey, view, [this, stateKey]()
+			startTransition(transitionKey, [this, stateKey]()
 				{
 					change(stateKey);
 				});
@@ -88,9 +88,9 @@ namespace octo
 		}
 	}
 
-	void	StateManager::pop(Key const& transitionKey, sf::View const& view)
+	void	StateManager::pop(Key const& transitionKey)
 	{
-		startTransition(transitionKey, view, [this]()
+		startTransition(transitionKey, [this]()
 			{
 				pop();
 			});	
@@ -118,7 +118,7 @@ namespace octo
 
 	bool	StateManager::hasCurrentState()const
 	{
-		return (m_stack.empty() == false);
+		return (m_stack.size() > 0);
 	}
 
 	void	StateManager::startCurrentState()
@@ -170,13 +170,12 @@ namespace octo
 	}
 
 	void					StateManager::startTransition(Key const& key,
-														  sf::View const& view,
 														  AbstractTransition::Action action)
 	{
 		auto	it = m_transitionFactory.find(key);
 
 		assert(it != m_transitionFactory.end());
-		m_transition.reset(it->second(view, action));
+		m_transition.reset(it->second(action));
 		m_transition->setDuration(m_transitionDuration * 0.5f, m_transitionDuration * 0.5f);
 	}
 
@@ -193,7 +192,7 @@ namespace octo
 		m_transitionDuration = duration;
 	}
 
-	void	StateManager::update(float frameTime)
+	void	StateManager::update(float frameTime, sf::View const& view)
 	{
 		StatePtr	current = currentState();
 
@@ -203,7 +202,7 @@ namespace octo
 		}
 		if (m_transition)
 		{
-			if (m_transition->update(frameTime) == false)
+			if (m_transition->update(frameTime, view) == false)
 				m_transition.reset();
 		}
 	}

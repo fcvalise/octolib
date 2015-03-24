@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 17:32:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/24 20:08:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ static octo::StateManager::Key	queryKey(std::string const& action)
 
 int main()
 {
-    sf::RenderWindow						window(sf::VideoMode::getDesktopMode(), "SFML works!");
+    sf::RenderWindow						window(sf::VideoMode::getDesktopMode(), "StateManager works!");
 	sf::Clock								clock;
 	sf::Event								event;
 	sf::View								view = window.getDefaultView();
@@ -148,12 +148,12 @@ int main()
 	manager.registerTransition<octo::BlackVSlideTransition>("black_v");
 	manager.registerTransition<octo::BlackHSlideTransition>("black_h");
 
-	std::cout << " - Press P to push a new state (type the key).\n"
-				 " - Press C to change current state by a new state (type the key).\n"
-				 " - Press N to change current state by an other state.\n"
-				 " - Press backspace to pop the current state.\n"
-				 " - Press escape to quit\n\n";
-	std::cout << " - Available keys: circle, red, blue, green" << std::endl;
+	std::cout << " - Press Space to change current state by an other state.\n"
+				 " - Press Backspace to pop the current state.\n"
+				 " - Press Escape to quit\n\n"
+				 " - Press P to push a new state (type the key).\n"
+				 " - Press C to change current state by a new state (type the key).\n\n"
+				 " - Available keys: circle, red, blue, green" << std::endl;
 	manager.push(stateCycle[cyclePosition]);
     while (manager.hasCurrentState())
     {
@@ -166,23 +166,23 @@ int main()
 			}
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
 			{
-				manager.push(queryKey("push"), "black_f", view);
+				manager.push(queryKey("push"), "black_f");
 			}
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
 			{
-				manager.change(queryKey("change"), "black_f", view);
+				manager.change(queryKey("change"), "black_f");
 			}
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::N)
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
 			{
 				cyclePosition = (cyclePosition + 1) % stateCycle.size();
-				manager.change(stateCycle[cyclePosition], "black_f", view);
+				manager.change(stateCycle[cyclePosition], "black_f");
 			}
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::BackSpace)
 			{
-				manager.pop("black_v", view);
+				manager.pop("black_v");
 			}
         }
-		manager.update(clock.restart().asSeconds());
+		manager.update(clock.restart().asSeconds(), window.getView());
         window.clear(sf::Color(50, 50, 50));
 		manager.draw(window);
         window.display();

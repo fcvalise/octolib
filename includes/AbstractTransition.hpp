@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 00:04:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 17:03:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/24 19:53:40 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ namespace octo
 		 *	with AbstractTransition;;view().
 		 *	\param action Delayed state manager action.
 		 */
-		AbstractTransition(sf::View const& view, Action action);
+		explicit AbstractTransition(Action action);
 
 		/*!	Transition destructor */
 		virtual ~AbstractTransition();
@@ -72,13 +72,10 @@ namespace octo
 		Status			status()const;
 
 		/*!	Called once per frame, before render */
-		bool			update(float frameTime);
+		bool			update(float frameTime, sf::View const& view);
 
 		/*!	Implement all transition draw here */
 		virtual void	draw(sf::RenderTarget& render)const = 0;
-	protected:
-		/*!	Access to the view defined when instance was constructed */
-		sf::View const&	view()const;
 	private:
 		/*!	Implement all transition logic here
 		 *	\param frameTime Time elapsed during the last frame
@@ -88,9 +85,8 @@ namespace octo
 		 *	and when the transition out is finished, the value must be returned to 0
 		 *	or less.
 		 */
-		virtual void	updateTransition(float frameTime, float timePosition) = 0;
+		virtual void	updateTransition(float frameTime, float timePosition, sf::View const& view) = 0;
 	private:
-		sf::View	m_view;
 		float		m_inDuration;
 		float		m_outDuration;
 		float		m_currentTime;

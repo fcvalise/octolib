@@ -6,9 +6,16 @@ OUTPUT_DIR = .
 
 # sources
 SRC = 	$(STATE_SYSTEM_SRC)					\
-		$(MATH_SRC)
+		$(MATH_SRC)							\
+		$(CORE_SRC)
 
-MATH_SRC =			Interpolations.cpp
+CORE_SRC =	Application.cpp					\
+			PausableClock.cpp				\
+			GraphicsManager.cpp				\
+			OptionParser.cpp				\
+			Options.cpp
+
+MATH_SRC = Interpolations.cpp
 
 STATE_SYSTEM_SRC =	AbstractState.cpp		\
 					AbstractTransition.cpp	\
@@ -86,6 +93,6 @@ dox:
 open_dox:
 	@open ./doc/generated/html/index.html
 
-tests: $(COMPLETE_TARGET)
-	@make -C tests
+tests:
+	@make re -C tests
 	@./tests/tester.app

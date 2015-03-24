@@ -11,7 +11,7 @@ LIB_DIRS = $(CORE_DIR)
 LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 
 # sources
-SRC = main.cpp
+SRC = state_manager_test.cpp
 
 # compiler
 CC = g++

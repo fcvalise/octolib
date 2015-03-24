@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 17:46:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/24 21:54:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,17 @@ namespace octo
 	 *	\brief Manage all stuff about game states
 	 *
 	 *	This class provide all services needed to
-	 *	manage game state at runtime.
-	 *
-	 *	Different game states can be stacked.
+	 *	manage game state at runtime.<br>
+	 *	Different game states can be stacked.<br>
 	 *	Changing states can be done with visual transition and you can define
 	 *	your own transition easilly.
 	 *
-	 *	This is a example of usage of StateManager:
-	 *	\example state_manager/main.cpp
 	 */
 	class StateManager
 	{
-		typedef AbstractTransition::Action									Action;
-		typedef std::function<AbstractState*(void)>							StateCreator;
-		typedef std::function<AbstractTransition*(sf::View const&, Action)>	TransitionCreator;
+		typedef AbstractTransition::Action					Action;
+		typedef std::function<AbstractState*(void)>			StateCreator;
+		typedef std::function<AbstractTransition*(Action)>	TransitionCreator;
 	public:
 		typedef std::string			Key;
 		typedef std::vector<Key>	KeyList;
@@ -84,7 +81,7 @@ namespace octo
 		 *	The state become active and his method AbstractState::start() is called.
 		 *	Eventual previously running state is stopped before.
 		 */
-		void			push(Key const& stateKey, Key const& transitionKey, sf::View const& view);
+		void			push(Key const& stateKey, Key const& transitionKey);
 
 		/*!
 		 *	Change the current state (if exists) by another.
@@ -96,28 +93,37 @@ namespace octo
 		 *	Change the current state (if exists) by another with a transition.
 		 *	If no states are pushed, the new state is just pushed.
 		 */
-		void			change(Key const& stateKey, Key const& transitionKey, sf::View const& view);
+		void			change(Key const& stateKey, Key const& transitionKey);
 
 		/*!	Pop the current state (if any)
-		 *	The state poped is stopped by calling his method AbstractState::stop().
+		 *	The state popped is stopped by calling his method AbstractState::stop().
 		 */
 		void			pop();
 
 		/*!	Pop the current state (if any)
-		 *	The state poped is stopped by calling his method AbstractState::stop().
+		 *	The state popped is stopped by calling his method AbstractState::stop().
 		 */
-		void			pop(Key const& transitionKey, sf::View const& view);
+		void			pop(Key const& transitionKey);
 
 		/*!	Pop all states stacked */
 		void			popAll();
 	
+		/*!	Define the duration of transition */
 		void			setTransitionDuration(float duration);
 
+		/*!	Return true if at least one state is stacked */
 		bool			hasCurrentState()const;
+
+		/*!	Return availables state's keys */
 		KeyList			availableStateKeys()const;
+
+		/*!	Return availables transition's keys */
 		KeyList			availableTransitionKeys()const;
 
-		void			update(float frameTime);
+		/*!	Update the current state */
+		void			update(float frameTime, sf::View const& view);
+
+		/*!	Draw the current state */
 		void			draw(sf::RenderTarget& render)const;
 	private:
 		typedef std::shared_ptr<AbstractState>		StatePtr;
@@ -135,7 +141,7 @@ namespace octo
 		void			stopCurrentState();	
 		StatePtr		createState(Key const& key)const;
 		StatePtr		currentState()const;
-		void			startTransition(Key const& key, sf::View const& view, Action action);
+		void			startTransition(Key const& key, Action action);
 	private:
 		StateFactory		m_stateFactory;
 		TransitionFactory	m_transitionFactory;
@@ -159,7 +165,7 @@ namespace octo
 		static_assert( std::is_base_of<AbstractTransition, T>::value,
 					   "class T must be derived from octo::AbstractTransition" );
 
-		m_transitionFactory[key] = [](sf::View const& view, Action action){return (new T(view, action));};
+		m_transitionFactory[key] = [](Action action){return (new T(action));};
 	}
 }
 

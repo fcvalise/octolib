@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 00:24:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 17:29:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/24 19:53:36 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 namespace octo
 {
-	AbstractTransition::AbstractTransition(sf::View const& view, Action action) :
-		m_view(view),
+	AbstractTransition::AbstractTransition(Action action) :
 		m_inDuration(0.f),
 		m_outDuration(0.f),
 		m_currentTime(0.f),
@@ -34,7 +33,7 @@ namespace octo
 		m_outDuration = out;
 	}
 
-	bool	AbstractTransition::update(float frameTime)
+	bool	AbstractTransition::update(float frameTime, sf::View const& view)
 	{
 		switch (m_status)
 		{
@@ -44,11 +43,11 @@ namespace octo
 					m_action();
 					m_currentTime = m_outDuration;
 					m_status = Status::Out;
-					updateTransition(frameTime, 1.f);	
+					updateTransition(frameTime, 1.f, view);
 				}
 				else
 				{
-					updateTransition(frameTime, std::min(m_currentTime / m_inDuration, 1.f));	
+					updateTransition(frameTime, std::min(m_currentTime / m_inDuration, 1.f), view);
 					m_currentTime += frameTime;
 				}
 				break;
@@ -56,12 +55,12 @@ namespace octo
 				if (m_currentTime <= 0.f)
 				{
 					m_status = Status::Finished;
-					updateTransition(frameTime, 0.f);	
+					updateTransition(frameTime, 0.f, view);
 					return (false);
 				}
 				else
 				{
-					updateTransition(frameTime, std::max(m_currentTime / m_outDuration, 0.f));
+					updateTransition(frameTime, std::max(m_currentTime / m_outDuration, 0.f), view);
 					m_currentTime -= frameTime;
 				}
 				break;
@@ -71,11 +70,6 @@ namespace octo
 				break;
 		}
 		return (true);
-	}
-	
-	sf::View const&	AbstractTransition::view()const
-	{
-		return (m_view);
 	}
 
 	AbstractTransition::Status	AbstractTransition::status()const
