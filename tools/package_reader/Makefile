@@ -1,40 +1,23 @@
-LIB_NAME = octo
-INCLUDE_DIR = ./includes
-SRC_DIR = ./src
+TARGET = package_reader.app
+CORE_DIR = ../..
+INCLUDE_DIR = ./ $(CORE_DIR)/includes
+SRC_DIR = .
 BUILD_DIR = ./builds
 OUTPUT_DIR = .
 
+# libraries directories (ex: ../libft)
+LIB_DIRS = $(CORE_DIR)
+
+# libraries (ex: ft, mlx, ...)
+LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
+
 # sources
-SRC = 	$(STATE_SYSTEM_SRC)					\
-		$(PACKAGE_SRC)						\
-		$(MATH_SRC)							\
-		$(CORE_SRC)
-
-CORE_SRC =	Application.cpp					\
-			PausableClock.cpp				\
-			GraphicsManager.cpp				\
-			OptionParser.cpp				\
-			Options.cpp
-
-MATH_SRC = Interpolations.cpp
-
-PACKAGE_SRC = Package.cpp					\
-			  PackageHeader.cpp				\
-			  PackageCompiler.cpp
-
-STATE_SYSTEM_SRC =	AbstractState.cpp		\
-					AbstractTransition.cpp	\
-					StateManager.cpp		\
-					DefaultTransition.cpp
+SRC = main.cpp
 
 # compiler
 CC = g++
-# archiver
-AR = ar
 # flags used in both mode
 COMMON_FLAGS = -Werror -Wextra -Wall -std=c++11
-# flags used with archiver
-AR_FLAGS = -rs
 # flags used in release mode
 RELEASE_FLAGS = -O3
 # flags used in debug mode
@@ -46,7 +29,7 @@ INCLUDE_DIRS = $(addprefix -I, $(INCLUDE_DIR))
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.cpp=.o))
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
 CFLAGS = $(COMMON_FLAGS)
-TARGET = lib$(LIB_NAME).a
+CLIBS_FLAGS =  $(addprefix -L, $(LIB_DIRS)) $(addprefix -l, $(LIBS))
 COMPLETE_TARGET = $(OUTPUT_DIR)/$(TARGET)
 MODE = release
 
@@ -63,9 +46,9 @@ COLOR_OBJECT = \033[0m
 
 all: print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) core_library $(OBJS)
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
-	@$(AR) $(AR_FLAGS) $(COMPLETE_TARGET) $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(CLIBS_FLAGS) 
 
 $(addprefix $(BUILD_DIR)/, %.o) : $(addprefix $(SRC_DIR)/, %.cpp)
 	@echo " - $(COLOR_ACTION)compiling$(COLOR_OFF): $(COLOR_OBJECT)$<$(COLOR_OFF)"
@@ -80,6 +63,8 @@ fclean: clean
 clean:
 	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(addprefix "\\n\\t", $(notdir $(OBJS)))$(COLOR_OFF)"
 	@rm -f $(OBJS)
+	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
+	@rm -fr $(BUILD_DIR)
 
 $(BUILD_DIR):
 	@echo " - $(COLOR_ACTION)creating directory$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
@@ -87,17 +72,20 @@ $(BUILD_DIR):
 
 print_summary:
 ifeq ($(MODE), debug)
-	@echo " - Making library $(LIB_NAME) [DEBUG]: $(CFLAGS)"
+	@echo " - Making $(TARGET) [DEBUG]: $(CFLAGS)"
 else
-	@echo " - Making library $(LIB_NAME): $(CFLAGS)"
+	@echo " - Making $(TARGET): $(CFLAGS)"
 endif
 
-dox:
-	@doxygen ./doc/octolib.dox
+core_library:
+	@make -s -C $(CORE_DIR) MODE=$(MODE)
 
-open_dox:
-	@open ./doc/generated/html/index.html
+clean_core_library:
+	@make -s -C $(CORE_DIR) clean MODE=$(MODE)
 
-tests:
-	@make re -C tests
-	@./tests/tester.app
+fclean_core_library:
+	@make -s -C $(CORE_DIR) fclean MODE=$(MODE)
+
+run_reinc:
+	@echo " - Running reinc"
+	@reinc -B $(BUILD_DIR) --include-dirs ./ ../core/ -v

@@ -11,10 +11,12 @@ LIB_DIRS = ../
 LIBS = octo boost_unit_test_framework
 
 # sources
-SRC = main.cpp			\
-	  OptionParser.cpp	\
-	  Array2D.cpp		\
-	  Array3D.cpp		\
+SRC = main.cpp				\
+	  PackageDetails.cpp	\
+	  PackageHeader.cpp		\
+	  OptionParser.cpp		\
+	  Array2D.cpp			\
+	  Array3D.cpp			\
 	  Queue.cpp
 
 # compiler

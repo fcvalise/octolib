@@ -6,14 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:29:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 15:25:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/25 04:31:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "OptionParser.hpp"
 #include <iostream>
 
-// abc d = caca
 namespace octo
 {
 	bool	OptionParser::parseLine(std::string const& line,
