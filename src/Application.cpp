@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 20:55:17 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/25 02:48:21 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ namespace octo
 				m_graphicsManager.processEvents();
 				if (m_paused == false)
 					m_stateManager.update(frameTime, m_graphicsManager.getView());
-				m_stateManager.draw(m_graphicsManager.getRenderWindow());
+				m_stateManager.draw(m_graphicsManager.getRender());
 				m_graphicsManager.display();
 				frameTime = m_clock.restart().asSeconds();
 			}
@@ -143,7 +143,7 @@ namespace octo
 		return (s_instance->m_graphicsManager);
 	}
 	
-	Options&			Application::getOptions()
+	Options&	Application::getOptions()
 	{
 		assert (s_instance != nullptr);
 

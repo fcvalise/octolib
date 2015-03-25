@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 20:11:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/25 02:44:53 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,12 @@ namespace octo
 		void					createRender(sf::VideoMode const& mode,
 											 sf::String const& title,
 									  		 bool fullscreen);
+		void					draw(sf::Drawable const& drawble,
+									 sf::RenderStates const& states = sf::RenderStates::Default);
+		void					draw(sf::Vertex const* vertices, unsigned int count, sf::PrimitiveType type,
+									 sf::RenderStates const& states = sf::RenderStates::Default);
 
-		sf::RenderWindow&		getRenderWindow();
-
+		sf::RenderTarget&		getRender();
 		void					processEvents();
 		void					display();
 

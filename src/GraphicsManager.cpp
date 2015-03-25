@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 20:11:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/25 02:46:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,18 @@ namespace octo
 		m_fullscreen = fullscreen;
 	}
 
-	sf::RenderWindow&	GraphicsManager::getRenderWindow()
+	void	GraphicsManager::draw(sf::Drawable const& drawable, sf::RenderStates const& states)
+	{
+		m_window.draw(drawable, states);
+	}
+
+	void	GraphicsManager::draw(sf::Vertex const* vertices, unsigned int count, sf::PrimitiveType type,
+								  sf::RenderStates const& states)
+	{
+		m_window.draw(vertices, count, type, states);
+	}
+
+	sf::RenderTarget&	GraphicsManager::getRender()
 	{
 		return (m_window);
 	}
@@ -169,16 +180,6 @@ namespace octo
 	sf::View const&	GraphicsManager::getDefaultView()const
 	{
 		return (m_window.getDefaultView());
-	}
-
-	namespace
-	{
-		template <class T>
-		static void	add(T* value, std::vector<T*>& container)
-		{
-			if (std::find(container.begin(), container.end(), value) == container.end())
-				container.push_back(value);
-		}
 	}
 
 	void	GraphicsManager::addWindowListener(IWindowListener* listener)
