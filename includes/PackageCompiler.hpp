@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 04:59:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 03:13:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 05:20:14 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 
 namespace octo
 {
+	/*!	Package file compiler
+	 *
+	 *	This class archive ressource files into one unique file called
+	 *	package.<br>
+	 *	Progress of compilation can be followed with defining a listener
+	 *	from PackageCompiler::IListener.
+	 */
 	class PackageCompiler
 	{
 		struct FileInfo;

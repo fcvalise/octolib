@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 04:18:59 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 05:17:09 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,54 +18,104 @@
 
 namespace octo
 {
-	/*!	Package header datas
+	/*!	Store package header information
 	 *
+	 *	This container store a table indicates position and size of each
+	 *	packaged files.<br>
+	 *	This class is the key of package system. For creating package, the
+	 *	compiler build an header with datas of inputs files. For reading the package
+	 *	the header is used as table of matter to finding packaged files.<br>
+	 *
+	 *	For each file packaged they are an Entry in package header storing
+	 *	the name, the type, the position offset and the size of the file.<br>
+	 *	You can access to theses datas with getEntry().
+	 *	
 	 */
 	class PackageHeader
 	{
 	public:
-		enum class EntryType : std::uint8_t
-		{
-			Font,
-			Texture,
-			Sound,
-			Text,
-			Invalid
-		};
-
-		struct Entry
-		{
-			Entry();
-			Entry(std::string const& name, std::uint64_t offset, std::uint64_t size, EntryType type);
-
-			std::string		name;
-			std::uint64_t	offset;
-			std::uint64_t	size;
-			EntryType		type;
-		};
+		enum class EntryType : std::uint8_t;
+		struct Entry;
 	private:
 		typedef std::vector<Entry>			Entries;
 	public:
 		typedef Entries::const_iterator		const_iterator;
 		typedef std::uint64_t				EntryKey;
 
+		/*!	Add an entry to the table
+		 *	\param type Type of ressource packaged
+		 *	\param name The name of the file
+		 *	\param offset The position in the file relative to the end of header
+		 *	(this means the first file must be always an offset of 0).
+		 *	\param size Size of the file
+		 */
 		void				addEntry(EntryType type, std::string const& name,
 									 std::uint64_t offset, std::uint64_t size);
-		void				addEntry(Entry const& entry);
 
+		/*!	Get entry datas */
 		bool				getEntry(EntryKey key, Entry& entry)const;
-		std::string const&	getEntryName(EntryKey key)const;
-		EntryType			getEntryType(EntryKey key)const;
-		
 
-		bool			write(std::ostream& os)const;
-		bool			read(std::istream& is);
-		std::uint64_t	count()const;
-		std::uint64_t	byteCount()const;
-		const_iterator	begin()const;
-		const_iterator	end()const;
+		/*!	Get the entry name */
+		std::string const&	getEntryName(EntryKey key)const;
+
+		/*!	Get the entry type */
+		EntryType			getEntryType(EntryKey key)const;
+
+		/*!	Get the offset of the datas in package.
+		 *
+		 *	This offset is relative to the end of header table, so
+		 *	this value must be added to byteCount() to obtains the
+		 *	real position offset.
+		 */
+		std::uint64_t		getEntryOffset(EntryKey key)const;
+
+		/*!	Return the size(in bytes) of an entry */
+		std::uint64_t		getEntrySize(EntryKey key)const;
+
+		/*!	Return the count of entries */
+		std::uint64_t		count()const;
+
+		/*!	Return the count of bytes used to store the header datas
+		 *
+		 *	This function must be called after all entries is added.
+		 */
+		std::uint64_t		byteCount()const;
+
+		/*!	Return an iterator on the first element of the entry table */
+		const_iterator		begin()const;
+
+		/*!	Return an iterator on the end of the entry table */
+		const_iterator		end()const;
+
+		/*!	Write header datas */
+		bool				write(std::ostream& os)const;
+
+		/*!	Read header datas */
+		bool				read(std::istream& is);
 	private:
 		Entries	m_entries;
+	};
+
+	/*!	Identifiers of entry type */
+	enum class PackageHeader::EntryType : std::uint8_t
+	{
+		Font,
+		Texture,
+		Sound,
+		Text,
+		Invalid
+	};
+
+	/*!	Entry data */
+	struct PackageHeader::Entry
+	{
+		Entry();
+		Entry(std::string const& name, std::uint64_t offset, std::uint64_t size, EntryType type);
+
+		std::string		name;
+		std::uint64_t	offset;
+		std::uint64_t	size;
+		EntryType		type;
 	};
 }
 

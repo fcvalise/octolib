@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 04:13:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 04:55:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,6 @@ namespace octo
 		m_entries.emplace_back(name, offset, size, type);
 	}
 
-	void	PackageHeader::addEntry(Entry const& entry)
-	{
-		m_entries.push_back(entry);
-	}
-
 	bool	PackageHeader::getEntry(EntryKey key, Entry& entry)const
 	{
 		if (key < m_entries.size())
@@ -107,6 +102,16 @@ namespace octo
 	PackageHeader::EntryType	PackageHeader::getEntryType(EntryKey key)const
 	{
 		return (m_entries[key].type);
+	}
+
+	std::uint64_t	PackageHeader::getEntryOffset(EntryKey key)const
+	{
+		return (m_entries[key].offset);
+	}
+
+	std::uint64_t	PackageHeader::getEntrySize(EntryKey key)const
+	{
+		return (m_entries[key].size);
 	}
 
 	bool	PackageHeader::write(std::ostream& os)const

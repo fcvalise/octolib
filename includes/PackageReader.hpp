@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 02:51:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 04:44:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 05:20:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 namespace octo
 {
 	/*!
-	 *	Octo library package file reader
+	 *	Package file reader
 	 *
 	 *	Provide a way to load resources from a package file with C++ code.<br>
 	 *	In a package each item is associated to an unique identifier generated
