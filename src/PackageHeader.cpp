@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 04:55:32 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 21:17:37 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ namespace octo
 {
 	namespace details
 	{
+		static constexpr std::uint64_t const	PackageMagic = 0xf03b3a02;
+
 		template<typename T> 
 		void	write(std::ostream& os, T const& value) 
 		{ 
@@ -117,7 +119,9 @@ namespace octo
 	bool	PackageHeader::write(std::ostream& os)const
 	{
 		std::uint64_t	count = m_entries.size();
+		std::uint64_t	magic = details::PackageMagic;
 
+		details::write(os, magic);
 		details::write(os, count);
 		for (auto const& entry : m_entries)
 			details::writeEntry(os, entry);
@@ -126,9 +130,13 @@ namespace octo
 
 	bool	PackageHeader::read(std::istream& is)
 	{
+		std::uint64_t	magic = 0;
 		std::uint64_t	count = 0;
-		Entry		entry;
+		Entry			entry;
 
+		details::read(is, magic);
+		if (magic != details::PackageMagic)
+			return (false);
 		details::read(is, count);
 		m_entries.clear();
 		m_entries.resize(count);
@@ -147,7 +155,7 @@ namespace octo
 	{
 		std::uint64_t	result = 0;
 
-		result += sizeof(std::uint64_t);
+		result += sizeof(std::uint64_t) * 2;
 		for (auto const& entry : m_entries)
 		{
 			result += sizeof(std::uint64_t) * 3 +

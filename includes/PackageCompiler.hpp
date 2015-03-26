@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 04:59:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 05:20:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 20:42:17 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,11 @@ namespace octo
 		static bool					sortFileInfo(FileInfo const& left,
 												 FileInfo const& right);
 	private:
+		typedef std::vector<char>	Mask;
+
 		IListener*		m_listener;
 		ExtensionMap	m_extensions;
+		Mask			m_encryptionMask;
 	};
 	
 	class PackageCompiler::IListener

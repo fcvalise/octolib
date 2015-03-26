@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 04:41:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 21:36:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,55 @@ namespace octo
 		std::uint64_t	m_offset;
 	};
 
+	namespace
+	{
+		static std::string	makeSymbolName(std::string str)
+		{
+			std::for_each(std::begin(str), std::end(str), [](char& c)
+				{
+					if (std::isspace(c) || std::ispunct(c))
+					{
+						c = '_';
+					}
+					else
+					{
+						c = std::toupper(c);
+					}
+				});
+			return (str);
+		}
+
+		static std::string	getNow()
+		{
+			std::chrono::time_point<std::chrono::system_clock>	now = std::chrono::system_clock::now();
+			std::time_t											nowTime = std::chrono::system_clock::to_time_t(now);
+			std::string											str(std::ctime(&nowTime));
+
+			if (str.back() == '\n')
+				str.pop_back();
+			return (str);
+		}
+
+		static std::map<PackageHeader::EntryType, std::string> const	EntryTypeLabels
+		{
+			{octo::PackageHeader::EntryType::Font, "FONTS"},
+			{octo::PackageHeader::EntryType::Texture, "TEXTURES"},
+			{octo::PackageHeader::EntryType::Sound, "SOUNDS"},
+			{octo::PackageHeader::EntryType::Text, "TEXTS"},
+			{octo::PackageHeader::EntryType::Invalid, "INVALID"}
+		};
+
+		std::string	getEntryTypeLabel(PackageHeader::EntryType type)
+		{
+			auto it = EntryTypeLabels.find(type);
+
+			if (it == EntryTypeLabels.end())
+				return ("UNKNOWN");
+			else
+				return (it->second);
+		}
+	}
+
 	PackageCompiler::PackageCompiler() :
 		m_listener(nullptr),
 		m_extensions
@@ -84,6 +133,7 @@ namespace octo
 			{"rf64", PackageHeader::EntryType::Sound},
 			{"txt", PackageHeader::EntryType::Text},
 			{"conf", PackageHeader::EntryType::Text},
+			{"cgf", PackageHeader::EntryType::Text},
 			{"json", PackageHeader::EntryType::Text},
 			{"xml", PackageHeader::EntryType::Text}
 		}
@@ -185,6 +235,8 @@ namespace octo
 			return (false);
 		}
 		header.write(out);
+		details::generateMask(m_encryptionMask, details::PackageEncryptionMaskSize,
+							  header.byteCount());
 		for (auto const& fileInfo : fileInfos)
 		{
 			if (m_listener)
@@ -218,59 +270,10 @@ namespace octo
 				m_listener->error("unable to read input file: '" + info.path + "'");
 			return (false);
 		}
-		// TODO XOR buffer
+		details::xorEncryptDecrypt(buffer.get(), buffer.get() + info.size, m_encryptionMask);
 		out.write(buffer.get(), info.size);
 		return (true);
 		static_cast<void>(header);
-	}
-
-	namespace
-	{
-		static std::string	makeSymbolName(std::string str)
-		{
-			std::for_each(std::begin(str), std::end(str), [](char& c)
-				{
-					if (std::isspace(c) || std::ispunct(c))
-					{
-						c = '_';
-					}
-					else
-					{
-						c = std::toupper(c);
-					}
-				});
-			return (str);
-		}
-
-		static std::string	getNow()
-		{
-			std::chrono::time_point<std::chrono::system_clock>	now = std::chrono::system_clock::now();
-			std::time_t											nowTime = std::chrono::system_clock::to_time_t(now);
-			std::string											str(std::ctime(&nowTime));
-
-			if (str.back() == '\n')
-				str.pop_back();
-			return (str);
-		}
-
-		static std::map<PackageHeader::EntryType, std::string> const	EntryTypeLabels
-		{
-			{octo::PackageHeader::EntryType::Font, "FONTS"},
-			{octo::PackageHeader::EntryType::Texture, "TEXTURES"},
-			{octo::PackageHeader::EntryType::Sound, "SOUNDS"},
-			{octo::PackageHeader::EntryType::Text, "TEXTS"},
-			{octo::PackageHeader::EntryType::Invalid, "INVALID"}
-		};
-
-		std::string	getEntryTypeLabel(PackageHeader::EntryType type)
-		{
-			auto it = EntryTypeLabels.find(type);
-
-			if (it == EntryTypeLabels.end())
-				return ("UNKNOWN");
-			else
-				return (it->second);
-		}
 	}
 
 	bool	PackageCompiler::writeDefinitionFile(PackageHeader const& header)
@@ -324,12 +327,11 @@ namespace octo
 		}
 		else if (left.type == right.type)
 		{
-			return (left.size < right.size);
+			return (left.size > right.size);
 		}
 		else
 		{
 			return (false);
 		}
 	}
-
 }

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 02:51:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 05:20:07 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 20:45:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 #include <memory>
 #include <fstream>
+#include <vector>
 
 namespace octo
 {
@@ -45,8 +46,11 @@ namespace octo
 		/*!	Return the package header */
 		PackageHeader const&	getHeader()const;
 	private:
+		typedef std::vector<char>	Mask;
+
 		PackageHeader	m_header;
 		std::ifstream	m_file;
+		Mask			m_encryptionMask;
 	};
 }
 

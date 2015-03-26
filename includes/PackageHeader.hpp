@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 05:17:09 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 20:01:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ namespace octo
 {
 	/*!	Store package header information
 	 *
-	 *	This container store a table indicates position and size of each
+	 *	This container store a table indicating position and size of each
 	 *	packaged files.<br>
-	 *	This class is the key of package system. For creating package, the
-	 *	compiler build an header with datas of inputs files. For reading the package
+	 *	This class is the key of package system. For creating a package, the
+	 *	compiler build an header with datas of inputs files. For reading a package
 	 *	the header is used as table of matter to finding packaged files.<br>
 	 *
 	 *	For each file packaged they are an Entry in package header storing
