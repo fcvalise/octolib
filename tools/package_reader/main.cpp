@@ -6,22 +6,22 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:34:43 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/25 17:17:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 04:47:47 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <Package.hpp>
+#include <PackageReader.hpp>
 
 #include <map>
 #include <functional>
 #include <sstream>
 
-typedef std::vector<std::string>							Args;
-typedef std::function<bool(octo::Package&, Args const&)>	Command;
-typedef std::map<std::string, Command>						CommandMap;
+typedef std::vector<std::string>								Args;
+typedef std::function<bool(octo::PackageReader&, Args const&)>	Command;
+typedef std::map<std::string, Command>							CommandMap;
 
 static std::string	getEntryTypeLabel(octo::PackageHeader::EntryType type);
-static bool			execute(std::string const& command, Args const& args, octo::Package& package);
+static bool			execute(std::string const& command, Args const& args, octo::PackageReader& package);
 
 static std::map<octo::PackageHeader::EntryType, std::string> const	EntryTypeTexts
 {
@@ -34,14 +34,14 @@ static std::map<octo::PackageHeader::EntryType, std::string> const	EntryTypeText
 static CommandMap const	Commands
 {
 	{
-		"--help", [](octo::Package&, Args const&)
+		"--help", [](octo::PackageReader&, Args const&)
 		{
 			std::cout << "usage: package_reader <package_file> <command> [args...]" << std::endl;
 			return (true);
 		}
 	},
 	{
-		"--info", [](octo::Package& package, Args const&)
+		"--info", [](octo::PackageReader& package, Args const&)
 		{
 			octo::PackageHeader const&	header = package.getHeader();
 
@@ -51,7 +51,7 @@ static CommandMap const	Commands
 		}
 	},
 	{
-		"--list", [](octo::Package& package, Args const& args)
+		"--list", [](octo::PackageReader& package, Args const& args)
 		{
 			octo::PackageHeader const&	header = package.getHeader();
 			std::uint64_t				key = 0;
@@ -69,7 +69,7 @@ static CommandMap const	Commands
 		}
 	},
 	{
-		"--extract", [](octo::Package& package, Args const& args)
+		"--extract", [](octo::PackageReader& package, Args const& args)
 		{
 			std::uint64_t				key = 0;
 			std::istringstream			iss;
@@ -114,7 +114,7 @@ std::string	getEntryTypeLabel(octo::PackageHeader::EntryType type)
 		return (it->second);
 }
 
-bool	execute(std::string const& command, Args const& args, octo::Package& package)
+bool	execute(std::string const& command, Args const& args, octo::PackageReader& package)
 {
 	auto	it = Commands.find(command);
 
@@ -125,7 +125,7 @@ bool	execute(std::string const& command, Args const& args, octo::Package& packag
 
 int	main(int argc, char **argv)
 {
-	octo::Package				package;
+	octo::PackageReader			package;
 	std::string					packagePath;
 	std::string					command;
 	std::vector<std::string>	args;

@@ -18,7 +18,7 @@ CORE_SRC =	Application.cpp					\
 
 MATH_SRC = Interpolations.cpp
 
-PACKAGE_SRC = Package.cpp					\
+PACKAGE_SRC = PackageReader.cpp				\
 			  PackageHeader.cpp				\
 			  PackageCompiler.cpp
 

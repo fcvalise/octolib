@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Package.hpp                                        :+:      :+:    :+:   */
+/*   PackageReader.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 02:51:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/25 10:21:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 04:44:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PACKAGE_HPP
-# define PACKAGE_HPP
+#ifndef PACKAGE_READER_HPP
+# define PACKAGE_READER_HPP
 # include "PackageHeader.hpp"
 
 #include <memory>
@@ -30,7 +30,7 @@ namespace octo
 	 *	\see PackageHeader
 	 *	\see PackageCompiler
 	 */
-	class Package
+	class PackageReader
 	{
 	public:
 		/*!	Open a package file */

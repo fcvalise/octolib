@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Package.cpp                                        :+:      :+:    :+:   */
+/*   PackageReader.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:03:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/25 10:54:04 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/26 04:44:59 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Package.hpp"
+#include "PackageReader.hpp"
 
 namespace octo
 {
-	bool	Package::open(std::string const& fileName)
+	bool	PackageReader::open(std::string const& fileName)
 	{
 		m_file.open(fileName.c_str(), std::ios_base::binary);
 		return (m_file.is_open() && m_header.read(m_file));
 	}
 
-	bool	Package::load(std::unique_ptr<char>& buffer, std::uint64_t& size, std::uint64_t key)
+	bool	PackageReader::load(std::unique_ptr<char>& buffer, std::uint64_t& size, std::uint64_t key)
 	{
 		PackageHeader::Entry	entry;
 
@@ -35,12 +35,12 @@ namespace octo
 		return (false);
 	}
 
-	bool	Package::isOpen()const
+	bool	PackageReader::isOpen()const
 	{
 		return (m_file.is_open());
 	}
 	
-	PackageHeader const&	Package::getHeader()const
+	PackageHeader const&	PackageReader::getHeader()const
 	{
 		return (m_header);
 	}
