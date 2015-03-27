@@ -6,11 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 15:32:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 17:03:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 20:06:11 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PrintSFML.hpp"
+
+#include <cassert>
 
 namespace octo
 {

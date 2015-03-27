@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:39:33 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 16:46:08 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 20:06:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ namespace octo
 		return (m_values.find(key) != m_values.end());
 	}
 
-	template <>
 	std::string	Options::getValue(std::string const& key)const
 	{
 		auto		it = m_values.find(key);
@@ -44,7 +43,6 @@ namespace octo
 		return (it->second);
 	}
 
-	template <>
 	std::string	Options::getValue(std::string const& key, std::string const& defaultValue)const
 	{
 		auto		it = m_values.find(key);
@@ -55,7 +53,6 @@ namespace octo
 			return (defaultValue);
 	}
 
-	template <>
 	void		Options::setValue(std::string const& key, std::string const& value)
 	{
 		m_values[key] = value;

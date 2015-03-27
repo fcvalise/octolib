@@ -5,7 +5,8 @@ BUILD_DIR = ./builds
 OUTPUT_DIR = .
 
 # sources
-SRC = 	$(STATE_SYSTEM_SRC)					\
+SRC = 	$(RESOURCE_SRC)						\
+		$(STATE_SYSTEM_SRC)					\
 		$(PACKAGE_SRC)						\
 		$(MATH_SRC)							\
 		$(CORE_SRC)
@@ -17,6 +18,8 @@ CORE_SRC =	Application.cpp					\
 			Options.cpp
 
 MATH_SRC = Interpolations.cpp
+
+RESOURCE_SRC = ResourceManager.cpp
 
 PACKAGE_SRC = PackageReader.cpp				\
 			  PackageHeader.cpp				\
@@ -98,7 +101,7 @@ dox:
 open_dox:
 	@open ./doc/generated/html/index.html
 
-complete:
+complete: re
 	@make re -C tests
 	@make re -C tools/packager
 	@make re -C tools/package_reader
