@@ -98,6 +98,7 @@ dox:
 open_dox:
 	@open ./doc/generated/html/index.html
 
-tests:
+complete:
 	@make re -C tests
-	@./tests/tester.app
+	@make re -C tools/packager
+	@make re -C tools/package_reader

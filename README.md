@@ -17,8 +17,7 @@ Then index page can be quickly opened under MacOS with:
 
 	$> make open_dox
 
-### Building the tests
-They are units tests in tests/ directory and graphics interactives
-tests in graphics_tests/ directory.  
+### How to rebuild all?
+You can rebuild all, the library, the units and interactives tests and tools with:
 
-Each graphics tests have his own Makefile to build it.
+	$> make complete
