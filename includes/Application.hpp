@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 21:55:57 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 01:46:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ namespace octo
 		static void				initialize(std::string const& title,
 										   std::string const& optionFilePath,
 										   int argc, char **argv);
+
 		/*!	Release the application */
 		static void				destroy();
 
@@ -64,8 +65,6 @@ namespace octo
 	private:
 		static ApplicationImp*	s_instance;
 	};
-	/*!
- 	 */
 }
 
 #endif

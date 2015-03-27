@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/25 02:44:53 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 01:15:44 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@
 
 namespace octo
 {
+	/*!	Window event listener
+	 *
+	 *	This listener is notified when a window receive close event, resize event
+	 *	and focus events.
+	 */
 	class IWindowListener
 	{
 	public:
@@ -32,6 +37,7 @@ namespace octo
 		virtual void	onFocusLost() = 0;
 	};
 
+	/*!	Keyboard listener interface */
 	class IKeyboardListener
 	{
 	public:
@@ -41,6 +47,7 @@ namespace octo
 		virtual void	onReleased(sf::Event::KeyEvent const& event) = 0;
 	};
 
+	/*!	Mouse listener interface */
 	class IMouseListener
 	{
 	public:
@@ -52,6 +59,7 @@ namespace octo
 		virtual void	onWheel(sf::Event::MouseWheelEvent const& event) = 0;
 	};
 
+	/*!	Joystick listener interface */
 	class IJoystickListener
 	{
 	public:
@@ -64,6 +72,7 @@ namespace octo
 		virtual void	onReleased(sf::Event::JoystickButtonEvent const& event) = 0;
 	};
 
+	/*!	Manage a render window */
 	class GraphicsManager
 	{
 	public:
@@ -113,7 +122,6 @@ namespace octo
 		sf::String					m_title;
 		bool						m_fullscreen;
 		bool						m_verticalSync;
-
 		sf::Event					m_event;
 		WindowListenerArray			m_windowListeners;
 		KeyboardListenerArray		m_keyboardListeners;

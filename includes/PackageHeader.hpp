@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 20:01:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 01:18:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ namespace octo
 	 *
 	 *	For each file packaged they are an Entry in package header storing
 	 *	the name, the type, the position offset and the size of the file.<br>
+	 *
 	 *	You can access to theses datas with getEntry().
 	 *	
 	 */
@@ -39,7 +40,10 @@ namespace octo
 	private:
 		typedef std::vector<Entry>			Entries;
 	public:
+		/*!	Iterator constant an entries collection */
 		typedef Entries::const_iterator		const_iterator;
+
+		/*!	Key of a packaged ressource */
 		typedef std::uint64_t				EntryKey;
 
 		/*!	Add an entry to the table
@@ -51,6 +55,9 @@ namespace octo
 		 */
 		void				addEntry(EntryType type, std::string const& name,
 									 std::uint64_t offset, std::uint64_t size);
+
+		/*!	Return true if \a key is a valid entry key */
+		bool				entryExists(EntryKey key)const;
 
 		/*!	Get entry datas */
 		bool				getEntry(EntryKey key, Entry& entry)const;

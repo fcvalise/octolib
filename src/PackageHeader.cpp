@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 21:17:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 01:23:54 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ namespace octo
 
 	bool	PackageHeader::getEntry(EntryKey key, Entry& entry)const
 	{
-		if (key < m_entries.size())
+		if (entryExists(key))
 		{
 			entry = m_entries[key];
 			return (true);
@@ -94,6 +94,11 @@ namespace octo
 		{
 			return (false);
 		}
+	}
+
+	bool	PackageHeader::entryExists(EntryKey key)const
+	{
+		return (key < m_entries.size());
 	}
 
 	std::string const&	PackageHeader::getEntryName(EntryKey key)const
@@ -114,6 +119,44 @@ namespace octo
 	std::uint64_t	PackageHeader::getEntrySize(EntryKey key)const
 	{
 		return (m_entries[key].size);
+	}
+
+	std::uint64_t	PackageHeader::count()const
+	{
+		return (m_entries.size());
+	}
+	
+	// HEADER:
+	// 1 magic number:			64bits
+	// 1 entry count:			64bits
+	// For each entry:
+	//		1 data offset		64bits
+	//		1 data size			64bits
+	//		1 name size			64bits
+	//		1 name				Variable: defined by value stored in name size field
+	//	
+	std::uint64_t	PackageHeader::byteCount()const
+	{
+		std::uint64_t	result = 0;
+
+		result += sizeof(std::uint64_t) * 2;
+		for (auto const& entry : m_entries)
+		{
+			result += sizeof(std::uint64_t) * 3 +
+					  sizeof(EntryType) +
+					  entry.name.size();
+		}
+		return (result);
+	}
+
+	PackageHeader::const_iterator	PackageHeader::begin()const
+	{
+		return (m_entries.begin());
+	}
+
+	PackageHeader::const_iterator	PackageHeader::end()const
+	{
+		return (m_entries.end());
 	}
 
 	bool	PackageHeader::write(std::ostream& os)const
@@ -144,34 +187,5 @@ namespace octo
 			details::readEntry(is, m_entries[i]);
 		m_entries.shrink_to_fit();
 		return (true);
-	}
-
-	std::uint64_t	PackageHeader::count()const
-	{
-		return (m_entries.size());
-	}
-	
-	std::uint64_t	PackageHeader::byteCount()const
-	{
-		std::uint64_t	result = 0;
-
-		result += sizeof(std::uint64_t) * 2;
-		for (auto const& entry : m_entries)
-		{
-			result += sizeof(std::uint64_t) * 3 +
-					  sizeof(EntryType) +
-					  entry.name.size();
-		}
-		return (result);
-	}
-
-	PackageHeader::const_iterator	PackageHeader::begin()const
-	{
-		return (m_entries.begin());
-	}
-
-	PackageHeader::const_iterator	PackageHeader::end()const
-	{
-		return (m_entries.end());
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 02:51:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 20:45:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 01:27:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace octo
 		bool					open(std::string const& fileName);
 
 		/*!	Load an item from package */
-		bool					load(std::unique_ptr<char>& buffer, std::uint64_t& size, std::uint64_t key);
+		bool					load(std::vector<char>& buffer, std::uint64_t key);
 
 		/*!	Return true if a file is open */
 		bool					isOpen()const;
