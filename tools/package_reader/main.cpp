@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:34:43 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 01:48:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 03:21:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <map>
 #include <functional>
 #include <sstream>
+#include <iostream>
+#include <iomanip>
 
 typedef std::vector<std::string>								Args;
 typedef std::function<bool(octo::PackageReader&, Args const&)>	Command;
@@ -22,6 +24,7 @@ typedef std::map<std::string, Command>							CommandMap;
 
 static std::string	getEntryTypeLabel(octo::PackageHeader::EntryType type);
 static bool			execute(std::string const& command, Args const& args, octo::PackageReader& package);
+static void			printByteSize(std::ostream& os, std::uint64_t bytes);
 
 static std::map<octo::PackageHeader::EntryType, std::string> const	EntryTypeTexts
 {
@@ -45,7 +48,9 @@ static CommandMap const	Commands
 		{
 			octo::PackageHeader const&	header = package.getHeader();
 
-			std::cout << " - package item count: " << header.count() << std::endl;
+			std::cout << " - package items count: " << header.count() << " (";
+			printByteSize(std::cout, header.packagedByteCount());
+			std::cout << ")" << std::endl;
 			std::cout << " - header size: " << header.byteCount() << " bytes" << std::endl;
 			return (true);
 		}
@@ -63,7 +68,10 @@ static CommandMap const	Commands
 			}
 			for (auto const& entry : header)
 			{
-				std::cout << " - " << getEntryTypeLabel(entry.type) << " " << key++ << " " << entry.name << " " << entry.size << " bytes" << std::endl;
+				std::cout << " - " << getEntryTypeLabel(entry.type) << " " << key++ <<
+							 " " << entry.name << " ";
+				printByteSize(std::cout, entry.size);
+				std::cout << std::endl;
 			}
 			return (true);
 		}
@@ -120,6 +128,25 @@ bool	execute(std::string const& command, Args const& args, octo::PackageReader& 
 	if (it == Commands.end())
 		return (false);
 	return (it->second(package, args));
+}
+
+void	printByteSize(std::ostream& os, std::uint64_t bytes)
+{
+	static std::string const	Unities[]{
+		"B",
+		"KiB",
+		"MiB",
+		"GiB"
+	};
+	float		floatValue = bytes;
+	std::size_t	unityIndex = 0;
+
+	while (floatValue / 1024.f > 1.f && unityIndex < 3)
+	{
+		floatValue /= 1024.f;
+		++unityIndex;
+	}
+	os << std::setprecision(3) << floatValue << Unities[unityIndex];
 }
 
 int	main(int argc, char **argv)

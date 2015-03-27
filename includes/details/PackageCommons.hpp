@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:09:32 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 21:02:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 03:40:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ namespace octo
 	namespace details
 	{
 		static constexpr std::size_t const		PackageEncryptionMaskSize = 1024;
+
+		static inline std::string toLower(std::string str)
+		{
+			std::for_each(str.begin(), str.end(), [](char& c){c = std::tolower(c);});
+			return (str);
+		}
 
 		/*!	Check if a file exists */
 		static inline bool fileExists(std::string const& path)

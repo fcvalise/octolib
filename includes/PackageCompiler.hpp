@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 04:59:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 20:42:17 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 03:40:52 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ namespace octo
 	{
 		struct FileInfo;
 		class FillHeader;
+		class FindInfoByName;
 
 		typedef std::vector<FileInfo>							FileInfoArray;
 		typedef std::map<std::string, PackageHeader::EntryType>	ExtensionMap;
@@ -46,7 +47,8 @@ namespace octo
 		bool						getFileInfos(std::vector<std::string> const& paths,
 												 FileInfoArray& fileInfos);
 		FileInfo					getFileInfo(std::string const& path)const;
-		bool						checkInputFile(std::string const& path);
+		bool						checkInputFile(std::string const& path,
+												   FileInfoArray& fileInfos);
 		PackageHeader::EntryType	getTypeFor(std::string const& fileName)const;
 		bool						writePackage(std::string const& outputFile, 
 								 				 FileInfoArray const& fileInfos,

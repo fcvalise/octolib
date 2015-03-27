@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 01:23:54 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 02:58:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PackageHeader.hpp"
+#include <numeric>
 
 namespace octo
 {
@@ -147,6 +148,15 @@ namespace octo
 					  entry.name.size();
 		}
 		return (result);
+	}
+
+	std::uint64_t	PackageHeader::packagedByteCount()const
+	{
+		return (std::accumulate(m_entries.begin(), m_entries.end(), 0u,
+						[](std::uint64_t value, Entry const& entry)
+						{
+							return (value + entry.size);
+						}));
 	}
 
 	PackageHeader::const_iterator	PackageHeader::begin()const

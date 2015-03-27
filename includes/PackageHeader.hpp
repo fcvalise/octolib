@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 01:18:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 02:54:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,15 @@ namespace octo
 
 		/*!	Return the count of bytes used to store the header datas
 		 *
-		 *	This function must be called after all entries is added.
+		 *	This function must be called after all entries are added.
 		 */
 		std::uint64_t		byteCount()const;
+
+		/*!	Return the count of bytes used to store the packaged datas
+		 *
+		 *	This function must be called after all entries are added.
+		 */
+		std::uint64_t		packagedByteCount()const;
 
 		/*!	Return an iterator on the first element of the entry table */
 		const_iterator		begin()const;

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 21:36:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 03:41:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,37 @@ namespace octo
 		std::uint64_t	m_offset;
 	};
 
+	class PackageCompiler::FindInfoByName
+	{
+	public:
+		explicit FindInfoByName(std::string const& name) :
+			m_name(details::toLower(name))
+		{
+		}
+
+		bool	operator()(PackageCompiler::FileInfo const& info)const
+		{
+			std::string	name = details::toLower(info.name);
+
+			return (name == m_name);
+		}
+	private:
+		std::string const	m_name;
+	};
+
 	namespace
 	{
 		static std::string	makeSymbolName(std::string str)
 		{
 			std::for_each(std::begin(str), std::end(str), [](char& c)
 				{
-					if (std::isspace(c) || std::ispunct(c))
+					if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
 					{
-						c = '_';
+						c = std::toupper(c);
 					}
 					else
 					{
-						c = std::toupper(c);
+						c = '_';
 					}
 				});
 			return (str);
@@ -158,6 +176,8 @@ namespace octo
 			return (false);
 		if (writeDefinitionFile(header) == false)
 			return (false);
+		if (m_listener)
+			m_listener->finished(header);
 		return (true);
 	}
 
@@ -165,7 +185,7 @@ namespace octo
 	{
 		for (auto const& path : paths)
 		{
-			if (checkInputFile(path))
+			if (checkInputFile(path, fileInfos))
 			{
 				fileInfos.emplace_back(getFileInfo(path));
 			}
@@ -182,7 +202,7 @@ namespace octo
 		return (result);
 	}
 
-	bool	PackageCompiler::checkInputFile(std::string const& path)
+	bool	PackageCompiler::checkInputFile(std::string const& path, FileInfoArray& fileInfos)
 	{
 		std::string					baseName;
 		PackageHeader::EntryType	type;
@@ -198,6 +218,12 @@ namespace octo
 		{
 			if (m_listener)
 				m_listener->error("invalid input file: '" + path + "'");
+			return (false);
+		}
+		if (std::find_if(fileInfos.begin(), fileInfos.end(), FindInfoByName(baseName)) != fileInfos.end())
+		{
+			if (m_listener)
+				m_listener->error("duplicated input file name: '" + path + "'");
 			return (false);
 		}
 		type = getTypeFor(path);

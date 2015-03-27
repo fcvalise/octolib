@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:34:43 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 02:56:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 03:30:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,27 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include <string>
+
+void	printByteSize(std::ostream& os, std::uint64_t bytes)
+{
+	static std::string const	Unities[]{
+		"B",
+		"KiB",
+		"MiB",
+		"GiB"
+	};
+	float		floatValue = bytes;
+	std::size_t	unityIndex = 0;
+
+	while (floatValue / 1024.f > 1.f && unityIndex < 3)
+	{
+		floatValue /= 1024.f;
+		++unityIndex;
+	}
+	os << std::setprecision(3) << floatValue << Unities[unityIndex];
+}
 
 class CompilationListener : public octo::PackageCompiler::IListener
 {
@@ -39,36 +59,10 @@ public:
 
 		virtual void	finished(octo::PackageHeader const& header)
 		{
-			writeDefineResources(header);	
-		}
-private:
-		void	writeDefineResources(octo::PackageHeader const& header)
-		{
-			std::ofstream	ofs("DefineResources.hpp");
-			std::uint64_t	key = 0;
-			std::string		resourceMacroName;
-
-			if (ofs.is_open() == false)
-			{
-				error("can't open file 'DefineResources.hpp'");
-				return;
-			}
-			ofs <<	"#if !defined DEFINE_PACKAGED_RESOURCES_HPP\n"
-					"# define DEFINE_PACKAGED_RESOURCES_HPP\n";
-			ofs << "# include <cstdint>\n\n";
-			ofs << "typedef std::uint64_t	ResourceKey\n";
-			for (auto const& entry : header)
-			{
-				resourceMacroName = entry.name;
-				std::for_each(resourceMacroName.begin(), resourceMacroName.end(), [](char& c){c = std::toupper(c);});
-				std::for_each(resourceMacroName.begin(), resourceMacroName.end(), [](char& c)
-						{
-							if (c == '.')
-								c = '_';
-						});
-				ofs << "static constexpr ResourceKey const	" << resourceMacroName << "\t" << key++ << "\n";
-			}
-			ofs << "\n" << "#endif // DEFINE_PACKAGED_RESOURCES_HPP";
+			std::cout << " - packaged items count: " << header.count() << " (";
+			printByteSize(std::cout, header.packagedByteCount());
+			std::cout << ")" << std::endl;
+			std::cout << " - header size: " << header.byteCount() << " bytes" << std::endl;
 		}
 };
 
@@ -87,6 +81,8 @@ int	main(int argc, char **argv)
 	outputPath = argv[1];
 	inputPaths.assign(argv + 2, argv + argc);
 	inputPaths.erase(std::remove(std::begin(inputPaths), std::end(inputPaths), argv[0]), std::end(inputPaths));
+	std::sort(inputPaths.begin(), inputPaths.end());
+	std::unique(inputPaths.begin(), inputPaths.end());
 	if (inputPaths.empty() == false)
 	{
 		compiler.setListener(&listener);
