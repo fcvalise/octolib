@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:39:33 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 20:06:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/28 14:37:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ namespace octo
 	bool	Options::containsKey(std::string const& key)const
 	{
 		return (m_values.find(key) != m_values.end());
+	}
+
+	bool		Options::hasValue(std::string const& key)const
+	{
+		auto		it = m_values.find(key);
+		
+		if (it != m_values.end())
+			return (it->second.empty() == false);
+		else
+			return (false);
 	}
 
 	std::string	Options::getValue(std::string const& key)const

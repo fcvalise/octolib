@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:34:27 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 20:04:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/28 14:36:40 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ namespace octo
 
 		/*!	Return true if the key \a key is in the container */
 		bool		containsKey(std::string const& key)const;
+
+		/*!	Return true if the key \a key has a value defined */
+		bool		hasValue(std::string const& key)const;
 
 		/*!	Get a value
 		 *

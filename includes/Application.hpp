@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 19:41:56 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/28 14:34:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,49 @@ namespace octo
 		 *	Options are loaded from text file at path \a optionFilePath<br>
 		 *	Then command line is parsed and if some options directives are found they are
 		 *	added to the application options.
+		 *
+		 *	Application provides somes key to setup the system:
+		 *
+		 *	<TABLE>
+		 *	<TR>
+		 *		<TH>key</TH>
+		 *		<TH>value type</TH>
+		 *		<TH>description</TH>
+		 *		<TH>default value</TH>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>fullscreen</TD>
+		 *		<TD>boolean</TD>
+		 *		<TD>Enable or disable fullscreen render</TD>
+		 *		<TD>false</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>vsync</TD>
+		 *		<TD>boolean</TD>
+		 *		<TD>Enable or disable vertical syncronization</TD>
+		 *		<TD>false</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>resolution</TD>
+		 *		<TD>VideoMode</TD>
+		 *		<TD>Define render resolution. 
+		 *		The format is: <width>x<height>-<bits_per_pixel></TD>
+		 *		<TD>greatest fullscreen mode available</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>start_state</TD>
+		 *		<TD>string</TD>
+		 *		<TD>Define the first state started when the application begin</TD>
+		 *		<TD>key passed to Application::run() is used by default</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>package</TD>
+		 *		<TD>string</TD>
+		 *		<TD>Define the package file path loaded at application start</TD>
+		 *		<TD>if this key is not specified no package is loaded</TD>
+		 *	</TR>
+		 *	</TABLE>
+		 *
 		 */
 		static void				initialize(std::string const& title,
 										   std::string const& optionFilePath,
