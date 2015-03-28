@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 02:58:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 18:09:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,30 @@ namespace octo
 	std::uint64_t	PackageHeader::getEntrySize(EntryKey key)const
 	{
 		return (m_entries[key].size);
+	}
+
+	std::uint64_t	PackageHeader::getFirstEntry(EntryType type)const
+	{
+		std::uint64_t	key = 0;
+
+		while (getEntryType(key) != type)
+			++key;
+		if (key == count())
+			return (NullEntryKey);
+		else
+			return (key);
+	}
+
+	std::uint64_t	PackageHeader::getEntryCount(EntryType type)const
+	{
+		std::uint64_t	key = getFirstEntry(type);
+		std::uint64_t	count = 0;
+
+		if (key == NullEntryKey)
+			return (NullEntryKey);
+		while (getEntryType(key + count) == type)
+			++count;
+		return (count);
 	}
 
 	std::uint64_t	PackageHeader::count()const

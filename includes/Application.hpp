@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 01:46:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 19:41:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 namespace octo
 {
+	class ResourceManager;
 	class GraphicsManager;
 	class Options;
 
@@ -61,6 +62,7 @@ namespace octo
 
 		static StateManager&	getStateManager();
 		static GraphicsManager&	getGraphicsManager();
+		static ResourceManager&	getResourceManager();
 		static Options&			getOptions();
 	private:
 		static ApplicationImp*	s_instance;

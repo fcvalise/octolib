@@ -6,19 +6,37 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/25 02:48:21 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/28 13:46:28 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Application.hpp"
 #include "PausableClock.hpp"
 #include "GraphicsManager.hpp"
+#include "ResourceManager.hpp"
 #include "Options.hpp"
 
 #include <cassert>
 
 namespace octo
 {
+	class ResourceLoadingListener : public IResourceListener
+	{
+	public:
+		virtual void	progress(std::string const& name,
+								 PackageHeader::EntryType type,
+								 std::uint64_t current,
+								 std::uint64_t total)
+		{
+			std::cout << "loading " << name << " [" << (int)type << "]" << current << "/" << total << std::endl;
+		}
+
+		virtual void	error(std::string const& message)
+		{
+			std::cerr << "resource loading error: " << message << std::endl;
+		}
+	};
+
 	class ApplicationImp
 	{
 	public:
@@ -33,6 +51,17 @@ namespace octo
 			m_graphicsManager.createRender(m_options.getValue("resolution", sf::VideoMode::getFullscreenModes().front()),
 										   title,
 										   m_options.getValue("fullscreen", false));
+			m_graphicsManager.setVerticalSyncEnabled(m_options.getValue("vsync", true));
+		}
+
+		void	setupResources()
+		{
+			ResourceLoadingListener	listener;
+
+			if (m_options.containsKey("package"))
+				m_resourceManager.loadPackage(m_options.getValue("package"), &listener);
+			else
+				std::cout << "warning no package loaded" << std::endl;
 		}
 
 		void	start(StateManager::Key const& startStateKey)
@@ -64,6 +93,7 @@ namespace octo
 
 		StateManager	m_stateManager;
 		GraphicsManager	m_graphicsManager;
+		ResourceManager	m_resourceManager;
 		Options			m_options;
 		PausableClock	m_clock;
 		sf::Event		m_event;
@@ -79,6 +109,7 @@ namespace octo
 		s_instance = new ApplicationImp;
 		s_instance->setupOptions(optionFilePath, argc, argv);
 		s_instance->setupGraphics(title);
+		s_instance->setupResources();
 		static_cast<void>(argc);
 		static_cast<void>(argv);
 	}
@@ -143,6 +174,13 @@ namespace octo
 		return (s_instance->m_graphicsManager);
 	}
 	
+	ResourceManager&	Application::getResourceManager()
+	{
+		assert (s_instance != nullptr);
+
+		return (s_instance->m_resourceManager);
+	}
+
 	Options&	Application::getOptions()
 	{
 		assert (s_instance != nullptr);

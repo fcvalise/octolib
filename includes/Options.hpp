@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:34:27 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 17:06:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 20:04:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ namespace octo
 		template <class T>
 		T			getValue(std::string const& key)const;
 
+		std::string	getValue(std::string const& key)const;
+
 		/*!	Get a value or \a defaultValue if \a key is not found
 		 *	\param key Key searched
 		 *	\param defaultValue Value used if the key is not found
@@ -64,9 +66,13 @@ namespace octo
 		template <class T>
 		T			getValue(std::string const& key, T const& defaultValue)const;
 
+		std::string	getValue(std::string const& key, std::string const& defaultValue)const;
+
 		/*!	Define or replace a pair of key/value */
 		template <class T>
 		void		setValue(std::string const& key, T const& value);
+
+		void		setValue(std::string const& key, std::string const& value);
 
 		/*!	Remove all data */
 		void		clear();

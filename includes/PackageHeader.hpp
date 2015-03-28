@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 02:54:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/27 18:09:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,17 @@ namespace octo
 		enum class EntryType : std::uint8_t;
 		struct Entry;
 	private:
-		typedef std::vector<Entry>			Entries;
+		typedef std::vector<Entry>				Entries;
 	public:
 		/*!	Iterator constant an entries collection */
-		typedef Entries::const_iterator		const_iterator;
+		typedef Entries::const_iterator			const_iterator;
 
 		/*!	Key of a packaged ressource */
-		typedef std::uint64_t				EntryKey;
+		typedef std::uint64_t					EntryKey;
+
+		/*!	The null key identifier */
+		static constexpr std::uint64_t const	NullEntryKey =
+			std::numeric_limits<std::uint64_t>::max();
 
 		/*!	Add an entry to the table
 		 *	\param type Type of ressource packaged
@@ -78,6 +82,12 @@ namespace octo
 
 		/*!	Return the size(in bytes) of an entry */
 		std::uint64_t		getEntrySize(EntryKey key)const;
+
+		/*!	Return the first key of entry of a type given */
+		std::uint64_t		getFirstEntry(EntryType type)const;
+
+		/*!	Return the count of entry of a type given */
+		std::uint64_t		getEntryCount(EntryType type)const;
 
 		/*!	Return the count of entries */
 		std::uint64_t		count()const;
@@ -116,6 +126,7 @@ namespace octo
 		Texture,
 		Sound,
 		Text,
+		Count,
 		Invalid
 	};
 
