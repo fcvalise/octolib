@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 19:53:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/28 12:48:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ namespace octo
 {
 	namespace
 	{
-		class FontLoader : public details::ResourceManagerImp<sf::Font>::ILoader
+		class FontLoader : public details::ResourceManagerImp<details::StreamedResource<sf::Font>>::ILoader
 		{
 		public:
-			bool	load(std::vector<char> const& buffer, sf::Font& font)
+			bool	load(std::vector<char> const& buffer, details::StreamedResource<sf::Font>& font)
 			{
-				return (font.loadFromMemory(&buffer.front(), buffer.size()));
+				return (font.setBuffer(buffer));
 			}
 		};
 
@@ -49,9 +49,10 @@ namespace octo
 		public:
 			bool	load(std::vector<char> const& buffer, sf::String& text)
 			{
-				std::string	temp(buffer.begin(), buffer.end());
+				std::basic_string<std::uint32_t>	utf32;
 
-				text = temp;
+				sf::Utf8::toUtf32(buffer.begin(), buffer.end(), std::back_inserter(utf32));
+				text = utf32;
 				return (true);
 			}
 		};
@@ -68,20 +69,18 @@ namespace octo
 	bool	ResourceManager::loadPackage(std::string const& fileName,
 										 IResourceListener* listener)
 	{
-		PackageReader	reader;
-
-		if (reader.open(fileName) == false)
+		if (m_reader.open(fileName) == false)
 			return (false);
-		m_fontManager.loadPackage(reader, FontLoader(), listener);
-		m_textureManager.loadPackage(reader, TextureLoader(), listener);
-		m_soundManager.loadPackage(reader, SoundLoader(), listener);
-		m_textManager.loadPackage(reader, TextLoader(), listener);
+		m_fontManager.loadPackage(m_reader, FontLoader(), listener);
+		m_textureManager.loadPackage(m_reader, TextureLoader(), listener);
+		m_soundManager.loadPackage(m_reader, SoundLoader(), listener);
+		m_textManager.loadPackage(m_reader, TextLoader(), listener);
 		return (true);
 	}
 
 	sf::Font const&	ResourceManager::getFont(std::uint64_t key)const
 	{
-		return (m_fontManager.get(key));
+		return (m_fontManager.get(key).get());
 	}
 
 	sf::Texture const&	ResourceManager::getTexture(std::uint64_t key)const

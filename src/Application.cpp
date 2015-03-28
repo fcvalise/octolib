@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 00:56:09 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/28 13:46:28 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ namespace octo
 			m_graphicsManager.createRender(m_options.getValue("resolution", sf::VideoMode::getFullscreenModes().front()),
 										   title,
 										   m_options.getValue("fullscreen", false));
+			m_graphicsManager.setVerticalSyncEnabled(m_options.getValue("vsync", true));
 		}
 
 		void	setupResources()
@@ -173,6 +174,13 @@ namespace octo
 		return (s_instance->m_graphicsManager);
 	}
 	
+	ResourceManager&	Application::getResourceManager()
+	{
+		assert (s_instance != nullptr);
+
+		return (s_instance->m_resourceManager);
+	}
+
 	Options&	Application::getOptions()
 	{
 		assert (s_instance != nullptr);

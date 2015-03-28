@@ -1,0 +1,12 @@
+Salut je suis un texte chargé avec le système de package.
+Doit y avoir des accents, èéêëē voilà…
+
+Cela implique que les fichiers texte contenant du texte destiné a être
+affiché doivent être encodés en UTF-8 avant d’être empaqueté.
+
+Le son et l’image (les petits carrés de couleurs juste au
+dessus ouai c’est l’image) sont aussi chargés depuis le package.
+Attention au format du son, faut du 16-bits 44.1kHz…
+
+Vous pouvez modifier ce texte dans resources/, reconstruire le
+package avec make package et lancez l'appli.
