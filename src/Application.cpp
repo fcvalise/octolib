@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 14:31:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/28 23:06:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace octo
 								 std::uint64_t current,
 								 std::uint64_t total)
 		{
-			std::cout << "loading " << name << " [" << (int)type << "]" << current << "/" << total << std::endl;
+			std::cout << "loading " << name << " [" << (int)type << "] " << current  + 1 << "/" << total << std::endl;
 		}
 
 		virtual void	error(std::string const& message)

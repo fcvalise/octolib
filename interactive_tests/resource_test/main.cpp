@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 14:07:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/28 23:03:14 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 {
 	using namespace octo;
 
-	Application::initialize("Application works!", "test.conf", argc, argv);
+	Application::initialize("Resource system works!", "test.conf", argc, argv);
 	GraphicsManager&						graphics = Application::getGraphicsManager();
 	StateManager&							states = Application::getStateManager();
 	sf::View								view = graphics.getDefaultView();
