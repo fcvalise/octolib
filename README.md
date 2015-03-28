@@ -31,6 +31,8 @@ Provides basic stuffs to create simple user interface.
  - C++ 11 compiler
  - Doxygen for documentation
  - GNU make
+ - SMFL 2.2
+ - Boost (for units tests only)
 
 ### Building the library
     $> make
