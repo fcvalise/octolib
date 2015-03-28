@@ -17,7 +17,8 @@ SRC = main.cpp				\
 	  OptionParser.cpp		\
 	  Array2D.cpp			\
 	  Array3D.cpp			\
-	  Queue.cpp
+	  Stack.cpp			\
+	  Math.cpp
 
 # compiler
 CC = g++
