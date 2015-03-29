@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 01:46:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:35:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include <stack>
 # include <vector>
 
-#include <SFML/Graphics/RenderTarget.hpp>
+# include <SFML/Graphics/RenderTarget.hpp>
+# include <SFML/System/Time.hpp>
 
 # include "AbstractTransition.hpp"
 
@@ -110,7 +111,7 @@ namespace octo
 		void			popAll();
 	
 		/*!	Define the duration of transition */
-		void			setTransitionDuration(float duration);
+		void			setTransitionDuration(sf::Time duration);
 
 		/*!	Return true if at least one state is stacked */
 		bool			hasCurrentState()const;
@@ -122,7 +123,7 @@ namespace octo
 		KeyList			availableTransitionKeys()const;
 
 		/*!	Update the current state */
-		void			update(float frameTime, sf::View const& view);
+		void			update(sf::Time frameTime, sf::View const& view);
 
 		/*!	Draw the current state */
 		void			draw(sf::RenderTarget& render)const;
@@ -148,7 +149,7 @@ namespace octo
 		TransitionFactory	m_transitionFactory;
 		StateStack			m_stack;
 		TransitionPtr		m_transition;
-		float				m_transitionDuration;
+		sf::Time			m_transitionDuration;
 	};
 
 	template <class S>

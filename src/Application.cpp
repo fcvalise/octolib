@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 23:06:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:37:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ namespace octo
 
 		void	run()
 		{
-			float	frameTime = .0f;
+			sf::Time	frameTime = sf::Time::Zero;
 
 			m_paused = false;
 			while (m_stateManager.hasCurrentState())
@@ -87,7 +87,7 @@ namespace octo
 					m_stateManager.update(frameTime, m_graphicsManager.getView());
 				m_stateManager.draw(m_graphicsManager.getRender());
 				m_graphicsManager.display();
-				frameTime = m_clock.restart().asSeconds();
+				frameTime = m_clock.restart();
 			}
 		}
 
