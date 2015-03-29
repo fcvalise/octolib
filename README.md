@@ -1,7 +1,7 @@
 # octolib
 Octodyssey's core library repository.
 
-## How to report problems, bugs, something missing?
+## How to report problems?
 Please do it using this [issue tracker](https://github.com/IohannRabeson/octolib/issues).
 
 ## Organisation
@@ -14,23 +14,30 @@ Sources of theses interactives application are a good entry point to discover th
 and they are used as examples by generated documentation.
 
 ### Modules
-Octolib is separable into several modules:
-- Core module  
+
+Octolib is separable into several modules:  
+##### Core module  
 Provides commons stuff.
- - State management module  
-Provides services to manage the differents screens required by a game.  
- - Package module  
+
+##### State management module  
+Provides services to manage the differents screens required by a game.
+
+##### Package module  
 Provides services to pack multiple ressources into an unique file called
-package. This module provides also a way to read datas from a package file.  
- - Resource module  
+package. This module provides also a way to read datas from a package file.
+
+##### Resource module  
 Manage all the games ressources such textures, fonts, sound. 
-Resource module use read services of packages module.  
- - Animation system  
-Provides services to animate objects properties.  
- - Audio engine
+Resource module use read services of packages module.
+
+##### Animation system  
+Provides services to animate objects properties.
+
+##### Audio engine
 Provides classes to play music composed in real-time.
- - Gui system  
-Provides basic stuffs to create simple user interface. 
+
+##### Gui system  
+Provides basic stuffs to create simple user interface.
 
 ## How to build?
 ### Requierements
