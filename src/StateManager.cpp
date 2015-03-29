@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 21:26:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:35:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 namespace octo
 {
 	StateManager::StateManager() :
-		m_transitionDuration(0.8f)
+		m_transitionDuration(sf::seconds(0.8f))
 	{
 	}
 
@@ -187,12 +187,12 @@ namespace octo
 			return (m_stack.top());
 	}
 
-	void	StateManager::setTransitionDuration(float duration)
+	void	StateManager::setTransitionDuration(sf::Time duration)
 	{
 		m_transitionDuration = duration;
 	}
 
-	void	StateManager::update(float frameTime, sf::View const& view)
+	void	StateManager::update(sf::Time frameTime, sf::View const& view)
 	{
 		StatePtr	current = currentState();
 

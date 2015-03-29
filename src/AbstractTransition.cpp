@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 00:24:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 19:53:36 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:34:06 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 namespace octo
 {
 	AbstractTransition::AbstractTransition(Action action) :
-		m_inDuration(0.f),
-		m_outDuration(0.f),
-		m_currentTime(0.f),
+		m_inDuration(sf::Time::Zero),
+		m_outDuration(sf::Time::Zero),
+		m_currentTime(sf::Time::Zero),
 		m_action(action),
 		m_status(Status::In)
 	{
@@ -27,13 +27,13 @@ namespace octo
 	{
 	}
 
-	void	AbstractTransition::setDuration(float in, float out)
+	void	AbstractTransition::setDuration(sf::Time in, sf::Time out)
 	{
 		m_inDuration = in;
 		m_outDuration = out;
 	}
 
-	bool	AbstractTransition::update(float frameTime, sf::View const& view)
+	bool	AbstractTransition::update(sf::Time frameTime, sf::View const& view)
 	{
 		switch (m_status)
 		{
@@ -47,12 +47,12 @@ namespace octo
 				}
 				else
 				{
-					updateTransition(frameTime, std::min(m_currentTime / m_inDuration, 1.f), view);
+					updateTransition(frameTime, std::min(m_currentTime.asSeconds() / m_inDuration.asSeconds(), 1.f), view);
 					m_currentTime += frameTime;
 				}
 				break;
 			case Status::Out:
-				if (m_currentTime <= 0.f)
+				if (m_currentTime.asMicroseconds() <= 0)
 				{
 					m_status = Status::Finished;
 					updateTransition(frameTime, 0.f, view);
@@ -60,7 +60,7 @@ namespace octo
 				}
 				else
 				{
-					updateTransition(frameTime, std::max(m_currentTime / m_outDuration, 0.f), view);
+					updateTransition(frameTime, std::min(m_currentTime.asSeconds() / m_outDuration.asSeconds(), 0.f), view);
 					m_currentTime -= frameTime;
 				}
 				break;

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 00:04:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 01:45:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:30:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ namespace octo
 		virtual ~AbstractTransition();
 
 		/*!	Define the duration of each phase (phase in and out) */
-		void			setDuration(float in, float out);
+		void			setDuration(sf::Time in, sf::Time out);
 
 		/*!	Get transition status */
 		Status			status()const;
 
 		/*!	Called once per frame, before render */
-		bool			update(float frameTime, sf::View const& view);
+		bool			update(sf::Time frameTime, sf::View const& view);
 
 		/*!	Implement all transition draw here */
 		virtual void	draw(sf::RenderTarget& render)const = 0;
@@ -87,11 +87,11 @@ namespace octo
 		 *	and when the transition out is finished, the value must be returned to 0
 		 *	or less.
 		 */
-		virtual void	updateTransition(float frameTime, float timePosition, sf::View const& view) = 0;
+		virtual void	updateTransition(sf::Time frameTime, float timePosition, sf::View const& view) = 0;
 	private:
-		float		m_inDuration;
-		float		m_outDuration;
-		float		m_currentTime;
+		sf::Time	m_inDuration;
+		sf::Time	m_outDuration;
+		sf::Time	m_currentTime;
 		Action		m_action;
 		Status		m_status;
 	};

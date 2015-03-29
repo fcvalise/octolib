@@ -104,13 +104,15 @@ open_dox:
 
 complete: re
 	@make re -C tests
+	@make re -C benchmarks
 	@make re -C interactive_tests/application
 	@make re -C interactive_tests/options
 	@make re -C interactive_tests/resource_test
 	@make re -C interactive_tests/state_manager
 	@make re -C tools/packager
 	@make re -C tools/package_reader
+	@tests/tester.app
 	
-benchmarks: $(COMPLETE_TARGET)
+benchmarks:
 	@make -C benchmarks
 	@./benchmarks/benchmark.app
