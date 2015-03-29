@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/20 20:29:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/20 22:20:56 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:45:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 namespace octo
 {
 	/*!
+	 *	\ingroup Core
 	 *	\class Array2D
 	 *	\brief Generic 2d array
 	 *	

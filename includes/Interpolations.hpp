@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/11 15:52:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 01:15:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:41:46 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,18 @@
 
 namespace octo
 {
+	/*!	Linear interpolation between 2 values
+	 *	\ingroup Core
+	 */
 	template <class T>
 	static T	linearInterpolation(T a, T b, float alpha)
 	{
 		return (a * (1.f - alpha) + b * alpha);
 	}
 
+	/*!	Cosinus interpolation between 2 values
+	 *	\ingroup Core
+	 */
 	template <class T>
 	static T	cosinusInterpolation(T a, T b, float alpha)
 	{

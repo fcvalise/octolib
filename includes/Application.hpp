@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 14:34:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 00:28:28 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ namespace octo
 		 *	Then command line is parsed and if some options directives are found they are
 		 *	added to the application options.
 		 *
-		 *	Application provides somes key to setup the system:
+		 *	They are serveral keys used to parameters the application when it started.<BR>
+		 *	The table below lists each of theses keys and describes it:
 		 *
 		 *	<TABLE>
 		 *	<TR>
