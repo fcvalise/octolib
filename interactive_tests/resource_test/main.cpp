@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 23:03:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:43:43 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ public:
 		m_sound.stop();
 	}
 
-	virtual void	update(float)
+	virtual void	update(sf::Time)
 	{
 	}
 

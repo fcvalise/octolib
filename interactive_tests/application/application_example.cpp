@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/25 03:56:42 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:40:58 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ public:
 		std::cout << "Square state stop" << std::endl;
 	}
 
-	virtual void	update(float frameTime)
+	virtual void	update(sf::Time frameTime)
 	{
-		m_square.rotate(45.f * frameTime);
+		m_square.rotate(45.f * frameTime.asSeconds());
 	}
 
 	virtual void	draw(sf::RenderTarget& render)const
@@ -74,7 +74,7 @@ class CircleState : public octo::AbstractState
 {
 public:
 	explicit CircleState() :
-		m_elapsed(0.f)
+		m_elapsed(sf::Time::Zero)
 	{
 		m_circle = sf::CircleShape(128.f, 64);
 		m_circle.setOrigin(64.f, 64.f);
@@ -101,14 +101,14 @@ public:
 		std::cout << "Circle state stop" << std::endl;
 	}
 
-	virtual void	update(float frameTime)
+	virtual void	update(sf::Time frameTime)
 	{
 		float		x = 0.f;
 
 		m_elapsed += frameTime;
-		if (m_elapsed > 1.f)
-			m_elapsed -= 1.f;
-		x = (std::sin((m_elapsed / 0.5f) * M_PI) * 256.f) - 64.f;
+		if (m_elapsed > sf::seconds(1.f))
+			m_elapsed -= sf::seconds(1.f);
+		x = (std::sin((m_elapsed.asSeconds() / 0.5f) * M_PI) * 256.f) - 64.f;
 		m_circle.setPosition(x, -64.f);
 	}
 
@@ -119,7 +119,7 @@ public:
 	}
 private:
 	sf::CircleShape	m_circle;
-	float			m_elapsed;
+	sf::Time		m_elapsed;
 };
 
 /*!	Window events listener */

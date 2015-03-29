@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:42:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 01:45:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:29:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ABSTRACTSTATE_HPP
 # define ABSTRACTSTATE_HPP
 # include <SFML/Graphics/RenderTarget.hpp>
+# include <SFML/System/Time.hpp>
 
 namespace octo
 {
@@ -42,7 +43,7 @@ namespace octo
 		virtual void	stop() = 0;
 
 		/*!	Method called once per frame before game render */
-		virtual void	update(float frameTime) = 0;
+		virtual void	update(sf::Time frameTime) = 0;
 
 		/*!	Method called once per frame after game update */
 		virtual void	draw(sf::RenderTarget& render)const = 0;
