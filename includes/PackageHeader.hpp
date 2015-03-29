@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 18:09:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:44:38 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 
 namespace octo
 {
-	/*!	Store package header information
+	/*!	
+	 *	\ingroup Package
+	 *	\brief Store package header information
 	 *
 	 *	This container store a table indicating position and size of each
 	 *	packaged files.<br>

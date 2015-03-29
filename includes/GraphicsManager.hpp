@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 01:15:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 03:27:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 
 namespace octo
 {
-	/*!	Window event listener
+	/*!	\ingroup Graphics
+	 *	Window event listener
 	 *
 	 *	This listener is notified when a window receive close event, resize event
 	 *	and focus events.
@@ -37,7 +38,9 @@ namespace octo
 		virtual void	onFocusLost() = 0;
 	};
 
-	/*!	Keyboard listener interface */
+	/*!	\ingroup Graphics
+	 *	Keyboard listener interface
+	 */
 	class IKeyboardListener
 	{
 	public:
@@ -47,7 +50,10 @@ namespace octo
 		virtual void	onReleased(sf::Event::KeyEvent const& event) = 0;
 	};
 
-	/*!	Mouse listener interface */
+	/*!
+	 *	\ingroup Graphics
+	 *	Mouse listener interface
+	 */
 	class IMouseListener
 	{
 	public:
@@ -59,7 +65,10 @@ namespace octo
 		virtual void	onWheel(sf::Event::MouseWheelEvent const& event) = 0;
 	};
 
-	/*!	Joystick listener interface */
+	/*!
+	 *	\ingroup Graphics
+	 *	Joystick listener interface
+	 */
 	class IJoystickListener
 	{
 	public:
@@ -72,7 +81,10 @@ namespace octo
 		virtual void	onReleased(sf::Event::JoystickButtonEvent const& event) = 0;
 	};
 
-	/*!	Manage a render window */
+	/*!
+	 *	\ingroup Graphics
+	 *	Manage a render window
+	 */
 	class GraphicsManager
 	{
 	public:

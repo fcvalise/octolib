@@ -1,0 +1,36 @@
+/*!
+  	\defgroup Core Core module
+	\brief Provides commons stuffs.
+*/
+
+/*!
+	\defgroup Package Package module
+	\brief Provides services to reading and writing package files.
+*/
+
+/*!
+  	\defgroup Resource Resource module
+	Manage all the games ressources such textures, fonts, sound. 
+*/
+
+/*!
+  	\defgroup GameState Game state module
+	\brief Provides classes to create and manage game states.
+*/
+
+/*!
+  	\defgroup Animation Animation module
+	\brief Provides services to change object property
+*/
+
+/*!
+  	\defgroup Graphics Graphics module
+*/
+
+/*!
+  	\defgroup Audio Audio module
+*/
+
+/*!
+  	\defgroup Gui GUI module
+*/

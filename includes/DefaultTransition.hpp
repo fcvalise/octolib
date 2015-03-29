@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 14:59:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 19:58:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:38:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@
 
 namespace octo
 {
-	/*!	Fade in then fade out */
+	/*!
+	 *	\ingroup GameState
+	 *	Fade in then fade out
+	 */
 	class BlackFadeTransition : public AbstractTransition
 	{
 	public:
@@ -31,7 +34,10 @@ namespace octo
 		sf::RectangleShape	m_shape;
 	};
 
-	/*!	Black slide moving horizontally */
+	/*!
+	 *	\ingroup GameState
+	 *	Black slide moving horizontally
+	 */
 	class BlackHSlideTransition : public octo::AbstractTransition
 	{
 	public:
@@ -44,7 +50,10 @@ namespace octo
 		sf::RectangleShape	m_shape;
 	};
 
-	/*!	Black slide moving vertically */
+	/*!
+	 *	\ingroup GameState
+	 *	Black slide moving vertically
+	 */
 	class BlackVSlideTransition : public octo::AbstractTransition
 	{
 	public:

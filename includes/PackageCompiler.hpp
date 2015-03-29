@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 04:59:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 03:40:52 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:44:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,35 @@
 
 namespace octo
 {
-	/*!	Package file compiler
+	/*!
+	 *	\ingroup Package
+	 *	\class PackageCompiler
+	 *	\brief Package file compiler
 	 *
 	 *	This class archive ressource files into one unique file called
 	 *	package.<br>
-	 *	Progress of compilation can be followed with defining a listener
-	 *	from PackageCompiler::IListener.
+	 *
+	 *	A package file is an archive structured in 2 parts.<br>
+	 *	\code
+	 *	|-------------------------------------------------------|
+	 *	|     HEADER DATAS     |          PACKED DATAS          |
+	 *	|-------------------------------------------------------|
+	 *	                        ^
+	 *                          First byte of packed datas
+	 *	\endcode
+	 *
+	 *	The first part called header is a table containing information about packed files data.<br>
+	 *	More precisely, the base name (the name and extension of the file without the rest of the path), the
+	 *	size (in byte), the type (Texture, Font, etc, see PackageHeader::EntryType), and the position offset.<br>
+	 *	Position offset is the position of the first byte of a packaged file.<br> This position is relative
+	 *	to the end of header datas so the first file packed is stored at offset 0, but his
+	 *	real offset is the offset added to the bytes count of the header datas.<br>
+	 *	<br>
+	 *	The second part is the packed file datas one after the other.<br>
+	 *	Datas packaged is trivialy encrypted to prevent the possibility of reading texts that can be present
+	 *	in the packed data. The encoding is a simple XOR cipher and should not be used hoping to secure
+	 *	datas.<br><br>
+	 *	
 	 */
 	class PackageCompiler
 	{
@@ -40,7 +63,38 @@ namespace octo
 
 		PackageCompiler();
 
+		/*!	Set a compilation listener
+		 *
+		 *	\param listener Pointer on a listener instance. The memory ownership of this 
+		 *	is leaved to the user.
+		 *
+		 *	\code
+		 *	class MyCompilationListener : public PackageCompiler::IListener
+		 *	{
+		 *		// Implement here the IListener interface...
+		 *	};
+		 *
+		 *	PackageCompiler			compiler;
+		 *	MyCompilationListener	listener;
+		 *
+		 *	compiler.setListener(&listener);
+		 *	compiler.compile(...);
+		 *
+		 *	\endcode
+		 */
 		void						setListener(IListener* listener);
+
+		/*!	Pack serveral files into one package file
+		 *
+		 *	Progress of compilation can be followed with an instance of IListener.<br>
+		 *	When a file is packed, his resource type is defined from the file extension. For example
+		 *	.png files gets type Texture, .ttf files gets type Font, .txt files gets type Text...<br>
+		 *	For now a table of extension/type mapping is stored by the compiler and you can't change it
+		 *	but in the future I probably implements somes setters to extend this table without
+		 *	rebuilding the library.
+		 *
+		 *	\see PackageCompiler::IListener
+		 */
 		bool						compile(std::string const& outputFile,
 											std::vector<std::string> const& paths);
 	private:
@@ -67,6 +121,11 @@ namespace octo
 		Mask			m_encryptionMask;
 	};
 	
+	/*!	Interface of compiler listener
+	 *
+	 *	This listener type is notified when the differents steps of compilation
+	 *	are done or when errors occurs.
+	 */
 	class PackageCompiler::IListener
 	{
 	public:

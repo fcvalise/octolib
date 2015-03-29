@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 12:56:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:05:54 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ namespace octo
 	class Package;
 	class IResourceListener;
 
+	/*!
+	 *	\ingroup Resource
+	 *	Manage all game resources
+	 *
+	 *	Resource datas are loaded from a package files.<br>
+	 */
 	class ResourceManager
 	{
 

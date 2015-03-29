@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/04 01:29:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/20 23:15:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:48:37 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 
 namespace octo
 {
-	/*!	\class Stack
-	 *	\brief Generic LIFO stack
+	/*!
+	 *	\ingroup Core
+	 *	\class Stack
+	 *	\brief Generic FIFO stack
 	 *
 	 *	Stack is implemented as circular buffer.<br>
 	 *	You must define the maximum size of the stack when instanciated.
@@ -39,13 +41,13 @@ namespace octo
 		/*!	Move assignment operator */
 		Stack<T>&	operator = (Stack<T>&& other) = default;
 
-		/*!	Push a value on the top of the stack */
+		/*!	Push a value on the back of the stack */
 		void			push(T const& value);
 
-		/*!	Push a value on the top of the stack */
+		/*!	Push a value on the back of the stack */
 		void			push(T&& value);
 
-		/*!	Create a value on the top of the stack */
+		/*!	Create a value on the back of the stack */
 		template <class ... A>
 		void			emplace(A&&... args);
 

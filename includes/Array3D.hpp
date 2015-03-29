@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/20 17:53:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/20 22:22:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:45:53 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 namespace octo
 {
 	/*!
+	 *	\ingroup Core
 	 *	\class Array3D
 	 *	\brief Generic three dimensional array
 	 *	\tparam T Type of value stored

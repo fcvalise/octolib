@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:34:27 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 14:36:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 03:28:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 
 namespace octo
 {
-	/*!	Option container
+	/*!	\ingroup Core
+	 *	Option container
 	 *	
 	 *	This container store a pair of key/value.<br>
 	 *	getValue() methods provides access to value from his key.<br>

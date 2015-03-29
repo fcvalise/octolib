@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 21:54:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:46:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ namespace octo
 	class AbstractState;
 	
 	/*!	
+	 *	\ingroup GameState
 	 *	\class StateManager
 	 *	\brief Manage all stuff about game states
 	 *

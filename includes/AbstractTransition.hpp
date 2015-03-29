@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 00:04:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 19:53:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:45:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 
 namespace octo
 {
-	/*!	Abstraction of transition between game states
+	/*!
+	 *	\ingroup GameState
+	 *	Abstraction of transition between game states
 	 *
 	 *	A transition have two phases, in-phase and out-phase.<br>
 	 *	A transition is started in paralle of the current state. <br>

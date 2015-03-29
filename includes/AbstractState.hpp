@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:42:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 16:01:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 01:45:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 
 namespace octo
 {
-	/*!	Abstraction of game state
+	/*!
+	 *	\ingroup GameState
+	 *	\brief Abstraction of game state
 	 *
 	 *	\remark All virtual pure methods are private for
  	 *	safety, only StateManager is able to calls it.
