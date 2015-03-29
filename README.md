@@ -2,7 +2,7 @@
 Octodyssey's core library repository.
 
 ## How to report problems, bugs, something missing?
-Please do it using this (issue tracker)[https://github.com/IohannRabeson/octolib/issues].
+Please do it using this [issue tracker](https://github.com/IohannRabeson/octolib/issues).
 
 ## Organisation
 The source files of the library are located in '<root>/includes/' and '<root>/src/' directories.  
