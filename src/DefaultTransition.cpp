@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 15:03:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 19:58:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:36:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace octo
 		render.draw(m_shape);	
 	}
 	
-	void	BlackFadeTransition::updateTransition(float, float timePosition, sf::View const& view)
+	void	BlackFadeTransition::updateTransition(sf::Time, float timePosition, sf::View const& view)
 	{
 		m_shape.setSize(view.getSize());
 		m_shape.setPosition(view.getCenter() - view.getSize() / 2.f);
@@ -48,7 +48,7 @@ namespace octo
 		render.draw(m_shape);
 	}
 
-	void	BlackHSlideTransition::updateTransition(float, float timePosition, sf::View const& view)
+	void	BlackHSlideTransition::updateTransition(sf::Time, float timePosition, sf::View const& view)
 	{
 		sf::Vector2f	viewSize = view.getSize();
 
@@ -69,7 +69,7 @@ namespace octo
 		render.draw(m_shape);
 	}
 
-	void	BlackVSlideTransition::updateTransition(float, float timePosition, sf::View const& view)
+	void	BlackVSlideTransition::updateTransition(sf::Time, float timePosition, sf::View const& view)
 	{
 		sf::Vector2f	viewSize = view.getSize();
 

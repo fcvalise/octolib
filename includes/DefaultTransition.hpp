@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 14:59:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 01:38:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:36:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace octo
 
 		virtual void	draw(sf::RenderTarget& render)const;
 	private:
-		virtual void	updateTransition(float, float timePosition, sf::View const& view);
+		virtual void	updateTransition(sf::Time, float timePosition, sf::View const& view);
 	private:
 		sf::RectangleShape	m_shape;
 	};
@@ -45,7 +45,7 @@ namespace octo
 
 		virtual void	draw(sf::RenderTarget& render)const;
 	private:
-		virtual void	updateTransition(float, float timePosition, sf::View const& view);
+		virtual void	updateTransition(sf::Time, float timePosition, sf::View const& view);
 	private:
 		sf::RectangleShape	m_shape;
 	};
@@ -61,7 +61,7 @@ namespace octo
 
 		virtual void	draw(sf::RenderTarget& render)const;
 	private:
-		virtual void	updateTransition(float, float timePosition, sf::View const& view);
+		virtual void	updateTransition(sf::Time, float timePosition, sf::View const& view);
 	private:
 		sf::RectangleShape	m_shape;
 	};
