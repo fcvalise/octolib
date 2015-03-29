@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 00:28:28 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 04:07:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ namespace octo
 	class ApplicationImp;
 	
 	/*!	\class Application
-	 *	\brief Skeleton of a game
+	 *	\brief Manage all systems requiered by a game
 	 *
 	 *	Application provide a game state management over a SFML render.<br>
 	 *	System must be initialized first with initialize() and

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 20:14:15 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 20:30:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 03:29:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@
 
 namespace octo
 {
-	/*!	Pausable time counter */
+	/*!
+	 *	\ingroup Core
+	 *
+	 *	Pausable time counter
+	 */
 	class PausableClock
 	{
 	public:

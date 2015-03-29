@@ -20,7 +20,15 @@
 
 /*!
   	\defgroup Animation Animation module
+	\brief Provides services to change object property
+*/
 
+/*!
+  	\defgroup Graphics Graphics module
+*/
+
+/*!
+  	\defgroup Audio Audio module
 */
 
 /*!

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:28:56 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 02:36:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 03:28:44 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 
 namespace octo
 {
+	/*!	\ingroup Core
+	 *	Option parser
+	 */
 	class OptionParser
 	{
 	public:
