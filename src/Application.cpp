@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 04:37:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 14:27:54 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ namespace octo
 		void	stop()
 		{
 			m_stateManager.popAll();
+			m_graphicsManager.closeRender();
 		}
 
 		void	run()

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 12:59:55 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/31 07:02:22 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 #include <iostream>
 #include <cmath>
 #include <limits>
+#include <iterator>
+
+#include "BSpline.hpp"
 
 namespace octo
 {
@@ -38,56 +41,29 @@ namespace octo
 	}
 }
 
-static sf::Vector2f	bspline(sf::Vector2f const& p0,
-							sf::Vector2f const& p1,
-							sf::Vector2f const& p2,
-							sf::Vector2f const& p3,
-							float t)
-{
-	sf::Vector2f	result;
-
-	result.x =	(1.f / 6.f) * (octo::pow<3>(1.f - t) * p0.x +
-				((3.f * octo::pow<3>(t) - 6.f * octo::pow<2>(t) + 4.f) * p1.x) +
-				((-3.f * octo::pow<3>(t) + 3.f * octo::pow<2>(t) + (3.f * t) + 1.f) * p2.x) +
-				octo::pow<3>(t) * p3.x);
-	result.y =	(1.f / 6.f) * (octo::pow<3>(1.f - t) * p0.y +
-				((3.f * octo::pow<3>(t) - 6.f * octo::pow<2>(t) + 4.f) * p1.y) +
-				((-3.f * octo::pow<3>(t) + 3.f * octo::pow<2>(t) + (3.f * t) + 1.f) * p2.y) +
-				octo::pow<3>(t) * p3.y);
-	return (result);
-}
-
 class MainState : public octo::AbstractState,
 				  public octo::IMouseListener
 {
-	static constexpr float const		Radius = 4.f;
-	static constexpr float const		SelectorRadius = Radius + 3.f;
-	static constexpr float const		SelectorAnchorDistance = (Radius * Radius * 6.f);
+	static constexpr float const		CheckpointRadius = 4.f;
+	static constexpr float const		SelectorRadius = CheckpointRadius + 3.f;
+	static constexpr float const		SelectorAnchorDistance = (CheckpointRadius * CheckpointRadius * 6.f);
 	static constexpr float const		ActiveThickness = 3.f;
 	static constexpr float const		InactiveThickness = 1.f;
 	static constexpr std::size_t const	NullSelection = std::numeric_limits<std::size_t>::max();
 public:
 	explicit MainState() :
-		m_visibleSelector(false),
-		m_selected(NullSelection)
+		m_selected(NullSelection),
+		m_update(false),
+		m_visibleSelector(false)
 	{
-		float					radius = 4.f;
-		float 					x = -200.f;
-
-		for (auto& shape : m_checkpoints)
-		{
-			shape = sf::CircleShape(radius, 64.f);
-			shape.setFillColor(sf::Color::Red);
-			shape.setOrigin(radius, radius);
-			shape.setPosition(x, 0.f);
-			x += 200.f;
-		}
+		m_checkpoint = sf::CircleShape(CheckpointRadius, 64.f);
+		m_checkpoint.setFillColor(sf::Color::Red);
+		m_checkpoint.setOrigin(CheckpointRadius, CheckpointRadius);
 		m_selector = sf::CircleShape(SelectorRadius, 64.f);
 		m_selector.setOrigin(SelectorRadius, SelectorRadius);
 		m_selector.setFillColor(sf::Color::Transparent);
 		m_selector.setOutlineColor(sf::Color::Blue);
 		m_selector.setOutlineThickness(2.f);
-		m_update = true;
 	}
 
 	~MainState()
@@ -118,7 +94,7 @@ public:
 	{
 		if (m_update)
 		{
-			redrawSpline();
+			updateSpline();
 			m_update = false;
 		}
 	}
@@ -127,28 +103,20 @@ public:
 	{
         render.clear(sf::Color::White);
 		render.draw(&m_vertices.front(), m_vertices.size(), sf::LinesStrip);
-		for (auto const& shape : m_checkpoints)
-			render.draw(shape);
-		if (m_visibleSelector)
-			render.draw(m_selector);
+		drawCheckpoints(render);
 	}
 
 	virtual void	onMoved(sf::Event::MouseMoveEvent const& event)
 	{
 		octo::GraphicsManager const&	manager = octo::Application::getGraphicsManager();
 		sf::Vector2f					mousePosition = manager.mapPixelToCoords(sf::Vector2i(event.x, event.y), manager.getView());
+		auto							it = getNearPoint(mousePosition);
 
 		if (m_selected == NullSelection)
 		{
-			auto							it = std::find_if(std::begin(m_checkpoints), std::end(m_checkpoints),
-															[=](sf::Transformable const& transformable)
-															{
-																return (octo::squaredDistance(transformable.getPosition(), mousePosition) < SelectorAnchorDistance);
-															});
-			
-			if (it != std::end(m_checkpoints))
+			if (it != std::end(m_bspline))
 			{
-				m_selector.setPosition(it->getPosition());
+				m_selector.setPosition(*it);
 				m_visibleSelector = true;
 			}
 			else
@@ -158,7 +126,7 @@ public:
 		}
 		else
 		{
-			m_checkpoints[m_selected].setPosition(mousePosition);
+			m_bspline[m_selected] = mousePosition;
 			m_selector.setPosition(mousePosition);
 			m_update = true;
 		}
@@ -168,32 +136,38 @@ public:
 	{
 		octo::GraphicsManager const&	manager = octo::Application::getGraphicsManager();
 		sf::Vector2f					mousePosition = manager.mapPixelToCoords(sf::Vector2i(event.x, event.y), manager.getView());
-		auto							it = std::find_if(std::begin(m_checkpoints), std::end(m_checkpoints),
-														[=](sf::Transformable const& transformable)
-														{
-															return (octo::squaredDistance(transformable.getPosition(), mousePosition) < SelectorAnchorDistance);
-														});
+		auto							it = getNearPoint(mousePosition);
 
-		if (it != std::end(m_checkpoints))
+		if (event.button == sf::Mouse::Left)
 		{
-			m_visibleSelector = true;
-			m_selector.setOutlineThickness(ActiveThickness);
-			m_selector.setPosition(it->getPosition());
-			m_selected = std::distance(std::begin(m_checkpoints), it);
-		}
-		else
-		{
-			m_selected = NullSelection;
+			if (it != std::end(m_bspline))
+			{
+				m_visibleSelector = true;
+				m_selector.setOutlineThickness(ActiveThickness);
+				m_selector.setPosition(*it);
+				m_selected = std::distance(m_bspline.cbegin(), it);
+			}
+			else
+			{
+				m_selected = NullSelection;
+			}
 		}
 	}
 
-	virtual void	onReleased(sf::Event::MouseButtonEvent const&)
+	virtual void	onReleased(sf::Event::MouseButtonEvent const& event)
 	{
-		if (m_selected != NullSelection)
+		if (event.button == sf::Mouse::Left && m_selected != NullSelection)
 		{
 			m_selector.setOutlineThickness(InactiveThickness);
-			m_selector.setPosition(m_checkpoints[m_selected].getPosition());
+			m_selector.setPosition(m_bspline[m_selected]);
 			m_selected = NullSelection;
+		}
+		else if (event.button == sf::Mouse::Right)
+		{
+			octo::GraphicsManager const&	manager = octo::Application::getGraphicsManager();
+			sf::Vector2f					mousePosition = manager.mapPixelToCoords(sf::Vector2i(event.x, event.y), manager.getView());
+
+			addCheckpoint(mousePosition);
 		}
 	}
 
@@ -202,33 +176,55 @@ public:
 		(void)event;
 	}
 private:
-	void	redrawSpline()
+	BSpline::const_iterator	getNearPoint(sf::Vector2f const& position)const
+	{
+		return (std::find_if(std::begin(m_bspline), std::end(m_bspline),
+								[=](sf::Vector2f const& p)
+								{
+									return (octo::squaredDistance(p, position) < SelectorAnchorDistance);
+								}));
+	}
+
+	void	updateSpline()
 	{
 		static const unsigned int	Count = 1000;
 		float						step = 1.f / Count;
 		sf::Vector2f				pos;
 		std::size_t					i = 0;
 
-		m_vertices.resize(Count);
-		for (float t = 0.f; t <= 1.f; t += step)
+		m_vertices.resize(Count * m_bspline.size());
+		for (float t = 0.f; t <= m_bspline.maxT(); t += step)
 		{
-			pos = bspline(m_checkpoints[0].getPosition(),
-						  m_checkpoints[1].getPosition(),
-						  m_checkpoints[2].getPosition(),
-						  m_checkpoints[3].getPosition(),
-						  t);
+			pos = m_bspline.compute(t);
 			m_vertices[i].position = pos;
 			m_vertices[i].color = sf::Color::Black;
 			++i;
 		}
 	}
+
+	void	drawCheckpoints(sf::RenderTarget& render)const
+	{
+		for (sf::Vector2f const& pos : m_bspline)
+		{
+			m_checkpoint.setPosition(pos);
+			render.draw(m_checkpoint);
+		}
+		if (m_visibleSelector)
+			render.draw(m_selector);
+	}
 private:
-	bool					m_update;
-	sf::CircleShape			m_checkpoints[4];
-	sf::CircleShape			m_selector;
-	bool					m_visibleSelector;
-	std::size_t				m_selected;
-	std::vector<sf::Vertex>	m_vertices;
+	void	addCheckpoint(sf::Vector2f const& position)
+	{
+		m_bspline.pushBack(position);
+	}
+private:
+	std::vector<sf::Vertex>			m_vertices;
+	sf::CircleShape					m_selector;
+	mutable sf::CircleShape			m_checkpoint;
+	std::size_t						m_selected;
+	bool							m_update;
+	bool							m_visibleSelector;
+	BSpline							m_bspline;
 };
 
 /*!	Window events listener */

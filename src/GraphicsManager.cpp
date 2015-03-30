@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 11:11:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/29 14:28:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ namespace octo
 		m_fullscreen = fullscreen;
 	}
 
+	void	GraphicsManager::closeRender()
+	{
+		m_window.close();
+	}
+
 	void	GraphicsManager::draw(sf::Drawable const& drawable, sf::RenderStates const& states)
 	{
 		m_window.draw(drawable, states);
@@ -48,7 +53,7 @@ namespace octo
 
 	void	GraphicsManager::processEvents()
 	{
-		while (m_window.pollEvent(m_event))
+		while (m_window.isOpen() && m_window.pollEvent(m_event))
 		{
 			switch (m_event.type)
 			{
