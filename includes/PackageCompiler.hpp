@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 04:59:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 01:44:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/01 11:19:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PACKAGECOMPILER_HPP
 # define PACKAGECOMPILER_HPP
 # include "PackageHeader.hpp"
+# include "ByteArray.hpp"
 
 # include <vector>
 # include <map>
@@ -114,11 +115,10 @@ namespace octo
 		static bool					sortFileInfo(FileInfo const& left,
 												 FileInfo const& right);
 	private:
-		typedef std::vector<char>	Mask;
-
 		IListener*		m_listener;
 		ExtensionMap	m_extensions;
-		Mask			m_encryptionMask;
+		ByteArray		m_encryptionMask;
+		ByteArray		m_buffer;
 	};
 	
 	/*!	Interface of compiler listener

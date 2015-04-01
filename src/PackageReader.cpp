@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:03:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 10:45:09 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/01 11:28:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,14 @@ namespace octo
 		return (false);
 	}
 
-	bool	PackageReader::load(std::vector<char>& buffer, std::uint64_t key)
+	bool	PackageReader::load(ByteArray& buffer, std::uint64_t key)
 	{
 		PackageHeader::Entry	entry;
 
 		if (isOpen() && m_header.getEntry(key, entry))
 		{
 			m_file.seekg(entry.offset + m_header.byteCount(), std::istream::beg);
-			buffer.resize(entry.size);
-			m_file.read(&buffer.front(), entry.size);
+			buffer.read(m_file, entry.size);
 			details::xorEncryptDecrypt(buffer.begin(), buffer.end(), m_encryptionMask);
 			return (true);
 		}

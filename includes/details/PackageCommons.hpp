@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:09:32 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 03:40:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/01 11:35:43 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <string>
 # include <fstream>
 # include <random>
+# include "ByteArray.hpp"
 
 namespace octo
 {
@@ -74,7 +75,7 @@ namespace octo
 		}
 
 		/*!	Generate a pseudo random series of bytes */
-		static void	generateMask(std::vector<char>& mask, std::size_t size, std::size_t seed)
+		static void	generateMask(ByteArray& mask, std::size_t size, std::size_t seed)
 		{
 			std::mt19937						engine(seed);
 			std::uniform_int_distribution<char>	distribution(std::numeric_limits<char>::min(),
@@ -89,7 +90,7 @@ namespace octo
 		 */
 		template <class I>
 		static void	xorEncryptDecrypt(I beginBytes, I endBytes,
-									  std::vector<char> const& mask)
+									  ByteArray const& mask)
 		{
 			std::size_t	i = 0;
 

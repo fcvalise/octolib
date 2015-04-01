@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:50:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/26 20:39:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/01 11:37:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE( xor_cypher )
 	std::unique_ptr<char[]>		buffer(new char[text.size()]);
 	std::unique_ptr<char[]>		expected(new char[text.size()]);
 	std::size_t					seed = 12345;
-	std::vector<char>			mask;
+	octo::ByteArray				mask;
 
 	octo::details::generateMask(mask, 16, seed);
 	std::copy(text.begin(), text.end(), buffer.get());

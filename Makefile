@@ -15,7 +15,8 @@ CORE_SRC =	Application.cpp					\
 			PausableClock.cpp				\
 			GraphicsManager.cpp				\
 			OptionParser.cpp				\
-			Options.cpp
+			Options.cpp						\
+			ByteArray.cpp
 
 MATH_SRC = Interpolations.cpp				\
 	   Math.cpp
