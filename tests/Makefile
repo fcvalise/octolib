@@ -17,8 +17,10 @@ SRC = main.cpp				\
 	  OptionParser.cpp		\
 	  Array2D.cpp			\
 	  Array3D.cpp			\
-	  Stack.cpp			\
-	  Math.cpp
+	  Stack.cpp				\
+	  Math.cpp				\
+	  ByteArray.cpp			\
+	  BinaryStream.cpp
 
 # compiler
 CC = g++

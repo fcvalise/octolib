@@ -16,7 +16,9 @@ CORE_SRC =	Application.cpp					\
 			GraphicsManager.cpp				\
 			OptionParser.cpp				\
 			Options.cpp						\
-			ByteArray.cpp
+			ByteArray.cpp					\
+			BinaryInputStream.cpp			\
+			BinaryOutputStream.cpp
 
 MATH_SRC = Interpolations.cpp				\
 	   Math.cpp

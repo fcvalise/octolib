@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 10:17:35 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:34:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/02 06:36:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,65 @@ namespace octo
 	{
 	}
 	
+	ByteArray::ByteArray(std::initializer_list<char> bytes) :
+		ByteArray(bytes.begin(), bytes.end())
+	{
+	}
+
+	ByteArray::ByteArray(char const* str, std::size_t size) :
+		ByteArray()
+	{
+		assign(str, size);
+	}
+
+	void	ByteArray::assign(ByteArray const& bytes)
+	{
+		assign(bytes.begin(), bytes.end());
+	}
+
+	void	ByteArray::assign(std::initializer_list<char> bytes)
+	{
+		assign(bytes.begin(), bytes.end());
+	}
+
+	void			ByteArray::assign(char const* str, std::size_t size)
+	{
+		if (str && size > 0u)
+			assign(str, str + size);
+		else
+			clear();
+	}
+
+	void			ByteArray::append(ByteArray const& bytes)
+	{
+		append(bytes.begin(), bytes.end());
+	}
+
+	void			ByteArray::append(std::initializer_list<char> bytes)
+	{
+		append(bytes.begin(), bytes.end());
+	}
+
+	void			ByteArray::append(char const* str, std::size_t size)
+	{
+		if (str && size > 0)
+			append(str, str + size);
+	}
+
+	void			ByteArray::reserve(std::size_t count)
+	{
+		if (count <= m_capacity)
+			return;
+		std::unique_ptr<char[]>	newBytes(new char[count]);
+
+		std::copy_n(begin(), m_count, newBytes.get());
+		m_capacity = count;
+		std::swap(m_bytes, newBytes);
+	}
+
 	void			ByteArray::resize(std::size_t count)
 	{
-		if (m_capacity < count)
-			reserve(count);
+		reserve(count);
 		m_count = count;
 	}
 
@@ -40,15 +95,15 @@ namespace octo
 	{
 		m_count = 0u;
 	}
-
-	std::size_t		ByteArray::capacity()const
-	{
-		return (m_capacity);
-	}
 	
 	std::size_t		ByteArray::size()const
 	{
 		return (m_count);
+	}
+
+	std::size_t		ByteArray::capacity()const
+	{
+		return (m_capacity);
 	}
 
 	char	ByteArray::operator[](std::size_t i)const
@@ -64,6 +119,11 @@ namespace octo
 	char const*		ByteArray::bytes()const
 	{
 		return (m_bytes.get());
+	}
+
+	bool			ByteArray::empty()const
+	{
+		return (m_count == 0u);
 	}
 
 	ByteArray::iterator		ByteArray::begin()
@@ -95,16 +155,5 @@ namespace octo
 	void			ByteArray::write(std::ostream& os)const
 	{
 		os.write(m_bytes.get(), m_count);
-	}
-	
-	void			ByteArray::reserve(std::size_t count)
-	{
-		std::unique_ptr<char[]>	newBytes(new char[count]);
-		std::size_t				newCount = std::min(count, m_count);
-
-		std::copy_n(begin(), newCount, newBytes.get());
-		m_count = newCount;
-		m_capacity = count;
-		std::swap(m_bytes, newBytes);
 	}
 }
