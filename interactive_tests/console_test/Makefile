@@ -1,27 +1,17 @@
-TARGET = tester.app
-CORE_DIR = ../
-INCLUDE_DIR = $(CORE_DIR)/includes
+TARGET = test.app
+CORE_DIR = ../..
+INCLUDE_DIR = ./ $(CORE_DIR)/includes
 SRC_DIR = .
-BUILD_DIR = ../builds/tester
+BUILD_DIR = ./builds
 OUTPUT_DIR = .
 # libraries directories (ex: ../libft)
-LIB_DIRS = ../
+LIB_DIRS = $(CORE_DIR)
 
 # libraries (ex: ft, mlx, ...)
-LIBS = octo boost_unit_test_framework
+LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 
 # sources
-SRC = main.cpp						\
-	  PackageDetails.cpp			\
-	  PackageHeader.cpp				\
-	  OptionParser.cpp				\
-	  Array2D.cpp					\
-	  Array3D.cpp					\
-	  Stack.cpp						\
-	  Math.cpp						\
-	  ByteArray.cpp					\
-	  BinaryStream.cpp				\
-	  ConsoleCommandParser.cpp
+SRC = main.cpp
 
 # compiler
 CC = g++
@@ -33,6 +23,7 @@ RELEASE_FLAGS = -O3
 DEBUG_FLAGS = -g
 # includes dirs paths
 INCLUDE_DIRS = $(addprefix -I, $(INCLUDE_DIR))
+
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.cpp=.o))
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -85,9 +76,6 @@ else
 	@echo " - Making $(TARGET): $(CFLAGS)"
 endif
 
-run:
-	$(COMPLETE_TARGET) --log_level=test_suite
-
 core_library:
 	@make -s -C $(CORE_DIR) MODE=$(MODE)
 
@@ -96,3 +84,7 @@ clean_core_library:
 
 fclean_core_library:
 	@make -s -C $(CORE_DIR) fclean MODE=$(MODE)
+
+run_reinc:
+	@echo " - Running reinc"
+	@reinc -B $(BUILD_DIR) --include-dirs ./ ../core/ -v

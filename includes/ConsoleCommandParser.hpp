@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   OptionParser.hpp                                   :+:      :+:    :+:   */
+/*   ConsoleCommandParser.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/03/24 02:28:56 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/02 14:31:10 by irabeson         ###   ########.fr       */
+/*   Created: 2015/04/02 14:30:22 by irabeson          #+#    #+#             */
+/*   Updated: 2015/04/03 09:20:30 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OPTIONPARSER_HPP
-# define OPTIONPARSER_HPP
+#ifndef CONSOLECOMMANDPARSER_HPP
+# define CONSOLECOMMANDPARSER_HPP
 # include <string>
+# include <vector>
 
 namespace octo
 {
-	/*!	\ingroup Core
-	 *	\brief Option parser
-	 */
-	class OptionParser
+	class ConsoleCommandParser
 	{
 	public:
-		static bool	parseLine(std::string const& line, std::string& key, std::string& value);
+		static bool	parseLine(std::wstring const& line,
+							  std::wstring& name,
+							  std::vector<std::wstring>& arguments);
 	};
 }
 

@@ -9,7 +9,8 @@ SRC = 	$(RESOURCE_SRC)						\
 		$(STATE_SYSTEM_SRC)					\
 		$(PACKAGE_SRC)						\
 		$(MATH_SRC)							\
-		$(CORE_SRC)
+		$(CORE_SRC)							\
+		$(CONSOLE_SRC)
 
 CORE_SRC =	Application.cpp					\
 			PausableClock.cpp				\
@@ -33,6 +34,9 @@ STATE_SYSTEM_SRC =	AbstractState.cpp		\
 					AbstractTransition.cpp	\
 					StateManager.cpp		\
 					DefaultTransition.cpp
+
+CONSOLE_SRC = ConsoleCommandParser.cpp		\
+			  ConsoleInterpreter.cpp
 
 # compiler
 CC = g++
