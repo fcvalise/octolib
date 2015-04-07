@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 12:23:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/05 15:19:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/07 10:59:42 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ namespace octo
 	 */
 	class ConsoleInterpreter
 	{
-		template <class T>
-		using CleanedType = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
-
 		class AbstractCallable;
 
 		template <class R, class ... A>

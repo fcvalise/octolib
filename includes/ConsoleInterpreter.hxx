@@ -6,12 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/05 15:04:25 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/07 10:34:04 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 namespace octo
 {
+	template <class T>
+	using CleanedType = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
 	namespace details
 	{
 		template <class T>
@@ -20,6 +22,7 @@ namespace octo
 			std::wistringstream	iss;
 			T					value;
 
+			iss.setf(std::ios_base::boolalpha);
 			iss.str(str);
 			iss >> value;
 			return (value);
@@ -33,12 +36,43 @@ namespace octo
 		{
 			std::wostringstream	oss;
 
+			oss.setf(std::ios_base::boolalpha);
 			oss << value;
 			return (oss.str());
 		}
 
 		template <>
 		std::wstring	toStringImp(std::wstring const& value);
+
+		template <std::size_t I, std::size_t N>
+		struct	ArgumentChecker
+		{
+			template <class ... A>
+			static bool	check(std::vector<std::wstring> const& arguments)
+			{
+				typedef std::tuple<A...>							Tuple;
+				typedef typename std::tuple_element<I, Tuple>::type	CurrentType;
+				std::wistringstream									iss;
+				CleanedType<CurrentType>							value;
+
+				iss.setf(std::ios_base::boolalpha);
+				iss.str(arguments[I]);
+				if (iss >> value)
+					return (ArgumentChecker<I + 1, N>::template check<A...>(arguments));
+				else
+					return (false);
+			}
+		};
+
+		template <std::size_t I>
+		struct	ArgumentChecker<I, I>
+		{
+			template <class ... A>
+			static bool	check(std::vector<std::wstring> const&)
+			{
+				return (true);
+			}
+		};
 	}
 
 	class ConsoleInterpreter::AbstractCallable
@@ -47,7 +81,14 @@ namespace octo
 		template <class ... A>
 		static bool				checkArguments(std::vector<std::wstring> const& arguments)
 		{
-			return (sizeof...(A) == arguments.size());
+			if (sizeof...(A) == arguments.size())
+			{
+				return (details::ArgumentChecker<0u, sizeof ... (A)>::template check<A...>(arguments));	
+			}
+			else
+			{
+				return (false);
+			}
 		}
 
 		template <class T, class ... A>

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/05 15:15:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/07 10:36:54 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ namespace octo
 			else
 			{
 				return (L"Unknow function");
+			}
+			if (ok == false)
+			{
+				return (L"Argument error");
 			}
 		}
 		else
