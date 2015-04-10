@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/07 10:34:04 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/10 17:56:25 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,39 +222,6 @@ namespace octo
 		Function	m_function;
 	};
 
-	template <class C, class R, class ... A>
-	class ConsoleInterpreter::CallableMemConst : public AbstractCallable
-	{
-		typedef R(C::*Function)(A...)const;
-	public:
-		explicit CallableMemConst(C const* object, Function function) :
-			m_object(object),
-			m_function(function)
-		{
-		}
-
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
-		{
-			std::wstring	result;
-			R				resultValue;
-
-			if (checkArguments<A...>(arguments))
-			{
-				resultValue = (m_object->*m_function)(fromString<A, A...>(arguments)...);
-				result = details::toStringImp(resultValue);
-				ok = true;
-			}
-			else
-			{
-				ok = false;
-			}
-			return (result);
-		}
-	private:
-		C const*	m_object;
-		Function	m_function;
-	};
-
 	template <class C, class ... A>
 	class ConsoleInterpreter::CallableMemConst<C, void, A...> : public AbstractCallable
 	{
@@ -283,4 +250,118 @@ namespace octo
 		C const*	m_object;
 		Function	m_function;
 	};
+
+	template <class C, class R, class ... A>
+	class ConsoleInterpreter::CallableFunctor : public AbstractCallable
+	{
+		typedef R(C::*Function)(A...);
+	public:
+		explicit CallableFunctor(C object, Function function) :
+			m_object(object),
+			m_function(function)
+		{
+		}
+
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		{
+			std::wstring	result;
+			R				resultValue;
+
+			if (checkArguments<A...>(arguments))
+			{
+				resultValue = (m_object.*m_function)(fromString<A, A...>(arguments)...);
+				result = details::toStringImp(resultValue);
+				ok = true;
+			}
+			else
+			{
+				ok = false;
+			}
+			return (result);
+		}
+	private:
+		C			m_object;
+		Function	m_function;
+	};
+
+	template <class C, class R, class ... A>
+	class ConsoleInterpreter::CallableConstFunctor : public AbstractCallable
+	{
+		typedef R(C::*Function)(A...)const;
+	public:
+		explicit CallableConstFunctor(C object, Function function) :
+			m_object(object),
+			m_function(function)
+		{
+		}
+
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		{
+			std::wstring	result;
+			R				resultValue;
+
+			if (checkArguments<A...>(arguments))
+			{
+				resultValue = (m_object.*m_function)(fromString<A, A...>(arguments)...);
+				result = details::toStringImp(resultValue);
+				ok = true;
+			}
+			else
+			{
+				ok = false;
+			}
+			return (result);
+		}
+	private:
+		C			m_object;
+		Function	m_function;
+	};
+
+	template <class R, class ... A>
+	void	ConsoleInterpreter::addFunction(std::wstring const& name, R(*function)(A...))
+	{
+		m_callables[name] = std::make_shared<Callable<R, A...>>(function);	
+	}
+
+	template <class C, class R, class ... A>
+	void	ConsoleInterpreter::addFunction(std::wstring const& name, C& instance, R(C::*function)(A...))
+	{
+		m_callables[name] = std::make_shared<CallableMem<C, R, A...>>(&instance, function);
+	}
+
+	template <class C, class R, class ... A>
+	void	ConsoleInterpreter::addFunction(std::wstring const& name, C* instance, R(C::*function)(A...))
+	{
+		m_callables[name] = std::make_shared<CallableMem<C, R, A...>>(instance, function);
+	}
+
+	template <class C, class R, class ... A>
+	void	ConsoleInterpreter::addFunction(std::wstring const& name, C const& instance, R(C::*function)(A...)const)
+	{
+		m_callables[name] = std::make_shared<CallableMemConst<C, R, A...>>(&instance, function);
+	}
+
+	template <class C, class R, class ... A>
+	void	ConsoleInterpreter::addFunction(std::wstring const& name, C const* instance, R(C::*function)(A...)const)
+	{
+		m_callables[name] = std::make_shared<CallableMemConst<C, R, A...>>(instance, function);
+	}
+
+	template <class F>
+	void	ConsoleInterpreter::addFunction(std::wstring const& name, F&& functor)
+	{
+		addFunctor(name, functor, &F::operator());
+	}
+
+	template <class C, class R, class ... A>
+	void	ConsoleInterpreter::addFunctor(std::wstring const& name, C instance, R(C::*function)(A...))
+	{
+		m_callables[name] = std::make_shared<CallableFunctor<C, R, A...>>(instance, function);
+	}
+
+	template <class C, class R, class ... A>
+	void	ConsoleInterpreter::addFunctor(std::wstring const& name, C instance, R(C::*function)(A...)const)
+	{
+		m_callables[name] = std::make_shared<CallableConstFunctor<C, R, A...>>(instance, function);
+	}
 }

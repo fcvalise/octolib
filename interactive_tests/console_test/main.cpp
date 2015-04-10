@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:18:05 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/07 10:59:46 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/10 16:43:58 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,28 @@ public:
 	}
 };
 
+struct	ElFunctor
+{
+	double	operator()(int x, float y, double z)
+	{
+		return (x + y + z);
+	}
+};
+
+struct	ElConstantFunctor
+{
+	double	operator()(int x, float y, double z)const
+	{
+		return (x + y + z);
+	}
+};
+
 int	main()
 {
 	octo::ConsoleInterpreter	interpreter;
 	Captain						captain;
 
+	interpreter.addFunction(L"lambda", [](int x){return (x + 2);});
 	interpreter.addFunction(L"hello", &sayHello);
 	interpreter.addFunction(L"captainAge", &getCaptainAge);
 	interpreter.addFunction(L"print", &print);
@@ -77,6 +94,8 @@ int	main()
 	interpreter.addFunction(L"puteBorgne", captain, &Captain::sayPuteBorgne);
 	interpreter.addFunction(L"puteBorgneAge", captain, &Captain::sayPuteBorgneAndReturnAge);
 	interpreter.addFunction(L"puteBorgneAgeConst", captain, &Captain::sayPuteBorgneConst);
+	interpreter.addFunction(L"functor", (ElFunctor()));
+	interpreter.addFunction(L"cfunctor", (ElConstantFunctor()));
 	interpreter.execute(L"hello()");
 	std::wcout << interpreter.execute(L"captainAge()") << std::endl;
 	std::wcout << interpreter.execute(L"print(\"90\")") << std::endl;
@@ -86,5 +105,8 @@ int	main()
 	std::wcout << interpreter.execute(L"puteBorgne()") << std::endl;
 	std::wcout << interpreter.execute(L"puteBorgneAge()") << std::endl;
 	std::wcout << interpreter.execute(L"puteBorgneAgeConst()") << std::endl;
+	std::wcout << interpreter.execute(L"functor(4, 5., 10.33)") << std::endl;
+	std::wcout << interpreter.execute(L"cfunctor(4, 5., 10.33)") << std::endl;
+	std::wcout << interpreter.execute(L"lambda(43)") << std::endl;
 	return (0);
 }
