@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/10 17:56:25 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/10 19:38:02 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@ namespace octo
 {
 	template <class T>
 	using CleanedType = typename std::remove_cv<typename std::remove_reference<T>::type>::type;
+
 	namespace details
 	{
 		template <class T>
@@ -48,7 +49,7 @@ namespace octo
 		struct	ArgumentChecker
 		{
 			template <class ... A>
-			static bool	check(std::vector<std::wstring> const& arguments)
+			static void	check(std::vector<std::wstring> const& arguments)
 			{
 				typedef std::tuple<A...>							Tuple;
 				typedef typename std::tuple_element<I, Tuple>::type	CurrentType;
@@ -60,7 +61,7 @@ namespace octo
 				if (iss >> value)
 					return (ArgumentChecker<I + 1, N>::template check<A...>(arguments));
 				else
-					return (false);
+					throw ConsoleInterpreter::ArgumentTypeException(I);
 			}
 		};
 
@@ -68,9 +69,8 @@ namespace octo
 		struct	ArgumentChecker<I, I>
 		{
 			template <class ... A>
-			static bool	check(std::vector<std::wstring> const&)
+			static void	check(std::vector<std::wstring> const&)
 			{
-				return (true);
 			}
 		};
 	}
@@ -79,15 +79,15 @@ namespace octo
 	{
 	protected:
 		template <class ... A>
-		static bool				checkArguments(std::vector<std::wstring> const& arguments)
+		static void				checkArguments(std::vector<std::wstring> const& arguments)
 		{
 			if (sizeof...(A) == arguments.size())
 			{
-				return (details::ArgumentChecker<0u, sizeof ... (A)>::template check<A...>(arguments));	
+				details::ArgumentChecker<0u, sizeof ... (A)>::template check<A...>(arguments);
 			}
 			else
 			{
-				return (false);
+				throw ConsoleInterpreter::NotEnoughArgumentException();
 			}
 		}
 
@@ -99,7 +99,7 @@ namespace octo
 
 	public:
 		virtual ~AbstractCallable(){};
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool& ok) = 0;
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments) = 0;
 	};
 
 	template <class R, class ... A>
@@ -112,21 +112,14 @@ namespace octo
 		{
 		}
 
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
 		{
 			std::wstring	result;
 			R				resultValue;
 
-			if (checkArguments<A...>(arguments))
-			{
-				resultValue = (*m_function)(fromString<A, A...>(arguments)...);
-				result = details::toStringImp(resultValue);
-				ok = true;
-			}
-			else
-			{
-				ok = false;
-			}
+			checkArguments<A...>(arguments);
+			resultValue = (*m_function)(fromString<A, A...>(arguments)...);
+			result = details::toStringImp(resultValue);
 			return (result);
 		}
 	private:
@@ -143,17 +136,10 @@ namespace octo
 		{
 		}
 
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
 		{
-			if (checkArguments<A...>(arguments))
-			{
-				(*m_function)(fromString<A, A...>(arguments)...);
-				ok = true;
-			}
-			else
-			{
-				ok = false;
-			}
+			checkArguments<A...>(arguments);
+			(*m_function)(fromString<A, A...>(arguments)...);
 			return (L"");
 		}
 	private:
@@ -171,21 +157,14 @@ namespace octo
 		{
 		}
 
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
 		{
 			std::wstring	result;
 			R				resultValue;
 
-			if (checkArguments<A...>(arguments))
-			{
-				resultValue = (m_object->*m_function)(fromString<A, A...>(arguments)...);
-				result = details::toStringImp(resultValue);
-				ok = true;
-			}
-			else
-			{
-				ok = false;
-			}
+			checkArguments<A...>(arguments);
+			resultValue = (m_object->*m_function)(fromString<A, A...>(arguments)...);
+			result = details::toStringImp(resultValue);
 			return (result);
 		}
 	private:
@@ -204,17 +183,10 @@ namespace octo
 		{
 		}
 
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
 		{
-			if (checkArguments<A...>(arguments))
-			{
-				(m_object->*m_function)(fromString<A, A...>(arguments)...);
-				ok = true;
-			}
-			else
-			{
-				ok = false;
-			}
+			checkArguments<A...>(arguments);
+			(m_object->*m_function)(fromString<A, A...>(arguments)...);
 			return (L"");
 		}
 	private:
@@ -233,17 +205,10 @@ namespace octo
 		{
 		}
 
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
 		{
-			if (checkArguments<A...>(arguments))
-			{
-				(m_object->*m_function)(fromString<A, A...>(arguments)...);
-				ok = true;
-			}
-			else
-			{
-				ok = false;
-			}
+			checkArguments<A...>(arguments);
+			(m_object->*m_function)(fromString<A, A...>(arguments)...);
 			return (L"");
 		}
 	private:
@@ -262,21 +227,14 @@ namespace octo
 		{
 		}
 
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
 		{
 			std::wstring	result;
 			R				resultValue;
 
-			if (checkArguments<A...>(arguments))
-			{
-				resultValue = (m_object.*m_function)(fromString<A, A...>(arguments)...);
-				result = details::toStringImp(resultValue);
-				ok = true;
-			}
-			else
-			{
-				ok = false;
-			}
+			checkArguments<A...>(arguments);
+			resultValue = (m_object.*m_function)(fromString<A, A...>(arguments)...);
+			result = details::toStringImp(resultValue);
 			return (result);
 		}
 	private:
@@ -295,21 +253,14 @@ namespace octo
 		{
 		}
 
-		virtual std::wstring	call(std::vector<std::wstring> const& arguments, bool &ok)
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
 		{
 			std::wstring	result;
 			R				resultValue;
 
-			if (checkArguments<A...>(arguments))
-			{
-				resultValue = (m_object.*m_function)(fromString<A, A...>(arguments)...);
-				result = details::toStringImp(resultValue);
-				ok = true;
-			}
-			else
-			{
-				ok = false;
-			}
+			checkArguments<A...>(arguments);
+			resultValue = (m_object.*m_function)(fromString<A, A...>(arguments)...);
+			result = details::toStringImp(resultValue);
 			return (result);
 		}
 	private:
@@ -318,37 +269,37 @@ namespace octo
 	};
 
 	template <class R, class ... A>
-	void	ConsoleInterpreter::addFunction(std::wstring const& name, R(*function)(A...))
+	void	ConsoleInterpreter::addCommand(std::wstring const& name, R(*function)(A...))
 	{
 		m_callables[name] = std::make_shared<Callable<R, A...>>(function);	
 	}
 
 	template <class C, class R, class ... A>
-	void	ConsoleInterpreter::addFunction(std::wstring const& name, C& instance, R(C::*function)(A...))
+	void	ConsoleInterpreter::addCommand(std::wstring const& name, C& instance, R(C::*function)(A...))
 	{
 		m_callables[name] = std::make_shared<CallableMem<C, R, A...>>(&instance, function);
 	}
 
 	template <class C, class R, class ... A>
-	void	ConsoleInterpreter::addFunction(std::wstring const& name, C* instance, R(C::*function)(A...))
+	void	ConsoleInterpreter::addCommand(std::wstring const& name, C* instance, R(C::*function)(A...))
 	{
 		m_callables[name] = std::make_shared<CallableMem<C, R, A...>>(instance, function);
 	}
 
 	template <class C, class R, class ... A>
-	void	ConsoleInterpreter::addFunction(std::wstring const& name, C const& instance, R(C::*function)(A...)const)
+	void	ConsoleInterpreter::addCommand(std::wstring const& name, C const& instance, R(C::*function)(A...)const)
 	{
 		m_callables[name] = std::make_shared<CallableMemConst<C, R, A...>>(&instance, function);
 	}
 
 	template <class C, class R, class ... A>
-	void	ConsoleInterpreter::addFunction(std::wstring const& name, C const* instance, R(C::*function)(A...)const)
+	void	ConsoleInterpreter::addCommand(std::wstring const& name, C const* instance, R(C::*function)(A...)const)
 	{
 		m_callables[name] = std::make_shared<CallableMemConst<C, R, A...>>(instance, function);
 	}
 
 	template <class F>
-	void	ConsoleInterpreter::addFunction(std::wstring const& name, F&& functor)
+	void	ConsoleInterpreter::addCommand(std::wstring const& name, F&& functor)
 	{
 		addFunctor(name, functor, &F::operator());
 	}

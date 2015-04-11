@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/03 09:27:15 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/04 15:51:28 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/10 19:16:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <codecvt>
 
 #include <ConsoleCommandParser.hpp>
+#include <ConsoleInterpreter.hpp>
 
 namespace std
 {
@@ -37,18 +38,15 @@ BOOST_AUTO_TEST_SUITE( console_command_parser )
 
 static void	testParser(std::wstring const& line,
 					   std::wstring const& expectedName,
-					   std::vector<std::wstring> const& expectedArguments,
-					   bool expectedReturn = true)
+					   std::vector<std::wstring> const& expectedArguments)
 {
 	std::wstring				name;
 	std::vector<std::wstring>	arguments;
-	bool 						result = false;
 
-	result = octo::ConsoleCommandParser::parseLine(line, name, arguments);
+	octo::ConsoleCommandParser::parseLine(line, name, arguments);
 	BOOST_CHECK_EQUAL( name, expectedName );
 	BOOST_CHECK_EQUAL_COLLECTIONS( expectedArguments.begin(), expectedArguments.end(),
 								   arguments.begin(), arguments.end() );
-	BOOST_CHECK_EQUAL ( result, expectedReturn );
 }
 
 BOOST_AUTO_TEST_CASE( simple_test )
@@ -67,10 +65,13 @@ BOOST_AUTO_TEST_CASE( simple_test )
 
 BOOST_AUTO_TEST_CASE( error_test )
 {
-	testParser(L"  yop   (,\"shsfhsf\",kkkkkss)  ", L"", {}, false);
-	testParser(L" 7575 yop   (,\"shsfhsf\",kkkkkss)  ", L"", {}, false);
-	testParser(L" (,\"shsfhsf\",kkkkkss)  ", L"", {}, false);
-	testParser(L"r r (,\"shsfhsf\",kkkkkss)  ", L"", {}, false);
+	std::wstring				name;
+	std::vector<std::wstring>	arguments;
+
+	BOOST_CHECK_THROW( octo::ConsoleCommandParser::parseLine(L"  yop   (,\"shsfhsf\",kkkkkss)  ", name, arguments), octo::ConsoleInterpreter::SyntaxErrorException );
+	BOOST_CHECK_THROW( octo::ConsoleCommandParser::parseLine(L" 7575 yop   (\"shsfhsf\",kkkkkss)  ", name, arguments), octo::ConsoleInterpreter::SyntaxErrorException );
+	BOOST_CHECK_THROW( octo::ConsoleCommandParser::parseLine(L" (,\"shsfhsf\",kkkkkss)  ", name, arguments), octo::ConsoleInterpreter::SyntaxErrorException );
+	BOOST_CHECK_THROW( octo::ConsoleCommandParser::parseLine(L"r r (,\"shsfhsf\",kkkkkss)  ", name, arguments), octo::ConsoleInterpreter::SyntaxErrorException );
 }
 
 BOOST_AUTO_TEST_SUITE_END()

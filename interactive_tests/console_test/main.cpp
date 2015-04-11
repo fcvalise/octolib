@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:18:05 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/10 16:43:58 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/10 19:37:02 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,18 @@ int	main()
 	octo::ConsoleInterpreter	interpreter;
 	Captain						captain;
 
-	interpreter.addFunction(L"lambda", [](int x){return (x + 2);});
-	interpreter.addFunction(L"hello", &sayHello);
-	interpreter.addFunction(L"captainAge", &getCaptainAge);
-	interpreter.addFunction(L"print", &print);
-	interpreter.addFunction(L"printTwo", &print2);
-	interpreter.addFunction(L"printStr", &printStr);
-	interpreter.addFunction(L"say", &saySomething);
-	interpreter.addFunction(L"puteBorgne", captain, &Captain::sayPuteBorgne);
-	interpreter.addFunction(L"puteBorgneAge", captain, &Captain::sayPuteBorgneAndReturnAge);
-	interpreter.addFunction(L"puteBorgneAgeConst", captain, &Captain::sayPuteBorgneConst);
-	interpreter.addFunction(L"functor", (ElFunctor()));
-	interpreter.addFunction(L"cfunctor", (ElConstantFunctor()));
+	interpreter.addCommand(L"lambda", [](int x){return (x + 2);});
+	interpreter.addCommand(L"hello", &sayHello);
+	interpreter.addCommand(L"captainAge", &getCaptainAge);
+	interpreter.addCommand(L"print", &print);
+	interpreter.addCommand(L"printTwo", &print2);
+	interpreter.addCommand(L"printStr", &printStr);
+	interpreter.addCommand(L"say", &saySomething);
+	interpreter.addCommand(L"puteBorgne", captain, &Captain::sayPuteBorgne);
+	interpreter.addCommand(L"puteBorgneAge", captain, &Captain::sayPuteBorgneAndReturnAge);
+	interpreter.addCommand(L"puteBorgneAgeConst", captain, &Captain::sayPuteBorgneConst);
+	interpreter.addCommand(L"functor", (ElFunctor()));
+	interpreter.addCommand(L"cfunctor", (ElConstantFunctor()));
 	interpreter.execute(L"hello()");
 	std::wcout << interpreter.execute(L"captainAge()") << std::endl;
 	std::wcout << interpreter.execute(L"print(\"90\")") << std::endl;

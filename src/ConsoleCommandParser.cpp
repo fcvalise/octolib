@@ -6,13 +6,15 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:34:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/04 15:23:21 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/10 19:31:40 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ConsoleCommandParser.hpp"
+#include "ConsoleInterpreter.hpp"
+
 #include <locale>
-#include <iostream> // test
+
 namespace octo
 {
 	namespace
@@ -64,22 +66,23 @@ namespace octo
 			return (false);	
 		}
 
-		std::wstring::const_iterator	parseCommandName(std::wstring::const_iterator it,
+		bool							parseCommandName(std::wstring::const_iterator& it,
 														 std::wstring::const_iterator end,
 														 std::wstring& result)
 		{
 			auto	begin = it;
 
 			if (it == end)
-				return (it);
+				return (false);
 			while (it != end && std::find(Symbols.begin(), Symbols.end(), *it) != Symbols.end())
 				++it;
 			if (begin != end && it != end)
 				result.assign(begin, it);
-			return (it);
+			return (result.size() > 0);
 		}
 
-		std::wstring::const_iterator	parseArguments(std::wstring::const_iterator it,
+		void							parseArguments(std::wstring const& line,
+													   std::wstring::const_iterator& it,
 													   std::wstring::const_iterator end,
 													   std::vector<std::wstring>& arguments)
 		{
@@ -110,8 +113,7 @@ namespace octo
 				{
 					if (arguments.empty())
 					{
-						return (end);
-						// Error
+						throw ConsoleInterpreter::SyntaxErrorException(L"argument expected", std::distance(line.begin(), it));
 					}
 					++it;
 					it = skipSpaces(it, end);
@@ -119,11 +121,10 @@ namespace octo
 				else
 					break;
 			}
-			return (it);
 		}
 	}
 
-	bool	ConsoleCommandParser::parseLine(std::wstring const& line,
+	void	ConsoleCommandParser::parseLine(std::wstring const& line,
 						  					std::wstring& name,
 						  					std::vector<std::wstring>& arguments)
 	{
@@ -131,23 +132,22 @@ namespace octo
 		auto	end = line.end();
 
 		it = skipSpaces(it, end);
-		it = parseCommandName(it, end, name);
+		if (parseCommandName(it, end, name) == false)
+		{
+			// Error: command name expected
+			throw ConsoleInterpreter::SyntaxErrorException(L"command name expected", std::distance(line.begin(), it));
+		}
 		it = skipSpaces(it, end);
 		if (checkParamIn(it, end) == false)
 		{
-			name.clear();
-			arguments.clear();
-			return (false);
+			throw ConsoleInterpreter::SyntaxErrorException(L"argument block begin expected", std::distance(line.begin(), it));
 		}
 		it = skipSpaces(it, end);
-		it = parseArguments(it, end, arguments);
+		parseArguments(line, it, end, arguments);
 		it = skipSpaces(it, end);
 		if (checkParamOut(it, end) == false)
 		{
-			name.clear();
-			arguments.clear();
-			return (false);
+			throw ConsoleInterpreter::SyntaxErrorException(L"argument block end expected", std::distance(line.begin(), it));
 		}
-		return (true);
 	}
 }
