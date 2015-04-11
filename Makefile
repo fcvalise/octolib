@@ -107,6 +107,7 @@ open_dox:
 
 complete: re
 	@make re -C tests
+	@tests/tester.app
 	@make re -C tools/packager
 	@make re -C tools/package_reader
 	@make re -C benchmarks
@@ -114,7 +115,6 @@ complete: re
 	@make re -C interactive_tests/options
 	@make re -C interactive_tests/resource_test
 	@make re -C interactive_tests/state_manager
-	@tests/tester.app
 	
 benchmarks:
 	@make -C benchmarks

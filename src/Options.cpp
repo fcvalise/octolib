@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:39:33 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 14:37:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 17:12:42 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,23 @@ namespace octo
 		m_values.clear();
 	}
 
+	//
 	// AbstractLoader
+	//
 	Options::AbstractLoader::~AbstractLoader()
 	{
 	}
 
+	//
 	// AbstractExporter
+	//
 	Options::AbstractExporter::~AbstractExporter()
 	{
 	}
 
+	//
 	// CommandLineLoader
+	//
 	Options::CommandLineLoader::CommandLineLoader(int argc, char **argv)
 	{
 		for (int i = 1; i < argc; ++i)
@@ -94,17 +100,26 @@ namespace octo
 	{
 		std::string	key;
 		std::string	value;
+		std::size_t	argId = 0u;
 
 		for (auto const& arg : m_args)
 		{
-			if (OptionParser::parseLine(arg, key, value))
+			try
 			{
+				OptionParser::parseLine(arg, key, value);
 				options.setValue(key, value);
 			}
+			catch (OptionParser::SyntaxErrorException const& e)
+			{
+				std::cerr << "arguments: " << argId << e.what() << std::endl;
+			}
+			++argId;
 		}
 	}
-	
+
+	//
 	// ConfigFileLoader
+	//
 	Options::ConfigFileLoader::ConfigFileLoader(std::string const& fileName) :
 		m_fileName(fileName)
 	{
@@ -116,20 +131,30 @@ namespace octo
 		std::string		value;
 		std::string		line;
 		std::ifstream	file;
-		
+		std::size_t		lineId = 0u;
+
 		file.open(m_fileName.c_str());
 		if (file.is_open())
 		{
 			while (std::getline(file, line))
 			{
-				if (OptionParser::parseLine(line, key, value))
+				try
 				{
+					OptionParser::parseLine(line, key, value);
 					options.setValue(key, value);
 				}
+				catch (OptionParser::SyntaxErrorException const& e)
+				{
+					std::cerr << m_fileName << ": " << lineId << ": " << e.what() << std::endl;
+				}
+				++lineId;
 			}	
 		}
 	}
 
+	//
+	// ConfigFileExporter
+	//
 	Options::ConfigFileExporter::ConfigFileExporter(std::string const& filePath)
 	{
 		m_file.open(filePath);
@@ -145,5 +170,18 @@ namespace octo
 			return (false);
 		m_file << key << " = " << value << "\n";
 		return (true);
+	}
+
+	//
+	// InvalidTypeException
+	//
+	Options::InvalidTypeException::InvalidTypeException(std::string const& key) :
+		m_key(key)
+	{
+	}
+
+	std::string const&	Options::InvalidTypeException::getKey()const
+	{
+		return (m_key);
 	}
 }

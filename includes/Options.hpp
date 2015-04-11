@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:34:27 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 03:28:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 17:13:03 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ namespace octo
 		class CommandLineLoader;
 		class ConfigFileLoader;
 		class ConfigFileExporter;
+		class InvalidTypeException;
 
 		/*!	Load values from a loader
 		 *
@@ -134,6 +135,16 @@ namespace octo
 		virtual bool	writeKeyValue(std::string const& key, std::string const& value);
 	private:
 		std::ofstream	m_file;
+	};
+
+	class Options::InvalidTypeException
+	{
+	public:
+		explicit InvalidTypeException(std::string const& key);
+
+		std::string const&	getKey()const;
+	private:
+		std::string	m_key;
 	};
 }
 

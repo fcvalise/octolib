@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 15:32:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 20:06:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 17:09:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ namespace octo
 
 		iss.flags(std::ios::boolalpha);
 		iss.str(getValue<std::string>(key));
-		value >> iss;
+		if (!iss >> value)
+			throw Options::InvalidTypeException(key);
 		return (value);
 	}
 
@@ -40,7 +41,8 @@ namespace octo
 
 			iss.flags(std::ios::boolalpha);
 			iss.str(it->second);
-			iss >> value;
+			if (!iss >> value)
+				throw Options::InvalidTypeException(key);
 		}
 		else
 		{
