@@ -6,12 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 11:41:07 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 21:55:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ConsoleInterpreter.hpp"
 #include "ConsoleCommandParser.hpp"
+
+#include <codecvt>
 
 namespace octo
 {
@@ -28,12 +30,20 @@ namespace octo
 		{
 			return (value);
 		}
+
+		std::wstring	stringToWide(std::string const& str)
+		{
+			static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>	converter;
+
+			return (converter.from_bytes(str));
+		}
 	}
 
 	//
 	//	ArgumentTypeException
 	//
-	ConsoleInterpreter::ArgumentTypeException::ArgumentTypeException(std::size_t argumentIndex) :
+	ConsoleInterpreter::ArgumentTypeException::ArgumentTypeException(std::size_t argumentIndex, std::string const& expectedTypeName) :
+		m_expectedTypeName(details::stringToWide(expectedTypeName)),
 		m_argumentIndex(argumentIndex)
 	{
 	}

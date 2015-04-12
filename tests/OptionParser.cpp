@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:57:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 15:24:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 15:35:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static void	testOptionParser(std::string const& line,
 
 BOOST_AUTO_TEST_CASE( extract_key_values )
 {
+	testOptionParser("console_font = yop.bob", "console_font", "yop.bob");
+
 	testOptionParser("a=b", "a", "b");
 	testOptionParser("ab=c", "ab", "c");
 	testOptionParser("a=bc", "a", "bc");
@@ -78,6 +80,7 @@ BOOST_AUTO_TEST_CASE( extract_key_values )
 	testOptionParser(" ac  =b", "ac", "b");
 	testOptionParser("ac =b", "ac", "b");
 	testOptionParser("ac  =b", "ac", "b");
+
 }
 
 BOOST_AUTO_TEST_CASE (errors)

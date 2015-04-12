@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 03:27:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 17:35:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,18 @@ namespace octo
 
 	/*!
 	 *	\ingroup Graphics
+	 *	Text entered listener interface
+	 */
+	class ITextListener
+	{
+	public:
+		virtual ~ITextListener(){}
+
+		virtual void	onTextEntered(sf::Event::TextEvent const& event) = 0;
+	};
+
+	/*!
+	 *	\ingroup Graphics
 	 *	Manage a render window
 	 */
 	class GraphicsManager
@@ -119,15 +131,18 @@ namespace octo
 		void					addKeyboardListener(IKeyboardListener* listener);
 		void					addMouseListener(IMouseListener* listener);
 		void					addJoystickListener(IJoystickListener* listener);
+		void					addTextListener(ITextListener* listener);
 		void					removeWindowListener(IWindowListener* listener);
 		void					removeKeyboardListener(IKeyboardListener* listener);
 		void					removeMouseListener(IMouseListener* listener);
 		void					removeJoystickListener(IJoystickListener* listener);
+		void					removeTextListener(ITextListener* listener);
 	private:
 		typedef ListenerArray<IWindowListener>		WindowListenerArray;
 		typedef ListenerArray<IKeyboardListener>	KeyboardListenerArray;
 		typedef ListenerArray<IMouseListener>		MouseListenerArray;
 		typedef ListenerArray<IJoystickListener>	JoystickListenerArray;
+		typedef ListenerArray<ITextListener>		TextListenerArray;
 
 		sf::RenderWindow			m_window;
 		sf::VideoMode				m_videoMode;
@@ -139,6 +154,7 @@ namespace octo
 		KeyboardListenerArray		m_keyboardListeners;
 		MouseListenerArray			m_mouseListeners;
 		JoystickListenerArray		m_joystickListeners;
+		TextListenerArray			m_textEnteredListeners;
 	};
 }
 

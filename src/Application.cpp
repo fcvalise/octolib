@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 04:37:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 14:36:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "GraphicsManager.hpp"
 #include "ResourceManager.hpp"
 #include "Options.hpp"
+#include "Console.hpp"
 
 #include <cassert>
 
@@ -64,6 +65,11 @@ namespace octo
 				std::cout << "warning no package loaded" << std::endl;
 		}
 
+		void	setupConsole()
+		{
+			
+		}
+
 		void	start(StateManager::Key const& startStateKey)
 		{
 			m_stateManager.push(m_options.getValue("start_state", startStateKey));
@@ -85,7 +91,9 @@ namespace octo
 				m_graphicsManager.processEvents();
 				if (m_paused == false)
 					m_stateManager.update(frameTime, m_graphicsManager.getView());
+				m_console.update(frameTime, m_graphicsManager.getView());
 				m_stateManager.draw(m_graphicsManager.getRender());
+				m_console.draw(m_graphicsManager.getRender());
 				m_graphicsManager.display();
 				frameTime = m_clock.restart();
 			}
@@ -95,6 +103,7 @@ namespace octo
 		GraphicsManager	m_graphicsManager;
 		ResourceManager	m_resourceManager;
 		Options			m_options;
+		Console			m_console;
 		PausableClock	m_clock;
 		sf::Event		m_event;
 		bool			m_paused;
@@ -110,8 +119,7 @@ namespace octo
 		s_instance->setupOptions(optionFilePath, argc, argv);
 		s_instance->setupGraphics(title);
 		s_instance->setupResources();
-		static_cast<void>(argc);
-		static_cast<void>(argv);
+		s_instance->setupConsole();
 	}
 
 	void	Application::destroy()
@@ -186,5 +194,12 @@ namespace octo
 		assert (s_instance != nullptr);
 
 		return (s_instance->m_options);
+	}
+
+	Console&	Application::getConsole()
+	{
+		assert (s_instance != nullptr);
+
+		return (s_instance->m_console);
 	}
 }

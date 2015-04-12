@@ -6,9 +6,11 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/10 19:38:02 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 22:19:43 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "details/GetTypeName.hpp"
 
 namespace octo
 {
@@ -61,7 +63,7 @@ namespace octo
 				if (iss >> value)
 					return (ArgumentChecker<I + 1, N>::template check<A...>(arguments));
 				else
-					throw ConsoleInterpreter::ArgumentTypeException(I);
+					throw ConsoleInterpreter::ArgumentTypeException(I, details::GetTypeName<CleanedType<CurrentType>>::Value);
 			}
 		};
 

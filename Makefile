@@ -21,8 +21,8 @@ CORE_SRC =	Application.cpp					\
 			BinaryInputStream.cpp			\
 			BinaryOutputStream.cpp
 
-MATH_SRC = Interpolations.cpp				\
-	   Math.cpp
+MATH_SRC = 	Interpolations.cpp				\
+	 		Math.cpp
 
 RESOURCE_SRC = ResourceManager.cpp
 
@@ -36,7 +36,9 @@ STATE_SYSTEM_SRC =	AbstractState.cpp		\
 					DefaultTransition.cpp
 
 CONSOLE_SRC = ConsoleCommandParser.cpp		\
-			  ConsoleInterpreter.cpp
+			  ConsoleInterpreter.cpp		\
+			  ConsoleCore.cpp				\
+			  Console.cpp
 
 # compiler
 CC = g++

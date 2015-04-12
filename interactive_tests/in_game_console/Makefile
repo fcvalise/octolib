@@ -12,7 +12,7 @@ PACKAGE_FILE = default.pck
 LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 
 # sources
-SRC = main.cpp
+SRC = application_example.cpp
 
 # compiler
 CC = g++
@@ -48,7 +48,7 @@ COLOR_OBJECT = \033[0m
 
 all: print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) core_library package $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) core_library $(OBJS) package
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(CLIBS_FLAGS) 
 
@@ -90,3 +90,4 @@ clean_core_library:
 
 fclean_core_library:
 	@make -s -C $(CORE_DIR) fclean MODE=$(MODE)
+

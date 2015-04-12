@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:34:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/10 19:31:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 15:51:11 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace octo
 	namespace
 	{
 		static std::locale			s_locale;
-		static std::wstring const	Spaces = L" \t\f\v\n";
+		static std::wstring const	Spaces = L" \t\f\v\r\n";
 		static std::wstring const	Symbols = L"abcdefghijklmnopqrstuvwxyz"
 											  L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 											  L"_";

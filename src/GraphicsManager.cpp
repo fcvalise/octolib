@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/25 02:46:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 17:37:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,11 @@ namespace octo
 					for (IJoystickListener* listener : m_joystickListeners)
 						listener->onReleased(m_event.joystickButton);
 					break;
+				// Text event
+				case sf::Event::TextEntered:
+					for (ITextListener* listener : m_textEnteredListeners)
+						listener->onTextEntered(m_event.text);
+					break;
 				default:
 					break;
 			}
@@ -202,6 +207,11 @@ namespace octo
 		appendListener(listener, m_joystickListeners);
 	}
 
+	void	GraphicsManager::addTextListener(ITextListener* listener)
+	{
+		appendListener(listener, m_textEnteredListeners);
+	}
+
 	void	GraphicsManager::removeWindowListener(IWindowListener* listener)
 	{
 		removeListener(listener, m_windowListeners);
@@ -220,5 +230,10 @@ namespace octo
 	void	GraphicsManager::removeJoystickListener(IJoystickListener* listener)
 	{
 		removeListener(listener, m_joystickListeners);
+	}
+
+	void	GraphicsManager::removeTextListener(ITextListener* listener)
+	{
+		removeListener(listener, m_textEnteredListeners);
 	}
 }

@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ConsoleCommandParser.hpp                           :+:      :+:    :+:   */
+/*   IConsoleListener.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/04/02 14:30:22 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 19:52:24 by irabeson         ###   ########.fr       */
+/*   Created: 2015/04/11 19:47:28 by irabeson          #+#    #+#             */
+/*   Updated: 2015/04/12 10:58:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONSOLECOMMANDPARSER_HPP
-# define CONSOLECOMMANDPARSER_HPP
+#ifndef ICONSOLELISTENER_HPP
+# define ICONSOLELISTENER_HPP
 # include <string>
-# include <vector>
 
-// TODO: move this file into details directory
 namespace octo
 {
-	class ConsoleCommandParser
+	class IConsoleListener
 	{
 	public:
-		static void	parseLine(std::wstring const& line,
-							  std::wstring& name,
-							  std::vector<std::wstring>& arguments);
+		virtual ~IConsoleListener() = default;
+
+		virtual void	onTextChanged(std::wstring const& text) = 0;
+		virtual void	onCursorChanged(unsigned int pos) = 0;
+		virtual void	onExecuted(std::wstring const& result) = 0;
+		virtual void	onError(std::wstring const& message) = 0;
 	};
 }
 

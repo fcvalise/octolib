@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 12:23:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/10 19:48:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 21:57:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,16 @@ namespace octo
 	class ConsoleInterpreter::ArgumentTypeException
 	{
 	public:
-		explicit ArgumentTypeException(std::size_t argumentIndex);
+		explicit ArgumentTypeException(std::size_t argumentIndex, std::string const& expectedTypeName);
 
-		std::size_t	getArgumentIndex()const;
+		std::size_t		getArgumentIndex()const;
+		std::wstring	getExpectedTypeName()const
+		{
+			return (m_expectedTypeName);
+		}
 	private:
-		std::size_t	m_argumentIndex;
+		std::wstring	m_expectedTypeName;
+		std::size_t		m_argumentIndex;
 	};
 
 	class ConsoleInterpreter::NotEnoughArgumentException
