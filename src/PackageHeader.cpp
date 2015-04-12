@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 09:12:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 16:39:17 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ namespace octo
 	{
 		if (entryExists(key))
 		{
-			entry = m_entries[key];
+			entry = m_entries.at(key);
 			return (true);
 		}
 		else
@@ -89,29 +89,29 @@ namespace octo
 
 	std::string const&	PackageHeader::getEntryName(EntryKey key)const
 	{
-		return (m_entries[key].name);
+		return (m_entries.at(key).name);
 	}
 
 	PackageHeader::EntryType	PackageHeader::getEntryType(EntryKey key)const
 	{
-		return (m_entries[key].type);
+		return (m_entries.at(key).type);
 	}
 
 	std::uint64_t	PackageHeader::getEntryOffset(EntryKey key)const
 	{
-		return (m_entries[key].offset);
+		return (m_entries.at(key).offset);
 	}
 
 	std::uint64_t	PackageHeader::getEntrySize(EntryKey key)const
 	{
-		return (m_entries[key].size);
+		return (m_entries.at(key).size);
 	}
 
 	std::uint64_t	PackageHeader::getFirstEntry(EntryType type)const
 	{
 		std::uint64_t	key = 0;
 
-		while (getEntryType(key) != type)
+		while (key < count() && getEntryType(key) != type)
 			++key;
 		if (key == count())
 			return (NullEntryKey);
@@ -121,14 +121,14 @@ namespace octo
 
 	std::uint64_t	PackageHeader::getEntryCount(EntryType type)const
 	{
-		std::uint64_t	key = getFirstEntry(type);
-		std::uint64_t	count = 0;
+		std::uint64_t	result = 0;
 
-		if (key == NullEntryKey)
-			return (NullEntryKey);
-		while (getEntryType(key + count) == type)
-			++count;
-		return (count);
+		for (auto const& entry : m_entries)
+		{
+			if (entry.type == type)
+				++result;
+		}
+		return (result);
 	}
 
 	std::uint64_t	PackageHeader::count()const
