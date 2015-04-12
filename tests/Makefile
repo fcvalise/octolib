@@ -21,7 +21,8 @@ SRC = main.cpp						\
 	  Math.cpp						\
 	  ByteArray.cpp					\
 	  BinaryStream.cpp				\
-	  ConsoleCommandParser.cpp
+	  ConsoleCommandParser.cpp		\
+	  ExpectChar.cpp
 
 # compiler
 CC = g++
