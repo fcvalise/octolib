@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/12 14:36:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 04:48:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ namespace octo
 			ResourceLoadingListener	listener;
 
 			if (m_options.containsKey("package") || m_options.hasValue("package"))
-				m_resourceManager.loadPackage(m_options.getValue("package"), &listener);
+				m_resourceManager.loadPackage(m_options.getValue<std::string>("package"), &listener);
 			else
 				std::cout << "warning no package loaded" << std::endl;
 		}

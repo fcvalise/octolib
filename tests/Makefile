@@ -8,7 +8,7 @@ OUTPUT_DIR = .
 LIB_DIRS = ../
 
 # libraries (ex: ft, mlx, ...)
-LIBS = octo boost_unit_test_framework
+LIBS = octo boost_unit_test_framework sfml-system sfml-graphics sfml-window
 
 # sources
 SRC = main.cpp						\
@@ -22,7 +22,8 @@ SRC = main.cpp						\
 	  ByteArray.cpp					\
 	  BinaryStream.cpp				\
 	  ConsoleCommandParser.cpp		\
-	  ExpectChar.cpp
+	  ExpectChar.cpp				\
+	  Options.cpp
 
 # compiler
 CC = g++

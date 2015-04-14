@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:29:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 16:00:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 16:51:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace octo
 		std::string::size_type	keyStartPos = (assignPos == std::string::npos) ?
 			0 : line.find_first_not_of(Spaces, 0, assignPos);
 		std::string::size_type	keyEndPos = (keyStartPos == std::string::npos) ?
-			std::string::npos : line.find_last_not_of(Spaces, assignPos - 1, assignPos);
+			std::string::npos : line.find_last_not_of(Spaces, assignPos - 1);
 		std::string::size_type	valueStartPos = (assignPos == std::string::npos) ?
 			std::string::npos : line.find_first_not_of(Spaces, assignPos + 1);
 		std::string::size_type	valueEndPos = (valueStartPos == std::string::npos) ?

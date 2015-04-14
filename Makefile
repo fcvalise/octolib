@@ -19,7 +19,8 @@ CORE_SRC =	Application.cpp					\
 			Options.cpp						\
 			ByteArray.cpp					\
 			BinaryInputStream.cpp			\
-			BinaryOutputStream.cpp
+			BinaryOutputStream.cpp			\
+			PrintSFML.cpp
 
 MATH_SRC = 	Interpolations.cpp				\
 	 		Math.cpp

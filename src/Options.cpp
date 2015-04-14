@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:39:33 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 17:12:42 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 04:50:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,17 @@ namespace octo
 			return (false);
 	}
 
+	template <>
 	std::string	Options::getValue(std::string const& key)const
 	{
 		auto		it = m_values.find(key);
 
-		assert (it != m_values.end());
+		if (it == m_values.end())
+			throw std::range_error("options: invalid key: " + key);
 		return (it->second);
 	}
 
+	template <>
 	std::string	Options::getValue(std::string const& key, std::string const& defaultValue)const
 	{
 		auto		it = m_values.find(key);
@@ -63,6 +66,7 @@ namespace octo
 			return (defaultValue);
 	}
 
+	template <>
 	void		Options::setValue(std::string const& key, std::string const& value)
 	{
 		m_values[key] = value;
@@ -176,6 +180,7 @@ namespace octo
 	// InvalidTypeException
 	//
 	Options::InvalidTypeException::InvalidTypeException(std::string const& key) :
+		std::logic_error("invalid type for key '" + key + "'"),
 		m_key(key)
 	{
 	}
