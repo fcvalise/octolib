@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 21:37:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 20:19:22 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ namespace octo
 		m_prompt(L"$> "),
 		m_cursorPosition(0)
 	{
+	}
+
+
+	void	ConsoleCore::updateText()
+	{
+		emitTextChanged();
+		emitCursorChanged();
 	}
 
 	void	ConsoleCore::setListener(IConsoleListener* listener)
@@ -99,7 +106,7 @@ namespace octo
 		}
 		catch (ConsoleInterpreter::ArgumentTypeException const& e)
 		{
-			emitError(L"invalid argument type (" + std::to_wstring(e.getArgumentIndex()) + L")");
+			emitError(L"invalid argument type (" + std::to_wstring(e.getArgumentIndex()) + L"), expected type: " + e.getExpectedTypeName());
 		}
 		catch (ConsoleInterpreter::NotEnoughArgumentException const& e)
 		{
@@ -128,7 +135,7 @@ namespace octo
 	void	ConsoleCore::emitCursorChanged()
 	{
 		if (m_listener)
-			m_listener->onCursorChanged(m_prompt.size() + m_buffer.size());
+			m_listener->onCursorChanged(m_cursorPosition + m_prompt.size());
 	}
 
 	void	ConsoleCore::emitExecuted(std::wstring const& result)
@@ -140,6 +147,16 @@ namespace octo
 	void	ConsoleCore::emitError(std::wstring const& message)
 	{
 		if (m_listener)
-			m_listener->onError(message);
+			m_listener->onError(message, m_buffer);
+	}
+
+	unsigned int	ConsoleCore::getPromptSize()const
+	{
+		return (m_prompt.size());
+	}
+	
+	std::vector<std::wstring>	ConsoleCore::getCommandList()const
+	{
+		return (m_interpreter.getCommandList());
 	}
 }

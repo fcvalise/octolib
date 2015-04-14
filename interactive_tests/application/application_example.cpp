@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 04:40:58 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 18:53:36 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ public:
 class KeyboardControl : public octo::IKeyboardListener
 {
 public:
-	virtual void	onPressed(sf::Event::KeyEvent const& event)
+	virtual bool	onPressed(sf::Event::KeyEvent const& event)
 	{
 		if (event.code == sf::Keyboard::Escape)
 		{
@@ -170,10 +170,12 @@ public:
 			octo::Application::getStateManager().pop("black_h");
 			std::cout << m_cyclePosition << std::endl;
 		}
+		return (true);
 	}
 
-	virtual void	onReleased(sf::Event::KeyEvent const&)
+	virtual bool	onReleased(sf::Event::KeyEvent const&)
 	{
+		return (false);
 	}
 private:
 	std::vector<octo::StateManager::Key>	m_stateCycle{"circle", "red", "blue", "green"};

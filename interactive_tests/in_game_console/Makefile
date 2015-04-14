@@ -12,7 +12,7 @@ PACKAGE_FILE = default.pck
 LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 
 # sources
-SRC = application_example.cpp
+SRC = main.cpp
 
 # compiler
 CC = g++

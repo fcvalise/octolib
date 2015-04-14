@@ -20,7 +20,8 @@ CORE_SRC =	Application.cpp					\
 			ByteArray.cpp					\
 			BinaryInputStream.cpp			\
 			BinaryOutputStream.cpp			\
-			PrintSFML.cpp
+			PrintSFML.cpp					\
+			WPrintSFML.cpp
 
 MATH_SRC = 	Interpolations.cpp				\
 	 		Math.cpp
@@ -126,3 +127,6 @@ complete: re
 benchmarks:
 	@make -C benchmarks
 	@./benchmarks/benchmark.app
+
+reinc:
+	@reinc -rv -B $(BUILD_DIR) --include-dirs $(INCLUDE_DIR) --source-dirs ./src/

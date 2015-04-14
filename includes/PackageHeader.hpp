@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 01:44:38 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 16:44:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ namespace octo
 
 		/*!	Return the count of entry of a type given */
 		std::uint64_t		getEntryCount(EntryType type)const;
+
+		/*!	Find an entry by specifying his type and his name
+		 *
+		 *	\return the key of the entry, or NullEntryKey if no entry is corresponding.
+		 */
+		std::uint64_t		findEntryByName(EntryType type, std::string const& fileName)const;
 
 		/*!	Return the count of entries */
 		std::uint64_t		count()const;

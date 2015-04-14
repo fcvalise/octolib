@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/12 16:39:17 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 16:45:44 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,19 @@ namespace octo
 						{
 							return (value + entry.size);
 						}));
+	}
+
+	std::uint64_t	PackageHeader::findEntryByName(EntryType type, std::string const& fileName)const
+	{
+		std::uint64_t	result = 0;
+
+		for (auto const& entry : m_entries)
+		{
+			if (entry.type == type && entry.name == fileName)
+				return (result);
+			++result;
+		}
+		return (NullEntryKey);
 	}
 
 	PackageHeader::const_iterator	PackageHeader::begin()const

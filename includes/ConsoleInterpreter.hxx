@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 22:19:43 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 20:12:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "details/GetTypeName.hpp"
+#include "WPrintSFML.hpp"
 
 namespace octo
 {
@@ -47,6 +48,9 @@ namespace octo
 		template <>
 		std::wstring	toStringImp(std::wstring const& value);
 
+		template <>
+		std::wstring	toStringImp(std::string const& value);
+
 		template <std::size_t I, std::size_t N>
 		struct	ArgumentChecker
 		{
@@ -60,7 +64,8 @@ namespace octo
 
 				iss.setf(std::ios_base::boolalpha);
 				iss.str(arguments[I]);
-				if (iss >> value)
+				iss >> value;
+				if (iss.fail() == false && iss.bad() == false)
 					return (ArgumentChecker<I + 1, N>::template check<A...>(arguments));
 				else
 					throw ConsoleInterpreter::ArgumentTypeException(I, details::GetTypeName<CleanedType<CurrentType>>::Value);
@@ -77,6 +82,9 @@ namespace octo
 		};
 	}
 
+	//
+	//	AbstractCallable
+	//
 	class ConsoleInterpreter::AbstractCallable
 	{
 	protected:
@@ -98,12 +106,14 @@ namespace octo
 		{
 			return (details::fromStringImp<CleanedType<T>>(arguments[details::IndexOf<T, A...>::Value]));
 		}
-
 	public:
 		virtual ~AbstractCallable(){};
 		virtual std::wstring	call(std::vector<std::wstring> const& arguments) = 0;
 	};
 
+	//
+	//	Callable
+	//
 	template <class R, class ... A>
 	class ConsoleInterpreter::Callable : public AbstractCallable
 	{
@@ -128,6 +138,9 @@ namespace octo
 		Function	m_function;
 	};
 
+	//
+	//	Callable without result
+	//
 	template <class ... A>
 	class ConsoleInterpreter::Callable<void, A...> : public AbstractCallable
 	{
@@ -148,6 +161,9 @@ namespace octo
 		Function	m_function;
 	};
 
+	//
+	//	Member
+	//
 	template <class C, class R, class ... A>
 	class ConsoleInterpreter::CallableMem : public AbstractCallable
 	{
@@ -174,6 +190,9 @@ namespace octo
 		Function	m_function;
 	};
 
+	//
+	//	Member without result
+	//
 	template <class C, class ... A>
 	class ConsoleInterpreter::CallableMem<C, void, A...> : public AbstractCallable
 	{
@@ -196,6 +215,38 @@ namespace octo
 		Function	m_function;
 	};
 
+	//
+	//	Member const
+	//
+	template <class C, class R, class ... A>
+	class ConsoleInterpreter::CallableMemConst : public AbstractCallable
+	{
+		typedef R(C::*Function)(A...)const;
+	public:
+		explicit CallableMemConst(C const* object, Function function) :
+			m_object(object),
+			m_function(function)
+		{
+		}
+
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
+		{
+			std::wstring	result;
+			R				resultValue;
+
+			checkArguments<A...>(arguments);
+			resultValue = (m_object->*m_function)(fromString<A, A...>(arguments)...);
+			result = details::toStringImp(resultValue);
+			return (result);
+		}
+	private:
+		C const*	m_object;
+		Function	m_function;
+	};
+
+	//
+	//	Member const without result
+	//
 	template <class C, class ... A>
 	class ConsoleInterpreter::CallableMemConst<C, void, A...> : public AbstractCallable
 	{
@@ -218,6 +269,9 @@ namespace octo
 		Function	m_function;
 	};
 
+	//
+	//	Functor
+	//
 	template <class C, class R, class ... A>
 	class ConsoleInterpreter::CallableFunctor : public AbstractCallable
 	{
@@ -244,6 +298,34 @@ namespace octo
 		Function	m_function;
 	};
 
+	//
+	//	Functor without result
+	//
+	template <class C, class ... A>
+	class ConsoleInterpreter::CallableFunctor<C, void, A...> : public AbstractCallable
+	{
+		typedef void(C::*Function)(A...);
+	public:
+		explicit CallableFunctor(C object, Function function) :
+			m_object(object),
+			m_function(function)
+		{
+		}
+
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
+		{
+			checkArguments<A...>(arguments);
+			(m_object.*m_function)(fromString<A, A...>(arguments)...);
+			return (L"");
+		}
+	private:
+		C			m_object;
+		Function	m_function;
+	};
+
+	//
+	//	Constant functor
+	//
 	template <class C, class R, class ... A>
 	class ConsoleInterpreter::CallableConstFunctor : public AbstractCallable
 	{
@@ -264,6 +346,31 @@ namespace octo
 			resultValue = (m_object.*m_function)(fromString<A, A...>(arguments)...);
 			result = details::toStringImp(resultValue);
 			return (result);
+		}
+	private:
+		C const		m_object;
+		Function	m_function;
+	};
+
+	//
+	//	Constant functor without result
+	//
+	template <class C, class ... A>
+	class ConsoleInterpreter::CallableConstFunctor<C, void, A...> : public AbstractCallable
+	{
+		typedef void(C::*Function)(A...)const;
+	public:
+		explicit CallableConstFunctor(C object, Function function) :
+			m_object(object),
+			m_function(function)
+		{
+		}
+
+		virtual std::wstring	call(std::vector<std::wstring> const& arguments)
+		{
+			checkArguments<A...>(arguments);
+			(m_object.*m_function)(fromString<A, A...>(arguments)...);
+			return (L"");
 		}
 	private:
 		C			m_object;
@@ -301,7 +408,7 @@ namespace octo
 	}
 
 	template <class F>
-	void	ConsoleInterpreter::addCommand(std::wstring const& name, F&& functor)
+	void	ConsoleInterpreter::addCommand(std::wstring const& name, F functor)
 	{
 		addFunctor(name, functor, &F::operator());
 	}

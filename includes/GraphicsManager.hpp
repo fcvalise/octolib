@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 17:35:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 14:32:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ namespace octo
 	public:
 		virtual ~IKeyboardListener(){}
 
-		virtual void	onPressed(sf::Event::KeyEvent const& event) = 0;
-		virtual void	onReleased(sf::Event::KeyEvent const& event) = 0;
+		virtual bool	onPressed(sf::Event::KeyEvent const& event) = 0;
+		virtual bool	onReleased(sf::Event::KeyEvent const& event) = 0;
 	};
 
 	/*!
@@ -127,6 +127,9 @@ namespace octo
 		sf::View const&			getView()const;
 		sf::View const&			getDefaultView()const;
 
+		void					setKeyboardEnabled(bool enable);
+		void					setMouseEnabled(bool enable);
+		void					setJoysticksEnabled(bool enable);
 		void					addWindowListener(IWindowListener* listener);
 		void					addKeyboardListener(IKeyboardListener* listener);
 		void					addMouseListener(IMouseListener* listener);
@@ -155,6 +158,9 @@ namespace octo
 		MouseListenerArray			m_mouseListeners;
 		JoystickListenerArray		m_joystickListeners;
 		TextListenerArray			m_textEnteredListeners;
+		bool						m_keyboardListenersEnabled;
+		bool						m_mouseListenersEnabled;
+		bool						m_joystickListenersEnabled;
 	};
 }
 

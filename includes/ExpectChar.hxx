@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/27 17:54:19 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/13 12:37:02 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 20:11:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ namespace octo
 	}
 
 	template <class C>
-	void	BasicExceptChar<C>::read(std::istream& is)const
+	void	BasicExceptChar<C>::read(std::basic_istream<C>& is)const
 	{
 		C	temp = C(0);
 

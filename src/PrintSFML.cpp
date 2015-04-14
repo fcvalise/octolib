@@ -6,12 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/13 12:28:43 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 03:52:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 20:06:59 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PrintSFML.hpp"
-#include <istream>
+#include <iostream>
 
 namespace octo
 {
@@ -32,7 +32,7 @@ namespace octo
 
 		if (init)
 		{
-			is >> value.width >> octo::ExpectChar(';') >> value.height >> octo::ExpectChar(';') >> value.bitsPerPixel;
+			is >> value.width >> ExpectChar(';') >> value.height >> ExpectChar(';') >> value.bitsPerPixel;
 		}
 		return (is);
 	}

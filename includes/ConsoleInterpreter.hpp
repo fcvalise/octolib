@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 12:23:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 21:57:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 19:11:42 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,33 @@ namespace octo
 
 		/*!	Register a new command from a C++ free function */
 		template <class R, class ... A>
-		void			addCommand(std::wstring const& name, R(*function)(A...));
+		void						addCommand(std::wstring const& name, R(*function)(A...));
 
 		/*!	Register a new command from a C++ member function */
 		template <class C, class R, class ... A>
-		void			addCommand(std::wstring const& name, C& instance, R(C::*function)(A...));
+		void						addCommand(std::wstring const& name, C& instance, R(C::*function)(A...));
 
 		/*!	Register a new command from a C++ member function */
 		template <class C, class R, class ... A>
-		void			addCommand(std::wstring const& name, C* instance, R(C::*function)(A...));
+		void						addCommand(std::wstring const& name, C* instance, R(C::*function)(A...));
 
 		/*!	Register a new command from a C++ constant member function */
 		template <class C, class R, class ... A>
-		void			addCommand(std::wstring const& name, C const& instance, R(C::*function)(A...)const);
+		void						addCommand(std::wstring const& name, C const& instance, R(C::*function)(A...)const);
 
 		/*!	Register a new command from a C++ constant member function */
 		template <class C, class R, class ... A>
-		void			addCommand(std::wstring const& name, C const* instance, R(C::*function)(A...)const);
+		void						addCommand(std::wstring const& name, C const* instance, R(C::*function)(A...)const);
 
 		/*!	Register a new command from a functor or a lambda function */
 		template <class F>
-		void			addCommand(std::wstring const& name, F&& functor);
+		void						addCommand(std::wstring const& name, F functor);
 
 		/*!	Execute a command line */
-		std::wstring	execute(std::wstring const& line);
+		std::wstring				execute(std::wstring const& line);
+	
+		/*!	Return a list of each command name availables */
+		std::vector<std::wstring>	getCommandList()const;
 	private:
 		template <class C, class R, class ... A>
 		void			addFunctor(std::wstring const& name, C instance, R(C::*function)(A...));

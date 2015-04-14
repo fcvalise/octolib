@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/12 14:45:46 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 16:49:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,13 @@ namespace octo
 	sf::Font const&	ResourceManager::getFont(std::uint64_t key)const
 	{
 		return (m_fontManager.get(key).get());
+	}
+
+	sf::Font const&		ResourceManager::getFont(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Font, fileName);
+
+		return (getFont(key));
 	}
 
 	sf::Texture const&	ResourceManager::getTexture(std::uint64_t key)const

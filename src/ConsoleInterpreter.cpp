@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 21:55:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 19:58:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ namespace octo
 {
 	namespace details
 	{
+		std::wstring	stringToWide(std::string const& str)
+		{
+			static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>	converter;
+
+			return (converter.from_bytes(str));
+		}
+
 		template <>
 		std::wstring	fromStringImp<std::wstring>(std::wstring const& str)
 		{
@@ -31,12 +38,44 @@ namespace octo
 			return (value);
 		}
 
-		std::wstring	stringToWide(std::string const& str)
+		template <>
+		std::wstring	toStringImp(std::string const& value)
 		{
-			static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>	converter;
-
-			return (converter.from_bytes(str));
+			return (stringToWide(value));
 		}
+	}
+
+	//
+	//	ConsoleInterpreter
+	//
+	std::wstring	ConsoleInterpreter::execute(std::wstring const& line)
+	{
+		std::wstring				name;
+		std::vector<std::wstring>	arguments;
+		std::wstring				result;
+		
+		ConsoleCommandParser::parseLine(line, name, arguments);
+
+		auto	it = m_callables.find(name);
+		if (it != m_callables.end())
+		{
+			result = it->second->call(arguments);
+		}
+		else
+		{
+			throw UnknowCommandException(name);
+		}
+		return (result);
+	}
+	
+	std::vector<std::wstring>	ConsoleInterpreter::getCommandList()const
+	{
+		std::vector<std::wstring>	commands;
+
+		commands.reserve(m_callables.size());
+		for (auto it = m_callables.begin(); it != m_callables.end(); ++it)
+			commands.push_back(it->first);
+		return (commands);
 	}
 
 	//
@@ -83,28 +122,5 @@ namespace octo
 	std::size_t		ConsoleInterpreter::SyntaxErrorException::getPosition()const
 	{
 		return (m_pos);
-	}
-
-	//
-	//	ConsoleInterpreter
-	//
-	std::wstring	ConsoleInterpreter::execute(std::wstring const& line)
-	{
-		std::wstring				name;
-		std::vector<std::wstring>	arguments;
-		std::wstring				result;
-		
-		ConsoleCommandParser::parseLine(line, name, arguments);
-
-		auto	it = m_callables.find(name);
-		if (it != m_callables.end())
-		{
-			result = it->second->call(arguments);
-		}
-		else
-		{
-			throw UnknowCommandException(name);
-		}
-		return (result);
 	}
 }

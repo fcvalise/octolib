@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   application_example.cpp                            :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/12 14:35:36 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 20:02:04 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <codecvt>
 
 /*! A state with a colored square
  *
@@ -154,10 +155,10 @@ public:
 class KeyboardControl : public octo::IKeyboardListener
 {
 public:
-	virtual void	onPressed(sf::Event::KeyEvent const& event)
+	virtual bool	onPressed(sf::Event::KeyEvent const& event)
 	{
-		if (event.code == sf::Keyboard::F12)
-			octo::Application::getConsole().switchEnabled();
+		if (event.code == sf::Keyboard::F5)
+			octo::Application::getConsole().setEnabled(true);
 		if (event.code == sf::Keyboard::Escape)
 		{
 			octo::Application::getStateManager().popAll();
@@ -173,10 +174,12 @@ public:
 			octo::Application::getStateManager().pop("black_h");
 			std::cout << m_cyclePosition << std::endl;
 		}
+		return (true);
 	}
 
-	virtual void	onReleased(sf::Event::KeyEvent const&)
+	virtual bool	onReleased(sf::Event::KeyEvent const&)
 	{
+		return (true);
 	}
 private:
 	std::vector<octo::StateManager::Key>	m_stateCycle{"circle", "red", "blue", "green"};
@@ -187,35 +190,48 @@ int main(int argc, char **argv)
 {
 	using namespace octo;
 
-	Application::initialize("Application works!", "test.conf", argc, argv);
-	GraphicsManager&						graphics = Application::getGraphicsManager();
-	StateManager&							states = Application::getStateManager();
-	sf::View								view = graphics.getDefaultView();
-	SimpleWindowListener					windowListener;
-	KeyboardControl							keyboardControl;
+	try
+	{
+		Application::initialize("Application works!", "test.conf", argc, argv);
+		GraphicsManager&						graphics = Application::getGraphicsManager();
+		StateManager&							states = Application::getStateManager();
+		Console&								console = Application::getConsole();
+		sf::View								view = graphics.getDefaultView();
+		SimpleWindowListener					windowListener;
+		KeyboardControl							keyboardControl;
 
-	view.setCenter(0.f, 0.f);
-	// Don't forget to add the listeners...
-	graphics.addWindowListener(&windowListener);
-	graphics.addKeyboardListener(&keyboardControl);
-	graphics.setView(view);
-	graphics.setVerticalSyncEnabled(true);
-	// Simple state registration for state with parameterless constructor
-	states.registerState<CircleState>("circle");
-	// State registration with lambda
-	states.registerStateCreator("red", [](){return new SquareState(sf::Color::Red);});
-	states.registerStateCreator("blue", [](){return new SquareState(sf::Color::Blue);});
-	states.registerStateCreator("green", [](){return new SquareState(sf::Color::Green);});
-	// Transition registration
-	states.registerTransition<octo::BlackFadeTransition>("black_f");
-	states.registerTransition<octo::BlackVSlideTransition>("black_v");
-	states.registerTransition<octo::BlackHSlideTransition>("black_h");
-	std::cout << " - Press Space to change current state by an other state.\n"
-				 " - Press Backspace to pop the current state.\n"
-				 " - Press Escape to quit\n\n";
-	std::cout << "You can change somes parameters with command line and test.conf file" << std::endl;
-	// Start the main loop with initial state "circle"
-	Application::run("circle");
+
+		view.setCenter(0.f, 0.f);
+		// Don't forget to add the listeners...
+		graphics.addWindowListener(&windowListener);
+		graphics.addKeyboardListener(&keyboardControl);
+		graphics.setView(view);
+		graphics.setVerticalSyncEnabled(true);
+		// Simple state registration for state with parameterless constructor
+		states.registerState<CircleState>("circle");
+		// State registration with lambda
+		states.registerStateCreator("red", [](){return new SquareState(sf::Color::Red);});
+		states.registerStateCreator("blue", [](){return new SquareState(sf::Color::Blue);});
+		states.registerStateCreator("green", [](){return new SquareState(sf::Color::Green);});
+		// Transition registration
+		states.registerTransition<octo::BlackFadeTransition>("black_f");
+		states.registerTransition<octo::BlackVSlideTransition>("black_v");
+		states.registerTransition<octo::BlackHSlideTransition>("black_h");
+		std::cout << " - Press Space to change current state by an other state.\n"
+					 " - Press Backspace to pop the current state.\n"
+					 " - Press Escape to quit\n\n";
+		std::cout << "You can change somes parameters with command line and test.conf file" << std::endl;
+		// Start the main loop with initial state "circle"
+		console.addCommand(L"echo", [](std::wstring const& message, sf::Color const& color)
+				{
+					Application::getConsole().print(message, color);
+				});
+		Application::run("circle");
+	}
+	catch (std::exception const& e)
+	{
+		std::cerr << "exception: " << e.what() << std::endl;
+	}
 	// When application is stopped, the program quit normally...
 	Application::destroy();
 	std::cout << "Goodbye!" << std::endl;
