@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 18:16:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 18:25:11 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef APPLICATION_HPP
 # define APPLICATION_HPP
 # include "StateManager.hpp"
+# include "NonCopyable.hpp"
 
 namespace octo
 {
@@ -34,7 +35,7 @@ namespace octo
 	 *	The games screens must be implemented with AbstractState.<br>
 	 *
 	 */
-	class Application
+	class Application : public NonCopyable
 	{
 	public:
 		/*!	Initialize the application

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:34:27 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 04:47:36 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 18:23:53 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <vector>
 # include <fstream>
 # include <stdexcept>
+# include "NonCopyable.hpp"
 
 namespace octo
 {
@@ -79,7 +80,7 @@ namespace octo
 	 *	</TABLE>
 	 *		
 	 */
-	class Options
+	class Options : public NonCopyable
 	{
 		typedef std::map<std::string, std::string>	Map;
 	public:
