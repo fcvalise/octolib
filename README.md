@@ -44,7 +44,7 @@ Provides basic stuffs to create simple user interface.
  - C++ 11 compiler
  - Doxygen for documentation (with Dot if you wants cutes graphs)
  - GNU make
- - SMFL 2.2
+ - SFML 2.2
  - Boost (for units tests only)
 
 ### Building the library

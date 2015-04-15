@@ -9,16 +9,22 @@ SRC = 	$(RESOURCE_SRC)						\
 		$(STATE_SYSTEM_SRC)					\
 		$(PACKAGE_SRC)						\
 		$(MATH_SRC)							\
-		$(CORE_SRC)
+		$(CORE_SRC)							\
+		$(CONSOLE_SRC)
 
 CORE_SRC =	Application.cpp					\
 			PausableClock.cpp				\
 			GraphicsManager.cpp				\
 			OptionParser.cpp				\
-			Options.cpp
+			Options.cpp						\
+			ByteArray.cpp					\
+			BinaryInputStream.cpp			\
+			BinaryOutputStream.cpp			\
+			PrintSFML.cpp					\
+			WPrintSFML.cpp
 
-MATH_SRC = Interpolations.cpp				\
-	   Math.cpp
+MATH_SRC = 	Interpolations.cpp				\
+	 		Math.cpp
 
 RESOURCE_SRC = ResourceManager.cpp
 
@@ -30,6 +36,11 @@ STATE_SYSTEM_SRC =	AbstractState.cpp		\
 					AbstractTransition.cpp	\
 					StateManager.cpp		\
 					DefaultTransition.cpp
+
+CONSOLE_SRC = ConsoleCommandParser.cpp		\
+			  ConsoleInterpreter.cpp		\
+			  ConsoleCore.cpp				\
+			  Console.cpp
 
 # compiler
 CC = g++
@@ -104,15 +115,18 @@ open_dox:
 
 complete: re
 	@make re -C tests
+	@tests/tester.app
+	@make re -C tools/packager
+	@make re -C tools/package_reader
 	@make re -C benchmarks
 	@make re -C interactive_tests/application
 	@make re -C interactive_tests/options
 	@make re -C interactive_tests/resource_test
 	@make re -C interactive_tests/state_manager
-	@make re -C tools/packager
-	@make re -C tools/package_reader
-	@tests/tester.app
 	
 benchmarks:
 	@make -C benchmarks
 	@./benchmarks/benchmark.app
+
+reinc:
+	@reinc -rv -B $(BUILD_DIR) --include-dirs $(INCLUDE_DIR) --source-dirs ./src/

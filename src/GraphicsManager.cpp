@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 14:28:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 14:35:25 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ namespace octo
 {
 	GraphicsManager::GraphicsManager() :
 		m_fullscreen(false),
-		m_verticalSync(false)
+		m_verticalSync(false),
+		m_keyboardListenersEnabled(true),
+		m_mouseListenersEnabled(true),
+		m_joystickListenersEnabled(true)
 	{
 	}
 
@@ -76,29 +79,53 @@ namespace octo
 					break;
 				// Keyboard events
 				case sf::Event::KeyPressed:
-					for (IKeyboardListener* listener : m_keyboardListeners)
-						listener->onPressed(m_event.key);
+					if (m_keyboardListenersEnabled)
+					{
+						for (IKeyboardListener* listener : m_keyboardListeners)
+						{
+							if (listener->onPressed(m_event.key) == false)
+								break;
+						}
+					}
 					break;
 				case sf::Event::KeyReleased:
-					for (IKeyboardListener* listener : m_keyboardListeners)
-						listener->onReleased(m_event.key);
+					if (m_keyboardListenersEnabled)
+					{
+						for (IKeyboardListener* listener : m_keyboardListeners)
+						{
+							if (listener->onReleased(m_event.key))
+								break;
+						}
+					}
 					break;
 				// Mouse events
 				case sf::Event::MouseButtonPressed:
-					for (IMouseListener* listener : m_mouseListeners)
-						listener->onPressed(m_event.mouseButton);
+					if (m_mouseListenersEnabled)
+					{
+						for (IMouseListener* listener : m_mouseListeners)
+							listener->onPressed(m_event.mouseButton);
+					}
 					break;
 				case sf::Event::MouseButtonReleased:
-					for (IMouseListener* listener : m_mouseListeners)
-						listener->onReleased(m_event.mouseButton);
+					if (m_mouseListenersEnabled)
+					{
+						for (IMouseListener* listener : m_mouseListeners)
+							listener->onReleased(m_event.mouseButton);
+					}
 					break;
 				case sf::Event::MouseMoved:
-					for (IMouseListener* listener : m_mouseListeners)
-						listener->onMoved(m_event.mouseMove);
+					if (m_mouseListenersEnabled)
+					{
+						for (IMouseListener* listener : m_mouseListeners)
+							listener->onMoved(m_event.mouseMove);
+					}
 					break;
 				case sf::Event::MouseWheelMoved:
-					for (IMouseListener* listener : m_mouseListeners)
-						listener->onWheel(m_event.mouseWheel);
+					if (m_mouseListenersEnabled)
+					{
+						for (IMouseListener* listener : m_mouseListeners)
+							listener->onWheel(m_event.mouseWheel);
+					}
 					break;
 				// Joystick events
 				case sf::Event::JoystickConnected:
@@ -110,16 +137,30 @@ namespace octo
 						listener->onDisconnected(m_event.joystickConnect);
 					break;
 				case sf::Event::JoystickMoved:
-					for (IJoystickListener* listener : m_joystickListeners)
-						listener->onMoved(m_event.joystickMove);
+					if (m_joystickListenersEnabled)
+					{
+						for (IJoystickListener* listener : m_joystickListeners)
+							listener->onMoved(m_event.joystickMove);
+					}
 					break;
 				case sf::Event::JoystickButtonPressed:
-					for (IJoystickListener* listener : m_joystickListeners)
-						listener->onPressed(m_event.joystickButton);
+					if (m_joystickListenersEnabled)
+					{
+						for (IJoystickListener* listener : m_joystickListeners)
+							listener->onPressed(m_event.joystickButton);
+					}
 					break;
 				case sf::Event::JoystickButtonReleased:
-					for (IJoystickListener* listener : m_joystickListeners)
-						listener->onReleased(m_event.joystickButton);
+					if (m_joystickListenersEnabled)
+					{
+						for (IJoystickListener* listener : m_joystickListeners)
+							listener->onReleased(m_event.joystickButton);
+					}
+					break;
+				// Text event
+				case sf::Event::TextEntered:
+					for (ITextListener* listener : m_textEnteredListeners)
+						listener->onTextEntered(m_event.text);
 					break;
 				default:
 					break;
@@ -207,6 +248,21 @@ namespace octo
 		return (m_window.mapCoordsToPixel(position, view));
 	}
 
+	void	GraphicsManager::setKeyboardEnabled(bool enable)
+	{
+		m_keyboardListenersEnabled = enable;
+	}
+
+	void	GraphicsManager::setMouseEnabled(bool enable)
+	{
+		m_mouseListenersEnabled = enable;
+	}
+
+	void	GraphicsManager::setJoysticksEnabled(bool enable)
+	{
+		m_joystickListenersEnabled = enable;
+	}
+
 	void	GraphicsManager::addWindowListener(IWindowListener* listener)
 	{
 		appendListener(listener, m_windowListeners);
@@ -227,6 +283,11 @@ namespace octo
 		appendListener(listener, m_joystickListeners);
 	}
 
+	void	GraphicsManager::addTextListener(ITextListener* listener)
+	{
+		appendListener(listener, m_textEnteredListeners);
+	}
+
 	void	GraphicsManager::removeWindowListener(IWindowListener* listener)
 	{
 		removeListener(listener, m_windowListeners);
@@ -245,5 +306,10 @@ namespace octo
 	void	GraphicsManager::removeJoystickListener(IJoystickListener* listener)
 	{
 		removeListener(listener, m_joystickListeners);
+	}
+
+	void	GraphicsManager::removeTextListener(ITextListener* listener)
+	{
+		removeListener(listener, m_textEnteredListeners);
 	}
 }

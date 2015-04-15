@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 03:41:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/01 11:18:52 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,6 @@ namespace octo
 									   std::ostream& out)
 	{
 		std::ifstream			input(info.path, std::ios_base::binary);
-		std::unique_ptr<char[]>	buffer;
 
 		if (input.is_open() == false)
 		{
@@ -288,16 +287,14 @@ namespace octo
 				m_listener->error("input file cannot be opened: '" + info.path + "'");
 			return (false);
 		}
-		buffer.reset(new char[info.size]);
-		input.read(buffer.get(), info.size);
-		if (input.gcount() != std::streamsize(info.size))
+		if (m_buffer.read(input, info.size) == false)
 		{
 			if (m_listener)
 				m_listener->error("unable to read input file: '" + info.path + "'");
 			return (false);
 		}
-		details::xorEncryptDecrypt(buffer.get(), buffer.get() + info.size, m_encryptionMask);
-		out.write(buffer.get(), info.size);
+		details::xorEncryptDecrypt(m_buffer.begin(), m_buffer.end(), m_encryptionMask);
+		m_buffer.write(out);
 		return (true);
 		static_cast<void>(header);
 	}

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:28:56 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 03:28:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 15:48:40 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,22 @@
 namespace octo
 {
 	/*!	\ingroup Core
-	 *	Option parser
+	 *	\brief Option parser
 	 */
 	class OptionParser
 	{
 	public:
-		static bool	parseLine(std::string const& line, std::string& key, std::string& value);
+		static void	parseLine(std::string const& line, std::string& key, std::string& value);
+
+		class SyntaxErrorException
+		{
+		public:
+			SyntaxErrorException(std::string const& message);
+
+			std::string const&	what()const;
+		private:
+			std::string	m_message;
+		};
 	};
 }
 

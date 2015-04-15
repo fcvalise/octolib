@@ -6,12 +6,15 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 18:09:57 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 16:45:44 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PackageHeader.hpp"
+#include "BinaryIO.hpp"
 #include <numeric>
+
+// TODO: securiser plus en verifiant les retours de binaryRead().
 
 namespace octo
 {
@@ -19,26 +22,11 @@ namespace octo
 	{
 		static constexpr std::uint64_t const	PackageMagic = 0xf03b3a02;
 
-		template<typename T> 
-		void	write(std::ostream& os, T const& value) 
-		{ 
-			os.write(reinterpret_cast<char const*>(&value), sizeof(T)); 
-		}
-
-		template<typename T> 
-		void	read(std::istream& is, T& value) 
-		{ 
-			is.read(reinterpret_cast<char*>(&value), sizeof(T)); 
-		}
-
 		static void		writeEntry(std::ostream& os, PackageHeader::Entry const& entry)
 		{
 			std::uint64_t	nameSize = entry.name.size();
 
-			write(os, nameSize);
-			write(os, entry.offset);
-			write(os, entry.size);
-			write(os, entry.type);
+			binaryWrite(os, nameSize, entry.offset, entry.size, entry.type);
 			os.write(entry.name.c_str(), nameSize);
 		}
 
@@ -50,10 +38,7 @@ namespace octo
 			PackageHeader::EntryType	type = PackageHeader::EntryType::Invalid;
 			std::unique_ptr<char[]>		name;
 
-			read(is, nameSize);
-			read(is, offset);
-			read(is, size);
-			read(is, type);
+			binaryRead(is, nameSize, offset, size, type);
 			name.reset(new char[nameSize]);
 			is.read(name.get(), nameSize);
 			entry.name.assign(name.get(), nameSize);
@@ -88,7 +73,7 @@ namespace octo
 	{
 		if (entryExists(key))
 		{
-			entry = m_entries[key];
+			entry = m_entries.at(key);
 			return (true);
 		}
 		else
@@ -104,29 +89,29 @@ namespace octo
 
 	std::string const&	PackageHeader::getEntryName(EntryKey key)const
 	{
-		return (m_entries[key].name);
+		return (m_entries.at(key).name);
 	}
 
 	PackageHeader::EntryType	PackageHeader::getEntryType(EntryKey key)const
 	{
-		return (m_entries[key].type);
+		return (m_entries.at(key).type);
 	}
 
 	std::uint64_t	PackageHeader::getEntryOffset(EntryKey key)const
 	{
-		return (m_entries[key].offset);
+		return (m_entries.at(key).offset);
 	}
 
 	std::uint64_t	PackageHeader::getEntrySize(EntryKey key)const
 	{
-		return (m_entries[key].size);
+		return (m_entries.at(key).size);
 	}
 
 	std::uint64_t	PackageHeader::getFirstEntry(EntryType type)const
 	{
 		std::uint64_t	key = 0;
 
-		while (getEntryType(key) != type)
+		while (key < count() && getEntryType(key) != type)
 			++key;
 		if (key == count())
 			return (NullEntryKey);
@@ -136,14 +121,14 @@ namespace octo
 
 	std::uint64_t	PackageHeader::getEntryCount(EntryType type)const
 	{
-		std::uint64_t	key = getFirstEntry(type);
-		std::uint64_t	count = 0;
+		std::uint64_t	result = 0;
 
-		if (key == NullEntryKey)
-			return (NullEntryKey);
-		while (getEntryType(key + count) == type)
-			++count;
-		return (count);
+		for (auto const& entry : m_entries)
+		{
+			if (entry.type == type)
+				++result;
+		}
+		return (result);
 	}
 
 	std::uint64_t	PackageHeader::count()const
@@ -183,6 +168,19 @@ namespace octo
 						}));
 	}
 
+	std::uint64_t	PackageHeader::findEntryByName(EntryType type, std::string const& fileName)const
+	{
+		std::uint64_t	result = 0;
+
+		for (auto const& entry : m_entries)
+		{
+			if (entry.type == type && entry.name == fileName)
+				return (result);
+			++result;
+		}
+		return (NullEntryKey);
+	}
+
 	PackageHeader::const_iterator	PackageHeader::begin()const
 	{
 		return (m_entries.begin());
@@ -198,8 +196,7 @@ namespace octo
 		std::uint64_t	count = m_entries.size();
 		std::uint64_t	magic = details::PackageMagic;
 
-		details::write(os, magic);
-		details::write(os, count);
+		binaryWrite(os, magic, count);
 		for (auto const& entry : m_entries)
 			details::writeEntry(os, entry);
 		return (true);
@@ -211,10 +208,10 @@ namespace octo
 		std::uint64_t	count = 0;
 		Entry			entry;
 
-		details::read(is, magic);
+		binaryRead(is, magic);
 		if (magic != details::PackageMagic)
 			return (false);
-		details::read(is, count);
+		binaryRead(is, count);
 		m_entries.clear();
 		m_entries.resize(count);
 		for (std::uint64_t i = 0; i < count; ++i)

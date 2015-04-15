@@ -1,34 +1,24 @@
-TARGET = tester.app
-CORE_DIR = ../
-INCLUDE_DIR = $(CORE_DIR)/includes
+TARGET = test.app
+CORE_DIR = ../..
+INCLUDE_DIR = ./ $(CORE_DIR)/includes
 SRC_DIR = .
-BUILD_DIR = ../builds/tester
+BUILD_DIR = ./builds
 OUTPUT_DIR = .
 # libraries directories (ex: ../libft)
-LIB_DIRS = ../
+LIB_DIRS = $(CORE_DIR)
 
+PACKAGE_FILE = default.pck
 # libraries (ex: ft, mlx, ...)
-LIBS = octo boost_unit_test_framework
+LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 
 # sources
-<<<<<<< HEAD
-SRC = main.cpp				\
-	  PackageDetails.cpp	\
-	  PackageHeader.cpp		\
-	  OptionParser.cpp		\
-	  Array2D.cpp			\
-	  Array3D.cpp			\
-	  Queue.cpp
-=======
-SRC = main.cpp			\
-	  Array2D.cpp		\
-	  Array3D.cpp		\
-	  Stack.cpp			\
-	  Math.cpp
->>>>>>> math_trigo
+SRC = main.cpp		\
+	  FireFly.cpp
 
 # compiler
 CC = g++
+# packager
+PACKAGER = ../../tools/packager/packager.app
 # flags used in both mode
 COMMON_FLAGS = -Werror -Wextra -Wall -std=c++11
 # flags used in release mode
@@ -37,6 +27,7 @@ RELEASE_FLAGS = -O3
 DEBUG_FLAGS = -g
 # includes dirs paths
 INCLUDE_DIRS = $(addprefix -I, $(INCLUDE_DIR))
+
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.cpp=.o))
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -58,7 +49,7 @@ COLOR_OBJECT = \033[0m
 
 all: print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) core_library $(OBJS) package
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(CLIBS_FLAGS) 
 
@@ -78,6 +69,9 @@ clean:
 	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
 	@rm -fr $(BUILD_DIR)
 
+package:
+	$(PACKAGER) $(PACKAGE_FILE) ./resources/*
+
 $(BUILD_DIR):
 	@echo " - $(COLOR_ACTION)creating directory$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
 	@mkdir -p $(BUILD_DIR)
@@ -89,5 +83,12 @@ else
 	@echo " - Making $(TARGET): $(CFLAGS)"
 endif
 
-run:
-	$(COMPLETE_TARGET) --log_level=test_suite
+core_library:
+	@make -s -C $(CORE_DIR) MODE=$(MODE)
+
+clean_core_library:
+	@make -s -C $(CORE_DIR) clean MODE=$(MODE)
+
+fclean_core_library:
+	@make -s -C $(CORE_DIR) fclean MODE=$(MODE)
+

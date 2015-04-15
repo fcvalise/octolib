@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 10:15:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 18:16:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ namespace octo
 	class ResourceManager;
 	class GraphicsManager;
 	class Options;
+	class Console;
 
 	class ApplicationImp;
 	
@@ -87,6 +88,12 @@ namespace octo
 		 *		<TD>Define the package file path loaded at application start</TD>
 		 *		<TD>if this key is not specified no package is loaded</TD>
 		 *	</TR>
+		 *	<TR>
+		 *		<TD>console_font</TD>
+		 *		<TD>string</TD>
+		 *		<TD>Define the font file name used by the console</TD>
+		 *		<TD>if this key is not specified the console is disabled</TD>
+		 *	</TR>
 		 *	</TABLE>
 		 *
 		 */
@@ -103,11 +110,13 @@ namespace octo
 		static void				pause();
 		static void				resume();
 		static void				error(char const* message);
+		static std::string		screenshot(bool captureConsole);
 
 		static StateManager&	getStateManager();
 		static GraphicsManager&	getGraphicsManager();
 		static ResourceManager&	getResourceManager();
 		static Options&			getOptions();
+		static Console&			getConsole();
 	private:
 		static ApplicationImp*	s_instance;
 	};

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:57:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/24 15:24:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/11 17:06:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,27 @@ BOOST_AUTO_TEST_SUITE( option_parser )
 
 static void	testOptionParser(std::string const& line,
 							 std::string const& expectedKey,
-							 std::string const& expectedValue,
-							 bool expectedReturn = true)
+							 std::string const& expectedValue)
 {
 	std::string	key;
 	std::string	value;
 
-	BOOST_CHECK_EQUAL(octo::OptionParser::parseLine(line, key, value), expectedReturn);
+	octo::OptionParser::parseLine(line, key, value);
 	BOOST_CHECK_EQUAL(key, expectedKey);
 	BOOST_CHECK_EQUAL(value, expectedValue);
 }
 
 BOOST_AUTO_TEST_CASE( extract_key_values )
 {
+	testOptionParser("console_font = yop.bob", "console_font", "yop.bob");
+
+	testOptionParser("", "", "");
+	testOptionParser(" ", "", "");
+	testOptionParser("   ", "", "");
+
+	testOptionParser("#", "", "");
+	testOptionParser(" # kjhkjhkjh", "", "");
+
 	testOptionParser("a=b", "a", "b");
 	testOptionParser("ab=c", "ab", "c");
 	testOptionParser("a=bc", "a", "bc");
@@ -78,18 +86,22 @@ BOOST_AUTO_TEST_CASE( extract_key_values )
 	testOptionParser(" ac  =b", "ac", "b");
 	testOptionParser("ac =b", "ac", "b");
 	testOptionParser("ac  =b", "ac", "b");
+
 }
 
 BOOST_AUTO_TEST_CASE (errors)
 {
-	testOptionParser("", "", "", false);
-	testOptionParser(" ", "", "", false);
-	testOptionParser("   ", "", "", false);
-	testOptionParser(" = ", "", "", false);
-	testOptionParser("a=", "", "", false);
-	testOptionParser("a= ", "", "", false);
-	testOptionParser("=b", "", "", false);
-	testOptionParser(" =b", "", "", false);
+	std::string	key;
+	std::string	value;
+
+	BOOST_CHECK_THROW( octo::OptionParser::parseLine(" = ", key, value), octo::OptionParser::SyntaxErrorException);
+
+	BOOST_CHECK_THROW( octo::OptionParser::parseLine("a=", key, value), octo::OptionParser::SyntaxErrorException);
+	BOOST_CHECK_THROW( octo::OptionParser::parseLine("a= ", key, value), octo::OptionParser::SyntaxErrorException);
+
+	BOOST_CHECK_THROW( octo::OptionParser::parseLine("=b", key, value), octo::OptionParser::SyntaxErrorException);
+	BOOST_CHECK_THROW( octo::OptionParser::parseLine(" =b", key, value), octo::OptionParser::SyntaxErrorException);
+	BOOST_CHECK_THROW( octo::OptionParser::parseLine("==b", key, value), octo::OptionParser::SyntaxErrorException);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

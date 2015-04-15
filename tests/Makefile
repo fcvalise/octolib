@@ -8,17 +8,22 @@ OUTPUT_DIR = .
 LIB_DIRS = ../
 
 # libraries (ex: ft, mlx, ...)
-LIBS = octo boost_unit_test_framework
+LIBS = octo boost_unit_test_framework sfml-system sfml-graphics sfml-window
 
 # sources
-SRC = main.cpp				\
-	  PackageDetails.cpp	\
-	  PackageHeader.cpp		\
-	  OptionParser.cpp		\
-	  Array2D.cpp			\
-	  Array3D.cpp			\
-	  Stack.cpp			\
-	  Math.cpp
+SRC = main.cpp						\
+	  PackageDetails.cpp			\
+	  PackageHeader.cpp				\
+	  OptionParser.cpp				\
+	  Array2D.cpp					\
+	  Array3D.cpp					\
+	  Stack.cpp						\
+	  Math.cpp						\
+	  ByteArray.cpp					\
+	  BinaryStream.cpp				\
+	  ConsoleCommandParser.cpp		\
+	  ExpectChar.cpp				\
+	  Options.cpp
 
 # compiler
 CC = g++
@@ -51,7 +56,7 @@ COLOR_OBJECT = \033[0m
 
 all: print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) core_library $(OBJS)
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(CLIBS_FLAGS) 
 
@@ -84,3 +89,12 @@ endif
 
 run:
 	$(COMPLETE_TARGET) --log_level=test_suite
+
+core_library:
+	@make -s -C $(CORE_DIR) MODE=$(MODE)
+
+clean_core_library:
+	@make -s -C $(CORE_DIR) clean MODE=$(MODE)
+
+fclean_core_library:
+	@make -s -C $(CORE_DIR) fclean MODE=$(MODE)

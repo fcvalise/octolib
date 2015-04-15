@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/31 07:02:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 11:54:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 #include <iterator>
 
 #include "BSpline.hpp"
+#include "FireFly.hpp"
 
 namespace octo
 {
@@ -41,190 +42,78 @@ namespace octo
 	}
 }
 
-class MainState : public octo::AbstractState,
-				  public octo::IMouseListener
+class FireFlyTest : public octo::AbstractState,
+					public octo::IMouseListener
 {
-	static constexpr float const		CheckpointRadius = 4.f;
-	static constexpr float const		SelectorRadius = CheckpointRadius + 3.f;
-	static constexpr float const		SelectorAnchorDistance = (CheckpointRadius * CheckpointRadius * 6.f);
-	static constexpr float const		ActiveThickness = 3.f;
-	static constexpr float const		InactiveThickness = 1.f;
-	static constexpr std::size_t const	NullSelection = std::numeric_limits<std::size_t>::max();
 public:
-	explicit MainState() :
-		m_selected(NullSelection),
-		m_update(false),
-		m_visibleSelector(false)
-	{
-		m_checkpoint = sf::CircleShape(CheckpointRadius, 64.f);
-		m_checkpoint.setFillColor(sf::Color::Red);
-		m_checkpoint.setOrigin(CheckpointRadius, CheckpointRadius);
-		m_selector = sf::CircleShape(SelectorRadius, 64.f);
-		m_selector.setOrigin(SelectorRadius, SelectorRadius);
-		m_selector.setFillColor(sf::Color::Transparent);
-		m_selector.setOutlineColor(sf::Color::Blue);
-		m_selector.setOutlineThickness(2.f);
-	}
+	using AbstractState::AbstractState;
 
-	~MainState()
-	{
-	}
-
+	/*!	Method called when the state is started by the manager */
 	virtual void	start()
 	{
-		std::cout << "start" << std::endl;
+		m_fireFly.addPoint(sf::Vector2f(0.f, 0.f), true);
+		m_fireFly.addPoint(sf::Vector2f(200.f, 0.f), true);
+		m_fireFly.addPoint(sf::Vector2f(-200.f, 40.f), true);
+		m_fireFly.addPoint(sf::Vector2f(100.f, 60.f), true);
+		m_view = octo::Application::getGraphicsManager().getDefaultView();
+		m_view.setCenter(m_interestPoint);
 		octo::Application::getGraphicsManager().addMouseListener(this);
 	}
 
+	/*!	Method called when the state is paused by the manager */
 	virtual void	pause()
 	{
 	}
 
+	/*!	Method called when the state is resumed by the manager */
 	virtual void	resume()
 	{
 	}
 
+	/*!	Method called when the state is stopped by the manager */
 	virtual void	stop()
 	{
-		octo::Application::getGraphicsManager().removeMouseListener(this);
-		std::cout << "stop" << std::endl;
 	}
 
-	virtual void	update(sf::Time)
+	/*!	Method called once per frame before game render */
+	virtual void	update(sf::Time frameTime)
 	{
-		if (m_update)
-		{
-			updateSpline();
-			m_update = false;
-		}
+		m_fireFly.update(frameTime, m_interestPoint);
 	}
 
+	/*!	Method called once per frame after game update */
 	virtual void	draw(sf::RenderTarget& render)const
 	{
-        render.clear(sf::Color::White);
-		render.draw(&m_vertices.front(), m_vertices.size(), sf::LinesStrip);
-		drawCheckpoints(render);
+		render.clear();
+		render.setView(m_view);
+		m_fireFly.draw(render);
 	}
 
 	virtual void	onMoved(sf::Event::MouseMoveEvent const& event)
 	{
-		octo::GraphicsManager const&	manager = octo::Application::getGraphicsManager();
-		sf::Vector2f					mousePosition = manager.mapPixelToCoords(sf::Vector2i(event.x, event.y), manager.getView());
-		auto							it = getNearPoint(mousePosition);
-
-		if (m_selected == NullSelection)
-		{
-			if (it != std::end(m_bspline))
-			{
-				m_selector.setPosition(*it);
-				m_visibleSelector = true;
-			}
-			else
-			{
-				m_visibleSelector = false;
-			}
-		}
-		else
-		{
-			m_bspline[m_selected] = mousePosition;
-			m_selector.setPosition(mousePosition);
-			m_update = true;
-		}
+		sf::Vector2i		mousePos(event.x, event.y);
+		
+		m_interestPoint = octo::Application::getGraphicsManager().mapPixelToCoords(mousePos, m_view);		
 	}
 
-	virtual void	onPressed(sf::Event::MouseButtonEvent const& event)
+	virtual void	onPressed(sf::Event::MouseButtonEvent const&)
 	{
-		octo::GraphicsManager const&	manager = octo::Application::getGraphicsManager();
-		sf::Vector2f					mousePosition = manager.mapPixelToCoords(sf::Vector2i(event.x, event.y), manager.getView());
-		auto							it = getNearPoint(mousePosition);
 
-		if (event.button == sf::Mouse::Left)
-		{
-			if (it != std::end(m_bspline))
-			{
-				m_visibleSelector = true;
-				m_selector.setOutlineThickness(ActiveThickness);
-				m_selector.setPosition(*it);
-				m_selected = std::distance(m_bspline.cbegin(), it);
-			}
-			else
-			{
-				m_selected = NullSelection;
-			}
-		}
 	}
 
-	virtual void	onReleased(sf::Event::MouseButtonEvent const& event)
+	virtual void	onReleased(sf::Event::MouseButtonEvent const&)
 	{
-		if (event.button == sf::Mouse::Left && m_selected != NullSelection)
-		{
-			m_selector.setOutlineThickness(InactiveThickness);
-			m_selector.setPosition(m_bspline[m_selected]);
-			m_selected = NullSelection;
-		}
-		else if (event.button == sf::Mouse::Right)
-		{
-			octo::GraphicsManager const&	manager = octo::Application::getGraphicsManager();
-			sf::Vector2f					mousePosition = manager.mapPixelToCoords(sf::Vector2i(event.x, event.y), manager.getView());
 
-			addCheckpoint(mousePosition);
-		}
 	}
 
-	virtual void	onWheel(sf::Event::MouseWheelEvent const& event)
+	virtual void	onWheel(sf::Event::MouseWheelEvent const&)
 	{
-		(void)event;
+
 	}
 private:
-	BSpline::const_iterator	getNearPoint(sf::Vector2f const& position)const
-	{
-		return (std::find_if(std::begin(m_bspline), std::end(m_bspline),
-								[=](sf::Vector2f const& p)
-								{
-									return (octo::squaredDistance(p, position) < SelectorAnchorDistance);
-								}));
-	}
-
-	void	updateSpline()
-	{
-		static const unsigned int	Count = 1000;
-		float						step = 1.f / Count;
-		sf::Vector2f				pos;
-		std::size_t					i = 0;
-
-		m_vertices.resize(Count * m_bspline.size());
-		for (float t = 0.f; t <= m_bspline.maxT(); t += step)
-		{
-			pos = m_bspline.compute(t);
-			m_vertices[i].position = pos;
-			m_vertices[i].color = sf::Color::Black;
-			++i;
-		}
-	}
-
-	void	drawCheckpoints(sf::RenderTarget& render)const
-	{
-		for (sf::Vector2f const& pos : m_bspline)
-		{
-			m_checkpoint.setPosition(pos);
-			render.draw(m_checkpoint);
-		}
-		if (m_visibleSelector)
-			render.draw(m_selector);
-	}
-private:
-	void	addCheckpoint(sf::Vector2f const& position)
-	{
-		m_bspline.pushBack(position);
-	}
-private:
-	std::vector<sf::Vertex>			m_vertices;
-	sf::CircleShape					m_selector;
-	mutable sf::CircleShape			m_checkpoint;
-	std::size_t						m_selected;
-	bool							m_update;
-	bool							m_visibleSelector;
-	BSpline							m_bspline;
+	FireFly			m_fireFly;
+	sf::Vector2f	m_interestPoint;
+	sf::View		m_view;
 };
 
 /*!	Window events listener */
@@ -252,16 +141,18 @@ public:
 class KeyboardControl : public octo::IKeyboardListener
 {
 public:
-	virtual void	onPressed(sf::Event::KeyEvent const& event)
+	virtual bool	onPressed(sf::Event::KeyEvent const& event)
 	{
 		if (event.code == sf::Keyboard::Escape)
 		{
 			octo::Application::getStateManager().pop("black_f");
 		}
+		return (true);
 	}
 
-	virtual void	onReleased(sf::Event::KeyEvent const&)
+	virtual bool	onReleased(sf::Event::KeyEvent const&)
 	{
+		return (true);
 	}
 private:
 };
@@ -282,7 +173,7 @@ int main(int argc, char **argv)
 	graphics.addKeyboardListener(&keyboardControl);
 	graphics.setView(view);
 	graphics.setVerticalSyncEnabled(true);
-	states.registerState<MainState>("main");
+	states.registerState<FireFlyTest>("main");
 	states.registerTransition<octo::BlackFadeTransition>("black_f");
 	Application::run("main");
 	Application::destroy();

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 12:37:54 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/01 11:32:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ namespace octo
 		class StreamedResource
 		{
 		public:
-			bool				setBuffer(std::vector<char> const& buffer)
+			bool				setBuffer(ByteArray const& buffer)
 			{
 				m_buffer.assign(buffer.begin(), buffer.end());
-				return (m_resource.loadFromMemory(&m_buffer.front(), m_buffer.size()));
+				return (m_resource.loadFromMemory(m_buffer.bytes(), m_buffer.size()));
 			}
 
 			T const&			get()const
@@ -46,8 +46,8 @@ namespace octo
 				return (m_resource);
 			}
 		private:
-			std::vector<char>	m_buffer;
-			T					m_resource;
+			ByteArray	m_buffer;
+			T			m_resource;
 		};
 
 		template <class T>
@@ -58,7 +58,7 @@ namespace octo
 			{
 			public:
 				virtual ~ILoader(){}
-				virtual bool load(std::vector<char> const& buffer, T& resource) = 0;
+				virtual bool load(ByteArray const& buffer, T& resource) = 0;
 			};
 
 			explicit ResourceManagerImp(PackageHeader::EntryType type) :
@@ -83,7 +83,7 @@ namespace octo
 				std::uint64_t			offset = header.getFirstEntry(m_type);
 				std::uint64_t			count = header.getEntryCount(m_type);
 				std::uint64_t			key = PackageHeader::NullEntryKey;
-				std::vector<char>		buffer;
+				ByteArray				buffer;
 
 				if (offset == PackageHeader::NullEntryKey || count == 0)
 					return (true);

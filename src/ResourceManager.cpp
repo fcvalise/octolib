@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 12:48:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/12 16:49:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace octo
 		class FontLoader : public details::ResourceManagerImp<details::StreamedResource<sf::Font>>::ILoader
 		{
 		public:
-			bool	load(std::vector<char> const& buffer, details::StreamedResource<sf::Font>& font)
+			bool	load(ByteArray const& buffer, details::StreamedResource<sf::Font>& font)
 			{
 				return (font.setBuffer(buffer));
 			}
@@ -29,25 +29,25 @@ namespace octo
 		class TextureLoader : public details::ResourceManagerImp<sf::Texture>::ILoader
 		{
 		public:
-			bool	load(std::vector<char> const& buffer, sf::Texture& texture)
+			bool	load(ByteArray const& buffer, sf::Texture& texture)
 			{
-				return (texture.loadFromMemory(&buffer.front(), buffer.size()));
+				return (texture.loadFromMemory(buffer.bytes(), buffer.size()));
 			}
 		};
 
 		class SoundLoader : public details::ResourceManagerImp<sf::SoundBuffer>::ILoader
 		{
 		public:
-			bool	load(std::vector<char> const& buffer, sf::SoundBuffer& sound)
+			bool	load(ByteArray const& buffer, sf::SoundBuffer& sound)
 			{
-				return (sound.loadFromMemory(&buffer.front(), buffer.size()));
+				return (sound.loadFromMemory(buffer.bytes(), buffer.size()));
 			}
 		};
 
 		class TextLoader : public details::ResourceManagerImp<sf::String>::ILoader
 		{
 		public:
-			bool	load(std::vector<char> const& buffer, sf::String& text)
+			bool	load(ByteArray const& buffer, sf::String& text)
 			{
 				std::basic_string<std::uint32_t>	utf32;
 
@@ -81,6 +81,13 @@ namespace octo
 	sf::Font const&	ResourceManager::getFont(std::uint64_t key)const
 	{
 		return (m_fontManager.get(key).get());
+	}
+
+	sf::Font const&		ResourceManager::getFont(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Font, fileName);
+
+		return (getFont(key));
 	}
 
 	sf::Texture const&	ResourceManager::getTexture(std::uint64_t key)const

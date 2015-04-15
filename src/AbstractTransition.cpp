@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 00:24:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 04:34:06 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/03/31 09:01:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ namespace octo
 				}
 				else
 				{
-					updateTransition(frameTime, std::min(m_currentTime.asSeconds() / m_outDuration.asSeconds(), 0.f), view);
+					updateTransition(frameTime, std::max(m_currentTime.asSeconds() / m_outDuration.asSeconds(), 0.f), view);
 					m_currentTime -= frameTime;
 				}
 				break;

@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 02:51:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 01:45:09 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/01 11:27:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PACKAGE_READER_HPP
 # define PACKAGE_READER_HPP
 # include "PackageHeader.hpp"
+# include "ByteArray.hpp"
 
 #include <memory>
 #include <fstream>
@@ -40,7 +41,7 @@ namespace octo
 		bool					open(std::string const& fileName);
 
 		/*!	Load an item from package */
-		bool					load(std::vector<char>& buffer, std::uint64_t key);
+		bool					load(ByteArray& buffer, std::uint64_t key);
 
 		/*!	Return true if a file is open */
 		bool					isOpen()const;
@@ -48,11 +49,9 @@ namespace octo
 		/*!	Return the package header */
 		PackageHeader const&	getHeader()const;
 	private:
-		typedef std::vector<char>	Mask;
-
 		PackageHeader	m_header;
 		std::ifstream	m_file;
-		Mask			m_encryptionMask;
+		ByteArray		m_encryptionMask;
 	};
 }
 

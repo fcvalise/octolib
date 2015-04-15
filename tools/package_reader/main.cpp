@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:34:43 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 03:21:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/01 11:39:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ static CommandMap const	Commands
 	{
 		"--extract", [](octo::PackageReader& package, Args const& args)
 		{
-			std::uint64_t				key = 0;
-			std::istringstream			iss;
-			std::vector<char>			buffer;
-			std::ofstream				output;
+			std::uint64_t		key = 0;
+			std::istringstream	iss;
+			octo::ByteArray		buffer;
+			std::ofstream		output;
 
 			if (args.size() < 2)
 			{
@@ -99,7 +99,7 @@ static CommandMap const	Commands
 			if (iss >> key && package.getHeader().entryExists(key))
 			{
 				package.load(buffer, key);
-				output.write(&buffer.front(), buffer.size());
+				buffer.write(output);
 			}
 			else
 			{

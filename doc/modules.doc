@@ -19,6 +19,16 @@
 */
 
 /*!
+  	\defgroup Console Console module
+	\brief Console system
+	
+	Console is a powerful tool to monitor, debug and quickly and efficiently test objects and game situations.<br>
+	The console features a interpreter to parse the input text. <br>
+	Once the syntax and typing checks are done, the console can launch the command.<br>
+	A command can be set from any function or method, or functor or even phrase lamdba declared in the code c++.
+*/
+
+/*!
   	\defgroup Animation Animation module
 	\brief Provides services to change object property
 */

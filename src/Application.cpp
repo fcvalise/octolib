@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 14:27:54 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 19:35:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,44 @@
 #include "GraphicsManager.hpp"
 #include "ResourceManager.hpp"
 #include "Options.hpp"
+#include "Console.hpp"
+#include "PrintSFML.hpp"
+
+#include <SFML/Graphics/RenderTexture.hpp>
 
 #include <cassert>
 
 namespace octo
 {
+	namespace
+	{
+		static std::string	makeSymbolName(std::string str)
+		{
+			std::for_each(std::begin(str), std::end(str), [](char& c)
+				{
+					if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+					{
+						c = std::toupper(c);
+					}
+					else
+					{
+						c = '_';
+					}
+				});
+			return (str);
+		}
+
+		std::string	screenshotFileName()
+		{
+			std::chrono::system_clock::time_point	tp = std::chrono::system_clock::now();
+			std::time_t								t = std::chrono::system_clock::to_time_t(tp);
+			std::string								ts = std::ctime(&t);
+
+			ts.resize(ts.size() - 1);
+			return ("screenshot_" + makeSymbolName(ts) + ".png");
+		}
+	}
+
 	class ResourceLoadingListener : public IResourceListener
 	{
 	public:
@@ -48,7 +81,7 @@ namespace octo
 
 		void	setupGraphics(std::string const& title)
 		{
-			m_graphicsManager.createRender(m_options.getValue("resolution", sf::VideoMode::getFullscreenModes().front()),
+			m_graphicsManager.createRender(m_options.getValue<sf::VideoMode>("resolution", sf::VideoMode::getFullscreenModes().front()),
 										   title,
 										   m_options.getValue("fullscreen", false));
 			m_graphicsManager.setVerticalSyncEnabled(m_options.getValue("vsync", true));
@@ -58,10 +91,34 @@ namespace octo
 		{
 			ResourceLoadingListener	listener;
 
-			if (m_options.containsKey("package") || m_options.hasValue("package"))
-				m_resourceManager.loadPackage(m_options.getValue("package"), &listener);
+			if (m_options.containsKey("package") && m_options.hasValue("package"))
+				m_resourceManager.loadPackage(m_options.getValue<std::string>("package"), &listener);
 			else
 				std::cout << "warning no package loaded" << std::endl;
+		}
+
+		void	setupConsole()
+		{
+			if (m_options.containsKey("console_font") && m_options.hasValue("console_font"))
+			{
+				m_graphicsManager.addKeyboardListener(&m_console);
+				m_graphicsManager.addTextListener(&m_console);
+				m_console.setFont(m_resourceManager.getFont(m_options.getValue<std::string>("console_font")));
+				// Setup builtin commands
+				m_console.addCommand(L"close", [](){Application::getConsole().setEnabled(false);});
+				m_console.addCommand(L"clear", [](){Application::getConsole().clear();});
+				m_console.addCommand(L"screenshot", this, &ApplicationImp::screenshot);
+				m_console.addCommand(L"setFullscreen", m_graphicsManager, &GraphicsManager::setFullscreen);
+				m_console.addCommand(L"setVSync", m_graphicsManager, &GraphicsManager::setFullscreen);
+				m_console.addCommand(L"getVSync", m_graphicsManager, &GraphicsManager::isVerticalSyncEnabled);
+
+				// Print welcom message
+				m_console.print(L"Hey! Press <ESC> or type close() to close this terminal.", Console::HelpColor);
+			}
+			else
+			{
+				std::cout << "warning no console font defined, console is disabled" << std::endl;
+			}
 		}
 
 		void	start(StateManager::Key const& startStateKey)
@@ -86,19 +143,45 @@ namespace octo
 				m_graphicsManager.processEvents();
 				if (m_paused == false)
 					m_stateManager.update(frameTime, m_graphicsManager.getView());
+				m_console.update(frameTime, m_graphicsManager.getView());
 				m_stateManager.draw(m_graphicsManager.getRender());
+				m_console.draw(m_graphicsManager.getRender());
 				m_graphicsManager.display();
 				frameTime = m_clock.restart();
 			}
 		}
 
-		StateManager	m_stateManager;
-		GraphicsManager	m_graphicsManager;
-		ResourceManager	m_resourceManager;
-		Options			m_options;
-		PausableClock	m_clock;
-		sf::Event		m_event;
-		bool			m_paused;
+		std::string	screenshot(bool captureConsole)
+		{
+			sf::Image				image;
+			std::string				path = screenshotFileName();
+			
+			if (m_screenshotRender == nullptr)
+			{
+				sf::VideoMode const&	mode = m_graphicsManager.getVideoMode();
+
+				m_screenshotRender.reset(new sf::RenderTexture);
+				m_screenshotRender->create(mode.width, mode.height);
+			}
+			m_screenshotRender->setView(m_graphicsManager.getView());
+			m_stateManager.draw(*m_screenshotRender);
+			if (captureConsole)
+				m_console.draw(*m_screenshotRender);
+			m_screenshotRender->display();
+			image = std::move(m_screenshotRender->getTexture().copyToImage());
+			image.saveToFile(path);
+			return (path);
+		}
+
+		std::unique_ptr<sf::RenderTexture>	m_screenshotRender;
+		StateManager						m_stateManager;
+		GraphicsManager						m_graphicsManager;
+		ResourceManager						m_resourceManager;
+		Options								m_options;
+		Console								m_console;
+		PausableClock						m_clock;
+		sf::Event							m_event;
+		bool								m_paused;
 	};
 
 	ApplicationImp*	Application::s_instance = nullptr;
@@ -111,8 +194,7 @@ namespace octo
 		s_instance->setupOptions(optionFilePath, argc, argv);
 		s_instance->setupGraphics(title);
 		s_instance->setupResources();
-		static_cast<void>(argc);
-		static_cast<void>(argv);
+		s_instance->setupConsole();
 	}
 
 	void	Application::destroy()
@@ -187,5 +269,12 @@ namespace octo
 		assert (s_instance != nullptr);
 
 		return (s_instance->m_options);
+	}
+
+	Console&	Application::getConsole()
+	{
+		assert (s_instance != nullptr);
+
+		return (s_instance->m_console);
 	}
 }

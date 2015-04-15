@@ -2,7 +2,7 @@ TARGET = benchmark.app
 CORE_DIR = ..
 INCLUDE_DIR = $(CORE_DIR)/includes
 SRC_DIR = .
-BUILD_DIR = ../builds/tester
+BUILD_DIR = ../builds/benchmarks
 OUTPUT_DIR = .
 # libraries directories (ex: ../libft)
 LIB_DIRS = ..

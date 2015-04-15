@@ -90,7 +90,3 @@ clean_core_library:
 
 fclean_core_library:
 	@make -s -C $(CORE_DIR) fclean MODE=$(MODE)
-
-run_reinc:
-	@echo " - Running reinc"
-	@reinc -B $(BUILD_DIR) --include-dirs ./ ../core/ -v

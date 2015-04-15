@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 14:28:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/14 14:32:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ namespace octo
 	public:
 		virtual ~IKeyboardListener(){}
 
-		virtual void	onPressed(sf::Event::KeyEvent const& event) = 0;
-		virtual void	onReleased(sf::Event::KeyEvent const& event) = 0;
+		virtual bool	onPressed(sf::Event::KeyEvent const& event) = 0;
+		virtual bool	onReleased(sf::Event::KeyEvent const& event) = 0;
 	};
 
 	/*!
@@ -79,6 +79,18 @@ namespace octo
 		virtual void	onMoved(sf::Event::JoystickMoveEvent const& event) = 0;
 		virtual void	onPressed(sf::Event::JoystickButtonEvent const& event) = 0;
 		virtual void	onReleased(sf::Event::JoystickButtonEvent const& event) = 0;
+	};
+
+	/*!
+	 *	\ingroup Graphics
+	 *	Text entered listener interface
+	 */
+	class ITextListener
+	{
+	public:
+		virtual ~ITextListener(){}
+
+		virtual void	onTextEntered(sf::Event::TextEvent const& event) = 0;
 	};
 
 	/*!
@@ -121,19 +133,25 @@ namespace octo
 		sf::Vector2i			mapCoordsToPixel(sf::Vector2f const& position)const;
 		sf::Vector2i			mapCoordsToPixel(sf::Vector2f const& position, sf::View const& view)const;
 
+		void					setKeyboardEnabled(bool enable);
+		void					setMouseEnabled(bool enable);
+		void					setJoysticksEnabled(bool enable);
 		void					addWindowListener(IWindowListener* listener);
 		void					addKeyboardListener(IKeyboardListener* listener);
 		void					addMouseListener(IMouseListener* listener);
 		void					addJoystickListener(IJoystickListener* listener);
+		void					addTextListener(ITextListener* listener);
 		void					removeWindowListener(IWindowListener* listener);
 		void					removeKeyboardListener(IKeyboardListener* listener);
 		void					removeMouseListener(IMouseListener* listener);
 		void					removeJoystickListener(IJoystickListener* listener);
+		void					removeTextListener(ITextListener* listener);
 	private:
 		typedef ListenerArray<IWindowListener>		WindowListenerArray;
 		typedef ListenerArray<IKeyboardListener>	KeyboardListenerArray;
 		typedef ListenerArray<IMouseListener>		MouseListenerArray;
 		typedef ListenerArray<IJoystickListener>	JoystickListenerArray;
+		typedef ListenerArray<ITextListener>		TextListenerArray;
 
 		sf::RenderWindow			m_window;
 		sf::VideoMode				m_videoMode;
@@ -145,6 +163,10 @@ namespace octo
 		KeyboardListenerArray		m_keyboardListeners;
 		MouseListenerArray			m_mouseListeners;
 		JoystickListenerArray		m_joystickListeners;
+		TextListenerArray			m_textEnteredListeners;
+		bool						m_keyboardListenersEnabled;
+		bool						m_mouseListenersEnabled;
+		bool						m_joystickListenersEnabled;
 	};
 }
 
