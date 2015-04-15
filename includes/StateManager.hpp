@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 18:24:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 18:59:03 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,26 @@ namespace octo
 		/*!	Register a new state class
 		 *	\tparam S Type of state
 		 *	\param key The key used to start the state with the manager
-		 *	If a state with the same key is already registered then the state is
-		 *	replaced by the new.
+		 *	If a state with the same key is already registered then an expection
+		 *	is thrown.
+		 *	\throw std::logic_error if the key \a key is already used
 		 */
 		template <class S>
 		void			registerState(Key const& key);
 
-		/*!	Register a state creator */
+		/*!	Register a state creator
+		 *
+		 *	\param key The key used to start the state with the manager
+		 *	
+		 */
 		void			registerStateCreator(Key const& key, StateCreator creator);
 
 		/*!	Register a new transition class
 		 *	\tparam T	Type of transition
 		 *	\param key The key used to start the transition with the manager
-		 *	If a transition with the same key is already registered then the transition is
-		 *	replaced by the new.
+		 *	If a transition with the same key is already registered then an expection
+		 *	is thrown.
+		 *	\throw std::logic_error if the key \a key is already used
 		 */
 		template <class T>
 		void			registerTransition(Key const& key);
@@ -77,24 +83,30 @@ namespace octo
 		/*!	Push a state on the stack.
 		 *	The state become active and his method AbstractState::start() is called.
 		 *	Eventual previously running state is stopped before.
+		 *	\throw std::range_error if the state key is invalid.
 		 */
 		void			push(Key const& key);
 
 		/*!	Push a state on the stack with a transition.
 		 *	The state become active and his method AbstractState::start() is called.
 		 *	Eventual previously running state is stopped before.
+		 *	\throw std::range_error if the state key or if the transition key
+		 *	is invalid.
 		 */
 		void			push(Key const& stateKey, Key const& transitionKey);
 
 		/*!
 		 *	Change the current state (if exists) by another.
 		 *	If no states are pushed, the new state is just pushed.
+		 *	\throw std::range_error if the state key is invalid.
 		 */
 		void			change(Key const& key);
 
 		/*!
 		 *	Change the current state (if exists) by another with a transition.
 		 *	If no states are pushed, the new state is just pushed.
+		 *	\throw std::range_error if the state key or if the transition key
+		 *	is invalid.
 		 */
 		void			change(Key const& stateKey, Key const& transitionKey);
 
@@ -105,6 +117,7 @@ namespace octo
 
 		/*!	Pop the current state (if any)
 		 *	The state popped is stopped by calling his method AbstractState::stop().
+		 *	\throw std::range_error if the transition key is invalid.
 		 */
 		void			pop(Key const& transitionKey);
 
@@ -152,24 +165,7 @@ namespace octo
 		TransitionPtr		m_transition;
 		sf::Time			m_transitionDuration;
 	};
-
-	template <class S>
-	void	StateManager::registerState(Key const& key)
-	{
-		static_assert( std::is_base_of<AbstractState, S>::value,
-					   "class S must be derived from octo::AbstractState" );
-
-		m_stateFactory[key] = [](){return (new S);};
-	}
-
-	template <class T>
-	void	StateManager::registerTransition(Key const& key)
-	{
-		static_assert( std::is_base_of<AbstractTransition, T>::value,
-					   "class T must be derived from octo::AbstractTransition" );
-
-		m_transitionFactory[key] = [](Action action){return (new T(action));};
-	}
 }
 
+#include "StateManager.hxx"
 #endif
