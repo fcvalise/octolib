@@ -12,8 +12,9 @@ PACKAGE_FILE = default.pck
 LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 
 # sources
-SRC = main.cpp		\
-	  FireFly.cpp
+SRC = main.cpp			\
+	  FireFly.cpp		\
+	  FireFlySwarm.cpp
 
 # compiler
 CC = g++

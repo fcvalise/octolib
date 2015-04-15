@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/14 22:14:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 14:35:21 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 16:07:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@
 
 class FireFly
 {
+	typedef std::function<float()>	RandomFunc;
 public:
 	FireFly();
 
+	void				setRandom(RandomFunc func);
 	void				setTexture(sf::Texture const& texture);
 	void				setSpeed(float speed);
 	void				setInterest(float interest);
@@ -43,17 +45,15 @@ public:
 	void				draw(sf::RenderTarget& render)const;
 private:
 	sf::Vector2f		randomize(sf::Vector2f point);
-private:
-	typedef std::uniform_real_distribution<float>	Dist;
-	typedef std::mt19937							Engine;
-
-	Engine				m_engine;
-	Dist				m_dist;
+private:	
 	sf::Sprite			m_shape;
+	sf::Sprite			m_haloShape;
 	BSpline				m_spline;
 	sf::Texture const*	m_texture;
+	RandomFunc			m_rnd;
 	float				m_t;
 	float				m_diameter;
+	float				m_haloDiameter;
 	float				m_speed;
 	float				m_interest;
 };

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/14 22:18:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 14:35:38 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 16:10:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,27 @@
 #include <iostream>
 
 FireFly::FireFly() :
-	m_engine(12345),
-	m_dist(-1.f, 1.f),
+	m_t(0.f),
 	m_diameter(8.f),
-	m_speed(1.f),
-	m_interest(50.f)
+	m_haloDiameter(20),
+	m_speed(0.5f),
+	m_interest(500.f)
 {
+}
+
+void	FireFly::setRandom(RandomFunc func)
+{
+	m_rnd = func;
 }
 
 void	FireFly::setTexture(sf::Texture const& texture)
 {
 	m_shape.setTexture(texture);
 	m_shape.setOrigin(sf::Vector2f(texture.getSize()) * 0.5f);
-	m_shape.setScale(m_diameter / texture.getSize().x, m_diameter / texture.getSize().y); 
+	m_haloShape.setTexture(texture);
+	m_haloShape.setOrigin(sf::Vector2f(texture.getSize()) * 0.5f);
 	m_texture = &texture;
+	setDiameter(m_diameter);
 }
 
 void	FireFly::setSpeed(float speed)
@@ -44,12 +51,18 @@ void	FireFly::setInterest(float interest)
 void	FireFly::setDiameter(float diameter)
 {
 	m_diameter = diameter;
+	m_haloDiameter = diameter * 4.f;
 	m_shape.setScale(m_diameter / m_texture->getSize().x, m_diameter / m_texture->getSize().y); 
+	m_haloShape.setScale(m_haloDiameter / m_texture->getSize().x, m_haloDiameter / m_texture->getSize().y); 
 }
 
 void	FireFly::setColor(sf::Color const& color)
 {
+	sf::Color	haloColor = color;
+
+	haloColor.a = 100;
 	m_shape.setColor(color);
+	m_haloShape.setColor(haloColor);
 }
 
 float	FireFly::getSpeed()const
@@ -87,11 +100,12 @@ void	FireFly::update(sf::Time const& time, sf::Vector2f const& interestPoint)
 	int		oldIntegerPart = static_cast<int>(m_t);
 	int		newIntegerPart = 0;
 
-	m_t += m_speed * time.asSeconds();
-	newIntegerPart = static_cast<int>(m_t);
 	if (m_spline.size() >= 4)
 	{
+		m_t += m_speed * time.asSeconds();
+		newIntegerPart = static_cast<int>(m_t);
 		m_shape.setPosition(m_spline.compute(m_t));
+		m_haloShape.setPosition(m_spline.compute(m_t));
 		if (newIntegerPart > oldIntegerPart)
 		{
 			m_spline.pushBack(randomize(interestPoint));
@@ -105,17 +119,21 @@ void	FireFly::update(sf::Time const& time, sf::Vector2f const& interestPoint)
 	else
 	{
 		m_spline.pushBack(randomize(interestPoint));	
+		m_spline.pushBack(randomize(interestPoint));	
+		m_spline.pushBack(randomize(interestPoint));	
+		m_spline.pushBack(randomize(interestPoint));	
 	}
 }
 
 void	FireFly::draw(sf::RenderTarget& render)const
 {
+	render.draw(m_haloShape);
 	render.draw(m_shape);
 }
 
 sf::Vector2f	FireFly::randomize(sf::Vector2f point)
 {
-	point.x += m_dist(m_engine) * m_interest;
-	point.y += m_dist(m_engine) * m_interest;
+	point.x += m_rnd() * m_interest;
+	point.y += m_rnd() * m_interest;
 	return (point);
 }

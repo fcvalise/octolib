@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/15 12:20:22 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 14:36:32 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 16:14:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <GraphicsManager.hpp>
 # include <Console.hpp>
 # include <ResourceManager.hpp>
-# include "FireFly.hpp"
+# include "FireFlySwarm.hpp"
 # include "ResourceDefinitions.hpp"
 
 class FireFlyTest : public octo::AbstractState,
@@ -37,19 +37,20 @@ public:
 		graphics.addMouseListener(this);
 		graphics.addKeyboardListener(this);
 		graphics.addWindowListener(this);
-		m_fireFly.setTexture(resources.getTexture(FIREFLY01_PNG));
+		m_fireFlySwarm.setTexture(resources.getTexture(FIREFLY01_PNG));
 		m_view = octo::Application::getGraphicsManager().getDefaultView();
 		m_view.setCenter(m_interestPoint);
 		octo::Application::getGraphicsManager().addMouseListener(this);
-		console.addCommand(L"setSpeed", m_fireFly, &FireFly::setSpeed);
-		console.addCommand(L"getSpeed", m_fireFly, &FireFly::getSpeed);
-		console.addCommand(L"setInterest", m_fireFly, &FireFly::setInterest);
-		console.addCommand(L"getInterest", m_fireFly, &FireFly::getInterest);
-		console.addCommand(L"setDiameter", m_fireFly, &FireFly::setDiameter);
-		console.addCommand(L"getDiameter", m_fireFly, &FireFly::getDiameter);
-		console.addCommand(L"setColor", m_fireFly, &FireFly::setColor);
-		console.addCommand(L"getColor", m_fireFly, &FireFly::getColor);
-		console.addCommand(L"getT", m_fireFly, &FireFly::getT);
+		console.addCommand(L"setSpeed", m_fireFlySwarm, &FireFlySwarm::setSpeed);
+		console.addCommand(L"getSpeed", m_fireFlySwarm, &FireFlySwarm::getSpeed);
+		console.addCommand(L"setInterest", m_fireFlySwarm, &FireFlySwarm::setInterest);
+		console.addCommand(L"getInterest", m_fireFlySwarm, &FireFlySwarm::getInterest);
+		console.addCommand(L"setDiameter", m_fireFlySwarm, &FireFlySwarm::setDiameter);
+		console.addCommand(L"getDiameter", m_fireFlySwarm, &FireFlySwarm::getDiameter);
+		console.addCommand(L"setColor", m_fireFlySwarm, &FireFlySwarm::setColor);
+		console.addCommand(L"getColor", m_fireFlySwarm, &FireFlySwarm::getColor);
+		console.addCommand(L"spawn", m_fireFlySwarm, &FireFlySwarm::createFireFly);
+		console.addCommand(L"spawnN", m_fireFlySwarm, &FireFlySwarm::createFireFlies);
 	}
 
 	/*!	Method called when the state is paused by the manager */
@@ -70,15 +71,15 @@ public:
 	/*!	Method called once per frame before game render */
 	virtual void	update(sf::Time frameTime)
 	{
-		m_fireFly.update(frameTime, m_interestPoint);
+		m_fireFlySwarm.update(frameTime, m_interestPoint);
 	}
 
 	/*!	Method called once per frame after game update */
 	virtual void	draw(sf::RenderTarget& render)const
 	{
-		render.clear();
+		render.clear(sf::Color(28, 29, 53));
 		render.setView(m_view);
-		m_fireFly.draw(render);
+		m_fireFlySwarm.draw(render);
 	}
 
 	virtual void	onMoved(sf::Event::MouseMoveEvent const& event)
@@ -138,7 +139,7 @@ public:
 		octo::Application::pause();
 	}
 private:
-	FireFly			m_fireFly;
+	FireFlySwarm	m_fireFlySwarm;
 	sf::Vector2f	m_interestPoint;
 	sf::View		m_view;
 };
