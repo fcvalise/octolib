@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 14:32:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 18:21:21 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GRAPHICSMANAGER_HPP
 # define GRAPHICSMANAGER_HPP
 # include "ListenerHelpers.hpp"
+# include "NonCopyable.hpp"
 
 # include <SFML/Graphics/RenderWindow.hpp>
 # include <SFML/Window/VideoMode.hpp>
@@ -97,7 +98,7 @@ namespace octo
 	 *	\ingroup Graphics
 	 *	Manage a render window
 	 */
-	class GraphicsManager
+	class GraphicsManager : public NonCopyable
 	{
 	public:
 		GraphicsManager();

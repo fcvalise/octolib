@@ -6,12 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 19:50:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 18:22:29 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONSOLE_HPP
 # define CONSOLE_HPP
+# include "NonCopyable.hpp"
 # include "IConsoleListener.hpp"
 # include "GraphicsManager.hpp"
 # include "ConsoleCore.hpp"
@@ -35,7 +36,8 @@ namespace octo
 	 *	This console is displayed on screen over the game.
 	 *	On enabled, the console takes the keyboard's focus.
 	 */
-	class Console : public IConsoleListener,
+	class Console :	public NonCopyable,
+					public IConsoleListener,
 					public ITextListener,
 					public IKeyboardListener
 	{

@@ -6,12 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/12 14:42:04 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 18:23:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RESOURCEMANAGER_HPP
 # define RESOURCEMANAGER_HPP
+# include "NonCopyable.hpp"
 # include "PackageHeader.hpp"
 # include "details/ResourceManagerImp.hpp"
 
@@ -31,9 +32,8 @@ namespace octo
 	 *
 	 *	Resource datas are loaded from a package file.<br>
 	 */
-	class ResourceManager
+	class ResourceManager : public NonCopyable
 	{
-
 	public:
 		ResourceManager();
 

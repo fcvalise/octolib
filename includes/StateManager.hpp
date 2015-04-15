@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/29 04:35:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 18:24:30 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <SFML/Graphics/RenderTarget.hpp>
 # include <SFML/System/Time.hpp>
 
+# include "NonCopyable.hpp"
 # include "AbstractTransition.hpp"
 
 namespace octo
@@ -40,7 +41,7 @@ namespace octo
 	 *	your own transition easilly.
 	 *
 	 */
-	class StateManager
+	class StateManager : public NonCopyable
 	{
 		typedef AbstractTransition::Action					Action;
 		typedef std::function<AbstractState*(void)>			StateCreator;
