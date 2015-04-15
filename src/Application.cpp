@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 19:35:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 20:24:02 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ namespace octo
 				m_graphicsManager.processEvents();
 				if (m_paused == false)
 					m_stateManager.update(frameTime, m_graphicsManager.getView());
-				m_console.update(frameTime, m_graphicsManager.getView());
+				m_console.update(frameTime, m_graphicsManager.getDefaultView());
 				m_stateManager.draw(m_graphicsManager.getRender());
 				m_console.draw(m_graphicsManager.getRender());
 				m_graphicsManager.display();

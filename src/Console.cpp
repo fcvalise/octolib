@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 18:46:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 20:27:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,13 +256,14 @@ namespace octo
 
 	void	Console::update(sf::Time, sf::View const& view)
 	{
-		float	top = (view.getSize().y * m_relativeHeight) * 0.5f;
-		float	left = view.getSize().x * -0.5f;
-		float	leftPadded = left + m_leftPadding;
+		sf::Vector2f	viewSize	= view.getSize();
+		float			top = viewSize.y * m_relativeHeight * 0.5f + view.getCenter().y;
+		float			left = viewSize.x * -0.5f + view.getCenter().x;
+		float			leftPadded = left + m_leftPadding;
 
 		if (m_needUpdate && isEnabled())
 		{
-			m_rectangle.setSize(sf::Vector2f(view.getSize().x, view.getSize().y * m_relativeHeight));
+			m_rectangle.setSize(sf::Vector2f(viewSize.x, viewSize.y * m_relativeHeight));
 			m_rectangle.setPosition(sf::Vector2f(left, top));
 			m_current.setPosition(leftPadded, top + m_topPadding);
 			top += m_font->getLineSpacing(m_fontSize) + m_lineSpacing + m_topPadding;
