@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/15 14:55:04 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 15:54:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 22:44:12 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ public:
 
 	std::size_t	createFireFly();
 	void		createFireFlies(std::size_t count);
+	void		clear();
 
 	void		setSpeed(std::size_t id, float speed);
 	void		setInterest(std::size_t id, float interest);
@@ -48,6 +49,7 @@ private:
 	Engine					m_engine;
 	Dist					m_dist;
 	GaussDist				m_gaussDist;
+	float					m_gaussRange;
 	CharDist				m_charDist;
 
 };

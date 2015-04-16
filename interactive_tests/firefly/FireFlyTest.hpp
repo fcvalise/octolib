@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/15 12:20:22 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 16:14:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 21:36:58 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ public:
 		console.addCommand(L"getColor", m_fireFlySwarm, &FireFlySwarm::getColor);
 		console.addCommand(L"spawn", m_fireFlySwarm, &FireFlySwarm::createFireFly);
 		console.addCommand(L"spawnN", m_fireFlySwarm, &FireFlySwarm::createFireFlies);
+		console.addCommand(L"killAll", m_fireFlySwarm, &FireFlySwarm::clear);
 	}
 
 	/*!	Method called when the state is paused by the manager */

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/15 14:59:23 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 21:29:45 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/15 23:00:17 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ FireFlySwarm::FireFlySwarm() :
 	m_texture(nullptr),
 	m_engine(7854),
 	m_dist(-1.f, 1.f),
-	m_gaussDist(-1.f, 1.f),
+	m_gaussDist(0.f, 0.6f),
+	m_gaussRange(1.3f),
 	m_charDist(0, 255)
 {
 }
@@ -34,7 +35,7 @@ std::size_t	FireFlySwarm::createFireFly()
 	fireFly.setRandom(std::bind(std::ref(m_dist), std::ref(m_engine)));
 	fireFly.setTexture(*m_texture);
 	fireFly.setDiameter(std::max(14.f + (m_gaussDist(m_engine) * 6.f), 8.f));
-	fireFly.setSpeed(std::max(1.f + m_dist(m_engine), 0.5f));
+	fireFly.setSpeed(std::max(1.f + (m_gaussDist(m_engine) / m_gaussRange), 0.5f));
 	fireFly.setColor(sf::Color(233, 213, 61));
 	m_flies.emplace_back(fireFly);
 	return (newId);
@@ -44,6 +45,11 @@ void	FireFlySwarm::createFireFlies(std::size_t count)
 {
 	for (std::size_t i = 0; i < count; ++i)
 		createFireFly();
+}
+
+void	FireFlySwarm::clear()
+{
+	m_flies.clear();
 }
 
 void	FireFlySwarm::setSpeed(std::size_t id, float speed)
