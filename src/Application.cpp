@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 18:10:46 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 18:15:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,6 @@ namespace octo
 				m_console.addCommand(L"close", [](){Application::getConsole().setEnabled(false);});
 				m_console.addCommand(L"clear", [](){Application::getConsole().clear();});
 				m_console.addCommand(L"screenshot", this, &ApplicationImp::screenshot);
-
-				// Print welcom message
-				m_console.print(L"Hey! Press <ESC> or type close() to close this terminal.", Console::HelpColor);
 			}
 			else
 			{
@@ -121,9 +118,11 @@ namespace octo
 
 		void	start(StateManager::Key const& startStateKey)
 		{
-			m_stateManager.push(m_options.getValue("start_state", startStateKey));
+			std::string		keyStarted = m_options.getValue("start_state", startStateKey);
+
+			m_stateManager.push(keyStarted);
 			m_clock.restart();
-			m_console.print(L"Starting state " + stringToWide(startStateKey), Console::HelpColor);
+			m_console.print(L"Starting state " + stringToWide(keyStarted), Console::HelpColor);
 		}
 
 		void	stop()

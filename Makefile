@@ -21,7 +21,8 @@ CORE_SRC =	Application.cpp					\
 			BinaryInputStream.cpp			\
 			BinaryOutputStream.cpp			\
 			PrintSFML.cpp					\
-			WPrintSFML.cpp
+			WPrintSFML.cpp					\
+			StringUtils.cpp
 
 MATH_SRC = 	Interpolations.cpp				\
 	 		Math.cpp
