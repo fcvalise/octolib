@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 02:11:04 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 02:19:03 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MATH_HPP
 # define MATH_HPP
 # include <type_traits>
+# include <cstdint>
 
 namespace octo
 {
