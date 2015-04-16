@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 09:51:08 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 02:11:04 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@
 
 namespace octo
 {
+	/*!
+	 *	\addtogroup	Math
+	 *	@{
+	 */
+
+	/*!
+	 *	Compute the power of a value
+	 *	\code
+	 *	std::cout << octo::pow<5>(4) << std::endl;	// Compute 4^5 then display 1024
+	 *	\endcode
+	 */
 	template <unsigned int P>
 	inline float	pow(float value)
 	{
@@ -31,7 +42,13 @@ namespace octo
 	template <>
 	float	pow<0u>(float);
 
-	template <unsigned int N, class T>
+	/*!
+	 *	Compute the n-th value of the factorial sequence
+	 *	\code
+	 *	std::cout << octo::Factorial<16>::Value << std::endl;	// Compute !16 then display 20922789888000
+	 *	\endcode
+	 */
+	template <unsigned int N, class T = std::uint64_t>
 	struct	Factorial
 	{
 		static constexpr const T		Value = N * Factorial<N - 1u, T>::Value;
@@ -43,6 +60,14 @@ namespace octo
 		static constexpr const T		Value = 1;
 	};
 
+	/*!
+	 *	Compute the exposantial of a value
+	 *	\tparam N Define the precision
+	 *	\tparam T Type of value
+	 *	\code
+	 *	std::cout << octo::Factorial<16>::Value << std::endl;	// Compute !16 then display 20922789888000
+	 *	\endcode
+	 */
 	template <unsigned int N, class T>
 	struct	Exponential
 	{
@@ -61,7 +86,28 @@ namespace octo
 		}
 	};
 	
-	/*!	Compute cos value
+	/*!
+	 *	Compute a constant of the power of 2 sequence
+	 *
+	 *	Computing is done at compile time.
+	 *	\code
+	 *	std::cout << Power2<8>::Value << std::endl;	// Display 265
+	 *	\endcode
+	 */
+	template <unsigned int N, class T = std::uint64_t>
+	struct	Power2
+	{
+		static constexpr T const	Value = 2u * Power2<N - 1, T>::Value;
+	};
+
+	template <class T>
+	struct	Power2<0u, T>
+	{
+		static constexpr T const	Value = 1u;
+	};
+
+	/*!
+	 *	Compute cos value
 	 *	\tparam N Precision of approximation
 	 */
 	template <unsigned int N>
@@ -86,15 +132,19 @@ namespace octo
 
 	/*!	Low precision cos approximation
 	 *
-	 *	Return an approximation of cos with precision of 5 decimals.
+	 *	Return an approximation of cos with precision of ? decimals.
 	 */
 	float	cosLPA(float x);
 
 	/*!	High precision cos approximation
 	 *
-	 *	Return an approximation of cos with precision of 5 decimals.
+	 *	Return an approximation of cos with precision of ? decimals.
 	 */
 	float	cosHPA(float x);
+
+	/*!
+	 *	@}
+	 */
 }
 
 #endif

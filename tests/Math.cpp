@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 01:06:48 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/28 01:19:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 02:00:47 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@ BOOST_AUTO_TEST_CASE( factorial )
 BOOST_AUTO_TEST_CASE( exponential )
 {
 	BOOST_CHECK_CLOSE( (octo::Exponential<10, float>::compute(1.f)), 2.71828f, 0.0001f );
+}
+
+BOOST_AUTO_TEST_CASE( power_two )
+{
+	BOOST_CHECK( (octo::Power2<0u>::Value == 1u) );
+	BOOST_CHECK( (octo::Power2<1u>::Value == 2u) );
+	BOOST_CHECK( (octo::Power2<8u>::Value == 256u) );
+	BOOST_CHECK( (octo::Power2<52u>::Value == 4503599627370496u) );
 }
 
 BOOST_AUTO_TEST_CASE( cos )

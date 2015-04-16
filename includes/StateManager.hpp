@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 18:59:03 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 02:16:09 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ namespace octo
 		/*!	Register a state creator
 		 *
 		 *	\param key The key used to start the state with the manager
-		 *	
+		 *	\param creator A function pointer that creates a states	
 		 */
 		void			registerStateCreator(Key const& key, StateCreator creator);
 
