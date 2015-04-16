@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/14 20:03:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 20:04:03 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 19:20:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ namespace octo
 
 		if (init)
 		{
-			os << value.x << ";" << value.y;
+			os << value.x << L";" << value.y;
 		}
 		return (os);
 	}
@@ -43,7 +43,7 @@ namespace octo
 
 		if (init)
 		{
-			is >> value.x >> octo::ExpectChar(';') >> value.y;
+			is >> value.x >> octo::WExpectChar(L';') >> value.y;
 		}
 		return (is);
 	}
@@ -55,7 +55,7 @@ namespace octo
 
 		if (init)
 		{
-			os << value.x << ";" << value.y << ";" << value.z;
+			os << value.x << L";" << value.y << L";" << value.z;
 		}
 		return (os);
 	}
@@ -67,7 +67,7 @@ namespace octo
 
 		if (init)
 		{
-			is >> value.x >> ExpectChar(';') >> value.y >> ExpectChar(';') >> value.z;
+			is >> value.x >> WExpectChar(L';') >> value.y >> WExpectChar(L';') >> value.z;
 		}
 		return (is);
 	}
@@ -78,7 +78,7 @@ namespace octo
 
 		if (init)
 		{
-			os << value.top << ";" << value.left << ";" << value.width << ";" << value.height;
+			os << value.top << L";" << value.left << L";" << value.width << L";" << value.height;
 		}
 		return (os);
 	}
@@ -90,7 +90,7 @@ namespace octo
 
 		if (init)
 		{
-			is >> value.top >> ExpectChar(';') >> value.left >> ExpectChar(';') >> value.width >> ExpectChar(';') >> value.height;
+			is >> value.top >> WExpectChar(L';') >> value.left >> WExpectChar(L';') >> value.width >> WExpectChar(L';') >> value.height;
 		}
 		return (is);
 	}
