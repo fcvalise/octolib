@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/29 13:07:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 11:50:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 02:47:53 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 # include <SFML/System/Vector2.hpp>
 # include <deque>
 # include <Math.hpp>
+# include <Interpolations.hpp>
 
 class BSpline
 {
+	/*
 	static sf::Vector2f	bspline(sf::Vector2f const& p0,
 								sf::Vector2f const& p1,
 								sf::Vector2f const& p2,
@@ -35,7 +37,7 @@ class BSpline
 					((-3.f * octo::pow<3>(t) + 3.f * octo::pow<2>(t) + (3.f * t) + 1.f) * p2.y) +
 					octo::pow<3>(t) * p3.y);
 		return (result);
-	}
+	}*/
 public:
 	typedef typename std::deque<sf::Vector2f>::iterator				iterator;
 	typedef typename std::deque<sf::Vector2f>::const_iterator		const_iterator;
@@ -69,7 +71,7 @@ public:
 		sf::Vector2f const&	p2 = getPoint(intIndex + 2);
 		sf::Vector2f const&	p3 = getPoint(intIndex + 3);
 		
-		return (bspline(p0, p1, p2, p3, floatIndex));
+		return (octo::bsplineInterpolation(p0, p1, p2, p3, floatIndex));
 	}
 
 	float				maxT()const
