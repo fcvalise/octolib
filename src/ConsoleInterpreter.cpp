@@ -6,12 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 19:58:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 18:11:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ConsoleInterpreter.hpp"
 #include "ConsoleCommandParser.hpp"
+#include "StringUtils.hpp"
 
 #include <codecvt>
 
@@ -19,13 +20,6 @@ namespace octo
 {
 	namespace details
 	{
-		std::wstring	stringToWide(std::string const& str)
-		{
-			static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>	converter;
-
-			return (converter.from_bytes(str));
-		}
-
 		template <>
 		std::wstring	fromStringImp<std::wstring>(std::wstring const& str)
 		{
@@ -82,7 +76,7 @@ namespace octo
 	//	ArgumentTypeException
 	//
 	ConsoleInterpreter::ArgumentTypeException::ArgumentTypeException(std::size_t argumentIndex, std::string const& expectedTypeName) :
-		m_expectedTypeName(details::stringToWide(expectedTypeName)),
+		m_expectedTypeName(stringToWide(expectedTypeName)),
 		m_argumentIndex(argumentIndex)
 	{
 	}

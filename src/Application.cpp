@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 20:24:02 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/16 18:10:46 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "Options.hpp"
 #include "Console.hpp"
 #include "PrintSFML.hpp"
+#include "StringUtils.hpp"
 
 #include <SFML/Graphics/RenderTexture.hpp>
 
@@ -108,9 +109,6 @@ namespace octo
 				m_console.addCommand(L"close", [](){Application::getConsole().setEnabled(false);});
 				m_console.addCommand(L"clear", [](){Application::getConsole().clear();});
 				m_console.addCommand(L"screenshot", this, &ApplicationImp::screenshot);
-				m_console.addCommand(L"setFullscreen", m_graphicsManager, &GraphicsManager::setFullscreen);
-				m_console.addCommand(L"setVSync", m_graphicsManager, &GraphicsManager::setFullscreen);
-				m_console.addCommand(L"getVSync", m_graphicsManager, &GraphicsManager::isVerticalSyncEnabled);
 
 				// Print welcom message
 				m_console.print(L"Hey! Press <ESC> or type close() to close this terminal.", Console::HelpColor);
@@ -125,6 +123,7 @@ namespace octo
 		{
 			m_stateManager.push(m_options.getValue("start_state", startStateKey));
 			m_clock.restart();
+			m_console.print(L"Starting state " + stringToWide(startStateKey), Console::HelpColor);
 		}
 
 		void	stop()
