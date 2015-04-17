@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 21:55:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/21 22:56:53 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/17 19:49:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,6 @@
 
 namespace octo
 {
-	template <>
-	float	pow<2u>(float value)
-	{
-		return (value * value);
-	}
-
-	template <>
-	float	pow<1u>(float value)
-	{
-		return (value);
-	}
-
-	template <>
-	float	pow<0u>(float)
-	{
-		return (1.f);
-	}
-	
-	template <>
-	float	cos<1u>(float value)
-	{
-		return (value);
-	}
-
-	template <>
-	float	cos<0u>(float)
-	{
-		return (1.f);
-	}
-
 	float	cosLPA(float x)
 	{
 		x += 1.57079632f;

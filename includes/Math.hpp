@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 02:19:03 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/17 19:49:53 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,28 @@ namespace octo
 	}
 
 	template <>
-	float	pow<2u>(float value);
+	inline float	pow<3u>(float value)
+	{
+		return (value * value * value);
+	}
 
 	template <>
-	float	pow<1u>(float value);
+	inline float	pow<2u>(float value)
+	{
+		return (value * value);
+	}
 
 	template <>
-	float	pow<0u>(float);
+	inline float	pow<1u>(float value)
+	{
+		return (value);
+	}
+
+	template <>
+	inline float	pow<0u>(float)
+	{
+		return (1.f);
+	}
 
 	/*!
 	 *	Compute the n-th value of the factorial sequence
@@ -126,10 +141,16 @@ namespace octo
 	}
 
 	template <>
-	float	cos<1u>(float);
+	inline float	cos<1u>(float value)
+	{
+		return (value);
+	}
 
 	template <>
-	float	cos<0u>(float);
+	inline float	cos<0u>(float)
+	{
+		return (1.f);
+	}
 
 	/*!	Low precision cos approximation
 	 *
