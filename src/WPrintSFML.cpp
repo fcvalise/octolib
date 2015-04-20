@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/14 20:04:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 20:09:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/20 18:07:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,21 @@ namespace octo
 
 		if (init)
 		{
-			os << (int)value.r << L";" << (int)value.g << L";" << (int)value.b << L";" << (int)value.a;
+			os << static_cast<int>(value.r) << L";" <<
+				  static_cast<int>(value.g) << L";" <<
+				  static_cast<int>(value.b) << L";" <<
+				  static_cast<int>(value.a);
 		}
 		return (os);
 	}
 
 	std::wistream&	operator >> (std::wistream& is, sf::Color& value)
 	{
-		typename std::wistream::sentry init(is);
-		int			r;
-		int			g;
-		int			b;
-		int			a;
+		typename std::wistream::sentry	init(is);
+		int								r = 0;
+		int								g = 0;
+		int								b = 0;
+		int								a = 0;
 
 		if (init)
 		{
