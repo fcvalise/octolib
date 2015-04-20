@@ -10,7 +10,8 @@ SRC = 	$(RESOURCE_SRC)						\
 		$(PACKAGE_SRC)						\
 		$(MATH_SRC)							\
 		$(CORE_SRC)							\
-		$(CONSOLE_SRC)
+		$(CONSOLE_SRC)						\
+		$(COLOR_SRC)
 
 CORE_SRC =	Application.cpp					\
 			PausableClock.cpp				\
@@ -42,6 +43,9 @@ CONSOLE_SRC = ConsoleCommandParser.cpp		\
 			  ConsoleInterpreter.cpp		\
 			  ConsoleCore.cpp				\
 			  Console.cpp
+
+COLOR_SRC =	Hsv.cpp							\
+			Palette.cpp
 
 # compiler
 CC = g++
