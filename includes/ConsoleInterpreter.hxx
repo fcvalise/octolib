@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 14:39:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/21 17:26:12 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ namespace octo
 		template <>
 		std::wstring	fromStringImp(std::wstring const& str);
 
+		template <>
+		std::string		fromStringImp(std::wstring const& str);
+
 		template <class T>
 		std::wstring	toStringImp(T const& value)
 		{
@@ -62,9 +65,7 @@ namespace octo
 				std::wistringstream									iss;
 				CleanedType<CurrentType>							value;
 
-				iss.setf(std::ios_base::boolalpha);
-				iss.str(arguments[I]);
-				iss >> value;
+				value = details::fromStringImp<decltype(value)>(arguments[I]);
 				if (iss.fail() == false && iss.bad() == false)
 					return (ArgumentChecker<I + 1, N>::template check<A...>(arguments));
 				else
