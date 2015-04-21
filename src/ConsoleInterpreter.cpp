@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 18:11:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/21 17:26:14 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ namespace octo
 		std::wstring	fromStringImp<std::wstring>(std::wstring const& str)
 		{
 			return (str);
+		}
+
+		template <>
+		std::string		fromStringImp<std::string>(std::wstring const& str)
+		{
+			return (wideToString(str));
 		}
 
 		template <>
