@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/13 12:28:43 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 20:06:59 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/20 18:05:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,29 @@ namespace octo
 
 		if (init)
 		{
-			os << value.r << ";" << value.g << ";" << value.b << ";" << value.a;
+			os << static_cast<int>(value.r) << ";" <<
+				  static_cast<int>(value.g) << ";" <<
+				  static_cast<int>(value.b) << ";" <<
+				  static_cast<int>(value.a);
 		}
 		return (os);
 	}
 
 	std::istream&	operator >> (std::istream& is, sf::Color& value)
 	{
-		typename std::istream::sentry init(is);
+		typename std::istream::sentry	init(is);
+		int								r = 0;
+		int								g = 0;
+		int								b = 0;
+		int								a = 0;
 
 		if (init)
 		{
-			is >> value.r >> ExpectChar(';') >> value.g >> ExpectChar(';') >> value.b >> ExpectChar(';') >> value.a;
+			is >> r >> ExpectChar(';') >> g >> ExpectChar(';') >> b >> ExpectChar(';') >> a;
+			value.r = r;
+			value.g = g;
+			value.b = b;
+			value.a = a;
 		}
 		return (is);
 	}
