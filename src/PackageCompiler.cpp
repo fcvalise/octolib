@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:18:52 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/22 04:35:21 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,8 @@ namespace octo
 			{"conf", PackageHeader::EntryType::Text},
 			{"cgf", PackageHeader::EntryType::Text},
 			{"json", PackageHeader::EntryType::Text},
-			{"xml", PackageHeader::EntryType::Text}
+			{"xml", PackageHeader::EntryType::Text},
+			{"opa", PackageHeader::EntryType::Palette}
 		}
 	{
 	}

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 18:23:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/22 04:31:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define RESOURCEMANAGER_HPP
 # include "NonCopyable.hpp"
 # include "PackageHeader.hpp"
+# include "Palette.hpp"
 # include "details/ResourceManagerImp.hpp"
 
 # include <SFML/Graphics/Font.hpp>
@@ -60,6 +61,8 @@ namespace octo
 		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
 		 */
 		sf::String const&		getText(std::uint64_t key)const;
+
+		Palette const&			getPalette(std::uint64_t key)const;
 	private:
 		typedef details::StreamedResource<sf::Font>		Font;
 
@@ -68,6 +71,7 @@ namespace octo
 		details::ResourceManagerImp<sf::Texture>		m_textureManager;
 		details::ResourceManagerImp<sf::SoundBuffer>	m_soundManager;
 		details::ResourceManagerImp<sf::String>			m_textManager;
+		details::ResourceManagerImp<Palette>			m_paletteManager;
 	};
 }
 

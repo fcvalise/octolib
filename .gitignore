@@ -35,6 +35,9 @@ interactive_tests/*/*.pck
 interactive_tests/*/ResourceDefinitions.hpp
 tests/*.pck
 
+# Qt builds folder
+build-*
+
 # Vim files
 *.swp
 

@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/12 16:49:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/22 04:32:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ResourceManager.hpp"
+#include "Palette.hpp"
 #include "details/ResourceManagerImp.hpp"
 
 namespace octo
@@ -56,13 +57,23 @@ namespace octo
 				return (true);
 			}
 		};
+
+		class PaletteLoader : public details::ResourceManagerImp<Palette>::ILoader
+		{
+		public:
+			bool	load(ByteArray const& buffer, Palette& palette)
+			{
+				return (palette.loadFromMemory(buffer));
+			}
+		};
 	}
 
 	ResourceManager::ResourceManager() :
 		m_fontManager(PackageHeader::EntryType::Font),
 		m_textureManager(PackageHeader::EntryType::Texture),
 		m_soundManager(PackageHeader::EntryType::Sound),
-		m_textManager(PackageHeader::EntryType::Text)
+		m_textManager(PackageHeader::EntryType::Text),
+		m_paletteManager(PackageHeader::EntryType::Palette)
 	{
 	}
 
@@ -75,6 +86,7 @@ namespace octo
 		m_textureManager.loadPackage(m_reader, TextureLoader(), listener);
 		m_soundManager.loadPackage(m_reader, SoundLoader(), listener);
 		m_textManager.loadPackage(m_reader, TextLoader(), listener);
+		m_paletteManager.loadPackage(m_reader, PaletteLoader(), listener);
 		return (true);
 	}
 
@@ -103,5 +115,10 @@ namespace octo
 	sf::String const&	ResourceManager::getText(std::uint64_t key)const
 	{
 		return (m_textManager.get(key));
+	}
+	
+	Palette const&		ResourceManager::getPalette(std::uint64_t key)const
+	{
+		return (m_paletteManager.get(key));
 	}
 }
