@@ -23,7 +23,8 @@ SRC = main.cpp						\
 	  BinaryStream.cpp				\
 	  ConsoleCommandParser.cpp		\
 	  ExpectChar.cpp				\
-	  Options.cpp
+	  Options.cpp					\
+	  Palette.cpp
 
 # compiler
 CC = g++
