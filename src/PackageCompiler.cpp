@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/22 04:35:21 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/24 18:50:43 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ namespace octo
 			{octo::PackageHeader::EntryType::Texture, "TEXTURES"},
 			{octo::PackageHeader::EntryType::Sound, "SOUNDS"},
 			{octo::PackageHeader::EntryType::Text, "TEXTS"},
+			{octo::PackageHeader::EntryType::Palette, "PALETTES"},
 			{octo::PackageHeader::EntryType::Invalid, "INVALID"}
 		};
 

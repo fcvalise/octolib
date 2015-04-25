@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 14:41:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/02 07:52:36 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/24 00:48:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ namespace octo
 		void	read(char* buffer, std::size_t size);
 	private:
 		ByteArray const&			m_bytes;
-		ByteArray::const_iterator	m_it;
+		std::size_t					m_pos;
 		bool						m_isOk;
 	};
 }

@@ -37,8 +37,6 @@ HEADERS  += MainWindow.hpp \
 
 FORMS    +=
 
-
-
 unix|win32: LIBS += -L$$PWD/../../../ -locto
 
 INCLUDEPATH += $$PWD/../../../includes

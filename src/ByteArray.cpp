@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 10:17:35 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/02 06:36:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/25 21:33:17 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 namespace octo
 {
 	ByteArray::ByteArray() :
+		m_bytes(nullptr),
 		m_capacity(0u),
 		m_count(0u)
 	{
@@ -150,6 +151,20 @@ namespace octo
 	{
 		resize(count);
 		return (is.read(m_bytes.get(), count) && is.gcount() == std::streamsize(count));
+	}
+
+	bool			ByteArray::read(std::istream& is)
+	{
+		char	buffer[512];
+
+		clear();
+		is.read(buffer, 512);
+		while (is.gcount() > 0)
+		{
+		    append(buffer, is.gcount());
+		    is.read(buffer, 512);
+		}
+		return (true);
 	}
 
 	void			ByteArray::write(std::ostream& os)const

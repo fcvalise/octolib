@@ -25,6 +25,7 @@ public:
 public slots:
     QModelIndex             addColor(QColor color = QColor());
     void                    removeColor(QModelIndex index);
+    void                    clear();
 private:
     QList<QColor>   m_colors;
 };

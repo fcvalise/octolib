@@ -26,6 +26,11 @@ PaletteEditor::~PaletteEditor()
 {
 }
 
+void PaletteEditor::newPalette()
+{
+    m_paletteModel->clear();
+}
+
 void PaletteEditor::setup()
 {
     QHBoxLayout*    layout = new QHBoxLayout(this);

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/21 23:38:32 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/22 21:52:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/25 20:55:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define ICOLORPROVIDER_HPP
 
 # include <SFML/Graphics/Color.hpp>
+
+# include <cstdlib>
+# include <string>
 
 namespace octo
 {
@@ -32,6 +35,8 @@ namespace octo
 		virtual std::size_t	getColorCount()const = 0;
 		virtual bool		loadFromMemory(ByteArray const& buffer) = 0;
 		virtual bool		saveToMemory(ByteArray& buffer)const = 0;
+		bool				loadFromFile(std::string const& fileName);
+		bool				saveToFile(std::string const& fileName)const;
 	};
 }
 

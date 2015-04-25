@@ -45,7 +45,8 @@ CONSOLE_SRC = ConsoleCommandParser.cpp		\
 			  Console.cpp
 
 COLOR_SRC =	Hsv.cpp							\
-			Palette.cpp
+			Palette.cpp						\
+			IColorProvider.cpp
 
 # compiler
 CC = g++

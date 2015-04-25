@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 10:05:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/02 06:31:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/26 15:21:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BYTEARRAY_HPP
 # include <memory>
 # include <algorithm>
+# include <initializer_list>
 
 namespace octo
 {
@@ -113,6 +114,7 @@ namespace octo
 		 *	Buffer is resized if needed.
 		 */
 		bool			read(std::istream& is, std::size_t count);
+		bool			read(std::istream& is);
 
 		/*!	Write buffer to an output stream */
 		void			write(std::ostream& os)const;

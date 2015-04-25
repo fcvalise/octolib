@@ -38,6 +38,9 @@ tests/*.pck
 # Qt builds folder
 build-*
 
+# Qt Creator user file
+*.user
+
 # Vim files
 *.swp
 

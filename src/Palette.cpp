@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 21:14:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/22 04:28:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/25 21:33:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,19 @@ namespace octo
 	{
 	}
 
+	Palette::Palette(std::initializer_list<sf::Color> colors) :
+		Palette()
+	{
+		std::size_t	i = 0;
+
+		resize(colors.size());
+		for (sf::Color const& color : colors)
+		{
+			m_colors[i] = color;
+			++i;
+		}
+	}
+
 	void	Palette::resize(std::size_t count)
 	{
 		if (m_colorCount == count)
@@ -37,7 +50,7 @@ namespace octo
 		{
 			colors[i] = m_colors[i];
 		}
-		std::swap(colors, m_colors);
+		std::swap(m_colors, colors);
 		m_colorCount = count;
 	}
 
@@ -81,15 +94,13 @@ namespace octo
 		if (!is)
 			return (false);
 		colors.reset(new sf::Color[count]);
-		while (i < count)
+		while (is && i < count)
 		{
 			is.read(color.r, color.g, color.b, color.a);
-			if (!is)
-				return (false);
 			colors[i] = color;
 			++i;
 		}
-		std::swap(colors, m_colors);
+		std::swap(m_colors, colors);
 		m_colorCount = count;
 		return (true);
 	}
@@ -99,9 +110,10 @@ namespace octo
 		BinaryOutputStream				os(buffer);
 
 		os.write(m_colorCount);
-		for (std::uint64_t i = 0; i < m_colorCount; ++i)
+		for (std::uint64_t i = 0u; i < m_colorCount; ++i)
 		{
 			sf::Color const&	color = m_colors[i];
+
 			os.write(color.r, color.g, color.b, color.a);
 		}
 		return (true);

@@ -1,7 +1,25 @@
 #include "PaletteModel.hpp"
 #include <QVariant>
 #include <QFile>
-#include <QDataStream>
+#include <fstream>
+
+#include <BinaryInputStream.hpp>
+#include <BinaryOutputStream.hpp>
+
+namespace
+{
+    template <class T>
+    void    write(std::ostream& stream, T const& value)
+    {
+        stream.write(reinterpret_cast<char const*>(&value), sizeof(T));
+    }
+
+    template <class T>
+    void    read(std::istream& stream, T& value)
+    {
+        stream.read(reinterpret_cast<char *>(&value), sizeof(T));
+    }
+}
 
 PaletteModel::PaletteModel(QObject *parent) :
     QAbstractListModel(parent)
@@ -64,27 +82,30 @@ void PaletteModel::setColor(const QModelIndex &index, QColor color)
 
 void PaletteModel::saveToFile(const QString &path) const
 {
-    QFile           file(path);
-    QDataStream     stream(&file);
-    std::uint64_t   count = m_colors.size();
+    std::fstream    file;
+    quint64         count = m_colors.size();
 
-    if (file.open(QFile::WriteOnly))
+    file.open(path.toStdString(), std::ios_base::out | std::ios_base::binary);
+    if (file.is_open())
     {
-        stream << count;
+        octo::ByteArray             buffer;
+        octo::BinaryOutputStream    out(buffer);
+
+        out.write(count);
         for (int i = 0; i < m_colors.size(); ++i)
         {
-            stream << static_cast<quint8>(m_colors[i].red());
-            stream << static_cast<quint8>(m_colors[i].green());
-            stream << static_cast<quint8>(m_colors[i].blue());
-            stream << static_cast<quint8>(m_colors[i].alpha());
+            out.write(static_cast<quint8>(m_colors[i].red()));
+            out.write(static_cast<quint8>(m_colors[i].green()));
+            out.write(static_cast<quint8>(m_colors[i].blue()));
+            out.write(static_cast<quint8>(m_colors[i].alpha()));
         }
+        buffer.write(file);
     }
 }
 
 void PaletteModel::loadFromFile(const QString &path)
 {
-    QFile           file(path);
-    QDataStream     stream(&file);
+    std::ifstream   file;
     quint64         count = 0u;
     QList<QColor>   colors;
     quint8          r = 0;
@@ -92,18 +113,30 @@ void PaletteModel::loadFromFile(const QString &path)
     quint8          b = 0;
     quint8          a = 0;
 
-    if (file.open(QFile::ReadOnly))
+    file.open(path.toStdString(), std::ios_base::in | std::ios_base::binary);
+    if (file.is_open())
     {
-        stream >> count;
+        octo::ByteArray         buffer;
+        octo::BinaryInputStream in(buffer);
+
+        buffer.read(file);
+        in.read(count);
         for (quint64 i = 0; i < count; ++i)
         {
-            stream >> r >> g >> b >> a;
+            in.read(r, g, b, a);
             colors.append(QColor(r, g, b, a));
         }
         beginResetModel();
         m_colors = colors;
         endResetModel();
     }
+}
+
+void PaletteModel::clear()
+{
+    beginResetModel();
+    m_colors.clear();
+    endResetModel();
 }
 
 QModelIndex PaletteModel::addColor(QColor color)
