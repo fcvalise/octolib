@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 18:13:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 12:09:32 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 01:10:12 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LISTENERHELPERS_HPP
 # define LISTENERHELPERS_HPP
 # include <vector>
+# include <algorithm>
 
 namespace octo
 {
