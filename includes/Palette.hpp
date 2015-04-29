@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 20:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/25 20:48:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 01:28:04 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PALETTE_HPP
 # define PALETTE_HPP
 # include <memory>
+# include <initializer_list>
 
 # include <SFML/Graphics/Color.hpp>
 
