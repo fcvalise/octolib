@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 08:35:49 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 09:15:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/29 19:38:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace octo
 	bool	binaryRead(std::istream& is, H& value) 
 	{
 		is.read(reinterpret_cast<char*>(&value), sizeof(H));
-		return (is.operator bool());
+		return (is.fail() == false);
 	}
 }
 
