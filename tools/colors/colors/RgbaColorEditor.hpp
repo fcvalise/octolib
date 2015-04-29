@@ -8,7 +8,7 @@ class RgbaColorEditor : public AbstractColorEditor
 {
     Q_OBJECT
 public:
-    explicit RgbaColorEditor(QWidget *parent);
+    explicit RgbaColorEditor(QWidget *parent = nullptr);
     ~RgbaColorEditor();
 
     virtual void    setColor(QColor color);

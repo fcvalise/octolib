@@ -9,7 +9,7 @@ class HsvColorEditor : public AbstractColorEditor
 {
     Q_OBJECT
 public:
-    HsvColorEditor(QWidget* parent= nullptr);
+    explicit HsvColorEditor(QWidget* parent = nullptr);
     ~HsvColorEditor();
 
     virtual void setColor(QColor color);
