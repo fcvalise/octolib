@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/21 17:16:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/29 17:49:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ namespace octo
 
 		template <class F>
 		void			addCommand(std::wstring const& name, F&& functor);
+
+		std::vector<std::wstring>	getCommandList()const;
 	private:
 		bool			isEnabled()const;
 	private:

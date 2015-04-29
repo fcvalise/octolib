@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 19:36:06 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/29 17:54:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,18 @@ namespace octo
 				m_console.addCommand(L"close", [](){Application::getConsole().setEnabled(false);});
 				m_console.addCommand(L"clear", [](){Application::getConsole().clear();});
 				m_console.addCommand(L"screenshot", this, &ApplicationImp::screenshot);
+				m_console.addCommand(L"help", []()
+						{
+							Console&	console = Application::getConsole();
+
+							std::wcout << "Available console commands:\n";
+
+							for (std::wstring const& key : console.getCommandList())
+							{
+								std::wcout << " - " << key << "\n";  
+							}
+							return (L"See your terminal!");
+						});
 			}
 			else
 			{

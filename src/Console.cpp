@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 20:27:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/29 17:51:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,5 +296,10 @@ namespace octo
 			m_log.pop_back();
 		m_log.push_front(text);
 		m_needUpdate = true;
+	}
+	
+	std::vector<std::wstring>	Console::getCommandList()const
+	{
+		return (m_core.getCommandList());
 	}
 }
