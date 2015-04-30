@@ -27,6 +27,7 @@ private slots:
     void    deleteAllColors();
 
     void    updateAction();
+    void    onDocumentFileModified();
 private:
     void    setupDocument();
     void    setupActions();

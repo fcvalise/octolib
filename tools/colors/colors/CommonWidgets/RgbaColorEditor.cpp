@@ -24,10 +24,18 @@ RgbaColorEditor::~RgbaColorEditor()
 
 void RgbaColorEditor::setColor(QColor color)
 {
+    m_red->blockSignals(true);
+    m_green->blockSignals(true);
+    m_blue->blockSignals(true);
+    m_alpha->blockSignals(true);
     m_red->setValue(color.red());
     m_green->setValue(color.green());
     m_blue->setValue(color.blue());
     m_alpha->setValue(color.alpha());
+    m_red->blockSignals(false);
+    m_green->blockSignals(false);
+    m_blue->blockSignals(false);
+    m_alpha->blockSignals(false);
 }
 
 QColor RgbaColorEditor::getColor() const

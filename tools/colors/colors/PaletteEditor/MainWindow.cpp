@@ -68,8 +68,10 @@ bool MainWindow::savePalette()
     }
     else
     {
+        m_document->enableWatch(false);
         m_editor->savePalette(m_document->absoluteFilePath());
         m_document->documentSaved();
+        m_document->enableWatch(true);
         return (true);
     }
 }
@@ -110,11 +112,32 @@ void MainWindow::updateAction()
     m_deleteAllColors->setEnabled(m_editor->hasSomeColors());
 }
 
+void MainWindow::onDocumentFileModified()
+{
+    QMessageBox     msgBox(QMessageBox::Question,
+                           QApplication::applicationName(),
+                           tr("The file '%0' has changed outside %1.").arg(m_document->fileName()).arg(QApplication::applicationDisplayName()),
+                           QMessageBox::Yes | QMessageBox::No,
+                           this);
+
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setWindowTitle(QApplication::applicationDisplayName());
+    msgBox.setInformativeText(tr("Do you want to reload it?"));
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    msgBox.setEscapeButton(QMessageBox::No);
+    if (msgBox.exec() == QMessageBox::Yes)
+    {
+        m_editor->openPalette(m_document->absoluteFilePath());
+        m_document->documentReopened();
+    }
+}
+
 void MainWindow::setupDocument()
 {
     connect(m_document, &Document::documentFilePathChanged, this, &MainWindow::setWindowTitle);
     connect(m_document, &Document::documentModified, this, &MainWindow::setWindowModified);
     connect(m_document, &Document::documentModified, this, &MainWindow::updateAction);
+    connect(m_document, &Document::documentFileModified, this, &MainWindow::onDocumentFileModified);
     connect(m_editor, SIGNAL(modified()), m_document, SLOT(setDocumentModified()));
     connect(m_editor, &PaletteEditor::selectionChanged, this, &MainWindow::updateAction);
 }
@@ -181,7 +204,7 @@ bool MainWindow::maybeSave()
     int             msgResult = 0;
     bool            result = true;
     QMessageBox     msgBox(QMessageBox::Question,
-                           QApplication::applicationName(),
+                           QApplication::applicationDisplayName(),
                            tr("The current document '%0' has been modified.").arg(m_document->fileName()),
                            QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
                            this);

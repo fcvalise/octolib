@@ -15,15 +15,22 @@ HsvColorEditor::HsvColorEditor(QWidget *parent) :
 
 HsvColorEditor::~HsvColorEditor()
 {
-
 }
 
 void HsvColorEditor::setColor(QColor color)
 {
+    m_hue->blockSignals(true);
+    m_saturation->blockSignals(true);
+    m_value->blockSignals(true);
+    m_alpha->blockSignals(true);
     m_hue->setValue(color.hue());
     m_saturation->setValue(color.hsvSaturation());
     m_value->setValue(color.value());
     m_alpha->setValue(color.alpha());
+    m_hue->blockSignals(false);
+    m_saturation->blockSignals(false);
+    m_value->blockSignals(false);
+    m_alpha->blockSignals(false);
 }
 
 QColor HsvColorEditor::getColor() const

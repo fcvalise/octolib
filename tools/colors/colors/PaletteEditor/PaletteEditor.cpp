@@ -38,6 +38,8 @@ void PaletteEditor::setup()
     m_paletteView->setModel(m_paletteModel);
     m_paletteView->horizontalHeader()->setStretchLastSection(true);
     m_paletteView->horizontalHeader()->hide();
+    m_paletteView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_paletteView->setSelectionMode(QAbstractItemView::SingleSelection);
     connect(m_paletteView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(onCurrentChanged(QModelIndex,QModelIndex)));
     connect(m_colorEditor, SIGNAL(colorChanged(QColor)), SLOT(onColorEdited(QColor)));
     layout->addWidget(m_paletteView, 2);
