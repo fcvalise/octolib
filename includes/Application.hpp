@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 18:25:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 14:46:36 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,44 @@ namespace octo
 	 *
 	 *	The games screens must be implemented with AbstractState.<br>
 	 *
+	 *	Some commands are provided by default:
+	 *	<TABLE>
+	 *	<TR>
+	 *		<TH>Name</TH>
+	 *		<TH>Parameters</TH>
+	 *		<TH>Description</TH>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>console.list_commands()</TD>
+	 *		<TD></TD>
+	 *		<TD>List in your terminal all availables commands</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>console.close()</TD>
+	 *		<TD></TD>
+	 *		<TD>Close the console</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>console.clear()</TD>
+	 *		<TD></TD>
+	 *		<TD>Close the console</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>render.screenshot(bool includeConsole)</TD>
+	 *		<TD><UL><LI>includeConsole: define if the console is taken with the screenshot</LI></UL></TD>
+	 *		<TD>Take a screenshot of the screen</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>system.list_states()</TD>
+	 *		<TD></TD>
+	 *		<TD>List the availables states</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>system.list_transitions()</TD>
+	 *		<TD></TD>
+	 *		<TD>List the availables transitions</TD>
+	 *	</TR>
+	 *	</TABLE>
 	 */
 	class Application : public NonCopyable
 	{

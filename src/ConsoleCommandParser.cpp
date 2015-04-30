@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:34:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 20:17:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 14:29:15 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ namespace octo
 		static std::wstring const	Spaces = L" \t\f\v\r\n";
 		static std::wstring const	Symbols = L"abcdefghijklmnopqrstuvwxyz"
 											  L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-											  L"_";
+											  L"_.";
 		static constexpr wchar_t const		ArgumentIn = L'(';
 		static constexpr wchar_t const		ArgumentOut = L')';
 		static constexpr wchar_t const		ArgumentSeparator = L',';

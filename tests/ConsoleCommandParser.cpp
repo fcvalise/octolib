@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/03 09:27:15 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/10 19:16:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 14:30:11 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,20 @@ BOOST_AUTO_TEST_CASE( simple_test )
 {
 	testParser(L"hello()", L"hello", {});
 	testParser(L"yop()", L"yop", {});
+	testParser(L" yop   (    )  ", L"yop", {});
+	testParser(L" K_yop   (  shsfhsf    ,   kkkkkss  )  ", L"K_yop", {L"shsfhsf", L"kkkkkss"});
+	testParser(L" yop   (  shsfhsf    ,   kkkkkss  )  ", L"yop", {L"shsfhsf", L"kkkkkss"});
+	testParser(L"  yop   (shsfhsf,kkkkkss)  ", L"yop", {L"shsfhsf", L"kkkkkss"});
+	testParser(L"yop(123, 456, true, hello)", L"yop", {L"123", L"456", L"true", L"hello"});
+	testParser(L"  yop   (\"shsfhsf\",kkkkkss)  ", L"yop", {L"shsfhsf", L"kkkkkss"});
+	testParser(L"hello(90, 87)", L"hello", {L"90", L"87"});
+	testParser(L"hello(\"90, 87\")", L"hello", {L"90, 87"});
+}
+
+BOOST_AUTO_TEST_CASE( namespace_test )
+{
+	testParser(L"foo.hello()", L"foo.hello", {});
+	testParser(L"foo.bar.yop()", L"foo.bar.yop", {});
 	testParser(L" yop   (    )  ", L"yop", {});
 	testParser(L" K_yop   (  shsfhsf    ,   kkkkkss  )  ", L"K_yop", {L"shsfhsf", L"kkkkkss"});
 	testParser(L" yop   (  shsfhsf    ,   kkkkkss  )  ", L"yop", {L"shsfhsf", L"kkkkkss"});

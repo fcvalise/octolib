@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/29 17:54:57 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 14:37:37 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,9 @@ namespace octo
 				m_graphicsManager.addTextListener(&m_console);
 				m_console.setFont(m_resourceManager.getFont(m_options.getValue<std::string>("console_font")));
 				// Setup builtin commands
-				m_console.addCommand(L"close", [](){Application::getConsole().setEnabled(false);});
-				m_console.addCommand(L"clear", [](){Application::getConsole().clear();});
-				m_console.addCommand(L"screenshot", this, &ApplicationImp::screenshot);
-				m_console.addCommand(L"help", []()
+				m_console.addCommand(L"console.close", [](){Application::getConsole().setEnabled(false);});
+				m_console.addCommand(L"console.clear", [](){Application::getConsole().clear();});
+				m_console.addCommand(L"console.list_commands", []()
 						{
 							Console&	console = Application::getConsole();
 
@@ -118,6 +117,31 @@ namespace octo
 							for (std::wstring const& key : console.getCommandList())
 							{
 								std::wcout << " - " << key << "\n";  
+							}
+							return (L"See your terminal!");
+						});
+				m_console.addCommand(L"render.screenshot", this, &ApplicationImp::screenshot);
+				m_console.addCommand(L"system.list_states",[]()
+						{
+							StateManager&	stateManager = Application::getStateManager();
+	
+							std::cout << "Available states:\n";
+
+							for (std::string const& key : stateManager.availableStateKeys())
+							{
+								std::cout << " - " << key << "\n"; 
+							}
+							return (L"See your terminal!");
+						});
+				m_console.addCommand(L"system.list_transitions",[]()
+						{
+							StateManager&	stateManager = Application::getStateManager();
+	
+							std::cout << "Available states:\n";
+
+							for (std::string const& key : stateManager.availableStateKeys())
+							{
+								std::cout << " - " << key << "\n"; 
 							}
 							return (L"See your terminal!");
 						});
