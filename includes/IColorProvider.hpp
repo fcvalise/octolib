@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/21 23:38:32 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 02:58:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 04:48:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ namespace octo
 	class ByteArray;
 
 	/*!
-	 *	\ingroup Color
+	 *	\ingroup Graphics
 	 *	\class IColorProvider
 	 *	\brief Interface of a color provider
 	 *	Abstract of a provider of color

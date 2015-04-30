@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 01:36:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 03:04:59 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 04:40:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,9 @@ namespace octo
 	sf::Color	ColorWheel::getColor(std::size_t id)const
 	{
 		if (id >= m_offsetCount)
-			std::range_error("color wheel: set offset: invalid offset identifier: " + std::to_string(id));
-		Hsv	result = m_colorBase;
+			throw std::range_error("color wheel: set offset: invalid offset identifier: " + std::to_string(id));
+		Hsv	result(m_colorBase.getHue() + m_offsets[id], m_colorBase.getSaturation(), m_colorBase.getValue());
 
-		result.hue() += m_offsets[id];
-		if (result.getHue() >= 360)
-			result.hue() -= 360;
 		return (result.toRgba());
 	}
 

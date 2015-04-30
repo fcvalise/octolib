@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 20:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 02:24:32 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 04:48:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 namespace octo
 {
 	/*!
-	 *	\ingroup Colors
+	 *	\ingroup Graphics
 	 *	\class Palette
 	 *	\brief Store a set of colors
 	 */

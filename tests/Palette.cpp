@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/24 17:35:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/24 19:19:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 04:41:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 #include <Palette.hpp>
 
 BOOST_AUTO_TEST_SUITE( palette )
+
+BOOST_AUTO_TEST_CASE( errors )
+{
+	octo::Palette		pI{{sf::Color::Black, sf::Color::Red, sf::Color::Blue}};
+
+	BOOST_CHECK_THROW( pI.getColor(3u), std::range_error );
+	BOOST_CHECK_THROW( pI.getColor(666u), std::range_error );
+}
 
 BOOST_AUTO_TEST_CASE( io3 )
 {

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 01:22:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 02:37:29 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 04:49:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@
 namespace octo
 {
 	/*!
-	 *	\ingroup Colors
+	 *	\ingroup Graphics
 	 *	\class ColorWheel
 	 *	\brief Store a set of hue offset and a color base
 	 *
 	 *	This class define a set of color from a base color and a set of hue offsets.<br>
 	 *	Each color is computed by adding hue offset to hue component of the base color.
+	 *	\see Hsv
 	 */
 	class ColorWheel : public IColorProvider
 	{

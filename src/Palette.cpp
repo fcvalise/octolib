@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 21:14:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 02:23:25 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 04:41:03 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ namespace octo
 	sf::Color	Palette::getColor(std::size_t id)const
 	{
 		if (id >= m_colorCount)
-			std::range_error("palette: get color: invalid color identifier: " + std::to_string(id));
+			throw std::range_error("palette: get color: invalid color identifier: " + std::to_string(id));
 		return (m_colors[id]);
 	}
 

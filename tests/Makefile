@@ -24,6 +24,7 @@ SRC = main.cpp						\
 	  ConsoleCommandParser.cpp		\
 	  ExpectChar.cpp				\
 	  Options.cpp					\
+	  Hsv.cpp						\
 	  Palette.cpp					\
 	  ColorWheel.cpp
 
