@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/15 18:20:22 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 18:23:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 04:55:03 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 namespace octo
 {
+	/*!	\ingroup Core
+	 *	\class NonCopyable
+	 *	\brief Disable copy
+	 */
 	struct	NonCopyable
 	{
 		NonCopyable() = default;

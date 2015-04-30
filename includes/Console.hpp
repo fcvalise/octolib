@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/29 17:49:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 05:20:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,20 @@ namespace octo
 	 *	\class Console
 	 *	\brief In-game console
 	 *
-	 *	This console is displayed on screen over the game.
-	 *	On enabled, the console takes the keyboard's focus.
+	 *	This console is displayed on screen over the game.<br>
+	 *	On enabled, the console takes the keyboard's focus.<br>
+	 *
+	 *	Currently these type are supported as parameter and return of command:
+	 *	<ul>
+	 *		<li>All native types such bool, int, float, double </li>
+	 *		<li>std::string</li>
+	 *		<li>std::wstring</li>
+	 *		<li>sf::Vector2</li>
+	 *		<li>sf::Vector3</li>
+	 *		<li>sf::Rect</li>
+	 *		<li>sf::Color</li>
+	 *		<li>sf::VideoMode</li>
+	 *	</ul>
 	 */
 	class Console :	public NonCopyable,
 					public IConsoleListener,
@@ -53,11 +65,144 @@ namespace octo
 
 		Console();
 
-		void			setFont(sf::Font const& font);
-		void			setEnabled(bool enable);
-		void			print(std::wstring const& str, sf::Color const& color);
-		void			clear();
+		/*!	Define the font used to render text */
+		void						setFont(sf::Font const& font);
 
+		/*!	Enable or disable the console
+		 *
+		 *	Console is displayed and can respond to text event only if enabled.
+		 */
+		void						setEnabled(bool enable);
+
+		/*!	Return true if the console is enabled, otherwise false */
+		bool						isEnabled()const;
+
+		/*!	Print a message in the console */
+		void						print(std::wstring const& str, sf::Color const& color);
+
+		/*!	Clear the console display */
+		void						clear();
+
+		/*!	Update the console logic */
+		void						update(sf::Time frameTime, sf::View const& view);
+
+		/*!	Draw the console */
+		void						draw(sf::RenderTarget& render)const;
+
+		/*!	Register a free function
+		 *
+		 *	\code
+		 *
+		 *	double	foo(int param){ ... }
+		 *
+		 *	...
+		 *
+		 *	// Register foo
+		 *	console.addCommand(L"foo", &foo);
+		 *	\endcode
+		 */
+		template <class R, class ... A>
+		void						addCommand(std::wstring const& name, R(*function)(A...));
+
+		/*!	Register a member function
+		 *
+		 *	\code
+		 *	struct Foo
+		 *	{
+		 *		double	bar(int param){ ... }
+		 *	};
+		 *
+		 *	...
+		 *
+		 *	Foo	fooInstance;
+		 *
+		 *	// Register Foo::bar()
+		 *	console.addCommand(L"foobar", fooInstance, &bar);
+		 *	\endcode
+		 */
+		template <class C, class R, class ... A>
+		void						addCommand(std::wstring const& name, C& instance, R(C::*function)(A...));
+
+		/*!	Register a member function
+		 *
+		 *	\code
+		 *	struct Foo
+		 *	{
+		 *		double	bar(int param){ ... }
+		 *	};
+		 *
+		 *	...
+		 *
+		 *	Foo*	fooInstance = new Foo;
+		 *
+		 *	// Register Foo::bar()
+		 *	console.addCommand(L"foobar", fooInstance, &bar);
+		 *	\endcode
+		 */
+		template <class C, class R, class ... A>
+		void						addCommand(std::wstring const& name, C* instance, R(C::*function)(A...));
+
+		/*!	Register a constant member function
+		 *
+		 *	\code
+		 *	struct Foo
+		 *	{
+		 *		double	bar(int param)const{ ... }
+		 *	};
+		 *
+		 *	...
+		 *
+		 *	Foo	const	fooInstance;
+		 *
+		 *	// Register Foo::bar()
+		 *	console.addCommand(L"foobar", fooInstance, &bar);
+		 *	\endcode
+		 */
+		template <class C, class R, class ... A>
+		void						addCommand(std::wstring const& name, C const& instance, R(C::*function)(A...)const);
+
+		/*!	Register a constant member function
+		 *
+		 *	\code
+		 *	struct Foo
+		 *	{
+		 *		double	bar(int param)const{ ... }
+		 *	};
+		 *
+		 *	...
+		 *
+		 *	Foo const*	fooInstance = new Foo;
+		 *
+		 *	// Register Foo::bar()
+		 *	console.addCommand(L"foobar", fooInstance, &bar);
+		 *	\endcode
+		 */
+		template <class C, class R, class ... A>
+		void						addCommand(std::wstring const& name, C const* instance, R(C::*function)(A...)const);
+
+		/*!	Register a functor or a lambda function
+		 *
+		 *	\code
+		 *	struct Foo
+		 *	{
+		 *		double	operator()(int param){ ... }
+		 *	};
+		 *
+		 *	...
+		 *
+		 *	// Register a functor
+		 *	console.addCommand(L"foobar", Foo());
+		 *
+		 *	// Register a lambda
+		 *	console.addCommand(L"lambdalala", [](int, double){ ... });
+		 *	\endcode
+		 */
+		template <class F>
+		void						addCommand(std::wstring const& name, F&& functor);
+
+		/*!	Return the list of all registered commands keys */
+		std::vector<std::wstring>	getCommandList()const;
+	private:
 		virtual void	onTextEntered(sf::Event::TextEvent const& event);
 		virtual bool	onPressed(sf::Event::KeyEvent const& event);
 		virtual bool	onReleased(sf::Event::KeyEvent const& event);
@@ -65,30 +210,6 @@ namespace octo
 		virtual void	onCursorChanged(unsigned int pos);
 		virtual void	onExecuted(std::wstring const& result);
 		virtual void	onError(std::wstring const& message, std::wstring const& line);
-		void			update(sf::Time frameTime, sf::View const& view);
-		void			draw(sf::RenderTarget& render)const;
-
-		template <class R, class ... A>
-		void			addCommand(std::wstring const& name, R(*function)(A...));
-
-		template <class C, class R, class ... A>
-		void			addCommand(std::wstring const& name, C& instance, R(C::*function)(A...));
-
-		template <class C, class R, class ... A>
-		void			addCommand(std::wstring const& name, C* instance, R(C::*function)(A...));
-
-		template <class C, class R, class ... A>
-		void			addCommand(std::wstring const& name, C const& instance, R(C::*function)(A...)const);
-
-		template <class C, class R, class ... A>
-		void			addCommand(std::wstring const& name, C const* instance, R(C::*function)(A...)const);
-
-		template <class F>
-		void			addCommand(std::wstring const& name, F&& functor);
-
-		std::vector<std::wstring>	getCommandList()const;
-	private:
-		bool			isEnabled()const;
 	private:
 		ConsoleCore					m_core;
 		std::shared_ptr<Cursor>		m_cursor;
