@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 20:40:25 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/19 20:59:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 03:05:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ namespace octo
 		int&		hue();
 		float&		saturation();
 		float&		value();
+		float&		alpha();
 
 		sf::Color	toRgba()const;
 	private:

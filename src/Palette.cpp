@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 21:14:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/25 21:33:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 02:23:25 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,6 @@ namespace octo
 		m_colorCount = count;
 	}
 
-	void	Palette::setColor(std::size_t id, sf::Color const& color)
-	{
-		if (id >= m_colorCount)
-			std::range_error("palette: set color: invalid color identifier: " + std::to_string(id));
-		m_colors[id] = color;
-	}
-
-	void	Palette::setColor(std::size_t id, Hsv const& color)
-	{
-		if (id >= m_colorCount)
-			std::range_error("palette: set color: invalid color identifier: " + std::to_string(id));
-		m_colors[id] = color.toRgba();
-	}
-
 	sf::Color	Palette::getColor(std::size_t id)const
 	{
 		if (id >= m_colorCount)
@@ -82,11 +68,11 @@ namespace octo
 
 	bool	Palette::loadFromMemory(ByteArray const& buffer)
 	{
-		std::uint64_t					count = 0u;
-		std::uint64_t					i = 0u;
 		std::unique_ptr<sf::Color[]>	colors;
 		BinaryInputStream				is(buffer);
 		sf::Color						color;
+		std::uint64_t					count = 0u;
+		std::uint64_t					i = 0u;
 
 		if (!is)
 			return (false);

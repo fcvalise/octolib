@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 20:41:59 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/20 18:14:38 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 03:06:37 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ namespace octo
 		};
 		sf::Color	result;
 
-		std::cout << m_hue << ";" << m_saturation << ";" << m_value << " = ";
 		if (std::fabs(m_saturation) < std::numeric_limits<float>::epsilon())
 		{
 			result.r = m_value;
@@ -134,7 +133,6 @@ namespace octo
 			}
 		}
 		result.a = m_alpha * 255;
-		std::cout << result << std::endl;
 		return (result);
 	}
 	
@@ -151,5 +149,10 @@ namespace octo
 	float&	Hsv::value()
 	{
 		return (m_value);
+	}
+	
+	float&	Hsv::alpha()
+	{
+		return (m_alpha);
 	}
 }

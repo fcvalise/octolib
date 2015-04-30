@@ -24,7 +24,8 @@ SRC = main.cpp						\
 	  ConsoleCommandParser.cpp		\
 	  ExpectChar.cpp				\
 	  Options.cpp					\
-	  Palette.cpp
+	  Palette.cpp					\
+	  ColorWheel.cpp
 
 # compiler
 CC = g++

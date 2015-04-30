@@ -46,6 +46,7 @@ CONSOLE_SRC = ConsoleCommandParser.cpp		\
 
 COLOR_SRC =	Hsv.cpp							\
 			Palette.cpp						\
+			ColorWheel.cpp					\
 			IColorProvider.cpp
 
 # compiler
