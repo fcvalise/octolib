@@ -120,11 +120,11 @@ dox:
 open_dox:
 	@open ./doc/generated/html/index.html
 
-tests:
+unit_tests:
 	@make re -C tests MODE=$(MODE)
 	@tests/tester.app
 
-complete: re tests
+complete: re unit_tests
 	@make re -C tools/packager MODE=$(MODE)
 	@make re -C tools/package_reader MODE=$(MODE)
 	@make re -C benchmarks MODE=$(MODE)
