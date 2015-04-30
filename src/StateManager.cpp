@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 18:35:06 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 16:25:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,8 +226,9 @@ namespace octo
 	
 	StateManager::KeyList	StateManager::availableStateKeys()const
 	{
-		KeyList	results(m_stateFactory.size());
+		KeyList	results;
 
+		results.reserve(m_stateFactory.size());
 		for (auto const& pair : m_stateFactory)
 			results.push_back(pair.first);
 		return (results);
@@ -235,8 +236,9 @@ namespace octo
 
 	StateManager::KeyList	StateManager::availableTransitionKeys()const
 	{
-		KeyList	results(m_transitionFactory.size());
+		KeyList	results;
 
+		results.reserve(m_transitionFactory.size());
 		for (auto const& pair : m_transitionFactory)
 			results.push_back(pair.first);
 		return (results);

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/29 17:51:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 16:06:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ namespace octo
 				break;
 			// Enter
 			case 10:
-				m_core.execute();
+				execute();
 				break;
 			// Delete
 			// Delete do nothing because currently you can move
@@ -230,6 +230,12 @@ namespace octo
 					break;
 				case sf::Keyboard::Right:
 					m_core.moveCursor(1);
+					break;
+				case sf::Keyboard::Up:
+					nextHistoryEntry();
+					break;
+				case sf::Keyboard::Down:
+					previousHistoryEntry();
 					break;
 				default:
 					break;
@@ -301,5 +307,33 @@ namespace octo
 	std::vector<std::wstring>	Console::getCommandList()const
 	{
 		return (m_core.getCommandList());
+	}
+
+	void	Console::nextHistoryEntry()
+	{
+		std::wstring	entry;
+
+		if (m_history.getNextEntry(entry))
+		{
+			m_core.resetBuffer(entry);
+		}
+	}
+
+	void	Console::previousHistoryEntry()
+	{
+		std::wstring	entry;
+
+		if (m_history.getPreviousEntry(entry))
+		{
+			m_core.resetBuffer(entry);
+		}
+	}
+
+	void	Console::execute()
+	{
+		std::wstring	buffer = m_core.getBuffer();
+
+		m_core.execute();
+		m_history.pushEntry(buffer);
 	}
 }

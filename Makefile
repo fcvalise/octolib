@@ -42,7 +42,8 @@ STATE_SYSTEM_SRC =	AbstractState.cpp		\
 CONSOLE_SRC = ConsoleCommandParser.cpp		\
 			  ConsoleInterpreter.cpp		\
 			  ConsoleCore.cpp				\
-			  Console.cpp
+			  Console.cpp					\
+			  ConsoleHistory.cpp
 
 COLOR_SRC =	Hsv.cpp							\
 			Palette.cpp						\

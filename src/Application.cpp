@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 15:12:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 15:22:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ namespace octo
 				m_graphicsManager.addTextListener(&m_console);
 				m_console.setFont(m_resourceManager.getFont(m_options.getValue<std::string>("console_font")));
 				// Setup builtin commands
+				// Console commands
 				m_console.addCommand(L"console.close", [](){Application::getConsole().setEnabled(false);});
 				m_console.addCommand(L"console.clear", [](){Application::getConsole().clear();});
 				m_console.addCommand(L"console.list_commands", []()
@@ -120,7 +121,9 @@ namespace octo
 							}
 							return (L"See your terminal!");
 						});
+				// Render commands
 				m_console.addCommand(L"render.screenshot", this, &ApplicationImp::screenshot);
+				// System commands
 				m_console.addCommand(L"system.quit", [](){Application::stop();});
 				m_console.addCommand(L"system.change_state", [](std::string const& key)
 						{
@@ -153,7 +156,7 @@ namespace octo
 			}
 			else
 			{
-				std::cout << "warning no console font defined, console is disabled" << std::endl;
+				std::cout << "Warning: no console font defined, console is disabled" << std::endl;
 			}
 		}
 

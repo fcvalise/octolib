@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 20:19:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 15:47:43 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ namespace octo
 		emitCursorChanged();
 	}
 
+	void	ConsoleCore::resetBuffer(std::wstring const& line)
+	{
+		m_buffer = line;
+		m_cursorPosition = m_buffer.size();
+		emitTextChanged();
+		emitCursorChanged();
+	}
+
 	void	ConsoleCore::moveCursor(int offset)
 	{
 		if (m_buffer.empty())
@@ -91,6 +99,11 @@ namespace octo
 			m_cursorPosition = std::min<unsigned int>(m_cursorPosition + offset, m_buffer.size());
 		}
 		emitCursorChanged();
+	}
+
+	std::wstring const&	ConsoleCore::getBuffer()const
+	{
+		return (m_buffer);
 	}
 
 	void	ConsoleCore::execute()

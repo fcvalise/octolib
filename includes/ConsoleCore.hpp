@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:05:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 19:48:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 15:47:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ namespace octo
 
 		/*!	Clear the buffer */
 		void						removeAll();
+
+		/*!	Replace the current buffer content */
+		void						resetBuffer(std::wstring const& line);
+
+		/*!	Return the current line */
+		std::wstring const&			getBuffer()const;
 
 		/*! Move the cursor */
 		void						moveCursor(int offset);
