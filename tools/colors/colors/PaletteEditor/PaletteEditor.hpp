@@ -18,21 +18,26 @@ public:
     explicit PaletteEditor(QWidget *parent = 0);
     ~PaletteEditor();
 public slots:
-    void    newPalette();
-    void    savePalette();
-    void    loadPalette();
+    void        newPalette();
+    void        savePalette(QString const& filePath);
+    void        openPalette(QString const& filePath);
+
+    void        addColor();
+    void        removeCurrent();
+    void        removeAll();
+    bool        hasSelection()const;
+    bool        hasSomeColors()const;
 private:
     void    setup();
-    void    setupControls();
 private slots:
-    void    addColor();
-    void    removeCurrent();
     void    onCurrentChanged(const QModelIndex& current, const QModelIndex&);
     void    onColorEdited(QColor color);
+signals:
+    void    modified();
+    void    selectionChanged();
 private:
     PaletteModel*   m_paletteModel;
     QTableView*     m_paletteView;
-    QFrame*         m_controlFrame;
     ColorEditor*    m_colorEditor;
 };
 

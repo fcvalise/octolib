@@ -13,7 +13,7 @@ public:
     ~PaletteModel();
 
 public:
-    virtual int             rowCount(const QModelIndex &) const;
+    virtual int             rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant        data(const QModelIndex &index, int role) const;
     virtual bool            setData(const QModelIndex &index, const QVariant &value, int role);
     virtual Qt::ItemFlags   flags(const QModelIndex &index) const;
@@ -25,7 +25,7 @@ public:
 public slots:
     QModelIndex             addColor(QColor color = QColor());
     void                    removeColor(QModelIndex index);
-    void                    clear();
+    void                    removeAll();
 private:
     QList<QColor>   m_colors;
 };

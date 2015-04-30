@@ -14,12 +14,11 @@ PaletteEditor::PaletteEditor(QWidget *parent) :
     QWidget(parent),
     m_paletteModel(new PaletteModel(this)),
     m_paletteView(new QTableView),
-    m_controlFrame(new QFrame),
     m_colorEditor(new ColorEditor)
 
 {
     setup();
-    setupControls();
+    emit selectionChanged();
 }
 
 PaletteEditor::~PaletteEditor()
@@ -28,7 +27,7 @@ PaletteEditor::~PaletteEditor()
 
 void PaletteEditor::newPalette()
 {
-    m_paletteModel->clear();
+    m_paletteModel->removeAll();
 }
 
 void PaletteEditor::setup()
@@ -42,28 +41,7 @@ void PaletteEditor::setup()
     connect(m_paletteView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(onCurrentChanged(QModelIndex,QModelIndex)));
     connect(m_colorEditor, SIGNAL(colorChanged(QColor)), SLOT(onColorEdited(QColor)));
     layout->addWidget(m_paletteView, 2);
-    layout->addWidget(m_controlFrame);
-    layout->addWidget(m_colorEditor, 2);
-}
-
-void PaletteEditor::setupControls()
-{
-    QVBoxLayout*    layout = new QVBoxLayout(m_controlFrame);
-    QPushButton*    addColor = new QPushButton(tr("Add color"));
-    QPushButton*    removeColor = new QPushButton(tr("Remove color"));
-    QPushButton*    savePalette = new QPushButton(tr("Save palette..."));
-    QPushButton*    loadPalette = new QPushButton(tr("Load palette..."));
-
-    connect(addColor, SIGNAL(clicked()), this, SLOT(addColor()));
-    connect(removeColor, SIGNAL(clicked()), this, SLOT(removeCurrent()));
-    connect(savePalette, SIGNAL(clicked()), this, SLOT(savePalette()));
-    connect(loadPalette, SIGNAL(clicked()), this, SLOT(loadPalette()));
-    layout->addWidget(addColor);
-    layout->addWidget(removeColor);
-    layout->addWidget(savePalette);
-    layout->addWidget(loadPalette);
-    layout->setSpacing(3);
-    layout->addStretch(500);
+    layout->addWidget(m_colorEditor);
 }
 
 void PaletteEditor::addColor()
@@ -76,6 +54,7 @@ void PaletteEditor::addColor()
     s_hue += 20;
     if (s_hue >= 360)
         s_hue -= 360;
+    emit modified();
 }
 
 void PaletteEditor::removeCurrent()
@@ -87,34 +66,45 @@ void PaletteEditor::removeCurrent()
     if (currentRow >= m_paletteModel->rowCount(QModelIndex()))
         currentRow = m_paletteModel->rowCount(QModelIndex()) - 1;
     m_paletteView->setCurrentIndex(m_paletteModel->index(currentRow));
+    emit modified();
+
+}
+
+void PaletteEditor::removeAll()
+{
+    m_paletteModel->removeAll();
+    emit modified();
+}
+
+bool PaletteEditor::hasSelection() const
+{
+    return (m_paletteView->currentIndex().isValid());
+}
+
+bool PaletteEditor::hasSomeColors() const
+{
+    return (m_paletteModel->rowCount() > 0);
 }
 
 void PaletteEditor::onCurrentChanged(const QModelIndex &current, const QModelIndex &)
 {
     m_colorEditor->setColor(m_paletteModel->getColor(current));
+    emit selectionChanged();
 }
 
 void PaletteEditor::onColorEdited(QColor color)
 {
     m_paletteModel->setColor(m_paletteView->currentIndex(), color);
+    emit modified();
 }
 
-void PaletteEditor::savePalette()
+void PaletteEditor::savePalette(QString const& filePath)
 {
-    QString path = QFileDialog::getSaveFileName(this, tr("Save palette"), "", "Palette (*.opa)");
-
-    if (path.isEmpty() == false)
-    {
-        m_paletteModel->saveToFile(path);
-    }
+    m_paletteModel->saveToFile(filePath);
 }
 
-void PaletteEditor::loadPalette()
+void PaletteEditor::openPalette(const QString &filePath)
 {
-    QString path = QFileDialog::getOpenFileName(this, tr("Open palette"), "", "Palette (*.opa)");
-
-    if (path.isEmpty() == false)
-    {
-        m_paletteModel->loadFromFile(path);
-    }
+    m_paletteModel->loadFromFile(filePath);
+    emit modified();
 }

@@ -132,7 +132,7 @@ void PaletteModel::loadFromFile(const QString &path)
     }
 }
 
-void PaletteModel::clear()
+void PaletteModel::removeAll()
 {
     beginResetModel();
     m_colors.clear();

@@ -19,6 +19,7 @@ void ColorItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     int     i = 0;
     QColor  current = index.data().value<QColor>();
     QColor  inverse(255 - current.red(), 255 - current.green(), 255 - current.blue());
+    bool    selected = option.state & QStyle::State_Selected;
 
     painter->save();
     painter->setClipRect(rect);
@@ -33,13 +34,9 @@ void ColorItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
         ++i;
     }
     // Draw color
-    painter->fillRect(option.rect, current);
-    // Draw selection
-    if (option.state & QStyle::State_Selected)
-    {
-        painter->setPen(QPen(inverse, 4));
-        painter->drawRect(rect.adjusted(1, 1, -1, -1));
-    }
+    if (selected)
+        rect.adjust(8, 0, -8, 0);
+    painter->fillRect(rect, current);
     painter->restore();
 }
 
