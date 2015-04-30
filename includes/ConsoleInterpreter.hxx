@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/21 17:26:12 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 05:54:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,48 +376,64 @@ namespace octo
 	template <class R, class ... A>
 	void	ConsoleInterpreter::addCommand(std::wstring const& name, R(*function)(A...))
 	{
+		if (m_callables.find(name) != m_callables.end())
+			std::wcout << "Warning: command " << name << " replaced" << std::endl;
 		m_callables[name] = std::make_shared<Callable<R, A...>>(function);	
 	}
 
 	template <class C, class R, class ... A>
 	void	ConsoleInterpreter::addCommand(std::wstring const& name, C& instance, R(C::*function)(A...))
 	{
+		if (m_callables.find(name) != m_callables.end())
+			std::wcout << "Warning: command " << name << " replaced" << std::endl;
 		m_callables[name] = std::make_shared<CallableMem<C, R, A...>>(&instance, function);
 	}
 
 	template <class C, class R, class ... A>
 	void	ConsoleInterpreter::addCommand(std::wstring const& name, C* instance, R(C::*function)(A...))
 	{
+		if (m_callables.find(name) != m_callables.end())
+			std::wcout << "Warning: command " << name << " replaced" << std::endl;
 		m_callables[name] = std::make_shared<CallableMem<C, R, A...>>(instance, function);
 	}
 
 	template <class C, class R, class ... A>
 	void	ConsoleInterpreter::addCommand(std::wstring const& name, C const& instance, R(C::*function)(A...)const)
 	{
+		if (m_callables.find(name) != m_callables.end())
+			std::wcout << "Warning: command " << name << " replaced" << std::endl;
 		m_callables[name] = std::make_shared<CallableMemConst<C, R, A...>>(&instance, function);
 	}
 
 	template <class C, class R, class ... A>
 	void	ConsoleInterpreter::addCommand(std::wstring const& name, C const* instance, R(C::*function)(A...)const)
 	{
+		if (m_callables.find(name) != m_callables.end())
+			std::wcout << "Warning: command " << name << " replaced" << std::endl;
 		m_callables[name] = std::make_shared<CallableMemConst<C, R, A...>>(instance, function);
 	}
 
 	template <class F>
 	void	ConsoleInterpreter::addCommand(std::wstring const& name, F functor)
 	{
+		if (m_callables.find(name) != m_callables.end())
+			std::wcout << "Warning: command " << name << " replaced" << std::endl;
 		addFunctor(name, functor, &F::operator());
 	}
 
 	template <class C, class R, class ... A>
 	void	ConsoleInterpreter::addFunctor(std::wstring const& name, C instance, R(C::*function)(A...))
 	{
+		if (m_callables.find(name) != m_callables.end())
+			std::wcout << "Warning: command " << name << " replaced" << std::endl;
 		m_callables[name] = std::make_shared<CallableFunctor<C, R, A...>>(instance, function);
 	}
 
 	template <class C, class R, class ... A>
 	void	ConsoleInterpreter::addFunctor(std::wstring const& name, C instance, R(C::*function)(A...)const)
 	{
+		if (m_callables.find(name) != m_callables.end())
+			std::wcout << "Warning: command " << name << " replaced" << std::endl;
 		m_callables[name] = std::make_shared<CallableConstFunctor<C, R, A...>>(instance, function);
 	}
 }
