@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 01:11:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 05:38:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ namespace octo
 		Sound,
 		Text,
 		Palette,
+		ColorWheel,
 		Count,
 		Invalid
 	};

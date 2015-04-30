@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 01:10:29 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 05:39:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ namespace octo
 			{octo::PackageHeader::EntryType::Sound, "SOUNDS"},
 			{octo::PackageHeader::EntryType::Text, "TEXTS"},
 			{octo::PackageHeader::EntryType::Palette, "PALETTES"},
+			{octo::PackageHeader::EntryType::ColorWheel, "COLOR WHEELS"},
 			{octo::PackageHeader::EntryType::Invalid, "INVALID"}
 		};
 
@@ -156,7 +157,8 @@ namespace octo
 			{"cgf", PackageHeader::EntryType::Text},
 			{"json", PackageHeader::EntryType::Text},
 			{"xml", PackageHeader::EntryType::Text},
-			{"opa", PackageHeader::EntryType::Palette}
+			{"opa", PackageHeader::EntryType::Palette},
+			{"ocw", PackageHeader::EntryType::ColorWheel}
 		}
 	{
 	}

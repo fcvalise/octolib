@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:34:27 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 18:23:53 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 05:50:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,40 +110,23 @@ namespace octo
 
 		/*!	Get a value
 		 *
-		 * 	\warning Do not use an invalid key since this causes an undefined behavior.
 		 *	\throw std::range_error if key is not found
 		 *	\throw InvalidTypeException if value is not interpretable as type T
 		 */
 		template <class T>
 		T			getValue(std::string const& key)const;
 
-		/*!	Get a value of type std::string
-		 *
-		 * 	\warning Do not use an invalid key since this causes an undefined behavior.
-		 *	\throw std::range_error if key is not found
-		 */
-		//std::string	getValue(std::string const& key)const;
-
 		/*!	Get a value or \a defaultValue if \a key is not found
 		 *	\param key Key searched
 		 *	\param defaultValue Value used if the key is not found
-		 *	\remark Compiler can deduce the type of T using the type of defaultValue
+		 *	\remark Compiler can deduce automatically the type of T using the type of defaultValue
 		 */
 		template <class T>
 		T			getValue(std::string const& key, T const& defaultValue)const;
 
-		/*!	Get a value of type std::string or \a defaultValue if \a key is not found
-		 *	\param key Key searched
-		 *	\param defaultValue Value used if the key is not found
-		 */
-		//std::string	getValue(std::string const& key, std::string const& defaultValue)const;
-
 		/*!	Define or replace a pair of key/value */
 		template <class T>
 		void		setValue(std::string const& key, T const& value);
-
-		/*!	Define or replace a pair of key/value */
-		//void		setValue(std::string const& key, std::string const& value);
 
 		/*!	Remove all data */
 		void		clear();

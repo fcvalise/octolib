@@ -6,12 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/22 04:32:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 05:37:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ResourceManager.hpp"
 #include "Palette.hpp"
+#include "ColorWheel.hpp"
 #include "details/ResourceManagerImp.hpp"
 
 namespace octo
@@ -66,6 +67,15 @@ namespace octo
 				return (palette.loadFromMemory(buffer));
 			}
 		};
+
+		class ColorWheelLoader : public details::ResourceManagerImp<ColorWheel>::ILoader
+		{
+		public:
+			bool	load(ByteArray const& buffer, ColorWheel& palette)
+			{
+				return (palette.loadFromMemory(buffer));
+			}
+		};
 	}
 
 	ResourceManager::ResourceManager() :
@@ -73,7 +83,8 @@ namespace octo
 		m_textureManager(PackageHeader::EntryType::Texture),
 		m_soundManager(PackageHeader::EntryType::Sound),
 		m_textManager(PackageHeader::EntryType::Text),
-		m_paletteManager(PackageHeader::EntryType::Palette)
+		m_paletteManager(PackageHeader::EntryType::Palette),
+		m_colorWheelManager(PackageHeader::EntryType::ColorWheel)
 	{
 	}
 
@@ -87,6 +98,7 @@ namespace octo
 		m_soundManager.loadPackage(m_reader, SoundLoader(), listener);
 		m_textManager.loadPackage(m_reader, TextLoader(), listener);
 		m_paletteManager.loadPackage(m_reader, PaletteLoader(), listener);
+		m_colorWheelManager.loadPackage(m_reader, ColorWheelLoader(), listener);
 		return (true);
 	}
 
@@ -120,5 +132,10 @@ namespace octo
 	Palette const&		ResourceManager::getPalette(std::uint64_t key)const
 	{
 		return (m_paletteManager.get(key));
+	}
+
+	ColorWheel const&		ResourceManager::getColorWheel(std::uint64_t key)const
+	{
+		return (m_colorWheelManager.get(key));
 	}
 }
