@@ -17,7 +17,7 @@ SRC = main.cpp			\
 	  FireFlySwarm.cpp
 
 # compiler
-CC = g++
+CC = clang++
 # packager
 PACKAGER = ../../tools/packager/packager.app
 # flags used in both mode

@@ -15,7 +15,7 @@ LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 SRC = main.cpp
 
 # compiler
-CC = g++
+CC = clang++
 # packager
 PACKAGER = ../../tools/packager/packager.app
 # flags used in both mode

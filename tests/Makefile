@@ -29,7 +29,7 @@ SRC = main.cpp						\
 	  ColorWheel.cpp
 
 # compiler
-CC = g++
+CC = clang++
 # flags used in both mode
 COMMON_FLAGS = -Werror -Wextra -Wall -std=c++11
 # flags used in release mode

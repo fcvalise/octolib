@@ -50,7 +50,7 @@ COLOR_SRC =	Hsv.cpp							\
 			IColorProvider.cpp
 
 # compiler
-CC = g++
+CC = clang++
 # archiver
 AR = ar
 # flags used in both mode
@@ -120,16 +120,21 @@ dox:
 open_dox:
 	@open ./doc/generated/html/index.html
 
-complete: re
-	@make re -C tests
+tests:
+	@make re -C tests MODE=$(MODE)
 	@tests/tester.app
-	@make re -C tools/packager
-	@make re -C tools/package_reader
-	@make re -C benchmarks
-	@make re -C interactive_tests/application
-	@make re -C interactive_tests/options
-	@make re -C interactive_tests/resource_test
-	@make re -C interactive_tests/state_manager
+
+complete: re tests
+	@make re -C tools/packager MODE=$(MODE)
+	@make re -C tools/package_reader MODE=$(MODE)
+	@make re -C benchmarks MODE=$(MODE)
+	@make re -C interactive_tests/application MODE=$(MODE)
+	@make re -C interactive_tests/options MODE=$(MODE)
+	@make re -C interactive_tests/resource_test MODE=$(MODE)
+	@make re -C interactive_tests/state_manager MODE=$(MODE)
+	@make re -C interactive_tests/bspline_test MODE=$(MODE)
+	@make re -C interactive_tests/in_game_console MODE=$(MODE)
+	@make re -C interactive_tests/firefly MODE=$(MODE)
 	
 benchmarks:
 	@make -C benchmarks
