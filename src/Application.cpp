@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 15:22:45 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 16:10:23 by pciavald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 
 #include <cassert>
+#include <chrono>
 
 namespace octo
 {
