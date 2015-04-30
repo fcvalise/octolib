@@ -142,3 +142,6 @@ benchmarks:
 
 reinc:
 	@reinc -rv -B $(BUILD_DIR) --include-dirs $(INCLUDE_DIR) --source-dirs ./src/
+
+gource:
+	@gource --load-config doc/gource.conf
