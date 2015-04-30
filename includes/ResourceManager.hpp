@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/22 04:31:57 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 05:37:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "NonCopyable.hpp"
 # include "PackageHeader.hpp"
 # include "Palette.hpp"
+# include "ColorWheel.hpp"
 # include "details/ResourceManagerImp.hpp"
 
 # include <SFML/Graphics/Font.hpp>
@@ -62,7 +63,15 @@ namespace octo
 		 */
 		sf::String const&		getText(std::uint64_t key)const;
 
+		/*!	Get a palette
+		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
+		 */
 		Palette const&			getPalette(std::uint64_t key)const;
+
+		/*!	Get a color wheel
+		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
+		 */
+		ColorWheel const&		getColorWheel(std::uint64_t key)const;
 	private:
 		typedef details::StreamedResource<sf::Font>		Font;
 
@@ -72,6 +81,7 @@ namespace octo
 		details::ResourceManagerImp<sf::SoundBuffer>	m_soundManager;
 		details::ResourceManagerImp<sf::String>			m_textManager;
 		details::ResourceManagerImp<Palette>			m_paletteManager;
+		details::ResourceManagerImp<ColorWheel>			m_colorWheelManager;
 	};
 }
 
