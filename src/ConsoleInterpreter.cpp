@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/21 17:26:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 15:08:59 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "StringUtils.hpp"
 
 #include <codecvt>
+#include <algorithm>
 
 namespace octo
 {
@@ -75,6 +76,7 @@ namespace octo
 		commands.reserve(m_callables.size());
 		for (auto it = m_callables.begin(); it != m_callables.end(); ++it)
 			commands.push_back(it->first);
+		std::sort(commands.begin(), commands.end());
 		return (commands);
 	}
 

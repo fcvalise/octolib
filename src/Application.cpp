@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 14:55:01 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 15:12:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ namespace octo
 							return (L"See your terminal!");
 						});
 				m_console.addCommand(L"render.screenshot", this, &ApplicationImp::screenshot);
+				m_console.addCommand(L"system.quit", [](){Application::stop();});
 				m_console.addCommand(L"system.change_state", [](std::string const& key)
 						{
 							octo::Application::getStateManager().change(key);

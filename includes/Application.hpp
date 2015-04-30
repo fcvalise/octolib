@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 14:56:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 15:17:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ namespace octo
 	 *		<TD>console.clear()</TD>
 	 *		<TD></TD>
 	 *		<TD>Clear the console</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>console.quit()</TD>
+	 *		<TD></TD>
+	 *		<TD>Close the application</TD>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>render.screenshot(bool includeConsole)</TD>
@@ -150,10 +155,24 @@ namespace octo
 
 		/*!	Start the main loop */
 		static void				run(StateManager::Key const& stateKey);
+
+		/*!	Stop the main loop and close the application */
 		static void				stop();
+
+		/*!	Pauses the application
+		 *
+		 *	Pause the application that the game is no longer updated but only drawn.
+		 */
 		static void				pause();
+
+		/*!	Resumes the application
+		 */
 		static void				resume();
+	
+		/*!	Display an error message and closes application */
 		static void				error(char const* message);
+
+		/*!	Takes a screenshot */
 		static std::string		screenshot(bool captureConsole);
 
 		static StateManager&	getStateManager();
