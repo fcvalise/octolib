@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 14:46:36 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/04/30 14:56:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,17 @@ namespace octo
 	 *	<TR>
 	 *		<TD>console.clear()</TD>
 	 *		<TD></TD>
-	 *		<TD>Close the console</TD>
+	 *		<TD>Clear the console</TD>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>render.screenshot(bool includeConsole)</TD>
 	 *		<TD><UL><LI>includeConsole: define if the console is taken with the screenshot</LI></UL></TD>
 	 *		<TD>Take a screenshot of the screen</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>system.change_state(std::string stateKey)</TD>
+	 *		<TD><UL><LI>stateKey: define the state to start</LI></UL></TD>
+	 *		<TD>Change the current state(see StateManager::changeState()</TD>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>system.list_states()</TD>
