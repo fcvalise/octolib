@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:32:32 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 04:01:55 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,12 @@ namespace octo
 
 			T const&		get(std::uint64_t key)const
 			{
-				assert(key >= m_offset && key < (m_offset + m_count));
-
+				//assert(key >= m_offset && key < (m_offset + m_count));
+				if (key < m_offset || key >= (m_offset + m_count))
+					throw std::range_error("resource manager: get by key: invalid key: " + std::to_string(key));
 				return (m_resources[key - m_offset]);
 			}
+
 		private:
 			std::unique_ptr<T[]>			m_resources;
 			PackageHeader::EntryType const	m_type;

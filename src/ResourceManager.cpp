@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 05:37:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 03:54:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,23 @@ namespace octo
 		return (m_textureManager.get(key));
 	}
 
+	sf::Texture const&	ResourceManager::getTexture(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Texture, fileName);
+
+		return (getTexture(key));
+	}
+
 	sf::SoundBuffer const&	ResourceManager::getSound(std::uint64_t key)const
 	{
 		return (m_soundManager.get(key));
+	}
+
+	sf::SoundBuffer const&	ResourceManager::getSound(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Sound, fileName);
+
+		return (getSound(key));
 	}
 
 	sf::String const&	ResourceManager::getText(std::uint64_t key)const
@@ -129,13 +143,34 @@ namespace octo
 		return (m_textManager.get(key));
 	}
 	
+	sf::String const&	ResourceManager::getText(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Text, fileName);
+
+		return (getText(key));
+	}
+
 	Palette const&		ResourceManager::getPalette(std::uint64_t key)const
 	{
 		return (m_paletteManager.get(key));
 	}
 
+	Palette const&		ResourceManager::getPalette(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Palette, fileName);
+
+		return (getPalette(key));
+	}
+
 	ColorWheel const&		ResourceManager::getColorWheel(std::uint64_t key)const
 	{
 		return (m_colorWheelManager.get(key));
+	}
+
+	ColorWheel const&		ResourceManager::getColorWheel(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::ColorWheel, fileName);
+
+		return (getColorWheel(key));
 	}
 }
