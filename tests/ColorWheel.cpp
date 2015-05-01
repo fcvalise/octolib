@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 02:59:17 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 04:41:12 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 03:12:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE( color_wheel )
 
 BOOST_AUTO_TEST_CASE( basic )
 {
-	octo::ColorWheel	cw0{octo::Hsv(0, 255, 255, 255), {0, 120, 240}};
+	octo::ColorWheel	cw0{0, {0, 120, 240}};
 
 	BOOST_CHECK_EQUAL( cw0.getColorCount(), 3u );
 	BOOST_CHECK( cw0.getColor(0u) == sf::Color::Red );
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE( basic )
 
 BOOST_AUTO_TEST_CASE( errors )
 {
-	octo::ColorWheel	cw0{octo::Hsv(0, 255, 255, 255), {0, 120, 240}};
+	octo::ColorWheel	cw0{0, {0, 120, 240}};
 
 	BOOST_CHECK_THROW( cw0.getColor(3u), std::range_error );
 	BOOST_CHECK_THROW( cw0.getColor(666u), std::range_error );
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE( errors )
 
 BOOST_AUTO_TEST_CASE( io3 )
 {
-	octo::ColorWheel	cw0{octo::Hsv(0, 255, 255), {0, 120, 240}};
+	octo::ColorWheel	cw0{0, {0, 120, 240}};
 	octo::ColorWheel	cw1;
 	octo::ByteArray		buffer;
 

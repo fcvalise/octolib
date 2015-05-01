@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 01:22:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 05:48:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 03:09:14 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,39 @@ namespace octo
 	 */
 	class ColorWheel : public IColorProvider
 	{
+		struct	HueOffset
+		{
+			HueOffset() :
+				hueOffset(0),
+				saturation(0u),
+				value(0u),
+				alpha(0u)
+			{
+			}
+
+			explicit HueOffset(std::int16_t offset, std::uint8_t saturation = 255u,
+					  std::uint8_t value = 255u, std::uint8_t alpha = 255u) :
+				hueOffset(offset),
+				saturation(saturation),
+				value(value),
+				alpha(alpha)
+			{
+			}
+
+			std::int16_t	hueOffset;
+			std::uint8_t	saturation;
+			std::uint8_t	value;
+			std::uint8_t	alpha;
+		};
 	public:
 		/*!	Create an empty color wheel */
 		ColorWheel();
 
 		/*!	Create a color wheel by defining a color and a set of hue offsets */
-		ColorWheel(Hsv const& base, std::initializer_list<std::int16_t> offsets);
+		ColorWheel(int hue, std::initializer_list<std::int16_t> offsets);
 
-		/*!	Set the base color */
-		void				setBaseColor(Hsv const& color);
+		/*!	Set the base hue */
+		void				setBaseHue(std::uint16_t hue);
 
 		/*!	Compute a color
 		 *
@@ -61,8 +85,8 @@ namespace octo
 	private:
 		void				resize(std::size_t count);
 	private:
-		Hsv								m_colorBase;
-		std::unique_ptr<std::int16_t[]>	m_offsets;
+		int								m_hue;
+		std::unique_ptr<HueOffset[]>	m_offsets;
 		std::size_t						m_offsetCount;
 	};
 }

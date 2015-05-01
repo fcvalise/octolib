@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 01:36:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 04:40:45 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 03:11:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@
 namespace octo
 {
 	ColorWheel::ColorWheel() :
+		m_hue(0),
 		m_offsets(nullptr),
 		m_offsetCount(0u)
 	{
 	}
 
-	ColorWheel::ColorWheel(Hsv const& base, std::initializer_list<std::int16_t> offsets) :
-		m_colorBase(base),
+	ColorWheel::ColorWheel(int hue, std::initializer_list<std::int16_t> offsets) :
+		m_hue(hue),
 		m_offsets(nullptr),
 		m_offsetCount(0u)
 	{
@@ -33,7 +34,7 @@ namespace octo
 		resize(offsets.size());
 		for (auto offset : offsets)
 		{
-			m_offsets[i] = offset;
+			m_offsets[i] = HueOffset(offset);
 			++i;
 		}
 	}
@@ -42,8 +43,8 @@ namespace octo
 	{
 		if (m_offsetCount == count)
 			return;
-		std::unique_ptr<int16_t[]>	offsets(new std::int16_t[count]);
-		std::uint64_t				copyCount = std::min<std::uint64_t>(m_offsetCount, count);
+		std::unique_ptr<HueOffset[]>	offsets(new HueOffset[count]);
+		std::uint64_t					copyCount = std::min<std::uint64_t>(m_offsetCount, count);
 		
 		for (std::size_t i = 0u; i < copyCount; ++i)
 		{
@@ -53,16 +54,16 @@ namespace octo
 		m_offsetCount = count;
 	}
 
-	void		ColorWheel::setBaseColor(Hsv const& color)
+	void		ColorWheel::setBaseHue(std::uint16_t hue)
 	{
-		m_colorBase = color;
+		m_hue = hue;
 	}
 
 	sf::Color	ColorWheel::getColor(std::size_t id)const
 	{
 		if (id >= m_offsetCount)
 			throw std::range_error("color wheel: set offset: invalid offset identifier: " + std::to_string(id));
-		Hsv	result(m_colorBase.getHue() + m_offsets[id], m_colorBase.getSaturation(), m_colorBase.getValue());
+		Hsv	result(m_hue + m_offsets[id].hueOffset, m_offsets[id].saturation, m_offsets[id].value, m_offsets[id].alpha);
 
 		return (result.toRgba());
 	}
@@ -74,25 +75,25 @@ namespace octo
 
 	bool		ColorWheel::loadFromMemory(ByteArray const& buffer)
 	{
-		std::unique_ptr<std::int16_t[]>	offsets;
+		std::unique_ptr<HueOffset[]>	offsets;
 		BinaryInputStream				is(buffer);
 		std::uint64_t					count = 0u;
 		std::uint64_t					i = 0u;
-		std::int16_t					offset;
+		HueOffset						offset;
 
 		if (!is)
 			return (false);
-		is.read(m_colorBase.hue());
-		is.read(m_colorBase.saturation());
-		is.read(m_colorBase.value());
-		is.read(m_colorBase.alpha());
+		is.read(m_hue);
 		is.read(count);
 		if (!is)
 			return (false);
-		offsets.reset(new std::int16_t[count]);
+		offsets.reset(new HueOffset[count]);
 		while (is && i < count)
 		{
-			is.read(offset);
+			is.read(offset.hueOffset);
+			is.read(offset.saturation);
+			is.read(offset.value);
+			is.read(offset.alpha);
 			offsets[i] = offset;
 			++i;
 		}
@@ -105,14 +106,14 @@ namespace octo
 	{
 		BinaryOutputStream				os(buffer);
 
-		os.write(m_colorBase.getHue());
-		os.write(m_colorBase.getSaturation());
-		os.write(m_colorBase.getValue());
-		os.write(m_colorBase.getAlpha());
+		os.write(m_hue);
 		os.write(m_offsetCount);
 		for (std::uint64_t i = 0u; i < m_offsetCount; ++i)
 		{
-			os.write(m_offsets[i]);
+			os.write(m_offsets[i].hueOffset);
+			os.write(m_offsets[i].saturation);
+			os.write(m_offsets[i].value);
+			os.write(m_offsets[i].alpha);
 		}
 		return (true);
 	}
