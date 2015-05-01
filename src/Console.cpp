@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 16:06:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 17:20:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,9 @@ namespace octo
 				break;
 			// Enter
 			case 10:
+				execute();
+				break;
+			case 13:
 				execute();
 				break;
 			// Delete
