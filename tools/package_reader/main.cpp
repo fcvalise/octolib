@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:34:43 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:39:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/02 01:55:28 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static std::map<octo::PackageHeader::EntryType, std::string> const	EntryTypeText
 	{octo::PackageHeader::EntryType::Font, "FONT"},
 	{octo::PackageHeader::EntryType::Texture, "TEXTURE"},
 	{octo::PackageHeader::EntryType::Sound, "SOUND"},
-	{octo::PackageHeader::EntryType::Text, "TEXT"}
+	{octo::PackageHeader::EntryType::Text, "TEXT"},
+	{octo::PackageHeader::EntryType::Palette, "PALETTE"},
+	{octo::PackageHeader::EntryType::ColorWheel, "COLOR_WHEEL"}
 };
 
 static CommandMap const	Commands

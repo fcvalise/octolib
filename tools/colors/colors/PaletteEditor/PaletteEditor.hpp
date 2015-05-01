@@ -18,15 +18,15 @@ public:
     explicit PaletteEditor(QWidget *parent = 0);
     ~PaletteEditor();
 public slots:
-    void        newPalette();
-    void        savePalette(QString const& filePath);
-    void        openPalette(QString const& filePath);
+    void    newPalette();
+    void    savePalette(QString const& filePath);
+    void    openPalette(QString const& filePath);
 
-    void        addColor();
-    void        removeCurrent();
-    void        removeAll();
-    bool        hasSelection()const;
-    bool        hasSomeColors()const;
+    void    addColor();
+    void    removeCurrent();
+    void    removeAll();
+    bool    hasSelection()const;
+    bool    isEmpty()const;
 private:
     void    setup();
 private slots:

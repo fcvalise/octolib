@@ -19,7 +19,8 @@ SOURCES += \
     AbstractColorEditor.cpp \
     Document.cpp \
     AboutDialog.cpp \
-    RecentFileMenu.cpp
+    RecentFileMenu.cpp \
+    ColorItemDelegate.cpp
 
 HEADERS += \
     SpinBoxSlider.hpp \
@@ -29,7 +30,8 @@ HEADERS += \
     AbstractColorEditor.hpp \
     Document.hpp \
     AboutDialog.hpp \
-    RecentFileMenu.hpp
+    RecentFileMenu.hpp \
+    ColorItemDelegate.hpp
 unix {
     target.path = /usr/lib
     INSTALLS += target

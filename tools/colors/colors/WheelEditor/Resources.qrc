@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>add.png</file>
+        <file>delete.png</file>
+        <file>new_wheel.png</file>
+        <file>open_wheel.png</file>
+        <file>save_as.png</file>
+        <file>save.png</file>
+        <file>wheel_editor.png</file>
+    </qresource>
+</RCC>

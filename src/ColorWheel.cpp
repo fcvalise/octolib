@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 01:36:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/01 03:11:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/02 01:47:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 namespace octo
 {
 	ColorWheel::ColorWheel() :
-		m_hue(0),
+		m_hue(0u),
 		m_offsets(nullptr),
 		m_offsetCount(0u)
 	{

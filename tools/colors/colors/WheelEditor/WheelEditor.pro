@@ -1,26 +1,30 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-04-30T17:04:32
+# Project created by QtCreator 2015-05-01T05:17:37
 #
 #-------------------------------------------------
 
 QT       += core gui widgets
 CONFIG	+= c++11
 
-TARGET = PaletteEditor
+TARGET = WheelEditor
 TEMPLATE = app
-ICON = palette_editor.icns
+
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    PaletteModel.cpp \
-    PaletteEditor.cpp
+    WheelModel.cpp \
+    WheelEditor.cpp \
+    OffsetEditor.cpp \
+    HueOffset.cpp \
+    AddOffsetsDialog.cpp
 
 HEADERS  += MainWindow.hpp \
-    PaletteModel.hpp \
-    PaletteEditor.hpp
-
-
+    WheelModel.hpp \
+    WheelEditor.hpp \
+    OffsetEditor.hpp \
+    HueOffset.hpp \
+    AddOffsetsDialog.hpp
 
 # CommonWidgets
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CommonWidgets/release/ -lCommonWidgets
@@ -47,3 +51,6 @@ else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
 
 RESOURCES += \
     Resources.qrc
+
+FORMS += \
+    AddOffsetsDialog.ui

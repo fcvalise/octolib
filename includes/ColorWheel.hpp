@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 01:22:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/01 03:09:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/02 01:33:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ namespace octo
 	private:
 		void				resize(std::size_t count);
 	private:
-		int								m_hue;
+		std::uint16_t					m_hue;
 		std::unique_ptr<HueOffset[]>	m_offsets;
 		std::size_t						m_offsetCount;
 	};

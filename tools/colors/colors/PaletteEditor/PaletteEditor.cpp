@@ -1,7 +1,8 @@
 #include "PaletteEditor.hpp"
-#include "ColorEditor.hpp"
 #include "PaletteModel.hpp"
-#include "ColorItemDelegate.hpp"
+
+#include <ColorEditor.hpp>
+#include <ColorItemDelegate.hpp>
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -84,7 +85,7 @@ bool PaletteEditor::hasSelection() const
     return (m_paletteView->currentIndex().isValid());
 }
 
-bool PaletteEditor::hasSomeColors() const
+bool PaletteEditor::isEmpty() const
 {
     return (m_paletteModel->rowCount() > 0);
 }
