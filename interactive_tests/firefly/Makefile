@@ -50,7 +50,7 @@ COLOR_OBJECT = \033[0m
 
 all: print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) core_library $(OBJS) package
+$(COMPLETE_TARGET): $(BUILD_DIR) core_library package $(OBJS)
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(CLIBS_FLAGS) 
 
