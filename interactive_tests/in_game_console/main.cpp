@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 20:02:04 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 17:27:46 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <cmath>
-#include <codecvt>
 
 /*! A state with a colored square
  *
