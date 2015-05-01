@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 18:05:25 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/21 23:33:15 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 16:40:01 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Benchmark.hpp"
+#include <algorithm>
 
 Benchmark::Measure::Measure() :
 	m_output(0.f)

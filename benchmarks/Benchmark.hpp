@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 18:02:32 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/21 23:31:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 16:39:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <vector>
 # include <cmath>
 # include <numeric>
+# include <functional>
 
 class Benchmark
 {
