@@ -187,6 +187,8 @@ bool RecentFileMenu::contains(const QString &filePath) const
 
 void RecentFileMenu::setFilePaths(const QStringList &filePaths)
 {
+    Q_D(RecentFileMenu);
+
     foreach(const QString& filePath,filePaths)
     {
         addFile(filePath);
@@ -200,7 +202,7 @@ QStringList RecentFileMenu::filePaths() const
     QStringList results;
     foreach(const RecentFileMenuPrivate::ActionPath& actionPath,d->m_actionPaths)
     {
-        if( QFile::exists(actionPath.path) )
+        if( QFile::exists(actionPath.path))
         {
             results.append(actionPath.path);
         }
@@ -252,7 +254,7 @@ void RecentFileMenu::loadSettings(QSettings &settings)
     for (int i = 0; i < count; ++i)
     {
         settings.setArrayIndex(i);
-        paths.append(settings.value("path").toString());
+        paths.push_front(settings.value("path").toString());
     }
     settings.endArray();
     settings.endGroup();

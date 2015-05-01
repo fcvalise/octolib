@@ -94,6 +94,7 @@ bool MainWindow::savePaletteAs()
     {
         m_editor->savePalette(filePath);
         m_document->documentSavedAs(filePath);
+        m_recentFileMenu->addFile(m_document->absoluteFilePath());
     }
     return (filePath.isEmpty() == false);
 }

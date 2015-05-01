@@ -40,6 +40,7 @@ void PaletteEditor::setup()
     m_paletteView->horizontalHeader()->hide();
     m_paletteView->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_paletteView->setSelectionMode(QAbstractItemView::SingleSelection);
+    m_colorEditor->setEnabled(false);
     connect(m_paletteView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(onCurrentChanged(QModelIndex,QModelIndex)));
     connect(m_colorEditor, SIGNAL(colorChanged(QColor)), SLOT(onColorEdited(QColor)));
     layout->addWidget(m_paletteView, 2);
@@ -90,7 +91,16 @@ bool PaletteEditor::hasSomeColors() const
 
 void PaletteEditor::onCurrentChanged(const QModelIndex &current, const QModelIndex &)
 {
-    m_colorEditor->setColor(m_paletteModel->getColor(current));
+    if (current.isValid())
+    {
+        m_colorEditor->setEnabled(true);
+        m_colorEditor->setColor(m_paletteModel->getColor(current));
+    }
+    else
+    {
+        m_colorEditor->setEnabled(false);
+        m_colorEditor->setColor(QColor(0, 0, 0, 0));
+    }
     emit selectionChanged();
 }
 
