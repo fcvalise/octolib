@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 15:08:59 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 16:30:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "ConsoleCommandParser.hpp"
 #include "StringUtils.hpp"
 
-#include <codecvt>
 #include <algorithm>
 
 namespace octo

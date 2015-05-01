@@ -6,30 +6,35 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/16 18:09:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/21 17:30:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 16:30:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "StringUtils.hpp"
 
-#include <codecvt>
 #include <locale>
 
 namespace octo
 {
 	std::wstring	stringToWide(std::string const& str)
 	{
-		static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>	converter;
+		static std::locale			s_locale;
+		const std::ctype<wchar_t>&	ctfacet = std::use_facet<std::ctype<wchar_t>>(s_locale);
+		std::wstring				result;
 
-		return (converter.from_bytes(str));
+		for (char c : str)
+			result.push_back(ctfacet.widen(c));
+		return (result);
 	}
 	
 	std::string		wideToString(std::wstring const& str)
 	{
-		typedef std::codecvt_utf8<wchar_t> 					ConvertType;
-		typedef std::wstring_convert<ConvertType, wchar_t>	ConverterType;
-		static ConverterType								Converter;
+		static std::locale		s_locale;
+		const std::ctype<char>&	ctfacet = std::use_facet<std::ctype<char>>(s_locale);
+		std::string				result;
 
-		return (Converter.to_bytes(str));
+		for (wchar_t c : str)
+			result.push_back(ctfacet.narrow(c, '?'));
+		return (result);
 	}
 }

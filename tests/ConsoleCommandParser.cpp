@@ -6,30 +6,22 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/03 09:27:15 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 14:30:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/01 16:32:53 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <boost/test/unit_test.hpp>
 #include <iterator>
-#include <codecvt>
 
 #include <ConsoleCommandParser.hpp>
 #include <ConsoleInterpreter.hpp>
+#include <StringUtils.hpp>
 
 namespace std
 {
-	std::string ws2s(const std::wstring& wstr)
-	{
-		typedef std::codecvt_utf8<wchar_t> convert_typeX;
-		std::wstring_convert<convert_typeX, wchar_t> converterX;
-
-		return converterX.to_bytes(wstr);
-	}
-
 	std::ostream&	operator << (std::ostream& os, std::wstring const& str)
 	{
-		os << ws2s(str);
+		os << octo::wideToString(str);
 		return (os);
 	}
 }
