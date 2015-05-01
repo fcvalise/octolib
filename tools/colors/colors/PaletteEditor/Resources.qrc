@@ -6,5 +6,6 @@
         <file>save_as.png</file>
         <file>open_palette.png</file>
         <file>new_palette.png</file>
+        <file>palette_editor.png</file>
     </qresource>
 </RCC>

@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion("1.0.0");
     QApplication::setOrganizationName("Octo Team");
     MainWindow w;
-    w.show();
 
+    w.show();
     return a.exec();
 }

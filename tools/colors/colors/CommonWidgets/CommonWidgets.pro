@@ -17,7 +17,9 @@ SOURCES += \
     SpinBoxSlider.cpp \
     ColorEditor.cpp \
     AbstractColorEditor.cpp \
-    Document.cpp
+    Document.cpp \
+    AboutDialog.cpp \
+    RecentFileMenu.cpp
 
 HEADERS += \
     SpinBoxSlider.hpp \
@@ -25,7 +27,9 @@ HEADERS += \
     RgbaColorEditor.hpp \
     HsvColorEditor.hpp \
     AbstractColorEditor.hpp \
-    Document.hpp
+    Document.hpp \
+    AboutDialog.hpp \
+    RecentFileMenu.hpp
 unix {
     target.path = /usr/lib
     INSTALLS += target

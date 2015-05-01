@@ -1,6 +1,7 @@
 #include "MainWindow.hpp"
 #include "PaletteEditor.hpp"
 #include "Document.hpp"
+#include "RecentFileMenu.hpp"
 
 #include <QMenuBar>
 #include <QMenu>
@@ -11,11 +12,13 @@
 #include <QIcon>
 #include <QToolBar>
 #include <QSettings>
+#include <AboutDialog.hpp>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       m_editor(new PaletteEditor(this)),
       m_document(new Document(this)),
+      m_recentFileMenu(new RecentFileMenu(tr("Open recents"), this)),
       m_newPalette(nullptr),
       m_openPalette(nullptr),
       m_savePalette(nullptr),
@@ -24,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_deleteColor(nullptr),
       m_deleteAllColors(nullptr)
 {
+    connect(m_recentFileMenu, SIGNAL(fileClicked(QString)), this, SLOT(openPalette(QString)));
     setupDocument();
     setupActions();
     setupToolBar();
@@ -52,11 +56,16 @@ void MainWindow::openPalette()
     if (maybeSave())
     {
         filePath = QFileDialog::getOpenFileName(this, tr("Open palette"), QString(), tr("Palettes (*.opa)"));
-        if (filePath.isEmpty() == false)
-        {
-            m_editor->openPalette(filePath);
-            m_document->documentOpened(filePath);
-        }
+        openPalette(filePath);
+    }
+}
+
+void MainWindow::openPalette(QString filePath)
+{
+    if (filePath.isEmpty() == false)
+    {
+        m_editor->openPalette(filePath);
+        m_document->documentOpened(filePath);
     }
 }
 
@@ -72,6 +81,7 @@ bool MainWindow::savePalette()
         m_editor->savePalette(m_document->absoluteFilePath());
         m_document->documentSaved();
         m_document->enableWatch(true);
+        m_recentFileMenu->addFile(m_document->absoluteFilePath());
         return (true);
     }
 }
@@ -101,6 +111,13 @@ void MainWindow::deleteColor()
 void MainWindow::deleteAllColors()
 {
     m_editor->removeAll();
+}
+
+void MainWindow::showAbout()
+{
+    AboutDialog dialog(QPixmap(":/images/palette_editor.png"), this);
+
+    dialog.exec();
 }
 
 void MainWindow::updateAction()
@@ -147,6 +164,7 @@ void MainWindow::setupActions()
     QMenuBar*       menuBar = this->menuBar();
     QMenu*          fileMenu = menuBar->addMenu(tr("File"));
     QMenu*          editMenu = menuBar->addMenu(tr("Edit"));
+    QMenu*          helpMenu = menuBar->addMenu(tr("Help"));
     QAction*        quit = nullptr;
 
     m_newPalette = new QAction(QIcon(":/images/new_palette.png"), tr("New..."), this);
@@ -163,6 +181,7 @@ void MainWindow::setupActions()
     m_deleteColor->setShortcut(QKeySequence::Delete);
     fileMenu->addAction(m_newPalette);
     fileMenu->addAction(m_openPalette);
+    fileMenu->addMenu(m_recentFileMenu);
     fileMenu->addSeparator();
     fileMenu->addAction(m_savePalette);
     fileMenu->addAction(m_savePaletteAs);
@@ -172,8 +191,9 @@ void MainWindow::setupActions()
     editMenu->addSeparator();
     editMenu->addAction(m_deleteColor);
     editMenu->addAction(m_deleteAllColors);
+    connect(helpMenu->addAction(tr("About...")), &QAction::triggered, this, &MainWindow::showAbout);
     connect(m_newPalette, &QAction::triggered, this, &MainWindow::newPalette);
-    connect(m_openPalette, &QAction::triggered, this, &MainWindow::openPalette);
+    connect(m_openPalette, SIGNAL(triggered()), this, SLOT(openPalette()));
     connect(m_savePalette, &QAction::triggered, this, &MainWindow::savePalette);
     connect(m_savePaletteAs, &QAction::triggered, this, &MainWindow::savePaletteAs);
     connect(quit, &QAction::triggered, this, &MainWindow::close);
@@ -241,6 +261,7 @@ void MainWindow::loadSettings()
     restoreGeometry(settings.value("geometry").toByteArray());
     restoreState(settings.value("state").toByteArray());
     settings.endGroup();
+    m_recentFileMenu->loadSettings(settings);
 }
 
 void MainWindow::saveSettings()
@@ -251,6 +272,7 @@ void MainWindow::saveSettings()
     settings.setValue("geometry", saveGeometry());
     settings.setValue("state", saveState());
     settings.endGroup();
+    m_recentFileMenu->saveSettings(settings);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

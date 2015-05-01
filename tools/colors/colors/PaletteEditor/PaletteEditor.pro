@@ -9,7 +9,7 @@ CONFIG	+= c++11
 
 TARGET = PaletteEditor
 TEMPLATE = app
-
+ICON = palette_editor.icns
 
 SOURCES += main.cpp\
         MainWindow.cpp \
