@@ -79,7 +79,7 @@ bool WheelModel::setData(const QModelIndex &index, const QVariant &value, int ro
 {
     bool    result = false;
 
-    if (index.isValid() && role == Qt::EditRole)
+    if (index.isValid() && (role == Qt::DisplayRole || role == Qt::EditRole))
     {
         HueOffset&    hueOffset = m_offsets[index.row()];
 
@@ -105,7 +105,9 @@ bool WheelModel::setData(const QModelIndex &index, const QVariant &value, int ro
             break;
         }
         if (result)
-            emit dataChanged(index, index);
+        {
+            emit dataChanged(index, this->index(index.row(), ComputedColor));
+        }
     }
     return (result);
 }
@@ -137,6 +139,8 @@ void WheelModel::setOffset(const QModelIndex &index, HueOffset const &offset)
     if (index.isValid() == false)
         return;
     m_offsets[index.row()] = offset;
+    emit dataChanged(this->index(index.row(), 0),
+                     this->index(index.row(), ColumnCount - 1));
 }
 
 void WheelModel::saveToFile(const QString &path) const

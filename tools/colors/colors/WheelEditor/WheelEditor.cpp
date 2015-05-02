@@ -1,15 +1,20 @@
 #include "WheelEditor.hpp"
 #include "WheelModel.hpp"
+#include "OffsetEditor.hpp"
+#include <SpinBoxSlider.hpp>
 
 #include <QHBoxLayout>
 #include <QTableView>
 #include <QHeaderView>
 #include <ColorItemDelegate.hpp>
+#include <QFormLayout>
 
 WheelEditor::WheelEditor(QWidget *parent) :
     QWidget(parent),
     m_wheelModel(new WheelModel(this)),
-    m_wheelView(new QTableView)
+    m_wheelView(new QTableView),
+    m_offsetEditor(new OffsetEditor),
+    m_hue(new SpinBoxSlider(0, 359, this))
 {
     setup();
 }
@@ -86,6 +91,7 @@ bool WheelEditor::isEmpty() const
 void WheelEditor::setup()
 {
     QHBoxLayout*    layout = new QHBoxLayout(this);
+    QFormLayout*    controlLayout = new QFormLayout;
 
     m_wheelView->setItemDelegateForColumn(WheelModel::ComputedColor, new ColorItemDelegate(this));
     m_wheelView->setModel(m_wheelModel);
@@ -93,22 +99,37 @@ void WheelEditor::setup()
     m_wheelView->horizontalHeader()->hide();
     m_wheelView->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_wheelView->setSelectionMode(QAbstractItemView::SingleSelection);
-    connect(m_wheelView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(onCurrentChanged(QModelIndex,QModelIndex)));
+    m_wheelView->hideColumn(WheelModel::Offset);
+    m_wheelView->hideColumn(WheelModel::Saturation);
+    m_wheelView->hideColumn(WheelModel::Value);
+    m_wheelView->hideColumn(WheelModel::Alpha);
+    connect(m_wheelView->selectionModel(), &QItemSelectionModel::currentChanged, this, &WheelEditor::onCurrentChanged);
+    connect(m_offsetEditor, &OffsetEditor::offsetChanged, this, &WheelEditor::onOffsetEdited);
+    connect(m_hue, &SpinBoxSlider::valueChanged, m_wheelModel, &WheelModel::setHue);
     layout->addWidget(m_wheelView, 2);
+    layout->addLayout(controlLayout);
+    controlLayout->addRow(tr("Hue:"), m_hue);
+    controlLayout->addWidget(m_offsetEditor);
+    m_offsetEditor->setEnabled(false);
 }
 
 void WheelEditor::onCurrentChanged(const QModelIndex &current, const QModelIndex &)
 {
-    /*if (current.isValid())
+    if (current.isValid())
     {
-        m_colorEditor->setEnabled(true);
-        m_colorEditor->setColor(m_paletteModel->getColor(current));
+        m_offsetEditor->setEnabled(true);
+        m_offsetEditor->setOffset(m_wheelModel->getOffset(current));
     }
     else
     {
-        m_colorEditor->setEnabled(false);
-        m_colorEditor->setColor(QColor(0, 0, 0, 0));
-    }*/
+        m_offsetEditor->setEnabled(false);
+        m_offsetEditor->setOffset(HueOffset(0, 0, 0, 0));
+    }
     emit selectionChanged();
 }
 
+void WheelEditor::onOffsetEdited(HueOffset const& offset)
+{
+    m_wheelModel->setOffset(m_wheelView->currentIndex(), offset);
+    emit modified();
+}

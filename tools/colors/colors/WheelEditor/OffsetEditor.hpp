@@ -5,8 +5,8 @@
 
 #include "HueOffset.hpp"
 
-class QDataWidgetMapper;
 class SpinBoxSlider;
+class WheelModel;
 
 class OffsetEditor : public QWidget
 {
@@ -23,7 +23,6 @@ private slots:
 signals:
     void        offsetChanged(HueOffset const&);
 private:
-    QDataWidgetMapper*  m_mapper;
     SpinBoxSlider*      m_offset;
     SpinBoxSlider*      m_saturation;
     SpinBoxSlider*      m_value;

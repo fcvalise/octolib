@@ -62,7 +62,7 @@ void MainWindow::openPalette()
 
 void MainWindow::openPalette(QString filePath)
 {
-    if (filePath.isEmpty() == false)
+    if (maybeSave() && filePath.isEmpty() == false)
     {
         m_editor->openPalette(filePath);
         m_document->documentOpened(filePath);

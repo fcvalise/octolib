@@ -58,13 +58,14 @@ void MainWindow::openWheel()
     if (maybeSave())
     {
         filePath = QFileDialog::getOpenFileName(this, tr("Open wheel"), QString(), tr("Wheels (*.ocw)"));
-        openWheel(filePath);
+        m_editor->openWheel(filePath);
+        m_document->documentOpened(filePath);
     }
 }
 
 void MainWindow::openWheel(QString filePath)
 {
-    if (filePath.isEmpty() == false)
+    if (maybeSave() && filePath.isEmpty() == false)
     {
         m_editor->openWheel(filePath);
         m_document->documentOpened(filePath);

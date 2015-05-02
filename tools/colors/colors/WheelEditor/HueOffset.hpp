@@ -15,17 +15,18 @@ public:
     HueOffset &operator=(const HueOffset &);
     ~HueOffset();
 
-    qint16  getOffset()const;
-    quint8  getSaturation()const;
-    quint8  getValue()const;
-    quint8  getAlpha()const;
+    qint16      getOffset()const;
+    quint8      getSaturation()const;
+    quint8      getValue()const;
+    quint8      getAlpha()const;
 
-    void    setOffset(qint16 offset);
-    void    setSaturation(quint8 saturation);
-    void    setValue(quint8 value);
-    void    setAlpha(quint8 alpha);
+    void        setOffset(qint16 offset);
+    void        setSaturation(quint8 saturation);
+    void        setValue(quint8 value);
+    void        setAlpha(quint8 alpha);
 
-    QColor  computeColor(quint16 baseHue)const;
+    QColor      computeColor(quint16 baseHue)const;
+    HueOffset   normalize()const;
 private:
     QSharedDataPointer<HueOffsetData> data;
 };

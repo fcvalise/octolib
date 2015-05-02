@@ -91,11 +91,29 @@ void HueOffset::setAlpha(quint8 alpha)
     data->alpha = alpha;
 }
 
+template <class T>
+T   clamp(T value, T min, T max)
+{
+    if (value > max)
+        value = max;
+    else if (value < min)
+        value = min;
+    return (value);
+}
+
 QColor HueOffset::computeColor(quint16 baseHue) const
 {
-    return (QColor::fromHsv(data->offset + baseHue,
+    return (QColor::fromHsv(clamp(data->offset + baseHue, 0, 359),
                             data->saturation,
                             data->value,
                             data->alpha));
+}
+
+HueOffset HueOffset::normalize() const
+{
+    return (HueOffset(clamp<qint16>(data->offset, 0, 359),
+                      clamp<quint8>(data->saturation, 0, 255),
+                      clamp<quint8>(data->value, 0, 255),
+                      clamp<quint8>(data->alpha, 0, 255)));
 }
 

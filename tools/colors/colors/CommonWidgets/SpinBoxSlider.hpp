@@ -12,9 +12,10 @@ class SpinBoxSlider : public QWidget
 {
     Q_OBJECT
 public:
+    Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged USER true)
+
     explicit SpinBoxSlider(QWidget *parent = 0);
     SpinBoxSlider(int min, int max, QWidget *parent = 0);
-
     ~SpinBoxSlider();
 
     int     value()const;

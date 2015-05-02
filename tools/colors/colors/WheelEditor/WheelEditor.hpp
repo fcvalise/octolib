@@ -4,6 +4,9 @@
 #include <QWidget>
 
 class WheelModel;
+class OffsetEditor;
+class HueOffset;
+class SpinBoxSlider;
 
 class QTableView;
 class QModelIndex;
@@ -30,12 +33,15 @@ private:
     void    setup();
 private slots:
     void    onCurrentChanged(const QModelIndex& current, const QModelIndex&);
+    void    onOffsetEdited(const HueOffset &offset);
 signals:
     void    modified();
     void    selectionChanged();
 private:
-    WheelModel* m_wheelModel;
-    QTableView* m_wheelView;
+    WheelModel*     m_wheelModel;
+    QTableView*     m_wheelView;
+    OffsetEditor*   m_offsetEditor;
+    SpinBoxSlider*  m_hue;
 };
 
 #endif // COLORWHEELEDITOR_HPP
