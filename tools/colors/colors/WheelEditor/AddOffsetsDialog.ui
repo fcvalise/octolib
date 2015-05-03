@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>319</width>
-    <height>150</height>
+    <width>312</width>
+    <height>162</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>150</height>
+    <width>450</width>
+    <height>190</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -28,16 +28,6 @@
      <property name="fieldGrowthPolicy">
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
-     <item row="2" column="0">
-      <widget class="QLabel" name="initialOffsetLabel">
-       <property name="text">
-        <string>Initial offset:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QSpinBox" name="initialOffsetSpinBox"/>
-     </item>
      <item row="1" column="0">
       <widget class="QLabel" name="offsetCountLabel">
        <property name="text">
@@ -55,19 +45,29 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="2" column="1">
       <widget class="QSpinBox" name="intervalSpinBox">
        <property name="maximum">
         <number>359</number>
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
+     <item row="2" column="0">
       <widget class="QLabel" name="intervalLabel">
        <property name="text">
         <string>Interval:</string>
        </property>
       </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="initialOffsetLabel">
+       <property name="text">
+        <string>Initial offset:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="initialOffsetSpinBox"/>
      </item>
     </layout>
    </item>
@@ -83,6 +83,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>offsetCountSpinBox</tabstop>
+  <tabstop>intervalSpinBox</tabstop>
+  <tabstop>initialOffsetSpinBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

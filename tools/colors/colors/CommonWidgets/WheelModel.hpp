@@ -3,7 +3,7 @@
 
 #include <QAbstractListModel>
 
-#include "HueOffset.hpp"
+#include <HueOffset.hpp>
 
 class WheelModel : public QAbstractTableModel
 {
@@ -11,10 +11,6 @@ class WheelModel : public QAbstractTableModel
 public:
     enum Columns
     {
-        Offset,
-        Saturation,
-        Value,
-        Alpha,
         ComputedColor,
         ColumnCount
     };
@@ -26,17 +22,17 @@ public:
     virtual int         columnCount(const QModelIndex &parent = QModelIndex()) const;
     virtual QVariant    data(const QModelIndex &index, int role) const;
     Qt::ItemFlags       flags(const QModelIndex &index) const;
-    virtual bool        setData(const QModelIndex &index, const QVariant &value, int role);
 
-    void                setHue(quint16 hue);
     quint16             getHue()const;
-
+    HueOffset           getOffset(int row)const;
     HueOffset           getOffset(const QModelIndex &index)const;
     void                setOffset(const QModelIndex& index, HueOffset const& offset);
     void                saveToFile(QString const& path)const;
     void                loadFromFile(const QString &path);
 public slots:
+    void                setHue(quint16 hue);
     QModelIndex         addOffset(qint16 offset, quint8 saturation = 255, quint8 value = 255, quint8 alpha = 255);
+    QModelIndex         addOffset(HueOffset const& offset);
     void                removeOffset(QModelIndex index);
     void                removeAll();
 private:

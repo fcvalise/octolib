@@ -25,7 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
       m_saveWheel(nullptr),
       m_saveWheelAs(nullptr),
       m_addOffset(nullptr),
-      m_addOffsets(nullptr),
+      m_addAnaloguous(nullptr),
+      m_addComplementaries(nullptr),
+      m_addTriad(nullptr),
+      m_addSquare(nullptr),
       m_deleteOffset(nullptr),
       m_deleteAllOffsets(nullptr)
 {
@@ -107,16 +110,24 @@ void MainWindow::addOffset()
     m_editor->addOffset();
 }
 
-void MainWindow::addOffsets()
+void MainWindow::addAnaloguous()
 {
-    AddOffsetsDialog    dialog(this);
+    m_editor->addAnaloguous(this);
+}
 
-    if (dialog.exec() == QDialog::Accepted)
-    {
-        m_editor->addOffsets(dialog.getInitial(),
-                             dialog.getInterval(),
-                             dialog.getCount());
-    }
+void MainWindow::addComplementaries()
+{
+    m_editor->addComplementaries(this);
+}
+
+void MainWindow::addTriad()
+{
+    m_editor->addTriad(this);
+}
+
+void MainWindow::addSquare()
+{
+    m_editor->addSquare(this);
 }
 
 void MainWindow::deleteOffset()
@@ -188,7 +199,10 @@ void MainWindow::setupActions()
     m_saveWheel = new QAction(QIcon(":/images/save.png"), tr("Save"), this);
     m_saveWheelAs = new QAction(QIcon(":/images/save_as.png"), tr("Save as"), this);
     m_addOffset = new QAction(QIcon(":/images/add.png"), tr("Add offset"), this);
-    m_addOffsets = new QAction(QIcon(":/images/add.png"), tr("Add offsets"), this);
+    m_addAnaloguous = new QAction(QIcon(":/images/add.png"), tr("Add analoguous scheme..."), this);
+    m_addComplementaries = new QAction(QIcon(":/images/add.png"), tr("Add complementary scheme..."), this);
+    m_addTriad = new QAction(QIcon(":/images/add.png"), tr("Add triad scheme..."), this);
+    m_addSquare = new QAction(QIcon(":/images/add.png"), tr("Add square scheme..."), this);
     m_deleteOffset = new QAction(QIcon(":/images/delete.png"), tr("Remove offset"), this);
     m_deleteAllOffsets = new QAction("Delete all", this);
     m_newWheel->setShortcut(QKeySequence::New);
@@ -205,7 +219,10 @@ void MainWindow::setupActions()
     fileMenu->addSeparator();
     quit = fileMenu->addAction(tr("Quit"));
     editMenu->addAction(m_addOffset);
-    editMenu->addAction(m_addOffsets);
+    editMenu->addAction(m_addAnaloguous);
+    editMenu->addAction(m_addComplementaries);
+    editMenu->addAction(m_addTriad);
+    editMenu->addAction(m_addSquare);
     editMenu->addSeparator();
     editMenu->addAction(m_deleteOffset);
     editMenu->addAction(m_deleteAllOffsets);
@@ -216,7 +233,10 @@ void MainWindow::setupActions()
     connect(m_saveWheelAs, &QAction::triggered, this, &MainWindow::saveWheelAs);
     connect(quit, &QAction::triggered, this, &MainWindow::close);
     connect(m_addOffset, &QAction::triggered, this, &MainWindow::addOffset);
-    connect(m_addOffsets, &QAction::triggered, this, &MainWindow::addOffsets);
+    connect(m_addAnaloguous, &QAction::triggered, this, &MainWindow::addAnaloguous);
+    connect(m_addComplementaries, &QAction::triggered, this, &MainWindow::addComplementaries);
+    connect(m_addTriad, &QAction::triggered, this, &MainWindow::addTriad);
+    connect(m_addSquare, &QAction::triggered, this, &MainWindow::addSquare);
     connect(m_deleteOffset, &QAction::triggered, this, &MainWindow::deleteOffset);
     connect(m_deleteAllOffsets, &QAction::triggered, this, &MainWindow::deleteAllOffsets);
 }

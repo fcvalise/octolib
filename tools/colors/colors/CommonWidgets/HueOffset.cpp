@@ -1,5 +1,18 @@
 #include "HueOffset.hpp"
 
+namespace
+{
+    template <class T>
+    T   clamp(T value, T min, T max)
+    {
+        if (value > max)
+            value = max;
+        else if (value < min)
+            value = min;
+        return (value);
+    }
+}
+
 class HueOffsetData : public QSharedData
 {
 public:
@@ -91,19 +104,21 @@ void HueOffset::setAlpha(quint8 alpha)
     data->alpha = alpha;
 }
 
-template <class T>
-T   clamp(T value, T min, T max)
-{
-    if (value > max)
-        value = max;
-    else if (value < min)
-        value = min;
-    return (value);
-}
-
 QColor HueOffset::computeColor(quint16 baseHue) const
 {
-    return (QColor::fromHsv(clamp(data->offset + baseHue, 0, 359),
+    int hue = data->offset + baseHue;
+
+    if (hue >= 360)
+    {
+        while (hue >= 360)
+            hue -= 360;
+    }
+    else if (hue < 0)
+    {
+        while (hue < 0)
+            hue += 360;
+    }
+    return (QColor::fromHsv(hue,
                             data->saturation,
                             data->value,
                             data->alpha));
@@ -115,5 +130,11 @@ HueOffset HueOffset::normalize() const
                       clamp<quint8>(data->saturation, 0, 255),
                       clamp<quint8>(data->value, 0, 255),
                       clamp<quint8>(data->alpha, 0, 255)));
+}
+
+HueOffset HueOffset::addOffset(int offsetToAdd)
+{
+    return (HueOffset(data->offset + offsetToAdd, data->saturation,
+                      data->value, data->alpha));
 }
 

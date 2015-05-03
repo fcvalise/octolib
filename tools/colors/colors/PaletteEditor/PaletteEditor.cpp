@@ -1,8 +1,8 @@
 #include "PaletteEditor.hpp"
-#include "PaletteModel.hpp"
 
 #include <ColorEditor.hpp>
 #include <ColorItemDelegate.hpp>
+#include <PaletteModel.hpp>
 
 #include <QTableView>
 #include <QHBoxLayout>

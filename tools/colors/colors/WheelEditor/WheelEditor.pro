@@ -7,24 +7,28 @@
 QT       += core gui widgets
 CONFIG	+= c++11
 
-TARGET = WheelEditor
+TARGET = "Wheel Editor"
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    WheelModel.cpp \
     WheelEditor.cpp \
     OffsetEditor.cpp \
-    HueOffset.cpp \
-    AddOffsetsDialog.cpp
+    AddOffsetsDialog.cpp \
+    AnaloguousOffsetDialog.cpp \
+    ComplementaryOffsetDialog.cpp \
+    TriadOffsetDialog.cpp \
+    SquareOffsetDialog.cpp
 
 HEADERS  += MainWindow.hpp \
     WheelModel.hpp \
     WheelEditor.hpp \
     OffsetEditor.hpp \
-    HueOffset.hpp \
-    AddOffsetsDialog.hpp
+    AddOffsetsDialog.hpp \
+    AnaloguousOffsetDialog.hpp \
+    ComplementaryOffsetDialog.hpp \
+    TriadOffsetDialog.hpp \
+    SquareOffsetDialog.hpp
 
 # CommonWidgets
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CommonWidgets/release/ -lCommonWidgets
@@ -53,4 +57,8 @@ RESOURCES += \
     Resources.qrc
 
 FORMS += \
-    AddOffsetsDialog.ui
+    AddOffsetsDialog.ui \
+    AnaloguousOffsetDialog.ui \
+    ComplementaryOffsetDialog.ui \
+    TriadOffsetDialog.ui \
+    SquareOffsetDialog.ui

@@ -7,17 +7,16 @@
 QT       += core gui widgets
 CONFIG	+= c++11
 
-TARGET = PaletteEditor
+TARGET = "Palette Editor"
+
 TEMPLATE = app
 ICON = palette_editor.icns
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    PaletteModel.cpp \
     PaletteEditor.cpp
 
 HEADERS  += MainWindow.hpp \
-    PaletteModel.hpp \
     PaletteEditor.hpp
 
 

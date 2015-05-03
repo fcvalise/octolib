@@ -24,7 +24,11 @@ public slots:
     void    openWheel(QString const& filePath);
 
     void    addOffset(quint16 offset = 0);
-    void    addOffsets(quint16 initial, qint16 interval, int count);
+    void    addAnaloguous(QWidget* parent);
+    void    addComplementaries(QWidget* parent);
+    void    addTriad(QWidget* parent);
+    void    addSquare(QWidget *parent);
+
     void    removeCurrent();
     void    removeAll();
     bool    hasSelection()const;

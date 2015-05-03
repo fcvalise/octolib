@@ -1,5 +1,5 @@
 #include "OffsetEditor.hpp"
-#include "WheelModel.hpp"
+#include <WheelModel.hpp>
 
 #include <QDataWidgetMapper>
 #include <QFormLayout>

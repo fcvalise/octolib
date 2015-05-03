@@ -25,7 +25,10 @@ private slots:
     bool    saveWheelAs();
 
     void    addOffset();
-    void    addOffsets();
+    void    addAnaloguous();
+    void    addComplementaries();
+    void    addTriad();
+    void    addSquare();
 
     void    deleteOffset();
     void    deleteAllOffsets();
@@ -52,7 +55,10 @@ private:
     QAction*        m_saveWheel;
     QAction*        m_saveWheelAs;
     QAction*        m_addOffset;
-    QAction*        m_addOffsets;
+    QAction*        m_addAnaloguous;
+    QAction*        m_addComplementaries;
+    QAction*        m_addTriad;
+    QAction*        m_addSquare;
     QAction*        m_deleteOffset;
     QAction*        m_deleteAllOffsets;
 };

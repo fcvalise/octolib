@@ -1,4 +1,4 @@
-#include "WheelModel.hpp"
+#include <WheelModel.hpp>
 
 #include <QVariant>
 #include <QColor>
@@ -10,7 +10,8 @@
 #include <ByteArray.hpp>
 
 WheelModel::WheelModel(QObject* parent) :
-    QAbstractTableModel(parent)
+    QAbstractTableModel(parent),
+    m_hue(0)
 {
 }
 
@@ -36,26 +37,7 @@ QVariant WheelModel::data(const QModelIndex &index, int role) const
     {
         HueOffset const&    value = m_offsets.at(index.row());
 
-        switch (index.column())
-        {
-        case Offset:
-            result = value.getOffset();
-            break;
-        case Saturation:
-            result = value.getSaturation();
-            break;
-        case Value:
-            result = value.getValue();
-            break;
-        case Alpha:
-            result = value.getAlpha();
-            break;
-        case ComputedColor:
-            result = value.computeColor(m_hue);
-            break;
-        default:
-            break;
-        }
+        result = value.computeColor(m_hue);
     }
     return (result);
 }
@@ -64,10 +46,7 @@ Qt::ItemFlags WheelModel::flags(const QModelIndex &index) const
 {
     if (index.isValid())
     {
-        if (index.column() == ComputedColor)
-            return ( Qt::ItemIsEnabled | Qt::ItemIsSelectable);
-        else
-            return (Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
+        return (Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     }
     else
     {
@@ -75,42 +54,6 @@ Qt::ItemFlags WheelModel::flags(const QModelIndex &index) const
     }
 }
 
-bool WheelModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-    bool    result = false;
-
-    if (index.isValid() && (role == Qt::DisplayRole || role == Qt::EditRole))
-    {
-        HueOffset&    hueOffset = m_offsets[index.row()];
-
-        switch (index.column())
-        {
-        case Offset:
-            hueOffset.setOffset(value.value<qint16>());
-            result = true;
-            break;
-        case Saturation:
-            hueOffset.setSaturation(value.value<quint8>());
-            result = true;
-            break;
-        case Value:
-            hueOffset.setValue(value.value<quint8>());
-            result = true;
-            break;
-        case Alpha:
-            hueOffset.setAlpha(value.value<quint8>());
-            result = true;
-            break;
-        default:
-            break;
-        }
-        if (result)
-        {
-            emit dataChanged(index, this->index(index.row(), ComputedColor));
-        }
-    }
-    return (result);
-}
 
 void WheelModel::setHue(quint16 hue)
 {
@@ -121,6 +64,11 @@ void WheelModel::setHue(quint16 hue)
 quint16 WheelModel::getHue() const
 {
     return (m_hue);
+}
+
+HueOffset WheelModel::getOffset(int row) const
+{
+    return (m_offsets.at(row));
 }
 
 HueOffset WheelModel::getOffset(const QModelIndex &index) const
@@ -139,8 +87,7 @@ void WheelModel::setOffset(const QModelIndex &index, HueOffset const &offset)
     if (index.isValid() == false)
         return;
     m_offsets[index.row()] = offset;
-    emit dataChanged(this->index(index.row(), 0),
-                     this->index(index.row(), ColumnCount - 1));
+    emit dataChanged(index, index);
 }
 
 void WheelModel::saveToFile(const QString &path) const
@@ -203,10 +150,15 @@ void WheelModel::loadFromFile(const QString &path)
 
 QModelIndex WheelModel::addOffset(qint16 offset, quint8 saturation, quint8 value, quint8 alpha)
 {
+    return (addOffset(HueOffset(offset, saturation, value, alpha)));
+}
+
+QModelIndex WheelModel::addOffset(const HueOffset &offset)
+{
     int row = m_offsets.size();
 
     beginInsertRows(QModelIndex(), row, row);
-    m_offsets.append(HueOffset(offset, saturation, value, alpha));
+    m_offsets.append(offset);
     endInsertRows();
     return (index(row, 0));
 }

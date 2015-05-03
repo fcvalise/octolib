@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "HueOffset.hpp"
+#include <HueOffset.hpp>
 
 class SpinBoxSlider;
 class WheelModel;

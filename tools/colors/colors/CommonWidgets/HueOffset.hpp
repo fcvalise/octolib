@@ -27,6 +27,7 @@ public:
 
     QColor      computeColor(quint16 baseHue)const;
     HueOffset   normalize()const;
+    HueOffset   addOffset(int offsetToAdd);
 private:
     QSharedDataPointer<HueOffsetData> data;
 };
