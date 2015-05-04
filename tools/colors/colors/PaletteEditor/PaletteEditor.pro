@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     PaletteEditor.cpp \
     PaletteFromImageDialog.cpp \
-    ImageColorPicker.cpp
+    ImageColorPicker.cpp \
+    ColorPickerItem.cpp
 
 HEADERS  += MainWindow.hpp \
     PaletteEditor.hpp \
     PaletteFromImageDialog.hpp \
-    ImageColorPicker.hpp
+    ImageColorPicker.hpp \
+    ColorPickerItem.hpp
 
 RESOURCES += \
     Resources.qrc

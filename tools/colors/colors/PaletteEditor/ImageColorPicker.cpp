@@ -1,72 +1,13 @@
 #include "ImageColorPicker.hpp"
+#include "ColorPickerItem.hpp"
 
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <PaletteModel.hpp>
 #include <QGraphicsSceneMouseEvent>
-#include <QtDebug>
 #include <QRgb>
-
-class ColorPickerItem : public QObject, public QGraphicsItem
-{
-    Q_OBJECT
-
-    static int const    CenterRadius = 2;
-    static int const    BorderRadius = 8;
-    static int const    CenterThickness = 1;
-    static int const    BorderThickness = 2;
-    static int const    TotalRadius = BorderRadius + BorderThickness;
-public:
-    explicit ColorPickerItem(int index);
-
-    virtual QRectF  boundingRect() const;
-    virtual void    paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
-protected:
-    virtual void    mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-signals:
-    void            moved(int index, QPointF pos);
-private:
-    int     m_index;
-};
-
-void ColorPickerItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    QGraphicsItem::mouseMoveEvent(event);
-    emit moved(m_index, event->scenePos());
-}
-
-ColorPickerItem::ColorPickerItem(int index) :
-    m_index(index)
-{
-    setActive(true);
-    setFlags(QGraphicsItem::ItemSendsGeometryChanges | QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-    setAcceptHoverEvents(true);
-}
-
-QRectF ColorPickerItem::boundingRect() const
-{
-    QPointF totalSize(TotalRadius, TotalRadius);
-    QPointF position = pos();
-    QRectF  rect(position - totalSize, position + totalSize);
-
-    return (rect);
-}
-
-void ColorPickerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    QPointF center = pos();
-
-    painter->save();
-    painter->setPen(QPen(Qt::white, BorderThickness));
-    painter->drawEllipse(center, BorderRadius + BorderThickness, BorderRadius + BorderThickness);
-    painter->setPen(QPen(Qt::black, CenterThickness));
-    painter->drawEllipse(center, CenterRadius, CenterRadius);
-    painter->drawEllipse(center, BorderRadius, BorderRadius);
-    painter->setPen(QPen(Qt::white, CenterThickness));
-    painter->drawEllipse(center, CenterRadius + CenterThickness, CenterRadius + CenterThickness);
-    painter->restore();
-}
+#include <QPen>
+#include <QtDebug>  // TEST
 
 ImageColorPicker::ImageColorPicker(QWidget *parent) :
     QGraphicsView(parent),
@@ -111,6 +52,7 @@ void ImageColorPicker::setColorCount(int count)
             m_model->addColor();
             item->setZValue(1);
             item->setPos(mapToScene(viewport()->rect().center()));
+            updatePickers();
         }
     }
 }
@@ -119,55 +61,57 @@ void ImageColorPicker::setImage(const QPixmap &pixmap)
 {
     QSize   viewportSize = contentsRect().size();
     QPixmap scaledPixmap = pixmap.scaled(viewportSize, Qt::KeepAspectRatio);
-    QPixmap thePixmap = scaledPixmap;
 
+    m_originalPixmap = pixmap;
     if (m_pixmap == nullptr)
     {
-        m_pixmap = m_scene->addPixmap(thePixmap);
+        m_pixmap = m_scene->addPixmap(scaledPixmap);
         m_pixmap->setZValue(-1);
     }
     else
     {
-        m_pixmap->setPixmap(thePixmap);
+        m_pixmap->setPixmap(scaledPixmap);
     }
-    m_image = thePixmap.toImage();
+    m_image = scaledPixmap.toImage();
     setSceneRect(m_pixmap->boundingRect());
     centerOn(m_pixmap);
+    updatePickers();
 }
 
 ColorPickerItem *ImageColorPicker::createPickerItem(int index)
 {
-    ColorPickerItem*   item = new ColorPickerItem(index);
+    ColorPickerItem*   item = new ColorPickerItem(index, m_pixmap);
 
-    connect(item, SIGNAL(moved(int, QPointF)), SLOT(onPickerMoved(int, QPointF)));
+    connect(item, SIGNAL(moved(int)), SLOT(onPickerMoved(int)));
     return (item);
 }
 
-void ImageColorPicker::updateColorPicker(int index, QPointF pos)
+void ImageColorPicker::updateColorPicker(int index)
 {
     ColorPickerItem*    item = m_pickers.value(index, nullptr);
-    QPointF             position = mapFromScene(item->pos());
     QRgb                rgb;
 
     if (item == nullptr)
         return;
-    qDebug() << "pos: " << pos;
-    qDebug() << "item: " << item->pos();
-    qDebug() << "viewport: " << position;
-    qDebug() << "global: " << mapToGlobal(item->pos().toPoint());
-    qDebug() << "from global: " << mapFromGlobal(item->pos().toPoint());
-    qDebug() << "dpi x: " << m_image.dotsPerMeterX();
-    qDebug() << "dpi y: " << m_image.dotsPerMeterY();
-
-    rgb = m_image.pixel(item->pos().toPoint() * 2);
+    rgb = m_image.pixel(item->pos().toPoint());
     m_model->setColor(m_model->index(index), QColor::fromRgb(rgb));
 }
 
-void ImageColorPicker::onPickerMoved(int index, QPointF pos)
+void ImageColorPicker::updatePickers()
 {
-    ColorPickerItem*    item = m_pickers.at(index);
-
-    updateColorPicker(index, pos);
+    for (int i = 0; i < m_pickers.size(); ++i)
+    {
+        updateColorPicker(i);
+    }
 }
 
-#include "ImageColorPicker.moc"
+void ImageColorPicker::onPickerMoved(int index)
+{
+    updateColorPicker(index);
+}
+
+void ImageColorPicker::resizeEvent(QResizeEvent *event)
+{
+    QGraphicsView::resizeEvent(event);
+    setImage(m_originalPixmap);
+}

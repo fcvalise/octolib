@@ -62,6 +62,11 @@ Qt::ItemFlags PaletteModel::flags(const QModelIndex &index) const
     return ((index.isValid()) ? Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable : Qt::NoItemFlags);
 }
 
+QColor PaletteModel::getColor(int index) const
+{
+    return (m_colors.at(index));
+}
+
 QColor PaletteModel::getColor(const QModelIndex &index) const
 {
     QColor  color;

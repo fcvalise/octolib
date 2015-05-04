@@ -18,17 +18,23 @@ public slots:
     void                setColorCount(int count);
 public:
     void                setImage(QPixmap const& pixmap);
+protected:
+    virtual void        resizeEvent(QResizeEvent *event);
 private:
     ColorPickerItem*    createPickerItem(int index);
-    void                updateColorPicker(int index, QPointF pos);
+    void                updateColorPicker(int index);
+    void                updatePickers();
 private slots:
-    void                onPickerMoved(int index, QPointF pos);
+    void                onPickerMoved(int index);
 private:
     QImage                  m_image;
+    QPixmap                 m_originalPixmap;
     QGraphicsScene*         m_scene;
     QGraphicsPixmapItem*    m_pixmap;
     QList<ColorPickerItem*> m_pickers;
     PaletteModel*           m_model;
 };
+
+
 
 #endif // IMAGECOLORPICKER_HPP

@@ -37,9 +37,13 @@ void AnaloguousOffsetDialog::addOffsets(WheelModel *model)
 
 void AnaloguousOffsetDialog::addColors(PaletteModel *model)
 {
+    HueOffset   offset;
+
     for (int i = 0; i < m_model->rowCount(); ++i)
     {
-        model->addColor(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()).computeColor(ui->globalHueSlider->value()));
+        offset = m_model->getOffset(i);
+        offset = offset.addOffset(ui->globalHueSlider->value());
+        model->addColor(offset.computeColor(ui->globalHueSlider->value()));
     }
 }
 

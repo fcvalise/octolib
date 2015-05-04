@@ -14,6 +14,7 @@ PaletteFromImageDialog::PaletteFromImageDialog(QWidget *parent) :
 
     ui->listView->setModel(ui->graphicsView->paletteModel());
     ui->listView->setItemDelegate(new ColorItemDelegate(this));
+    ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing);
     connect(ui->colorsCountSpinBox, SIGNAL(valueChanged(int)), SLOT(setColorCount(int)));
 }
 
@@ -39,7 +40,6 @@ void PaletteFromImageDialog::loadImage()
 
     if (filePath.isEmpty())
         return;
-    // LOAD l'image
     if (pixmap.load(filePath) == false)
         return;
     ui->graphicsView->setImage(pixmap);
@@ -50,8 +50,9 @@ void PaletteFromImageDialog::setColorCount(int count)
     ui->graphicsView->setColorCount(count);
 }
 
-
 int PaletteFromImageDialog::exec()
 {
+    show();
+    loadImage();
     return (QDialog::exec());
 }
