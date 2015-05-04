@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_savePalette(nullptr),
       m_savePaletteAs(nullptr),
       m_addColor(nullptr),
+      m_addColorFromImage(nullptr),
       m_deleteColor(nullptr),
       m_deleteAllColors(nullptr)
 {
@@ -104,6 +105,11 @@ void MainWindow::addColor()
     m_editor->addColor();
 }
 
+void MainWindow::addColorFromImage()
+{
+    m_editor->addColorFromImage(this);
+}
+
 void MainWindow::deleteColor()
 {
     m_editor->removeCurrent();
@@ -173,6 +179,7 @@ void MainWindow::setupActions()
     m_savePalette = new QAction(QIcon(":/images/save.png"), tr("Save"), this);
     m_savePaletteAs = new QAction(QIcon(":/images/save_as.png"), tr("Save as"), this);
     m_addColor = new QAction(QIcon(":/images/add.png"), tr("Add color"), this);
+    m_addColorFromImage = new QAction(QIcon(":/images/add.png"), tr("Add colors from image"), this);
     m_deleteColor = new QAction(QIcon(":/images/delete.png"), tr("Remove color"), this);
     m_deleteAllColors = new QAction("Delete all", this);
     m_newPalette->setShortcut(QKeySequence::New);
@@ -189,6 +196,7 @@ void MainWindow::setupActions()
     fileMenu->addSeparator();
     quit = fileMenu->addAction(tr("Quit"));
     editMenu->addAction(m_addColor);
+    editMenu->addAction(m_addColorFromImage);
     editMenu->addSeparator();
     editMenu->addAction(m_deleteColor);
     editMenu->addAction(m_deleteAllColors);
@@ -199,6 +207,7 @@ void MainWindow::setupActions()
     connect(m_savePaletteAs, &QAction::triggered, this, &MainWindow::savePaletteAs);
     connect(quit, &QAction::triggered, this, &MainWindow::close);
     connect(m_addColor, &QAction::triggered, this, &MainWindow::addColor);
+    connect(m_addColorFromImage, &QAction::triggered, this, &MainWindow::addColorFromImage);
     connect(m_deleteColor, &QAction::triggered, this, &MainWindow::deleteColor);
     connect(m_deleteAllColors, &QAction::triggered, this, &MainWindow::deleteAllColors);
 }

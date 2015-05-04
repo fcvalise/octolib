@@ -23,6 +23,7 @@ public slots:
     void    openPalette(QString const& filePath);
 
     void    addColor();
+    void    addColorFromImage(QWidget* parent);
     void    removeCurrent();
     void    removeAll();
     bool    hasSelection()const;

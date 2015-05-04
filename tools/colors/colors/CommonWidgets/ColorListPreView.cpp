@@ -6,6 +6,9 @@ ColorListPreView::ColorListPreView(QWidget *parent) :
     QListView(parent)
 {
     setViewportMargins(0, 0, 0, 0);
+    setFlow(QListView::LeftToRight);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 ColorListPreView::~ColorListPreView()

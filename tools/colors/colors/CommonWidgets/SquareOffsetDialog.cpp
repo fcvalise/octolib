@@ -1,9 +1,10 @@
+#include "PaletteModel.hpp"
 #include "SquareOffsetDialog.hpp"
 #include "ui_SquareOffsetDialog.h"
 
-#include <WheelModel.hpp>
-
-#include <ColorItemDelegate.hpp>
+#include "WheelModel.hpp"
+#include "PaletteModel.hpp"
+#include "ColorItemDelegate.hpp"
 
 SquareOffsetDialog::SquareOffsetDialog(QWidget *parent) :
     QDialog(parent),
@@ -30,6 +31,14 @@ void SquareOffsetDialog::addOffsets(WheelModel *model)
     for (int i = 0; i < m_model->rowCount(); ++i)
     {
         model->addOffset(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()));
+    }
+}
+
+void SquareOffsetDialog::addColors(PaletteModel *model)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i)
+    {
+        model->addColor(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()).computeColor(ui->globalHueSlider->value()));
     }
 }
 

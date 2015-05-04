@@ -1,9 +1,9 @@
 #include "AnaloguousOffsetDialog.hpp"
 #include "ui_AnaloguousOffsetDialog.h"
 
-#include <WheelModel.hpp>
-
-#include <ColorItemDelegate.hpp>
+#include "WheelModel.hpp"
+#include "PaletteModel.hpp"
+#include "ColorItemDelegate.hpp"
 
 AnaloguousOffsetDialog::AnaloguousOffsetDialog(QWidget *parent) :
     QDialog(parent),
@@ -32,6 +32,14 @@ void AnaloguousOffsetDialog::addOffsets(WheelModel *model)
     for (int i = 0; i < m_model->rowCount(); ++i)
     {
         model->addOffset(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()));
+    }
+}
+
+void AnaloguousOffsetDialog::addColors(PaletteModel *model)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i)
+    {
+        model->addColor(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()).computeColor(ui->globalHueSlider->value()));
     }
 }
 

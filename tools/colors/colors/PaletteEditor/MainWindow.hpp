@@ -25,6 +25,7 @@ private slots:
     bool    savePaletteAs();
 
     void    addColor();
+    void    addColorFromImage();
     void    deleteColor();
     void    deleteAllColors();
 
@@ -50,6 +51,7 @@ private:
     QAction*        m_savePalette;
     QAction*        m_savePaletteAs;
     QAction*        m_addColor;
+    QAction*        m_addColorFromImage;
     QAction*        m_deleteColor;
     QAction*        m_deleteAllColors;
 };

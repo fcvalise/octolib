@@ -1,4 +1,5 @@
 #include "PaletteEditor.hpp"
+#include "PaletteFromImageDialog.hpp"
 
 #include <ColorEditor.hpp>
 #include <ColorItemDelegate.hpp>
@@ -59,6 +60,16 @@ void PaletteEditor::addColor()
     if (s_hue >= 360)
         s_hue -= 360;
     emit modified();
+}
+
+void PaletteEditor::addColorFromImage(QWidget *parent)
+{
+    PaletteFromImageDialog    dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+    }
 }
 
 void PaletteEditor::removeCurrent()

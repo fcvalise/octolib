@@ -9,6 +9,7 @@ namespace Ui
 }
 
 class WheelModel;
+class PaletteModel;
 
 class AnaloguousOffsetDialog : public QDialog
 {
@@ -18,6 +19,7 @@ public:
     ~AnaloguousOffsetDialog();
 
     void    addOffsets(WheelModel* model);
+    void    addColors(PaletteModel* model);
 private slots:
     void    setHue(int hue);
     void    updateModel();

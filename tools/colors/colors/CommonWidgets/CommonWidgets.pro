@@ -24,7 +24,11 @@ SOURCES += \
     PaletteModel.cpp \
     WheelModel.cpp \
     ColorListPreView.cpp \
-    HueOffset.cpp
+    HueOffset.cpp \
+    ComplementaryOffsetDialog.cpp \
+    SquareOffsetDialog.cpp \
+    TriadOffsetDialog.cpp \
+    AnaloguousOffsetDialog.cpp
 
 HEADERS += \
     SpinBoxSlider.hpp \
@@ -39,7 +43,18 @@ HEADERS += \
     PaletteModel.hpp \
     WheelModel.hpp \
     ColorListPreView.hpp \
-    HueOffset.hpp
+    HueOffset.hpp \
+    SquareOffsetDialog.hpp \
+    TriadOffsetDialog.hpp \
+    ComplementaryOffsetDialog.hpp \
+    AnaloguousOffsetDialog.hpp
+
+FORMS += \
+    SquareOffsetDialog.ui \
+    AnaloguousOffsetDialog.ui \
+    ComplementaryOffsetDialog.ui \
+    TriadOffsetDialog.ui
+
 unix {
     target.path = /usr/lib
     INSTALLS += target
@@ -53,3 +68,4 @@ DEPENDPATH += $$PWD/../../../../includes
 
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
+

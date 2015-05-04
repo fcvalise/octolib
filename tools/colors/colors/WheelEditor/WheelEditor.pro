@@ -8,27 +8,27 @@ QT       += core gui widgets
 CONFIG	+= c++11
 
 TARGET = "Wheel Editor"
+
 TEMPLATE = app
+ICON = wheel_editor.icns
 
 SOURCES += main.cpp\
         MainWindow.cpp \
     WheelEditor.cpp \
     OffsetEditor.cpp \
-    AddOffsetsDialog.cpp \
-    AnaloguousOffsetDialog.cpp \
-    ComplementaryOffsetDialog.cpp \
-    TriadOffsetDialog.cpp \
-    SquareOffsetDialog.cpp
+    AddOffsetsDialog.cpp
 
 HEADERS  += MainWindow.hpp \
     WheelModel.hpp \
     WheelEditor.hpp \
     OffsetEditor.hpp \
-    AddOffsetsDialog.hpp \
-    AnaloguousOffsetDialog.hpp \
-    ComplementaryOffsetDialog.hpp \
-    TriadOffsetDialog.hpp \
-    SquareOffsetDialog.hpp
+    AddOffsetsDialog.hpp
+
+RESOURCES += \
+    Resources.qrc
+
+FORMS += \
+    AddOffsetsDialog.ui
 
 # CommonWidgets
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CommonWidgets/release/ -lCommonWidgets
@@ -53,12 +53,3 @@ DEPENDPATH += $$PWD/../../../../includes
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
 
-RESOURCES += \
-    Resources.qrc
-
-FORMS += \
-    AddOffsetsDialog.ui \
-    AnaloguousOffsetDialog.ui \
-    ComplementaryOffsetDialog.ui \
-    TriadOffsetDialog.ui \
-    SquareOffsetDialog.ui

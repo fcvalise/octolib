@@ -1,8 +1,9 @@
 #include "ComplementaryOffsetDialog.hpp"
-#include <WheelModel.hpp>
 #include "ui_ComplementaryOffsetDialog.h"
 
-#include <ColorItemDelegate.hpp>
+#include "WheelModel.hpp"
+#include "PaletteModel.hpp"
+#include "ColorItemDelegate.hpp"
 
 ComplementaryOffsetDialog::ComplementaryOffsetDialog(QWidget *parent) :
     QDialog(parent),
@@ -31,6 +32,14 @@ void ComplementaryOffsetDialog::addOffsets(WheelModel *model)
     for (int i = 0; i < m_model->rowCount(); ++i)
     {
         model->addOffset(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()));
+    }
+}
+
+void ComplementaryOffsetDialog::addColors(PaletteModel *model)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i)
+    {
+        model->addColor(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()).computeColor(ui->globalHueSlider->value()));
     }
 }
 

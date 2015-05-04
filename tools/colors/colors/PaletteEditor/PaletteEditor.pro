@@ -14,12 +14,20 @@ ICON = palette_editor.icns
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    PaletteEditor.cpp
+    PaletteEditor.cpp \
+    PaletteFromImageDialog.cpp \
+    ImageColorPicker.cpp
 
 HEADERS  += MainWindow.hpp \
-    PaletteEditor.hpp
+    PaletteEditor.hpp \
+    PaletteFromImageDialog.hpp \
+    ImageColorPicker.hpp
 
+RESOURCES += \
+    Resources.qrc
 
+FORMS += \
+    PaletteFromImageDialog.ui
 
 # CommonWidgets
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CommonWidgets/release/ -lCommonWidgets
@@ -43,6 +51,3 @@ DEPENDPATH += $$PWD/../../../../includes
 
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
-
-RESOURCES += \
-    Resources.qrc

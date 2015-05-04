@@ -1,9 +1,9 @@
 #include "TriadOffsetDialog.hpp"
 #include "ui_TriadOffsetDialog.h"
 
-#include <WheelModel.hpp>
-
-#include <ColorItemDelegate.hpp>
+#include "WheelModel.hpp"
+#include "PaletteModel.hpp"
+#include "ColorItemDelegate.hpp"
 
 TriadOffsetDialog::TriadOffsetDialog(QWidget *parent) :
     QDialog(parent),
@@ -30,6 +30,14 @@ void TriadOffsetDialog::addOffsets(WheelModel *model)
     for (int i = 0; i < m_model->rowCount(); ++i)
     {
         model->addOffset(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()));
+    }
+}
+
+void TriadOffsetDialog::addColors(PaletteModel *model)
+{
+    for (int i = 0; i < m_model->rowCount(); ++i)
+    {
+        model->addColor(m_model->getOffset(i).addOffset(ui->globalHueSlider->value()).computeColor(ui->globalHueSlider->value()));
     }
 }
 
