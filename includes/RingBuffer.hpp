@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/04 01:29:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 01:32:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 19:34:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ namespace octo
 	 *	\ingroup Core
 	 *	\class RingBuffer
 	 *
+	 *	Circular buffer
 	 */
 	template <class T>
 	class RingBuffer

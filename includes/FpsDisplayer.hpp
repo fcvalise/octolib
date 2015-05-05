@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 02:33:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 17:21:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 19:21:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ namespace octo
 	public:
 		explicit FpsDisplayer(sf::Font const* font, unsigned int fontSize, IColorProvider const* colors, std::size_t maxSamples);
 
+		void			setVisible(bool visible);
 		void			update(sf::View const& view);
 		virtual void	draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates()) const;
 	private:
@@ -47,6 +48,7 @@ namespace octo
 		std::unique_ptr<sf::Vertex[]>	m_vertices;
 		std::size_t						m_count;
 		IColorProvider const*			m_colors;
+		bool							m_visible;
 	};
 }
 

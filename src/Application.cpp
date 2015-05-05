@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 17:14:42 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 19:20:43 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,11 @@ namespace octo
 								std::cout << " - " << key << "\n"; 
 							}
 							return (L"See your terminal!");
+						});
+				m_console.addCommand(L"system.show_fps_counter",[this](bool show)
+						{
+							if (m_fpsDisplayer)
+								m_fpsDisplayer->setVisible(show);
 						});
 			}
 			else

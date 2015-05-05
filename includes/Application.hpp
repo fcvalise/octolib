@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 15:17:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 19:28:12 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,18 @@ namespace octo
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>render.screenshot(bool includeConsole)</TD>
-	 *		<TD><UL><LI>includeConsole: define if the console is taken with the screenshot</LI></UL></TD>
+	 *		<TD>includeConsole: define if the console is taken with the screenshot</TD>
 	 *		<TD>Take a screenshot of the screen</TD>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>system.change_state(std::string stateKey)</TD>
 	 *		<TD><UL><LI>stateKey: define the state to start</LI></UL></TD>
 	 *		<TD>Change the current state(see StateManager::changeState()</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>system.show_fps_counter(bool)</TD>
+	 *		<TD>bool visible: show or hide</TD>
+	 *		<TD>Show or hide the FPS counter display</TD>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>system.list_states()</TD>
@@ -142,6 +147,36 @@ namespace octo
 		 *		<TD>string</TD>
 		 *		<TD>Define the font file name used by the console</TD>
 		 *		<TD>if this key is not specified the console is disabled</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>fps_counter_enabled</TD>
+		 *		<TD>bool</TD>
+		 *		<TD>Define if the FPS counter is enabled</TD>
+		 *		<TD>if this key is not specified the FPS counter is disabled</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>fps_counter_palette</TD>
+		 *		<TD>string</TD>
+		 *		<TD>Define the FPS counter's palette</TD>
+		 *		<TD>if this key is not specified the FPS counter is disabled</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>fps_counter_font</TD>
+		 *		<TD>string</TD>
+		 *		<TD>Define the FPS counter's font</TD>
+		 *		<TD>if this key is not specified the FPS counter is disabled</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>fps_counter_font_size</TD>
+		 *		<TD>unsigned int</TD>
+		 *		<TD>Define the FPS counter's font size</TD>
+		 *		<TD>12</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>fps_counter_samples</TD>
+		 *		<TD>unsigned int</TD>
+		 *		<TD>Define the count of samples displayed by the FPS counter</TD>
+		 *		<TD>8</TD>
 		 *	</TR>
 		 *	</TABLE>
 		 *

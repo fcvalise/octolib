@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 02:36:54 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 17:55:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 19:22:04 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,17 @@ namespace octo
 		m_size(128.f, 128.f),
 		m_vertices(new sf::Vertex[(maxSamples + 1) * 4u]),
 		m_count(0),
-		m_colors(colors)
+		m_colors(colors),
+		m_visible(true)
 	{
 		appendQuad(0.f, 0.f, m_size.x, m_size.y, m_colors->getColor(BackgroundColor),
 				   m_count, m_vertices.get());
 		m_text.setPosition(4.f, m_size.y);
+	}
+
+	void	FpsDisplayer::setVisible(bool visible)
+	{
+		m_visible = visible;
 	}
 
 	void	FpsDisplayer::update(sf::View const& view)
@@ -58,6 +64,8 @@ namespace octo
 
 	void	FpsDisplayer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
+		if (m_visible == false)
+			return;
 		states.transform = getTransform();
 		target.draw(m_vertices.get(), m_count, sf::Quads, states);
 		target.draw(m_text, states);
