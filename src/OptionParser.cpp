@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:29:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/12 16:51:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 16:28:46 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,44 +32,83 @@ namespace octo
 		return (m_message);
 	}
 
+	namespace
+	{
+		void								trimR(std::string& str)
+		{
+			while (str.empty() == false && std::isspace(str.back()))
+				str.pop_back();
+		}
+
+		static bool							isComment(std::string const& line)
+		{
+			std::string::size_type	pos = line.find_first_not_of(Spaces);
+
+			return (pos != std::string::npos && line[pos] == Comment);
+		}
+
+		static std::string::const_iterator	skipSpace(std::string::const_iterator it,
+													  std::string::const_iterator end)
+		{
+			while (it != end && std::isspace(*it))
+				++it;
+			return (it);
+		}
+
+		static std::string::const_iterator	parseKey(std::string::const_iterator it,
+													 std::string::const_iterator end,
+													 std::string& key)
+		{
+			std::string::const_iterator	begin = it;
+
+			while (it != end && *it != Assignation)
+				++it;
+			key.assign(begin, it);
+			trimR(key);
+			if (key.empty())
+				throw OptionParser::SyntaxErrorException("no key defined");
+			return (it);
+		}
+
+		static std::string::const_iterator	checkAssign(std::string::const_iterator it,
+														std::string::const_iterator end)
+		{
+			if (it == end || *it != Assignation)
+				throw OptionParser::SyntaxErrorException("expected '='");
+			return (it + 1);
+		}
+
+		static std::string::const_iterator	parseValue(std::string::const_iterator it,
+													   std::string::const_iterator end,
+													   std::string& value)
+		{
+			std::string::const_iterator	begin = it;
+
+			while (it != end)
+				++it;
+			value.assign(begin, it);
+			trimR(value);
+			if (value.empty())
+				throw OptionParser::SyntaxErrorException("no value defined");
+			return (it);
+		}
+	}
 	void	OptionParser::parseLine(std::string const& line,
 									std::string& key,
 									std::string& value)
 	{
-		std::string::size_type  assignPos = line.find_first_of(Assignation);
-		std::string::size_type	keyStartPos = (assignPos == std::string::npos) ?
-			0 : line.find_first_not_of(Spaces, 0, assignPos);
-		std::string::size_type	keyEndPos = (keyStartPos == std::string::npos) ?
-			std::string::npos : line.find_last_not_of(Spaces, assignPos - 1);
-		std::string::size_type	valueStartPos = (assignPos == std::string::npos) ?
-			std::string::npos : line.find_first_not_of(Spaces, assignPos + 1);
-		std::string::size_type	valueEndPos = (valueStartPos == std::string::npos) ?
-			std::string::npos : line.find_last_not_of(Spaces, line.size(), (line.size() - valueStartPos) + 1);
-		std::string::size_type 	beginOfLine = line.find_first_not_of(Spaces);
+		std::string::const_iterator	it = line.begin();
+		std::string::const_iterator end = line.end();
 
-		if (beginOfLine == std::string::npos || line[beginOfLine] == Comment)
+		if (isComment(line))
 			return;
-		if (assignPos == 0)
-		{
-			throw SyntaxErrorException("unexpected '='");
-		}
-		else if (assignPos == std::string::npos)
-		{
-			throw SyntaxErrorException("no value defined");
-		}
-		if (keyStartPos == assignPos)
-		{
-			throw SyntaxErrorException("no key defined");
-		}
-		if (assignPos + 1 == line.size())
-		{
-			throw SyntaxErrorException("no value defined");
-		}
-		if (valueEndPos == std::string::npos || valueEndPos == assignPos)
-		{
-			throw SyntaxErrorException("no value defined");
-		}
-		key = line.substr(keyStartPos, (keyEndPos - keyStartPos) + 1);
-		value = line.substr(valueStartPos, (valueEndPos - valueStartPos) + 1);
+		it = skipSpace(it, end);
+		if (it == end)
+			return;
+		it = parseKey(it, end, key);
+		it = skipSpace(it, end);
+		it = checkAssign(it, end);
+		it = skipSpace(it, end);
+		it = parseValue(it, end, value);
 	}
 }

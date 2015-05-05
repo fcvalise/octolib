@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:57:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 17:06:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 16:13:17 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	testOptionParser(std::string const& line,
 	std::string	key;
 	std::string	value;
 
+	BOOST_TEST_CHECKPOINT("Parse '" << line << "'");
 	octo::OptionParser::parseLine(line, key, value);
 	BOOST_CHECK_EQUAL(key, expectedKey);
 	BOOST_CHECK_EQUAL(value, expectedValue);
@@ -31,6 +32,7 @@ static void	testOptionParser(std::string const& line,
 BOOST_AUTO_TEST_CASE( extract_key_values )
 {
 	testOptionParser("console_font = yop.bob", "console_font", "yop.bob");
+	testOptionParser("fps_counter_palette = FpsCounter.opa", "fps_counter_palette", "FpsCounter.opa");
 
 	testOptionParser("", "", "");
 	testOptionParser(" ", "", "");
