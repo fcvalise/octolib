@@ -6,13 +6,15 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/01 17:20:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 01:05:55 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Console.hpp"
 #include "Application.hpp"
 #include "GraphicsManager.hpp"
+#include "Palette.hpp"
+#include "StringUtils.hpp"
 #include <iostream>
 
 namespace octo
@@ -113,17 +115,17 @@ namespace octo
 		m_topPadding(4.f),
 		m_needUpdate(true),
 		m_enabled(false),
-		m_font(nullptr)
+		m_font(nullptr),
+		m_palette(nullptr)
 	{
-		m_cursor.reset(new Cursor);
+		m_cursor.reset(new class Cursor);
 		m_core.setListener(this);
-		m_current.setColor(InputColor);
-		m_rectangle.setFillColor(BackgroundColor);
 	}
 
-	void	Console::setFont(sf::Font const& font)
+	void	Console::setFont(sf::Font const& font, unsigned int fontSize)
 	{
 		m_font = &font;
+		m_fontSize = fontSize;
 		m_current.setFont(font);
 		m_current.setCharacterSize(m_fontSize);
 		for (sf::Text& text : m_log)
@@ -136,6 +138,14 @@ namespace octo
 		m_cursor->setBaseLine(0);
 		m_cursor->setColor(CursorColor);
 		m_needUpdate = true;
+	}
+
+	void	Console::setPalette(Palette const& palette)
+	{
+		m_palette = &palette;
+		m_needUpdate = true;
+		m_current.setColor(m_palette->getColor(Input));
+		m_rectangle.setFillColor(m_palette->getColor(Background));
 	}
 
 	void	Console::setEnabled(bool enable)
@@ -189,8 +199,8 @@ namespace octo
 	{
 		if (isEnabled() == false)
 			return;
-		print(L"\t" + message, ErrorColor);
-		print(line, QuoteColor);
+		print(L"\t" + message, m_palette->getColor(Error));
+		print(line, m_palette->getColor(Quote));
 	}
 
 	void	Console::onTextEntered(sf::Event::TextEvent const& event)
@@ -205,8 +215,6 @@ namespace octo
 				break;
 			// Enter
 			case 10:
-				execute();
-				break;
 			case 13:
 				execute();
 				break;
@@ -298,15 +306,37 @@ namespace octo
 
 	void	Console::print(std::wstring const& str, sf::Color const& color)
 	{
-		sf::Text	text(str, *m_font, m_fontSize);
+		sf::Text					text("", *m_font, m_fontSize);
+		std::vector<std::wstring>	lines;
 
 		text.setColor(color);
-		if (m_log.size() == m_maxLogCount)
-			m_log.pop_back();
-		m_log.push_front(text);
+		splits(str, L'\n', lines);
+		std::reverse(lines.begin(), lines.end());
+		for (std::wstring const& line : lines)
+		{
+			text.setString(line);
+			if (m_log.size() == m_maxLogCount)
+				m_log.pop_back();
+			m_log.push_front(text);
+		}
 		m_needUpdate = true;
 	}
 	
+	void						Console::printError(std::wstring const& str)
+	{
+		print(str, m_palette->getColor(Error));
+	}
+
+	void						Console::printError(std::exception const& e)
+	{
+		printError(L"exception: " + stringToWide(e.what()));
+	}
+
+	void						Console::printHelp(std::wstring const& str)
+	{
+		print(str, m_palette->getColor(Help));
+	}
+
 	std::vector<std::wstring>	Console::getCommandList()const
 	{
 		return (m_core.getCommandList());

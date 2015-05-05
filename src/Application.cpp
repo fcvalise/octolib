@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 19:20:43 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 01:03:30 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,20 @@ namespace octo
 
 		void	setupConsole()
 		{
-			if (m_options.containsKey("console_font") && m_options.hasValue("console_font"))
+			Palette const*	consolePalette = nullptr;
+			sf::Font const*	consoleFont = nullptr;
+			unsigned int	consoleFontSize = 0;
+
+			if (m_options.containsKey("console_font") && m_options.hasValue("console_font") &&
+				m_options.containsKey("console_palette"))
 			{
+				consolePalette = &m_resourceManager.getPalette(m_options.getValue<std::string>("console_palette"));
+				consoleFont = &m_resourceManager.getFont(m_options.getValue<std::string>("console_font"));
+				consoleFontSize = m_options.getValue<unsigned int>("console_font_size", 24);
 				m_graphicsManager.addKeyboardListener(&m_console);
 				m_graphicsManager.addTextListener(&m_console);
-				m_console.setFont(m_resourceManager.getFont(m_options.getValue<std::string>("console_font")));
+				m_console.setFont(*consoleFont, consoleFontSize);
+				m_console.setPalette(*consolePalette);
 				// Setup builtin commands
 				// Console commands
 				m_console.addCommand(L"console.close", [](){Application::getConsole().setEnabled(false);});
@@ -121,7 +130,6 @@ namespace octo
 							Console&	console = Application::getConsole();
 
 							std::wcout << "Available console commands:\n";
-
 							for (std::wstring const& key : console.getCommandList())
 							{
 								std::wcout << " - " << key << "\n";  
@@ -204,7 +212,7 @@ namespace octo
 
 			m_stateManager.push(keyStarted);
 			m_clock.restart();
-			m_console.print(L"Starting state " + stringToWide(keyStarted), Console::HelpColor);
+			m_console.printHelp(L"Starting state " + stringToWide(keyStarted));
 		}
 
 		void	stop()

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 15:47:43 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 00:50:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,10 @@ namespace octo
 		catch (ConsoleInterpreter::NotEnoughArgumentException const& e)
 		{
 			emitError(L"not enough arguments");
+		}
+		catch (ConsoleInterpreter::TooManyArgumentException const& e)
+		{
+			emitError(L"too many arguments");
 		}
 		catch (ConsoleInterpreter::UnknowCommandException const& e)
 		{

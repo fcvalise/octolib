@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 12:23:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 00:08:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 00:49:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ namespace octo
 	public:
 		class ArgumentTypeException;
 		class NotEnoughArgumentException;
+		class TooManyArgumentException;
 		class UnknowCommandException;
 		class SyntaxErrorException;
 
@@ -149,6 +150,13 @@ namespace octo
 	{
 	public:
 		NotEnoughArgumentException() = default;
+	};
+
+	/*!	Exception thrown when there too many argument */
+	class ConsoleInterpreter::TooManyArgumentException
+	{
+	public:
+		TooManyArgumentException() = default;
 	};
 
 	/*!	Exception thrown when an unknow command is called */
