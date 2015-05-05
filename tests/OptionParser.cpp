@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:57:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 16:13:17 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 16:31:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ BOOST_AUTO_TEST_CASE( extract_key_values )
 {
 	testOptionParser("console_font = yop.bob", "console_font", "yop.bob");
 	testOptionParser("fps_counter_palette = FpsCounter.opa", "fps_counter_palette", "FpsCounter.opa");
+	testOptionParser("vsync = true", "vsync", "true");
 
 	testOptionParser("", "", "");
 	testOptionParser(" ", "", "");

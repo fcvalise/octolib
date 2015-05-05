@@ -11,7 +11,8 @@ SRC = 	$(RESOURCE_SRC)						\
 		$(MATH_SRC)							\
 		$(CORE_SRC)							\
 		$(CONSOLE_SRC)						\
-		$(COLOR_SRC)
+		$(COLOR_SRC)						\
+		$(DEBUG_SRC)
 
 CORE_SRC =	Application.cpp					\
 			PausableClock.cpp				\
@@ -49,6 +50,10 @@ COLOR_SRC =	Hsv.cpp							\
 			Palette.cpp						\
 			ColorWheel.cpp					\
 			IColorProvider.cpp
+
+DEBUG_SRC = FpsCounter.cpp					\
+			AbstractFpsDisplayer.cpp		\
+			FpsDisplayer.cpp
 
 # compiler
 CC = clang++

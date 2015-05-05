@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 16:10:23 by pciavald         ###   ########.fr       */
+/*   Updated: 2015/05/05 17:14:42 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "Console.hpp"
 #include "PrintSFML.hpp"
 #include "StringUtils.hpp"
+#include "FpsCounter.hpp"
+#include "FpsDisplayer.hpp"
 
 #include <SFML/Graphics/RenderTexture.hpp>
 
@@ -75,6 +77,10 @@ namespace octo
 	class ApplicationImp
 	{
 	public:
+		ApplicationImp()
+		{
+		}
+
 		void	setupOptions(std::string const& optionFilePath, int argc, char **argv)
 		{
 			m_options.load(Options::ConfigFileLoader(optionFilePath));
@@ -161,6 +167,32 @@ namespace octo
 			}
 		}
 
+		void	setupFpsCounter()
+		{
+			Palette const*	fpsPalette = nullptr;
+			sf::Font const*	fpsFont = nullptr;
+			unsigned int	fpsFontSize = 0;
+			std::size_t		fpsCounterSamples = 0;
+
+			if (m_options.getValue("fps_counter_enabled", false) == false)
+				return;
+			if (m_options.containsKey("fps_counter_palette") == false || m_options.hasValue("fps_counter_palette") == false)
+			{
+				std::cout << "Warning: no FPS counter palette defined, FPS counter is disabled" << std::endl;
+			}
+			if (m_options.containsKey("fps_counter_font") == false || m_options.hasValue("fps_counter_font") == false)
+			{
+				std::cout << "Warning: no FPS counter font defined, FPS counter is disabled" << std::endl;
+			}
+			fpsPalette = &m_resourceManager.getPalette(m_options.getValue<std::string>("fps_counter_palette"));
+			fpsFont = &m_resourceManager.getFont(m_options.getValue<std::string>("fps_counter_font"));
+			fpsCounterSamples = m_options.getValue("fps_counter_samples", 8);
+			fpsFontSize = m_options.getValue("fps_counter_font_size", 12);
+			m_fpsDisplayer.reset(new FpsDisplayer(fpsFont, fpsFontSize, fpsPalette, fpsCounterSamples));
+			m_fpsCounter.setDisplay(m_fpsDisplayer.get());
+			m_fpsCounter.setEnabled(true);
+		}
+
 		void	start(StateManager::Key const& startStateKey)
 		{
 			std::string		keyStarted = m_options.getValue("start_state", startStateKey);
@@ -187,8 +219,14 @@ namespace octo
 				if (m_paused == false)
 					m_stateManager.update(frameTime, m_graphicsManager.getView());
 				m_console.update(frameTime, m_graphicsManager.getView());
+				m_fpsCounter.update(frameTime);
 				m_stateManager.draw(m_graphicsManager.getRender());
 				m_console.draw(m_graphicsManager.getRender());
+				if (m_fpsDisplayer)
+				{
+					m_fpsDisplayer->update(m_graphicsManager.getView());
+					m_fpsDisplayer->draw(m_graphicsManager.getRender());
+				}
 				m_graphicsManager.display();
 				frameTime = m_clock.restart();
 			}
@@ -217,11 +255,13 @@ namespace octo
 		}
 
 		std::unique_ptr<sf::RenderTexture>	m_screenshotRender;
+		std::unique_ptr<FpsDisplayer>		m_fpsDisplayer;
 		StateManager						m_stateManager;
 		GraphicsManager						m_graphicsManager;
 		ResourceManager						m_resourceManager;
 		Options								m_options;
 		Console								m_console;
+		FpsCounter							m_fpsCounter;
 		PausableClock						m_clock;
 		sf::Event							m_event;
 		bool								m_paused;
@@ -238,6 +278,7 @@ namespace octo
 		s_instance->setupGraphics(title);
 		s_instance->setupResources();
 		s_instance->setupConsole();
+		s_instance->setupFpsCounter();
 	}
 
 	void	Application::destroy()
