@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 01:05:55 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 01:30:02 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,6 @@
 
 namespace octo
 {
-	sf::Color const	Console::BackgroundColor{0, 0, 0, 140};
-	sf::Color const	Console::InputColor{0, 255, 0};
-	sf::Color const	Console::CursorColor{0, 200, 0};
-	sf::Color const	Console::QuoteColor{180, 180, 180};
-	sf::Color const	Console::ResultColor{0, 128, 255};
-	sf::Color const	Console::ErrorColor{255, 0, 0};
-	sf::Color const	Console::HelpColor{255, 255, 102};
-
 	class Console::Cursor
 	{
 	public:
@@ -136,7 +128,7 @@ namespace octo
 		m_cursor->setCursorWidth(font.getGlyph('X', m_fontSize, false).advance);
 		m_cursor->setCursorHeight(font.getLineSpacing(m_fontSize));
 		m_cursor->setBaseLine(0);
-		m_cursor->setColor(CursorColor);
+		m_cursor->setColor(m_palette->getColor(Cursor));
 		m_needUpdate = true;
 	}
 
@@ -150,7 +142,7 @@ namespace octo
 
 	void	Console::setEnabled(bool enable)
 	{
-		if (m_font == nullptr)
+		if (m_font == nullptr || m_palette == nullptr)
 			return;
 		if (m_enabled != enable)
 		{
@@ -192,7 +184,7 @@ namespace octo
 		if (isEnabled() == false)
 			return;
 		if (result.empty() == false)
-			print(result, ResultColor);
+			print(result, m_palette->getColor(Result));
 	}
 
 	void	Console::onError(std::wstring const& message, std::wstring const& line)
@@ -306,6 +298,8 @@ namespace octo
 
 	void	Console::print(std::wstring const& str, sf::Color const& color)
 	{
+		if (isEnabled() == false)
+			return;
 		sf::Text					text("", *m_font, m_fontSize);
 		std::vector<std::wstring>	lines;
 
@@ -324,16 +318,22 @@ namespace octo
 	
 	void						Console::printError(std::wstring const& str)
 	{
+		if (isEnabled() == false)
+			return;
 		print(str, m_palette->getColor(Error));
 	}
 
 	void						Console::printError(std::exception const& e)
 	{
+		if (isEnabled() == false)
+			return;
 		printError(L"exception: " + stringToWide(e.what()));
 	}
 
 	void						Console::printHelp(std::wstring const& str)
 	{
+		if (isEnabled() == false)
+			return;
 		print(str, m_palette->getColor(Help));
 	}
 

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 01:02:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 01:28:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,6 @@ namespace octo
 			Help
 		};
 	public:
-		static sf::Color const	BackgroundColor;
-		static sf::Color const	InputColor;
-		static sf::Color const	CursorColor;
-		static sf::Color const	QuoteColor;
-		static sf::Color const	ResultColor;
-		static sf::Color const	ErrorColor;
-		static sf::Color const	HelpColor;
-
 		Console();
 
 		/*!	Define the font used to render text */

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 19:28:12 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 01:14:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,12 @@ namespace octo
 		 *		<TD>console_font</TD>
 		 *		<TD>string</TD>
 		 *		<TD>Define the font file name used by the console</TD>
+		 *		<TD>if this key is not specified the console is disabled</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>console_palette</TD>
+		 *		<TD>string</TD>
+		 *		<TD>Define the console's palette</TD>
 		 *		<TD>if this key is not specified the console is disabled</TD>
 		 *	</TR>
 		 *	<TR>
