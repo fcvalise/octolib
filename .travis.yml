@@ -6,6 +6,7 @@ compiler:
  sudo: required
 
 before_install:
+ - sudo apt-get update -qq
  - sudo apt-get install libpthread-stubs0-dev
  - sudo apt-get install libgl1-mesa-dev
  - sudo apt-get install libx11-dev
