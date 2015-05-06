@@ -219,6 +219,7 @@ void MainWindow::setupActions()
     fileMenu->addSeparator();
     quit = fileMenu->addAction(tr("Quit"));
     editMenu->addAction(m_addOffset);
+    editMenu->addSeparator();
     editMenu->addAction(m_addAnaloguous);
     editMenu->addAction(m_addComplementaries);
     editMenu->addAction(m_addTriad);

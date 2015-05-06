@@ -26,6 +26,10 @@ private slots:
 
     void    addColor();
     void    addColorFromImage();
+    void    addAnaloguous();
+    void    addComplementaries();
+    void    addTriad();
+    void    addSquare();
     void    deleteColor();
     void    deleteAllColors();
 
@@ -52,6 +56,10 @@ private:
     QAction*        m_savePaletteAs;
     QAction*        m_addColor;
     QAction*        m_addColorFromImage;
+    QAction*        m_addAnaloguous;
+    QAction*        m_addComplementaries;
+    QAction*        m_addTriad;
+    QAction*        m_addSquare;
     QAction*        m_deleteColor;
     QAction*        m_deleteAllColors;
 };

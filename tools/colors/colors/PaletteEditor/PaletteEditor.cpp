@@ -11,6 +11,10 @@
 #include <QPushButton>
 #include <QHeaderView>
 #include <QFileDialog>
+#include <AnaloguousOffsetDialog.hpp>
+#include <ComplementaryOffsetDialog.hpp>
+#include <TriadOffsetDialog.hpp>
+#include <SquareOffsetDialog.hpp>
 
 PaletteEditor::PaletteEditor(QWidget *parent) :
     QWidget(parent),
@@ -69,6 +73,50 @@ void PaletteEditor::addColorFromImage(QWidget *parent)
     if (dialog.exec() == QDialog::Accepted)
     {
         dialog.addColors(m_paletteModel);
+    }
+}
+
+void PaletteEditor::addAnaloguous(QWidget *parent)
+{
+    AnaloguousOffsetDialog  dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+        emit modified();
+    }
+}
+
+void PaletteEditor::addComplementaries(QWidget *parent)
+{
+    ComplementaryOffsetDialog  dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+        emit modified();
+    }
+}
+
+void PaletteEditor::addTriad(QWidget *parent)
+{
+    TriadOffsetDialog  dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+        emit modified();
+    }
+}
+
+void PaletteEditor::addSquare(QWidget* parent)
+{
+    SquareOffsetDialog  dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+        emit modified();
     }
 }
 

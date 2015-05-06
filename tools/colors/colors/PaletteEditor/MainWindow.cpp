@@ -25,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
       m_savePaletteAs(nullptr),
       m_addColor(nullptr),
       m_addColorFromImage(nullptr),
+      m_addAnaloguous(nullptr),
+      m_addComplementaries(nullptr),
+      m_addTriad(nullptr),
+      m_addSquare(nullptr),
       m_deleteColor(nullptr),
       m_deleteAllColors(nullptr)
 {
@@ -110,6 +114,26 @@ void MainWindow::addColorFromImage()
     m_editor->addColorFromImage(this);
 }
 
+void MainWindow::addAnaloguous()
+{
+    m_editor->addAnaloguous(this);
+}
+
+void MainWindow::addComplementaries()
+{
+    m_editor->addComplementaries(this);
+}
+
+void MainWindow::addTriad()
+{
+    m_editor->addTriad(this);
+}
+
+void MainWindow::addSquare()
+{
+    m_editor->addSquare(this);
+}
+
 void MainWindow::deleteColor()
 {
     m_editor->removeCurrent();
@@ -179,7 +203,11 @@ void MainWindow::setupActions()
     m_savePalette = new QAction(QIcon(":/images/save.png"), tr("Save"), this);
     m_savePaletteAs = new QAction(QIcon(":/images/save_as.png"), tr("Save as"), this);
     m_addColor = new QAction(QIcon(":/images/add.png"), tr("Add color"), this);
-    m_addColorFromImage = new QAction(QIcon(":/images/add.png"), tr("Add colors from image"), this);
+    m_addColorFromImage = new QAction(QIcon(":/images/add.png"), tr("Add colors from image..."), this);
+    m_addAnaloguous = new QAction(QIcon(":/images/add.png"), tr("Add analoguous scheme..."), this);
+    m_addComplementaries = new QAction(QIcon(":/images/add.png"), tr("Add complementary scheme..."), this);
+    m_addTriad = new QAction(QIcon(":/images/add.png"), tr("Add triad scheme..."), this);
+    m_addSquare = new QAction(QIcon(":/images/add.png"), tr("Add square scheme..."), this);
     m_deleteColor = new QAction(QIcon(":/images/delete.png"), tr("Remove color"), this);
     m_deleteAllColors = new QAction("Delete all", this);
     m_newPalette->setShortcut(QKeySequence::New);
@@ -196,7 +224,13 @@ void MainWindow::setupActions()
     fileMenu->addSeparator();
     quit = fileMenu->addAction(tr("Quit"));
     editMenu->addAction(m_addColor);
+    editMenu->addSeparator();
     editMenu->addAction(m_addColorFromImage);
+    editMenu->addSeparator();
+    editMenu->addAction(m_addAnaloguous);
+    editMenu->addAction(m_addComplementaries);
+    editMenu->addAction(m_addTriad);
+    editMenu->addAction(m_addSquare);
     editMenu->addSeparator();
     editMenu->addAction(m_deleteColor);
     editMenu->addAction(m_deleteAllColors);
@@ -208,6 +242,10 @@ void MainWindow::setupActions()
     connect(quit, &QAction::triggered, this, &MainWindow::close);
     connect(m_addColor, &QAction::triggered, this, &MainWindow::addColor);
     connect(m_addColorFromImage, &QAction::triggered, this, &MainWindow::addColorFromImage);
+    connect(m_addAnaloguous, &QAction::triggered, this, &MainWindow::addAnaloguous);
+    connect(m_addComplementaries, &QAction::triggered, this, &MainWindow::addComplementaries);
+    connect(m_addTriad, &QAction::triggered, this, &MainWindow::addTriad);
+    connect(m_addSquare, &QAction::triggered, this, &MainWindow::addSquare);
     connect(m_deleteColor, &QAction::triggered, this, &MainWindow::deleteColor);
     connect(m_deleteAllColors, &QAction::triggered, this, &MainWindow::deleteAllColors);
 }

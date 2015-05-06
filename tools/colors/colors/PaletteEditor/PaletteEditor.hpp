@@ -24,6 +24,11 @@ public slots:
 
     void    addColor();
     void    addColorFromImage(QWidget* parent);
+    void    addAnaloguous(QWidget* parent);
+    void    addComplementaries(QWidget* parent);
+    void    addTriad(QWidget* parent);
+    void    addSquare(QWidget *parent);
+
     void    removeCurrent();
     void    removeAll();
     bool    hasSelection()const;
