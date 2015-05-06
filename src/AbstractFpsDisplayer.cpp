@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 02:05:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 17:51:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 11:28:14 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ namespace octo
 		m_samples(maxSamples),
 		m_maxSamples(maxSamples),
 		m_maxFrameCount(0u),
-		m_lastSample(0u)
+		m_lastSample(0u),
+		m_averageBuffer(0u),
+		m_averageCount(0u)
 	{
 	}
 
