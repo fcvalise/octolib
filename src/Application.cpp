@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 01:28:08 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 11:57:15 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ namespace octo
 			consoleFontSize = m_options.getValue<unsigned int>("console_font_size", 24);
 			m_graphicsManager.addKeyboardListener(&m_console);
 			m_graphicsManager.addTextListener(&m_console);
-			m_console.setFont(*consoleFont, consoleFontSize);
 			m_console.setPalette(*consolePalette);
+			m_console.setFont(*consoleFont, consoleFontSize);
 			// Setup builtin commands
 			// Console commands
 			m_console.addCommand(L"console.close", [](){Application::getConsole().setEnabled(false);});
