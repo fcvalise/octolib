@@ -28,3 +28,7 @@ install:
 - sudo install make
 
 script:	make complete
+
+branches:
+  only:
+      - master
