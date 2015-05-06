@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/01 04:01:55 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 04:43:44 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <memory>
 # include <vector>
 # include <cassert>
+# include <stdexcept>
 
 namespace octo
 {
