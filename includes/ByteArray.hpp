@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 10:05:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 11:26:56 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 11:39:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,7 @@ namespace octo
 
 		/*!	Create an array from an other bytes container */
 		template <class I>
-		ByteArray(I begin, I end) :
-			ByteArray()
-		{
-			assign(begin, end);
-		}
+		ByteArray(I begin, I end);
 		
 		/*!	Copy bytes from an other bytes container */
 		void			assign(ByteArray const& bytes);
@@ -62,14 +58,7 @@ namespace octo
 
 		/*!	Copy bytes from an other bytes container */
 		template <class I>
-		void assign(I begin, I end)
-		{
-			std::size_t	count = std::distance(begin, end);
-
-			reserve(count);
-			std::copy(begin, end, m_bytes.get());
-			m_count = count;
-		}
+		void			assign(I begin, I end);
 
 		/*!	Appends bytes at the end */
 		void			append(ByteArray const& bytes);
@@ -82,15 +71,7 @@ namespace octo
 
 		/*!	Appends a range of bytes at the end */
 		template <class I>
-		void 			append(I begin, I end)
-		{
-			std::size_t	count = std::distance(begin, end);
-
-			if (m_count + count > m_capacity)
-				reserve(m_count + count);
-			std::copy(begin, end, this->end());
-			m_count += count;
-		}
+		void 			append(I begin, I end);
 
 		/*!	Reallocate the internal array
 		 *
@@ -153,4 +134,5 @@ namespace octo
 	};
 }
 
+#include "ByteArray.hxx"
 #endif
