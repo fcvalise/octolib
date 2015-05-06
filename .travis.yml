@@ -28,7 +28,7 @@ install:
  - sudo make
  - sudo install make
 
-script:	make complete
+script: make complete
 
 branches:
   only:
@@ -37,7 +37,7 @@ branches:
 notifications:
   email:
     recipients:
-      - iohannrabeson@gmail.com
-	on_success: always
+      -iohannrabeson@gmail.com
+    on_success: always
     on_failure: always
     on_start: always
