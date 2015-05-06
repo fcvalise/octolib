@@ -1,5 +1,4 @@
-# octolib
-[![Build Status](https://magnum.travis-ci.com/IohannRabeson/octolib.svg?token=oSgYDG8ZHmxB1gxGNZxP&branch=master)](https://magnum.travis-ci.com/IohannRabeson/octolib)  
+# octolib [![Build Status](https://magnum.travis-ci.com/IohannRabeson/octolib.svg?token=oSgYDG8ZHmxB1gxGNZxP&branch=master)](https://magnum.travis-ci.com/IohannRabeson/octolib)  
 
 Octodyssey's core library repository.
 
