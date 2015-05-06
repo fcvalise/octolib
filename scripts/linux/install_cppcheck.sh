@@ -5,4 +5,5 @@ cd cppcheck-repository
 echo "Building cppcheck..."
 make SRCDIR=build CFGDIR=cfg HAVE_RULES=yes
 make install
+cp -R -v ./cfg/ /usr/bin/
 cd ..
