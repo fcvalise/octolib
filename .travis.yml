@@ -11,8 +11,8 @@ install:
  - git clone https://github.com/LaurentGomila/SFML.git sfml-repository
  - cd sfml-repository
  - git pull origin master
- - sudo cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=TRUE .
- - sudo make
+ - cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=TRUE .
+ - make
  - sudo install make
 
 script: make complete
