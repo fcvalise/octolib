@@ -16,6 +16,7 @@ install:
  - cmake -G"Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=TRUE .
  - make
  - sudo make install
+ - cd ..
 
 script: make complete
 
