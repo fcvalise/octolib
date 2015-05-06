@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 01:36:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/02 18:18:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 04:51:53 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "BinaryInputStream.hpp"
 #include "BinaryOutputStream.hpp"
 #include <algorithm>
+#include <stdexcept>
 
 namespace octo
 {

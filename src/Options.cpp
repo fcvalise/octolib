@@ -6,14 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 22:39:33 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 04:50:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 04:52:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Options.hpp"
 #include "OptionParser.hpp"
-#include <cassert>
 #include <fstream>
+#include <stdexcept>
 
 namespace octo
 {

@@ -16,27 +16,30 @@ and they are used as examples by generated documentation.
 ### Modules
 
 Octolib is separable into several modules:  
-##### Core module  
+#### Core module  
 Provides commons stuff.
 
-##### State management module  
+#### State management module  
 Provides services to manage the differents screens required by a game.
 
-##### Package module  
+#### Package module  
 Provides services to pack multiple ressources into an unique file called
 package. This module provides also a way to read datas from a package file.
 
-##### Resource module  
+#### Resource module  
 Manage all the games ressources such textures, fonts, sound. 
 Resource module use read services of packages module.
 
-##### Animation system  
+#### Animation system  
 Provides services to animate objects properties.
 
-##### Audio engine
+#### Graphics
+Provides services to render stuff
+
+#### Audio engine
 Provides classes to play music composed in real-time.
 
-##### Gui system  
+#### Gui system  
 Provides basic stuffs to create simple user interface.
 
 ## How to build?

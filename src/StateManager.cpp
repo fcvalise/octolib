@@ -6,14 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 16:25:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 04:51:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "StateManager.hpp"
 #include "AbstractState.hpp"
-#include <cassert>
 #include <type_traits>
+#include <stdexcept>
 
 namespace octo
 {
@@ -175,7 +175,6 @@ namespace octo
 	{
 		auto	it = m_transitionFactory.find(key);
 
-		assert(it != m_transitionFactory.end());
 		if (it == m_transitionFactory.end())
 			throw std::range_error("state_manager: invalid transition key: " + key);
 		m_transition.reset(it->second(action));
