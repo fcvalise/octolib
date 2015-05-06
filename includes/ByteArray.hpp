@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 10:05:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/26 15:21:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 11:26:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace octo
 		explicit ByteArray(std::size_t count);
 
 		/*!	Create an array from bytes */
-		ByteArray(std::initializer_list<char> bytes);
+		explicit ByteArray(std::initializer_list<char> bytes);
 
 		/*!	Create an array from a byte array */
 		ByteArray(char const* str, std::size_t size);
@@ -114,6 +114,8 @@ namespace octo
 		 *	Buffer is resized if needed.
 		 */
 		bool			read(std::istream& is, std::size_t count);
+
+		/*!	Read all bytes availables from a stream */
 		bool			read(std::istream& is);
 
 		/*!	Write buffer to an output stream */
