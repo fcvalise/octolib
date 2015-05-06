@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 00:43:01 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 02:13:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 02:13:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,18 @@
 
 # include <SFML/System/Time.hpp>
 
-# include <memory>
-
 namespace octo
 {
 	class AbstractFpsDisplayer;
 
+	/*!	
+	 *	\ingroup Graphics
+	 *	\class FpsCounter
+	 *	Count the number of frame per second
+	 *
+	 *	This class does not manage any display.<br>
+	 *	Display is delegated to AbstractFpsDisplayer.
+	 */
 	class FpsCounter
 	{
 	public:

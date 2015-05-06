@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 02:33:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 19:21:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 02:13:40 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ namespace octo
 {
 	class IColorProvider;
 
+	/*!	
+	 *	\ingroup Graphics
+	 *	\class FpsDisplayer
+	 *	\brief Display the frame rate
+	 *
+	 */
 	class FpsDisplayer : public AbstractFpsDisplayer,
 						 public sf::Drawable,
 						 public sf::Transformable
