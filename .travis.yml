@@ -6,15 +6,15 @@ compiler:
  - clang
 
 before_install:
- - chmod u=rx ./scripts/linux/*.sh ./scripts/common/*.sh
+ - chmod u=rx .octolib/scripts/linux/*.sh ./scripts/common/*.sh
 
 install:
- - sudo ./scripts/linux/install_dependencies.sh
- - sudo ./scripts/linux/install_cppchecker.sh
- - sudo ./scripts/commons/install_sfml.sh
+ - sudo ./octolib/scripts/linux/install_dependencies.sh
+ - sudo ./octolib/scripts/linux/install_cppchecker.sh
+ - sudo ./octolib/scripts/commons/install_sfml.sh
 
 script:
- - ./scripts/linux/run_static_analysis.sh
+ - ./octolib/scripts/linux/run_static_analysis.sh
  - make complete
 
 branches:
