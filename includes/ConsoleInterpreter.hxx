@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 05:54:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 00:47:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,13 @@ namespace octo
 			{
 				details::ArgumentChecker<0u, sizeof ... (A)>::template check<A...>(arguments);
 			}
-			else
+			else if (sizeof...(A) > arguments.size())
 			{
 				throw ConsoleInterpreter::NotEnoughArgumentException();
+			}
+			else if (sizeof...(A) < arguments.size())
+			{
+				throw ConsoleInterpreter::TooManyArgumentException();
 			}
 		}
 

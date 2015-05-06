@@ -187,8 +187,6 @@ bool RecentFileMenu::contains(const QString &filePath) const
 
 void RecentFileMenu::setFilePaths(const QStringList &filePaths)
 {
-    Q_D(RecentFileMenu);
-
     foreach(const QString& filePath,filePaths)
     {
         addFile(filePath);

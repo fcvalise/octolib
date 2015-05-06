@@ -1,7 +1,9 @@
 #include "PaletteEditor.hpp"
-#include "ColorEditor.hpp"
-#include "PaletteModel.hpp"
-#include "ColorItemDelegate.hpp"
+#include "PaletteFromImageDialog.hpp"
+
+#include <ColorEditor.hpp>
+#include <ColorItemDelegate.hpp>
+#include <PaletteModel.hpp>
 
 #include <QTableView>
 #include <QHBoxLayout>
@@ -9,6 +11,10 @@
 #include <QPushButton>
 #include <QHeaderView>
 #include <QFileDialog>
+#include <AnaloguousOffsetDialog.hpp>
+#include <ComplementaryOffsetDialog.hpp>
+#include <TriadOffsetDialog.hpp>
+#include <SquareOffsetDialog.hpp>
 
 PaletteEditor::PaletteEditor(QWidget *parent) :
     QWidget(parent),
@@ -60,6 +66,60 @@ void PaletteEditor::addColor()
     emit modified();
 }
 
+void PaletteEditor::addColorFromImage(QWidget *parent)
+{
+    PaletteFromImageDialog    dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+    }
+}
+
+void PaletteEditor::addAnaloguous(QWidget *parent)
+{
+    AnaloguousOffsetDialog  dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+        emit modified();
+    }
+}
+
+void PaletteEditor::addComplementaries(QWidget *parent)
+{
+    ComplementaryOffsetDialog  dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+        emit modified();
+    }
+}
+
+void PaletteEditor::addTriad(QWidget *parent)
+{
+    TriadOffsetDialog  dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+        emit modified();
+    }
+}
+
+void PaletteEditor::addSquare(QWidget* parent)
+{
+    SquareOffsetDialog  dialog(parent);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        dialog.addColors(m_paletteModel);
+        emit modified();
+    }
+}
+
 void PaletteEditor::removeCurrent()
 {
     int currentRow = m_paletteView->currentIndex().row();
@@ -84,7 +144,7 @@ bool PaletteEditor::hasSelection() const
     return (m_paletteView->currentIndex().isValid());
 }
 
-bool PaletteEditor::hasSomeColors() const
+bool PaletteEditor::isEmpty() const
 {
     return (m_paletteModel->rowCount() > 0);
 }

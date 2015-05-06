@@ -19,7 +19,16 @@ SOURCES += \
     AbstractColorEditor.cpp \
     Document.cpp \
     AboutDialog.cpp \
-    RecentFileMenu.cpp
+    RecentFileMenu.cpp \
+    ColorItemDelegate.cpp \
+    PaletteModel.cpp \
+    WheelModel.cpp \
+    ColorListPreView.cpp \
+    HueOffset.cpp \
+    ComplementaryOffsetDialog.cpp \
+    SquareOffsetDialog.cpp \
+    TriadOffsetDialog.cpp \
+    AnaloguousOffsetDialog.cpp
 
 HEADERS += \
     SpinBoxSlider.hpp \
@@ -29,8 +38,34 @@ HEADERS += \
     AbstractColorEditor.hpp \
     Document.hpp \
     AboutDialog.hpp \
-    RecentFileMenu.hpp
+    RecentFileMenu.hpp \
+    ColorItemDelegate.hpp \
+    PaletteModel.hpp \
+    WheelModel.hpp \
+    ColorListPreView.hpp \
+    HueOffset.hpp \
+    SquareOffsetDialog.hpp \
+    TriadOffsetDialog.hpp \
+    ComplementaryOffsetDialog.hpp \
+    AnaloguousOffsetDialog.hpp
+
+FORMS += \
+    SquareOffsetDialog.ui \
+    AnaloguousOffsetDialog.ui \
+    ComplementaryOffsetDialog.ui \
+    TriadOffsetDialog.ui
+
 unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+# Octolib
+unix|win32: LIBS += -L$$PWD/../../../../ -locto
+
+INCLUDEPATH += $$PWD/../../../../includes
+DEPENDPATH += $$PWD/../../../../includes
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
+

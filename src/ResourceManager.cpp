@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/01 03:54:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 15:34:12 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ namespace octo
 	{
 		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Font, fileName);
 
+		if (key == PackageHeader::NullEntryKey)
+			throw std::range_error("resource manager: get font by name: " + fileName + " not found");
 		return (getFont(key));
 	}
 
@@ -123,6 +125,8 @@ namespace octo
 	{
 		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Texture, fileName);
 
+		if (key == PackageHeader::NullEntryKey)
+			throw std::range_error("resource manager: get texture by name: " + fileName + " not found");
 		return (getTexture(key));
 	}
 
@@ -135,6 +139,8 @@ namespace octo
 	{
 		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Sound, fileName);
 
+		if (key == PackageHeader::NullEntryKey)
+			throw std::range_error("resource manager: get sound by name: " + fileName + " not found");
 		return (getSound(key));
 	}
 
@@ -147,6 +153,8 @@ namespace octo
 	{
 		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Text, fileName);
 
+		if (key == PackageHeader::NullEntryKey)
+			throw std::range_error("resource manager: get text by name: " + fileName + " not found");
 		return (getText(key));
 	}
 
@@ -159,6 +167,8 @@ namespace octo
 	{
 		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Palette, fileName);
 
+		if (key == PackageHeader::NullEntryKey)
+			throw std::range_error("resource manager: get palette by name: " + fileName + " not found");
 		return (getPalette(key));
 	}
 
@@ -171,6 +181,8 @@ namespace octo
 	{
 		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::ColorWheel, fileName);
 
+		if (key == PackageHeader::NullEntryKey)
+			throw std::range_error("resource manager: get wheel by name: " + fileName + " not found");
 		return (getColorWheel(key));
 	}
 }

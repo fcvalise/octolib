@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/04 01:29:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 04:31:57 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/05 19:34:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ namespace octo
 	 *	\ingroup Core
 	 *	\class RingBuffer
 	 *
+	 *	Circular buffer
 	 */
 	template <class T>
 	class RingBuffer
@@ -76,7 +77,7 @@ namespace octo
 		/*!	Indicate if the stack is empty */
 		bool			empty()const;
 
-		/*!	Get the number of element pushed on the stack */
+		/*!	Get the number of element pushed */
 		std::size_t		size()const;
 
 		/*!	Remove all values pushed */

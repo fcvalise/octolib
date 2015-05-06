@@ -7,5 +7,6 @@
         <file>open_palette.png</file>
         <file>new_palette.png</file>
         <file>palette_editor.png</file>
+        <file>folder_image.png</file>
     </qresource>
 </RCC>

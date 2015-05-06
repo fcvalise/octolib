@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 15:55:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 01:28:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 
 namespace octo
 {
+	class Palette;
+
 	/*!
 	 *	\ingroup Console
 	 *	\class Console
@@ -55,19 +57,35 @@ namespace octo
 					public IKeyboardListener
 	{
 		class Cursor;
-	public:
-		static sf::Color const	BackgroundColor;
-		static sf::Color const	InputColor;
-		static sf::Color const	CursorColor;
-		static sf::Color const	QuoteColor;
-		static sf::Color const	ResultColor;
-		static sf::Color const	ErrorColor;
-		static sf::Color const	HelpColor;
 
+		enum	Colors
+		{
+			Background = 0,
+			Input,
+			Cursor,
+			Quote,
+			Result,
+			Error,
+			Help
+		};
+	public:
 		Console();
 
 		/*!	Define the font used to render text */
-		void						setFont(sf::Font const& font);
+		void						setFont(sf::Font const& font, unsigned int fontSize);
+
+		/*!	Define the palette used.
+		 *
+		 *	Palette must contains at least 7 colors:
+		 *	- Background
+		 *	- Input
+		 *	- Cursor
+		 *	- Quote
+		 *	- Result
+		 *	- Error
+		 *	- Help
+		 */
+		void						setPalette(Palette const& palette);
 
 		/*!	Enable or disable the console
 		 *
@@ -80,6 +98,9 @@ namespace octo
 
 		/*!	Print a message in the console */
 		void						print(std::wstring const& str, sf::Color const& color);
+		void						printError(std::wstring const& str);
+		void						printError(std::exception const& e);
+		void						printHelp(std::wstring const& str);
 
 		/*!	Clear the console display */
 		void						clear();
@@ -218,7 +239,7 @@ namespace octo
 	private:
 		ConsoleCore					m_core;
 		ConsoleHistory				m_history;
-		std::shared_ptr<Cursor>		m_cursor;
+		std::shared_ptr<class Cursor>	m_cursor;
 		std::list<sf::Text>			m_log;
 		sf::Text					m_current;
 		sf::RectangleShape			m_rectangle;
@@ -231,6 +252,7 @@ namespace octo
 		bool						m_needUpdate;
 		bool						m_enabled;
 		sf::Font const*				m_font;
+		Palette const*				m_palette;
 	};
 }
 

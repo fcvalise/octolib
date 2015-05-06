@@ -19,7 +19,7 @@
 namespace octo
 {
 	ColorWheel::ColorWheel() :
-		m_hue(0),
+		m_hue(0u),
 		m_offsets(nullptr),
 		m_offsetCount(0u)
 	{
@@ -64,7 +64,17 @@ namespace octo
 	{
 		if (id >= m_offsetCount)
 			throw std::range_error("color wheel: set offset: invalid offset identifier: " + std::to_string(id));
-		Hsv	result(m_hue + m_offsets[id].hueOffset, m_offsets[id].saturation, m_offsets[id].value, m_offsets[id].alpha);
+		std::int16_t	offset = m_offsets[id].hueOffset;
+
+		if (offset < 0 && m_hue < std::abs(offset) )
+		{
+			offset += 360;
+		}
+		else if (offset > 0 && m_hue + offset > 359)
+		{
+			offset -= 360;
+		}
+		Hsv	result(m_hue + offset, m_offsets[id].saturation, m_offsets[id].value, m_offsets[id].alpha);
 
 		return (result.toRgba());
 	}

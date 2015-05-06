@@ -7,22 +7,29 @@
 QT       += core gui widgets
 CONFIG	+= c++11
 
-TARGET = PaletteEditor
+TARGET = "Palette Editor"
+
 TEMPLATE = app
 ICON = palette_editor.icns
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    PaletteModel.cpp \
     PaletteEditor.cpp \
-    ColorItemDelegate.cpp
+    PaletteFromImageDialog.cpp \
+    ImageColorPicker.cpp \
+    ColorPickerItem.cpp
 
 HEADERS  += MainWindow.hpp \
-    PaletteModel.hpp \
     PaletteEditor.hpp \
-    ColorItemDelegate.hpp
+    PaletteFromImageDialog.hpp \
+    ImageColorPicker.hpp \
+    ColorPickerItem.hpp
 
+RESOURCES += \
+    Resources.qrc
 
+FORMS += \
+    PaletteFromImageDialog.ui
 
 # CommonWidgets
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CommonWidgets/release/ -lCommonWidgets
@@ -46,6 +53,3 @@ DEPENDPATH += $$PWD/../../../../includes
 
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
-
-RESOURCES += \
-    Resources.qrc

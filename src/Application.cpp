@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 16:10:23 by pciavald         ###   ########.fr       */
+/*   Updated: 2015/05/06 01:28:08 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include "Console.hpp"
 #include "PrintSFML.hpp"
 #include "StringUtils.hpp"
+#include "FpsCounter.hpp"
+#include "FpsDisplayer.hpp"
 
 #include <SFML/Graphics/RenderTexture.hpp>
 
@@ -75,6 +77,10 @@ namespace octo
 	class ApplicationImp
 	{
 	public:
+		ApplicationImp()
+		{
+		}
+
 		void	setupOptions(std::string const& optionFilePath, int argc, char **argv)
 		{
 			m_options.load(Options::ConfigFileLoader(optionFilePath));
@@ -101,64 +107,107 @@ namespace octo
 
 		void	setupConsole()
 		{
-			if (m_options.containsKey("console_font") && m_options.hasValue("console_font"))
-			{
-				m_graphicsManager.addKeyboardListener(&m_console);
-				m_graphicsManager.addTextListener(&m_console);
-				m_console.setFont(m_resourceManager.getFont(m_options.getValue<std::string>("console_font")));
-				// Setup builtin commands
-				// Console commands
-				m_console.addCommand(L"console.close", [](){Application::getConsole().setEnabled(false);});
-				m_console.addCommand(L"console.clear", [](){Application::getConsole().clear();});
-				m_console.addCommand(L"console.list_commands", []()
-						{
-							Console&	console = Application::getConsole();
+			Palette const*	consolePalette = nullptr;
+			sf::Font const*	consoleFont = nullptr;
+			unsigned int	consoleFontSize = 0;
 
-							std::wcout << "Available console commands:\n";
-
-							for (std::wstring const& key : console.getCommandList())
-							{
-								std::wcout << " - " << key << "\n";  
-							}
-							return (L"See your terminal!");
-						});
-				// Render commands
-				m_console.addCommand(L"render.screenshot", this, &ApplicationImp::screenshot);
-				// System commands
-				m_console.addCommand(L"system.quit", [](){Application::stop();});
-				m_console.addCommand(L"system.change_state", [](std::string const& key)
-						{
-							octo::Application::getStateManager().change(key);
-						});
-				m_console.addCommand(L"system.list_states",[]()
-						{
-							StateManager&	stateManager = Application::getStateManager();
-	
-							std::cout << "Available states:\n";
-
-							for (std::string const& key : stateManager.availableStateKeys())
-							{
-								std::cout << " - " << key << "\n"; 
-							}
-							return (L"See your terminal!");
-						});
-				m_console.addCommand(L"system.list_transitions",[]()
-						{
-							StateManager&	stateManager = Application::getStateManager();
-	
-							std::cout << "Available states:\n";
-
-							for (std::string const& key : stateManager.availableStateKeys())
-							{
-								std::cout << " - " << key << "\n"; 
-							}
-							return (L"See your terminal!");
-						});
-			}
-			else
+			if (m_options.hasValue("console_font") == false)
 			{
 				std::cout << "Warning: no console font defined, console is disabled" << std::endl;
+				return;
 			}
+			if (m_options.hasValue("console_palette") == false)
+			{
+				std::cout << "Warning: no console palette defined, console is disabled" << std::endl;
+				return;
+			}
+			consolePalette = &m_resourceManager.getPalette(m_options.getValue<std::string>("console_palette"));
+			consoleFont = &m_resourceManager.getFont(m_options.getValue<std::string>("console_font"));
+			consoleFontSize = m_options.getValue<unsigned int>("console_font_size", 24);
+			m_graphicsManager.addKeyboardListener(&m_console);
+			m_graphicsManager.addTextListener(&m_console);
+			m_console.setFont(*consoleFont, consoleFontSize);
+			m_console.setPalette(*consolePalette);
+			// Setup builtin commands
+			// Console commands
+			m_console.addCommand(L"console.close", [](){Application::getConsole().setEnabled(false);});
+			m_console.addCommand(L"console.clear", [](){Application::getConsole().clear();});
+			m_console.addCommand(L"console.list_commands", []()
+					{
+						Console&	console = Application::getConsole();
+
+						std::wcout << "Available console commands:\n";
+						for (std::wstring const& key : console.getCommandList())
+						{
+							std::wcout << " - " << key << "\n";  
+						}
+						return (L"See your terminal!");
+					});
+			// Render commands
+			m_console.addCommand(L"render.screenshot", this, &ApplicationImp::screenshot);
+			// System commands
+			m_console.addCommand(L"system.quit", [](){Application::stop();});
+			m_console.addCommand(L"system.change_state", [](std::string const& key)
+					{
+						octo::Application::getStateManager().change(key);
+					});
+			m_console.addCommand(L"system.list_states",[]()
+					{
+						StateManager&	stateManager = Application::getStateManager();
+
+						std::cout << "Available states:\n";
+
+						for (std::string const& key : stateManager.availableStateKeys())
+						{
+							std::cout << " - " << key << "\n"; 
+						}
+						return (L"See your terminal!");
+					});
+			m_console.addCommand(L"system.list_transitions",[]()
+					{
+						StateManager&	stateManager = Application::getStateManager();
+
+						std::cout << "Available states:\n";
+
+						for (std::string const& key : stateManager.availableStateKeys())
+						{
+							std::cout << " - " << key << "\n"; 
+						}
+						return (L"See your terminal!");
+					});
+			m_console.addCommand(L"system.show_fps_counter",[this](bool show)
+					{
+						if (m_fpsDisplayer)
+							m_fpsDisplayer->setVisible(show);
+					});
+		}
+
+		void	setupFpsCounter()
+		{
+			Palette const*	fpsPalette = nullptr;
+			sf::Font const*	fpsFont = nullptr;
+			unsigned int	fpsFontSize = 0;
+			std::size_t		fpsCounterSamples = 0;
+
+			if (m_options.getValue("fps_counter_enabled", false) == false)
+				return;
+			if (m_options.hasValue("fps_counter_palette") == false)
+			{
+				std::cout << "Warning: no FPS counter palette defined, FPS counter is disabled" << std::endl;
+				return;
+			}
+			if (m_options.hasValue("fps_counter_font") == false)
+			{
+				std::cout << "Warning: no FPS counter font defined, FPS counter is disabled" << std::endl;
+				return;
+			}
+			fpsPalette = &m_resourceManager.getPalette(m_options.getValue<std::string>("fps_counter_palette"));
+			fpsFont = &m_resourceManager.getFont(m_options.getValue<std::string>("fps_counter_font"));
+			fpsCounterSamples = m_options.getValue("fps_counter_samples", 8);
+			fpsFontSize = m_options.getValue("fps_counter_font_size", 12);
+			m_fpsDisplayer.reset(new FpsDisplayer(fpsFont, fpsFontSize, fpsPalette, fpsCounterSamples));
+			m_fpsCounter.setDisplay(m_fpsDisplayer.get());
+			m_fpsCounter.setEnabled(true);
 		}
 
 		void	start(StateManager::Key const& startStateKey)
@@ -167,7 +216,7 @@ namespace octo
 
 			m_stateManager.push(keyStarted);
 			m_clock.restart();
-			m_console.print(L"Starting state " + stringToWide(keyStarted), Console::HelpColor);
+			m_console.printHelp(L"Starting state " + stringToWide(keyStarted));
 		}
 
 		void	stop()
@@ -187,8 +236,14 @@ namespace octo
 				if (m_paused == false)
 					m_stateManager.update(frameTime, m_graphicsManager.getView());
 				m_console.update(frameTime, m_graphicsManager.getView());
+				m_fpsCounter.update(frameTime);
 				m_stateManager.draw(m_graphicsManager.getRender());
 				m_console.draw(m_graphicsManager.getRender());
+				if (m_fpsDisplayer)
+				{
+					m_fpsDisplayer->update(m_graphicsManager.getView());
+					m_fpsDisplayer->draw(m_graphicsManager.getRender());
+				}
 				m_graphicsManager.display();
 				frameTime = m_clock.restart();
 			}
@@ -217,11 +272,13 @@ namespace octo
 		}
 
 		std::unique_ptr<sf::RenderTexture>	m_screenshotRender;
+		std::unique_ptr<FpsDisplayer>		m_fpsDisplayer;
 		StateManager						m_stateManager;
 		GraphicsManager						m_graphicsManager;
 		ResourceManager						m_resourceManager;
 		Options								m_options;
 		Console								m_console;
+		FpsCounter							m_fpsCounter;
 		PausableClock						m_clock;
 		sf::Event							m_event;
 		bool								m_paused;
@@ -238,6 +295,7 @@ namespace octo
 		s_instance->setupGraphics(title);
 		s_instance->setupResources();
 		s_instance->setupConsole();
+		s_instance->setupFpsCounter();
 	}
 
 	void	Application::destroy()

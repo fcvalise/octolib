@@ -18,6 +18,7 @@ public:
     virtual bool            setData(const QModelIndex &index, const QVariant &value, int role);
     virtual Qt::ItemFlags   flags(const QModelIndex &index) const;
 
+    QColor                  getColor(int index)const;
     QColor                  getColor(const QModelIndex &index)const;
     void                    setColor(const QModelIndex& index, QColor color);
     void                    saveToFile(QString const& path)const;

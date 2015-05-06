@@ -26,7 +26,8 @@ SRC = main.cpp						\
 	  Options.cpp					\
 	  Hsv.cpp						\
 	  Palette.cpp					\
-	  ColorWheel.cpp
+	  ColorWheel.cpp				\
+	  StringUtils.cpp
 
 # compiler
 CC = clang++
