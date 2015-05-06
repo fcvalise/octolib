@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 05:38:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 17:24:09 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ namespace octo
 	{
 	public:
 		enum class EntryType : std::uint8_t;
+		
 		struct Entry;
 	private:
 		typedef std::vector<Entry>				Entries;
