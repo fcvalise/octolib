@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/24 02:28:56 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/11 15:48:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 11:32:38 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ namespace octo
 		class SyntaxErrorException
 		{
 		public:
-			SyntaxErrorException(std::string const& message);
+			explicit SyntaxErrorException(std::string const& message);
 
 			std::string const&	what()const;
 		private:
