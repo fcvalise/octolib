@@ -151,3 +151,7 @@ reinc:
 
 gource:
 	@gource --load-config doc/gource.conf
+
+static-checks:
+	cppcheck --enable=all  -I ./includes/ ./includes/* ./src/
+
