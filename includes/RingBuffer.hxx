@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/20 22:52:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 01:32:43 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 06:13:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cassert>
+#include <limits>
 
 namespace octo
 {
