@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:09:32 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:35:43 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 12:01:55 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ namespace octo
 		/*!	Get base name from a complete file path */
 		static inline std::string	getBaseName(std::string const& path)
 		{
-			std::string				result;
 			std::string::size_type	slashPos = path.find_last_of("/\\");
 
 			if (slashPos == std::string::npos)
