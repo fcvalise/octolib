@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:38:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 12:17:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 17:24:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ namespace octo
 	{
 	}
 
-	PackageHeader::Entry::Entry(std::string const& name, std::uint64_t offset,
-								std::uint64_t size, EntryType type) :
-		name(name),
-		offset(offset),
-		size(size),
-		type(type)
+	PackageHeader::Entry::Entry(std::string const& nameParam, std::uint64_t offsetParam,
+								std::uint64_t sizeParam, EntryType typeParam) :
+		name(nameParam),
+		offset(offsetParam),
+		size(sizeParam),
+		type(typeParam)
 	{
 	}
 

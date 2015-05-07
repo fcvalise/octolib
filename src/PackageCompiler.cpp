@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 05:39:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 16:00:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,15 +274,14 @@ namespace octo
 			{
 				m_listener->copyingFile(fileInfo.path, i, fileInfos.size());
 			}
-			if (writeFile(fileInfo, header, out) == false)
+			if (writeFile(fileInfo, out) == false)
 				return (false);
 			++i;
 		}
 		return (true);
 	}
 
-	bool	PackageCompiler::writeFile(FileInfo const& info, PackageHeader const& header,
-									   std::ostream& out)
+	bool	PackageCompiler::writeFile(FileInfo const& info, std::ostream& out)
 	{
 		std::ifstream			input(info.path, std::ios_base::binary);
 
@@ -301,7 +300,6 @@ namespace octo
 		details::xorEncryptDecrypt(m_buffer.begin(), m_buffer.end(), m_encryptionMask);
 		m_buffer.write(out);
 		return (true);
-		static_cast<void>(header);
 	}
 
 	bool	PackageCompiler::writeDefinitionFile(PackageHeader const& header)
