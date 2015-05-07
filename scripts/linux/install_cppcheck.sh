@@ -5,6 +5,6 @@ cd cppcheck-repository
 echo "Building cppcheck..."
 chmod 777 cfg
 chmod 777 cfg/*
-make SRCDIR=build CFGDIR=$PWD/cfg/ HAVERULE=yes
+make SRCDIR=build CFGDIR=$PWD/cfg/
 make install
 cd ..
