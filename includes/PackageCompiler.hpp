@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 04:59:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:19:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/06 15:59:52 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,7 @@ namespace octo
 		bool						writePackage(std::string const& outputFile, 
 								 				 FileInfoArray const& fileInfos,
 								 				 PackageHeader const& header);
-		bool						writeFile(FileInfo const& info,
-							  				  PackageHeader const& header,
-							  				  std::ostream& out);
+		bool						writeFile(FileInfo const& info, std::ostream& out);
 		bool						writeDefinitionFile(PackageHeader const& header);
 		static bool					sortFileInfo(FileInfo const& left,
 												 FileInfo const& right);

@@ -146,12 +146,7 @@ benchmarks:
 	@make -C benchmarks
 	@./benchmarks/benchmark.app
 
-reinc:
-	@reinc -rv -B $(BUILD_DIR) --include-dirs $(INCLUDE_DIR) --source-dirs ./src/
-
 gource:
 	@gource --load-config doc/gource.conf
 
-static-checks:
-	cppcheck --enable=all  -I ./includes/ ./includes/* ./src/
 
