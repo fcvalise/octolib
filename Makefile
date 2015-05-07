@@ -5,54 +5,56 @@ BUILD_DIR = ./builds
 OUTPUT_DIR = .
 
 # sources
-SRC = 	$(RESOURCE_SRC)						\
-		$(STATE_SYSTEM_SRC)					\
-		$(PACKAGE_SRC)						\
-		$(MATH_SRC)							\
-		$(CORE_SRC)							\
-		$(CONSOLE_SRC)						\
-		$(COLOR_SRC)						\
+SRC = 	$(RESOURCE_SRC)							\
+		$(STATE_SYSTEM_SRC)						\
+		$(PACKAGE_SRC)							\
+		$(MATH_SRC)								\
+		$(CORE_SRC)								\
+		$(CONSOLE_SRC)							\
+		$(GRAPHICS_SRC)							\
 		$(DEBUG_SRC)
 
-CORE_SRC =	Application.cpp					\
-			PausableClock.cpp				\
-			GraphicsManager.cpp				\
-			OptionParser.cpp				\
-			Options.cpp						\
-			ByteArray.cpp					\
-			BinaryInputStream.cpp			\
-			BinaryOutputStream.cpp			\
-			PrintSFML.cpp					\
-			WPrintSFML.cpp					\
+CORE_SRC =	Application.cpp						\
+			PausableClock.cpp					\
+			OptionParser.cpp					\
+			Options.cpp							\
+			ByteArray.cpp						\
+			BinaryInputStream.cpp				\
+			BinaryOutputStream.cpp				\
+			PrintSFML.cpp						\
+			WPrintSFML.cpp						\
 			StringUtils.cpp
 
-MATH_SRC = 	Interpolations.cpp				\
+GRAPHICS_SRC =	GraphicsManager.cpp				\
+				GraphicsListeners.cpp			\
+				DefaultGraphicsListeners.cpp	\
+				Hsv.cpp							\
+				Palette.cpp						\
+				ColorWheel.cpp					\
+				IColorProvider.cpp
+
+MATH_SRC = 	Interpolations.cpp					\
 	 		Math.cpp
 
 RESOURCE_SRC = ResourceManager.cpp
 
-PACKAGE_SRC = PackageReader.cpp				\
-			  PackageHeader.cpp				\
+PACKAGE_SRC = PackageReader.cpp					\
+			  PackageHeader.cpp					\
 			  PackageCompiler.cpp
 
-STATE_SYSTEM_SRC =	AbstractState.cpp		\
-					AbstractTransition.cpp	\
-					StateManager.cpp		\
+STATE_SYSTEM_SRC =	AbstractState.cpp			\
+					AbstractTransition.cpp		\
+					StateManager.cpp			\
 					DefaultTransition.cpp
 
-CONSOLE_SRC = ConsoleCommandParser.cpp		\
-			  ConsoleInterpreter.cpp		\
-			  ConsoleCore.cpp				\
-			  Console.cpp					\
+CONSOLE_SRC = ConsoleCommandParser.cpp			\
+			  ConsoleInterpreter.cpp			\
+			  ConsoleCore.cpp					\
+			  Console.cpp						\
 			  ConsoleHistory.cpp
 
-COLOR_SRC =	Hsv.cpp							\
-			Palette.cpp						\
-			ColorWheel.cpp					\
-			IColorProvider.cpp
-
-DEBUG_SRC = FpsCounter.cpp					\
-			AbstractFpsDisplayer.cpp		\
+DEBUG_SRC = FpsCounter.cpp						\
+			AbstractFpsDisplayer.cpp			\
 			FpsDisplayer.cpp
 
 # compiler

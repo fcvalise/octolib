@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 14:35:25 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/07 20:11:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GraphicsManager.hpp"
+#include "GraphicsListeners.hpp"
 
 namespace octo
 {

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 01:28:32 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/07 20:13:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CONSOLE_HPP
 # include "NonCopyable.hpp"
 # include "IConsoleListener.hpp"
-# include "GraphicsManager.hpp"
+# include "GraphicsListeners.hpp"
 # include "ConsoleCore.hpp"
 # include "ConsoleHistory.hpp"
 
@@ -23,6 +23,7 @@
 # include <SFML/Graphics/Font.hpp>
 # include <SFML/Graphics/Text.hpp>
 # include <SFML/Graphics/RectangleShape.hpp>
+# include <SFML/Graphics/View.hpp>
 
 # include <string>
 # include <list>

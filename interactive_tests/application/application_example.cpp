@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 18:53:36 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/07 20:14:29 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <DefaultTransition.hpp>
 #include <Application.hpp>
 #include <GraphicsManager.hpp>
+#include <GraphicsListeners.hpp>
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
