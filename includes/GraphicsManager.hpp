@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/07 20:12:29 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 11:14:14 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ namespace octo
 		bool					isVerticalSyncEnabled()const;
 
 		void					setView(sf::View const& view);
-		sf::View const&			getView()const;
 		sf::View const&			getDefaultView()const;
 		sf::Vector2f			mapPixelToCoords(sf::Vector2i const& position)const;
 		sf::Vector2f			mapPixelToCoords(sf::Vector2i const& position, sf::View const& view)const;

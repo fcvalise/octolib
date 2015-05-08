@@ -28,6 +28,7 @@ CORE_SRC =	Application.cpp						\
 GRAPHICS_SRC =	GraphicsManager.cpp				\
 				GraphicsListeners.cpp			\
 				DefaultGraphicsListeners.cpp	\
+				Camera.cpp						\
 				Hsv.cpp							\
 				Palette.cpp						\
 				ColorWheel.cpp					\
