@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 11:57:15 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 02:55:44 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "StringUtils.hpp"
 #include "FpsCounter.hpp"
 #include "FpsDisplayer.hpp"
+#include "Camera.hpp"
 
 #include <SFML/Graphics/RenderTexture.hpp>
 
@@ -93,6 +94,7 @@ namespace octo
 										   title,
 										   m_options.getValue("fullscreen", false));
 			m_graphicsManager.setVerticalSyncEnabled(m_options.getValue("vsync", true));
+			m_camera.setup(m_graphicsManager);
 		}
 
 		void	setupResources()
@@ -225,6 +227,19 @@ namespace octo
 			m_graphicsManager.closeRender();
 		}
 
+		void	drawAll()
+		{
+			sf::RenderTarget&	render = m_graphicsManager.getRender();
+
+			render.setView(m_camera.getView());
+			m_stateManager.draw(render);
+			render.setView(m_camera.getGuiView());
+			m_console.draw(render);
+			if (m_fpsDisplayer)
+				m_fpsDisplayer->draw(render);
+			m_graphicsManager.display();
+		}
+
 		void	run()
 		{
 			sf::Time	frameTime = sf::Time::Zero;
@@ -234,17 +249,12 @@ namespace octo
 			{
 				m_graphicsManager.processEvents();
 				if (m_paused == false)
-					m_stateManager.update(frameTime, m_graphicsManager.getView());
-				m_console.update(frameTime, m_graphicsManager.getView());
+					m_stateManager.update(frameTime, m_camera.getGuiView());
+				m_console.update(frameTime, m_camera.getGuiView());
 				m_fpsCounter.update(frameTime);
-				m_stateManager.draw(m_graphicsManager.getRender());
-				m_console.draw(m_graphicsManager.getRender());
 				if (m_fpsDisplayer)
-				{
-					m_fpsDisplayer->update(m_graphicsManager.getView());
-					m_fpsDisplayer->draw(m_graphicsManager.getRender());
-				}
-				m_graphicsManager.display();
+					m_fpsDisplayer->update(m_camera.getGuiView());
+				drawAll();
 				frameTime = m_clock.restart();
 			}
 		}
@@ -261,8 +271,9 @@ namespace octo
 				m_screenshotRender.reset(new sf::RenderTexture);
 				m_screenshotRender->create(mode.width, mode.height);
 			}
-			m_screenshotRender->setView(m_graphicsManager.getView());
+			m_screenshotRender->setView(m_camera.getView());
 			m_stateManager.draw(*m_screenshotRender);
+			m_screenshotRender->setView(m_camera.getGuiView());
 			if (captureConsole)
 				m_console.draw(*m_screenshotRender);
 			m_screenshotRender->display();
@@ -279,6 +290,7 @@ namespace octo
 		Options								m_options;
 		Console								m_console;
 		FpsCounter							m_fpsCounter;
+		Camera								m_camera;
 		PausableClock						m_clock;
 		sf::Event							m_event;
 		bool								m_paused;
@@ -377,5 +389,12 @@ namespace octo
 		assert (s_instance != nullptr);
 
 		return (s_instance->m_console);
+	}
+	
+	Camera&		Application::getCamera()
+	{
+		assert (s_instance != nullptr);
+
+		return (s_instance->m_camera);
 	}
 }

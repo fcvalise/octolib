@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/07 20:11:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 15:07:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ namespace octo
 					{
 						for (IKeyboardListener* listener : m_keyboardListeners)
 						{
-							if (listener->onReleased(m_event.key))
+							if (listener->onReleased(m_event.key) == false)
 								break;
 						}
 					}
@@ -217,11 +217,6 @@ namespace octo
 	void	GraphicsManager::setView(sf::View const& view)
 	{
 		m_window.setView(view);
-	}
-
-	sf::View const&	GraphicsManager::getView()const
-	{
-		return (m_window.getView());
 	}
 
 	sf::View const&	GraphicsManager::getDefaultView()const
