@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 11:14:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 16:51:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ namespace octo
 
 		void					setView(sf::View const& view);
 		sf::View const&			getDefaultView()const;
-		sf::Vector2f			mapPixelToCoords(sf::Vector2i const& position)const;
 		sf::Vector2f			mapPixelToCoords(sf::Vector2i const& position, sf::View const& view)const;
-		sf::Vector2i			mapCoordsToPixel(sf::Vector2f const& position)const;
 		sf::Vector2i			mapCoordsToPixel(sf::Vector2f const& position, sf::View const& view)const;
 
 		void					setKeyboardEnabled(bool enable);

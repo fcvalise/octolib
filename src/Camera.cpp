@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 20:30:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 15:27:28 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 16:50:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 namespace octo
 {
 	Camera::Camera() :
+		m_graphicsManager(nullptr),
 		m_zoomFactor(1.f)
 	{
 	}
@@ -25,6 +26,7 @@ namespace octo
 		graphicsManager.addWindowListener(this);
 		m_view = graphicsManager.getDefaultView();
 		m_guiView = graphicsManager.getDefaultView();
+		m_graphicsManager = &graphicsManager;
 		m_zoomFactor = 1.f;
 	}
 
@@ -95,7 +97,27 @@ namespace octo
 
 	sf::View const&	Camera::getGuiView()const
 	{
-		return (m_view);
+		return (m_guiView);
+	}
+
+	sf::Vector2f	Camera::mapPixelToCoords(sf::Vector2i const& position)const
+	{
+		return (m_graphicsManager->mapPixelToCoords(position, m_view));
+	}
+
+	sf::Vector2f	Camera::mapGuiPixelToCoords(sf::Vector2i const& position)const
+	{
+		return (m_graphicsManager->mapPixelToCoords(position, m_guiView));
+	}
+
+	sf::Vector2i	Camera::mapCoordsToPixel(sf::Vector2f const& position)const
+	{
+		return (m_graphicsManager->mapCoordsToPixel(position, m_view));
+	}
+
+	sf::Vector2i	Camera::mapGuiCoordsToPixel(sf::Vector2f const& position)const
+	{
+		return (m_graphicsManager->mapCoordsToPixel(position, m_guiView));
 	}
 
 	void	Camera::onResized(sf::Event::SizeEvent const& event)

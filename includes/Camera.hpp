@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 19:32:49 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 15:26:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 16:49:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,15 @@ namespace octo
 		sf::View const&		getView()const;
 		sf::View const&		getGuiView()const;
 
+		sf::Vector2f		mapPixelToCoords(sf::Vector2i const& position)const;
+		sf::Vector2f		mapGuiPixelToCoords(sf::Vector2i const& position)const;
+		sf::Vector2i		mapCoordsToPixel(sf::Vector2f const& position)const;
+		sf::Vector2i		mapGuiCoordsToPixel(sf::Vector2f const& position)const;
+
 		void				update(sf::Time frameTime);
 		virtual void		onResized(sf::Event::SizeEvent const& event);
 	private:
+		GraphicsManager*	m_graphicsManager;
 		sf::View			m_view;
 		sf::View			m_guiView;
 		float				m_zoomFactor;
