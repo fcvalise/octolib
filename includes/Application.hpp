@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 02:55:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 19:12:14 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,16 @@ namespace octo
 	 *		<TD>render.screenshot(bool includeConsole)</TD>
 	 *		<TD>includeConsole: define if the console is taken with the screenshot</TD>
 	 *		<TD>Take a screenshot of the screen</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>render.set_fullscreen(bool enable)</TD>
+	 *		<TD>enable: define if the fullscreen mode is needed</TD>
+	 *		<TD>Change the fullscreen mode</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>render.set_vsync(bool enable)</TD>
+	 *		<TD>enable: define if the v-sync is needed</TD>
+	 *		<TD>Enable or disable the vertical syncronization</TD>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>system.change_state(std::string stateKey)</TD>

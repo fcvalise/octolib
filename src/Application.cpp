@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 02:55:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 19:13:22 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ namespace octo
 	class ApplicationImp
 	{
 	public:
-		ApplicationImp()
+		ApplicationImp() :
+			m_paused(false)
 		{
 		}
 
@@ -147,6 +148,8 @@ namespace octo
 					});
 			// Render commands
 			m_console.addCommand(L"render.screenshot", this, &ApplicationImp::screenshot);
+			m_console.addCommand(L"render.set_fullscreen", m_graphicsManager, &GraphicsManager::setFullscreen);
+			m_console.addCommand(L"render.set_vsync", m_graphicsManager, &GraphicsManager::setVerticalSyncEnabled);
 			// System commands
 			m_console.addCommand(L"system.quit", [](){Application::stop();});
 			m_console.addCommand(L"system.change_state", [](std::string const& key)
@@ -242,18 +245,19 @@ namespace octo
 
 		void	run()
 		{
-			sf::Time	frameTime = sf::Time::Zero;
+			sf::Time		frameTime = sf::Time::Zero;
+			sf::View const&	guiView = m_camera.getGuiView();
 
 			m_paused = false;
 			while (m_stateManager.hasCurrentState())
 			{
 				m_graphicsManager.processEvents();
 				if (m_paused == false)
-					m_stateManager.update(frameTime, m_camera.getGuiView());
-				m_console.update(frameTime, m_camera.getGuiView());
+					m_stateManager.update(frameTime, guiView);
+				m_console.update(frameTime, guiView);
 				m_fpsCounter.update(frameTime);
 				if (m_fpsDisplayer)
-					m_fpsDisplayer->update(m_camera.getGuiView());
+					m_fpsDisplayer->update(guiView);
 				drawAll();
 				frameTime = m_clock.restart();
 			}

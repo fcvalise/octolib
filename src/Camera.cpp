@@ -6,12 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 20:30:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 16:50:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 18:31:17 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Camera.hpp"
-#include <GraphicsManager.hpp>
+#include "GraphicsManager.hpp"
+
+#include <cassert>
 
 namespace octo
 {
@@ -102,21 +104,29 @@ namespace octo
 
 	sf::Vector2f	Camera::mapPixelToCoords(sf::Vector2i const& position)const
 	{
+		assert (m_graphicsManager != nullptr);
+
 		return (m_graphicsManager->mapPixelToCoords(position, m_view));
 	}
 
 	sf::Vector2f	Camera::mapGuiPixelToCoords(sf::Vector2i const& position)const
 	{
+		assert (m_graphicsManager != nullptr);
+
 		return (m_graphicsManager->mapPixelToCoords(position, m_guiView));
 	}
 
 	sf::Vector2i	Camera::mapCoordsToPixel(sf::Vector2f const& position)const
 	{
+		assert (m_graphicsManager != nullptr);
+
 		return (m_graphicsManager->mapCoordsToPixel(position, m_view));
 	}
 
 	sf::Vector2i	Camera::mapGuiCoordsToPixel(sf::Vector2f const& position)const
 	{
+		assert (m_graphicsManager != nullptr);
+
 		return (m_graphicsManager->mapCoordsToPixel(position, m_guiView));
 	}
 

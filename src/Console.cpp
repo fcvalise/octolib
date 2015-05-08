@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 02:39:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 19:14:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ namespace octo
 	class Console::Cursor
 	{
 	public:
-		Cursor()
+		Cursor() :
+			m_yPos(0.f)
 		{
 		}
 
