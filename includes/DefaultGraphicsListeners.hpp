@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 19:49:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/07 20:18:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 15:24:25 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ namespace octo
 {
 	/*!
 	 *	\ingroup Graphics
-	 *	\class BasicWindowListener
+	 *	\class DefaultWindowListener
 	 *	\brief Class that helps to define window listeners
 	 *
 	 *	This helper provides a default (empty) implementation
@@ -35,7 +35,7 @@ namespace octo
 
 	/*!
 	 *	\ingroup Graphics
-	 *	\class BasicKeyboardListener
+	 *	\class DefaultKeyboardListener
 	 *	\brief Class that helps to define keyboard listeners
 	 *
 	 *	This helper provides a default (empty) implementation
@@ -52,7 +52,7 @@ namespace octo
 
 	/*!
 	 *	\ingroup Graphics
-	 *	\class BasicMouseListener
+	 *	\class DefaultMouseListener
 	 *	\brief Class that helps to define mouse listeners
 	 *
 	 *	This helper provides a default (empty) implementation
@@ -69,7 +69,7 @@ namespace octo
 
 	/*!
 	 *	\ingroup Graphics
-	 *	\class BasicJoystickListener
+	 *	\class DefaultJoystickListener
 	 *	\brief Class that helps to define joystick listeners
 	 *
 	 *	This helper provides a default (empty) implementation
@@ -87,7 +87,7 @@ namespace octo
 
 	/*!
 	 *	\ingroup Graphics
-	 *	\class BasicJoystickListener
+	 *	\class DefaultJoystickListener
 	 *	\brief Class that helps to define text listeners
 	 *
 	 *	This helper provides a default (empty) implementation
