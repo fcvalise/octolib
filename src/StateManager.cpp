@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 04:51:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 18:59:38 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ namespace octo
 
 	bool	StateManager::hasCurrentState()const
 	{
-		return (m_stack.size() > 0);
+		return (m_stack.empty() == false);
 	}
 
 	void	StateManager::startCurrentState()

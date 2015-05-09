@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 11:54:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/07 20:22:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 #include <AbstractState.hpp>
 #include <AbstractTransition.hpp>
 #include <DefaultTransition.hpp>
+#include <DefaultGraphicsListeners.hpp>
 #include <Application.hpp>
 #include <Math.hpp>
-
 #include <GraphicsManager.hpp>
 #include <ResourceManager.hpp>
+
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
@@ -43,7 +44,7 @@ namespace octo
 }
 
 class FireFlyTest : public octo::AbstractState,
-					public octo::IMouseListener
+					public octo::DefaultMouseListener
 {
 public:
 	using AbstractState::AbstractState;
@@ -95,21 +96,6 @@ public:
 		
 		m_interestPoint = octo::Application::getGraphicsManager().mapPixelToCoords(mousePos, m_view);		
 	}
-
-	virtual void	onPressed(sf::Event::MouseButtonEvent const&)
-	{
-
-	}
-
-	virtual void	onReleased(sf::Event::MouseButtonEvent const&)
-	{
-
-	}
-
-	virtual void	onWheel(sf::Event::MouseWheelEvent const&)
-	{
-
-	}
 private:
 	FireFly			m_fireFly;
 	sf::Vector2f	m_interestPoint;
@@ -117,28 +103,16 @@ private:
 };
 
 /*!	Window events listener */
-class SimpleWindowListener : public octo::IWindowListener
+class SimpleWindowListener : public octo::DefaultWindowListener
 {
 public:
 	virtual void	onClosed()
 	{
 		octo::Application::stop();
 	}
-
-	virtual void	onResized(sf::Event::SizeEvent const&)
-	{
-	}
-
-	virtual void	onFocusGained()
-	{
-	}
-
-	virtual void	onFocusLost()
-	{
-	}
 };
 
-class KeyboardControl : public octo::IKeyboardListener
+class KeyboardControl : public octo::DefaultKeyboardListener
 {
 public:
 	virtual bool	onPressed(sf::Event::KeyEvent const& event)
@@ -149,12 +123,6 @@ public:
 		}
 		return (true);
 	}
-
-	virtual bool	onReleased(sf::Event::KeyEvent const&)
-	{
-		return (true);
-	}
-private:
 };
 
 int main(int argc, char **argv)

@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 14:35:25 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 16:51:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GraphicsManager.hpp"
+#include "GraphicsListeners.hpp"
 
 namespace octo
 {
@@ -93,7 +94,7 @@ namespace octo
 					{
 						for (IKeyboardListener* listener : m_keyboardListeners)
 						{
-							if (listener->onReleased(m_event.key))
+							if (listener->onReleased(m_event.key) == false)
 								break;
 						}
 					}
@@ -218,29 +219,14 @@ namespace octo
 		m_window.setView(view);
 	}
 
-	sf::View const&	GraphicsManager::getView()const
-	{
-		return (m_window.getView());
-	}
-
 	sf::View const&	GraphicsManager::getDefaultView()const
 	{
 		return (m_window.getDefaultView());
 	}
 
-	sf::Vector2f	GraphicsManager::mapPixelToCoords(sf::Vector2i const& position)const
-	{
-		return (m_window.mapPixelToCoords(position));
-	}
-
 	sf::Vector2f	GraphicsManager::mapPixelToCoords(sf::Vector2i const& position, sf::View const& view)const
 	{
 		return (m_window.mapPixelToCoords(position, view));
-	}
-
-	sf::Vector2i	GraphicsManager::mapCoordsToPixel(sf::Vector2f const& position)const
-	{
-		return (m_window.mapCoordsToPixel(position));
 	}
 
 	sf::Vector2i	GraphicsManager::mapCoordsToPixel(sf::Vector2f const& position, sf::View const& view)const

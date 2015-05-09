@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/14 18:58:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/07 20:17:55 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <DefaultTransition.hpp>
 #include <Application.hpp>
 #include <GraphicsManager.hpp>
+#include <DefaultGraphicsListeners.hpp>
 #include <ResourceManager.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -85,28 +86,16 @@ private:
 };
 
 /*!	Window events listener */
-class SimpleWindowListener : public octo::IWindowListener
+class SimpleWindowListener : public octo::DefaultWindowListener
 {
 public:
 	virtual void	onClosed()
 	{
 		octo::Application::stop();
 	}
-
-	virtual void	onResized(sf::Event::SizeEvent const&)
-	{
-	}
-
-	virtual void	onFocusGained()
-	{
-	}
-
-	virtual void	onFocusLost()
-	{
-	}
 };
 
-class KeyboardControl : public octo::IKeyboardListener
+class KeyboardControl : public octo::DefaultKeyboardListener
 {
 public:
 	virtual bool	onPressed(sf::Event::KeyEvent const& event)
@@ -116,11 +105,6 @@ public:
 			octo::Application::getStateManager().pop("black_f");
 		}
 		return (false);
-	}
-
-	virtual bool	onReleased(sf::Event::KeyEvent const&)
-	{
-		return (true);
 	}
 private:
 };

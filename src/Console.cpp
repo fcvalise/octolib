@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 01:30:02 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 19:14:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ namespace octo
 	class Console::Cursor
 	{
 	public:
-		Cursor()
+		Cursor() :
+			m_yPos(0.f)
 		{
 		}
 
@@ -265,12 +266,13 @@ namespace octo
 
 	void	Console::update(sf::Time, sf::View const& view)
 	{
-		sf::Vector2f	viewSize	= view.getSize();
-		float			top = viewSize.y * m_relativeHeight * 0.5f + view.getCenter().y;
-		float			left = viewSize.x * -0.5f + view.getCenter().x;
-		float			leftPadded = left + m_leftPadding;
+		sf::Vector2f const&	viewSize = view.getSize();
+		sf::Vector2f const&	viewCenter = view.getCenter();
+		float				top = viewSize.y * m_relativeHeight * 0.5f + viewCenter.y;
+		float				left = viewSize.x * -0.5f + viewCenter.x;
+		float				leftPadded = left + m_leftPadding;
 
-		if (m_needUpdate && isEnabled())
+		if (isEnabled())
 		{
 			m_rectangle.setSize(sf::Vector2f(viewSize.x, viewSize.y * m_relativeHeight));
 			m_rectangle.setPosition(sf::Vector2f(left, top));
@@ -281,7 +283,6 @@ namespace octo
 				text.setPosition(leftPadded, top);
 				top += m_font->getLineSpacing(m_fontSize) + m_lineSpacing;
 			}
-			m_needUpdate = false;
 		}			
 	}
 

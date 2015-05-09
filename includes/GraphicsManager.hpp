@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/15 18:21:21 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/08 16:51:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,77 +22,11 @@
 
 namespace octo
 {
-	/*!	\ingroup Graphics
-	 *	Window event listener
-	 *
-	 *	This listener is notified when a window receive close event, resize event
-	 *	and focus events.
-	 */
-	class IWindowListener
-	{
-	public:
-		virtual ~IWindowListener(){}
-
-		virtual void	onClosed() = 0;
-		virtual void	onResized(sf::Event::SizeEvent const& event) = 0;
-		virtual void	onFocusGained() = 0;
-		virtual void	onFocusLost() = 0;
-	};
-
-	/*!	\ingroup Graphics
-	 *	Keyboard listener interface
-	 */
-	class IKeyboardListener
-	{
-	public:
-		virtual ~IKeyboardListener(){}
-
-		virtual bool	onPressed(sf::Event::KeyEvent const& event) = 0;
-		virtual bool	onReleased(sf::Event::KeyEvent const& event) = 0;
-	};
-
-	/*!
-	 *	\ingroup Graphics
-	 *	Mouse listener interface
-	 */
-	class IMouseListener
-	{
-	public:
-		virtual ~IMouseListener(){}
-
-		virtual void	onMoved(sf::Event::MouseMoveEvent const& event) = 0;
-		virtual void	onPressed(sf::Event::MouseButtonEvent const& event) = 0;
-		virtual void	onReleased(sf::Event::MouseButtonEvent const& event) = 0;
-		virtual void	onWheel(sf::Event::MouseWheelEvent const& event) = 0;
-	};
-
-	/*!
-	 *	\ingroup Graphics
-	 *	Joystick listener interface
-	 */
-	class IJoystickListener
-	{
-	public:
-		virtual ~IJoystickListener(){}
-
-		virtual void	onConnected(sf::Event::JoystickConnectEvent const& event) = 0;
-		virtual void	onDisconnected(sf::Event::JoystickConnectEvent const& event) = 0;
-		virtual void	onMoved(sf::Event::JoystickMoveEvent const& event) = 0;
-		virtual void	onPressed(sf::Event::JoystickButtonEvent const& event) = 0;
-		virtual void	onReleased(sf::Event::JoystickButtonEvent const& event) = 0;
-	};
-
-	/*!
-	 *	\ingroup Graphics
-	 *	Text entered listener interface
-	 */
-	class ITextListener
-	{
-	public:
-		virtual ~ITextListener(){}
-
-		virtual void	onTextEntered(sf::Event::TextEvent const& event) = 0;
-	};
+	class IWindowListener;
+	class IKeyboardListener;
+	class IMouseListener;
+	class IJoystickListener;
+	class ITextListener;
 
 	/*!
 	 *	\ingroup Graphics
@@ -127,11 +61,8 @@ namespace octo
 		bool					isVerticalSyncEnabled()const;
 
 		void					setView(sf::View const& view);
-		sf::View const&			getView()const;
 		sf::View const&			getDefaultView()const;
-		sf::Vector2f			mapPixelToCoords(sf::Vector2i const& position)const;
 		sf::Vector2f			mapPixelToCoords(sf::Vector2i const& position, sf::View const& view)const;
-		sf::Vector2i			mapCoordsToPixel(sf::Vector2f const& position)const;
 		sf::Vector2i			mapCoordsToPixel(sf::Vector2f const& position, sf::View const& view)const;
 
 		void					setKeyboardEnabled(bool enable);
