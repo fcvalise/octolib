@@ -16,17 +16,10 @@ install:
 script:
  - ./scripts/linux/run_static_analysis.sh
  - make complete
+ - make run_tests
 
 branches:
   only:
       - dev
       - master
       - travis_experiments
-
-notifications:
-  email:
-    recipients:
-      -iohannrabeson@gmail.com
-    on_success: always
-    on_failure: always
-    on_start: always

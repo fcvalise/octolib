@@ -58,6 +58,8 @@ DEBUG_SRC = FpsCounter.cpp						\
 			AbstractFpsDisplayer.cpp			\
 			FpsDisplayer.cpp
 
+.PHONY: doc tools tests
+
 # compiler
 CC = clang++
 # archiver
@@ -102,7 +104,7 @@ $(addprefix $(BUILD_DIR)/, %.o) : $(addprefix $(SRC_DIR)/, %.cpp)
 	@echo " - $(COLOR_ACTION)compiling$(COLOR_OFF): $(COLOR_OBJECT)$<$(COLOR_OFF)"
 	@$(CC) $(INCLUDE_DIRS) $(CFLAGS) -c $< -o $@
 
-re: print_summary fclean $(COMPLETE_TARGET)
+re: fclean print_summary $(COMPLETE_TARGET)
 
 fclean: clean
 	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(TARGET)$(COLOR_OFF)"
@@ -123,19 +125,25 @@ else
 	@echo " - Making library $(LIB_NAME): $(CFLAGS)"
 endif
 
-dox:
+tools:
+	@make -C tools/packager MODE=$(MODE)
+	@make -C tools/package_reader MODE=$(MODE)
+
+tests:
+	@make -C tests MODE=$(MODE)
+
+run_tests: tests
+	@make run -C tests
+
+complete: doc tools tests
+
+doc:
 	@doxygen ./doc/octolib.dox
 
-open_dox:
+open_doc:
 	@open ./doc/generated/html/index.html
 
-unit_tests:
-	@make re -C tests MODE=$(MODE)
-	@tests/tester.app
-
-complete: re unit_tests
-	@make re -C tools/packager MODE=$(MODE)
-	@make re -C tools/package_reader MODE=$(MODE)
+application_tests:
 	@make re -C benchmarks MODE=$(MODE)
 	@make re -C interactive_tests/application MODE=$(MODE)
 	@make re -C interactive_tests/options MODE=$(MODE)
@@ -144,10 +152,6 @@ complete: re unit_tests
 	@make re -C interactive_tests/bspline_test MODE=$(MODE)
 	@make re -C interactive_tests/in_game_console MODE=$(MODE)
 	@make re -C interactive_tests/firefly MODE=$(MODE)
-	
-benchmarks:
-	@make -C benchmarks
-	@./benchmarks/benchmark.app
 
 gource:
 	@gource --load-config doc/gource.conf
