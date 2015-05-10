@@ -6,10 +6,11 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 18:59:38 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/10 20:12:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <iostream>	// TEST
 #include "StateManager.hpp"
 #include "AbstractState.hpp"
 #include <type_traits>
@@ -33,18 +34,25 @@ namespace octo
 		{
 			startTransition(transitionKey, [this, stateKey]()
 				{
-					push(stateKey);
+					push(createState(stateKey));
 				});
 		}
 		else
 		{
-			push(stateKey);
+			push(createState(stateKey));
 		}
 	}
 
 	void	StateManager::push(Key const& key)
 	{
-		push(createState(key));
+		if (m_defaultTransitionKey.empty() == false)
+		{
+			push(key, m_defaultTransitionKey);
+		}
+		else
+		{
+			push(createState(key));
+		}
 	}
 
 	void	StateManager::push(StatePtr state)
@@ -60,18 +68,25 @@ namespace octo
 		{
 			startTransition(transitionKey, [this, stateKey]()
 				{
-					change(stateKey);
+					change(createState(stateKey));
 				});
 		}
 		else
 		{
-			change(stateKey);
+			change(createState(stateKey));
 		}
 	}
 
 	void	StateManager::change(Key const& key)
 	{
-		change(createState(key));
+		if (m_defaultTransitionKey.empty() == false)
+		{
+			change(key, m_defaultTransitionKey);
+		}
+		else
+		{
+			change(createState(key));
+		}
 	}
 
 	void	StateManager::change(StatePtr state)
@@ -92,13 +107,19 @@ namespace octo
 	{
 		startTransition(transitionKey, [this]()
 			{
-				pop();
+				stopCurrentState();
+				m_stack.pop();
+				resumeCurrentState();
 			});	
 	}
 
 	void	StateManager::pop()
 	{
-		if (m_stack.empty() == false)
+		if (m_defaultTransitionKey.empty() == false)
+		{
+			pop(m_defaultTransitionKey);
+		}
+		else if (m_stack.empty() == false)
 		{
 			stopCurrentState();
 			m_stack.pop();
@@ -205,7 +226,18 @@ namespace octo
 		if (m_transition)
 		{
 			if (m_transition->update(frameTime, view) == false)
+			{
+				std::cout << "transition reset" << std::endl;
 				m_transition.reset();
+			}
+		}
+	}
+
+	void	StateManager::drawTransition(sf::RenderTarget& render)const
+	{
+		if (m_transition)
+		{
+			m_transition->draw(render);
 		}
 	}
 
@@ -216,10 +248,6 @@ namespace octo
 		if (current)
 		{
 			current->draw(render);
-		}
-		if (m_transition)
-		{
-			m_transition->draw(render);
 		}
 	}
 	
