@@ -5,7 +5,7 @@ set -e
 QT_MAJOR_MINOR='5.4'
 QT_REVISION='0'
 QT_VERSION=$QT_MAJOR_MINOR.$QT_REVISION
-QT_INSTALLER=qt-linux-opensource-x64-$QT_VERSION.run
+QT_INSTALLER=qt-opensource-linux-x64-$QT_VERSION.run
 QT_INSTALLER_URL=http://download.qt.io/archive/qt/$QT_MAJOR_MINOR/$QT_VERSION/$QT_INSTALLER
 
 packages="
