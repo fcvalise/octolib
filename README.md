@@ -54,17 +54,13 @@ Provides basic stuffs to create simple user interface.
 ### Building the library
     $> make
 
-### Building examples
-	$> cd interactive_tests/<test_directory>; make
+## Makefile
+### Rules
 
-### Generating HTML documentation
-    $> make dox
-
-Then index page can be quickly opened under MacOS with:
-
-	$> make open_dox
-
-### How to rebuild all?
-You can rebuild all, the library, the units and interactives tests and tools with:
-
-	$> make complete
+ - make complete: rebuilds the library then build tools and unit tests
+ - make doc: generate documentation
+ - make open_doc: open documentation in your web browser (OSX only)
+ - make run_tests: builds unit tests
+ - make tests: builds unit tests
+ - make application_tests: builds interactives tests
+ - make tools: builds tools

@@ -58,9 +58,9 @@ endif
 COLOR_OFF = \033[0m
 COLOR_OBJECT = \033[0m
 
-all: print_summary $(COMPLETE_TARGET)
+all: core_library print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) core_library $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(CLIBS_FLAGS) 
 
@@ -68,7 +68,7 @@ $(addprefix $(BUILD_DIR)/, %.o) : $(addprefix $(SRC_DIR)/, %.cpp)
 	@echo " - $(COLOR_ACTION)compiling$(COLOR_OFF): $(COLOR_OBJECT)$<$(COLOR_OFF)"
 	@$(CC) $(INCLUDE_DIRS) $(CFLAGS) -c $< -o $@
 
-re: print_summary fclean $(COMPLETE_TARGET)
+re: fclean $(COMPLETE_TARGET)
 
 fclean: clean
 	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(TARGET)$(COLOR_OFF)"
@@ -94,7 +94,7 @@ endif
 run:
 	$(COMPLETE_TARGET) --log_level=test_suite
 
-core_library:
+core_library: 
 	@make -s -C $(CORE_DIR) MODE=$(MODE)
 
 clean_core_library:

@@ -9,24 +9,17 @@ before_install:
  - chmod u=rx ./scripts/linux/*.sh ./scripts/commons/*.sh
 
 install:
- - sudo ./scripts/linux/install_dependencies.sh
+ - sudo ./scripts/linux/install_compiler.sh
  - sudo ./scripts/linux/install_cppcheck.sh
  - sudo ./scripts/commons/install_sfml.sh
 
 script:
  - ./scripts/linux/run_static_analysis.sh
  - make complete
+ - make run_tests
 
 branches:
   only:
       - dev
       - master
       - travis_experiments
-
-notifications:
-  email:
-    recipients:
-      -iohannrabeson@gmail.com
-    on_success: always
-    on_failure: always
-    on_start: always

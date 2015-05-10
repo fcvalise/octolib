@@ -1,34 +1,35 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-05-01T05:17:37
+# Project created by QtCreator 2015-04-30T17:04:32
 #
 #-------------------------------------------------
 
 QT       += core gui widgets
 CONFIG	+= c++11
 
-TARGET = "Wheel Editor"
+TARGET = "Palette Editor"
 
 TEMPLATE = app
-ICON = wheel_editor.icns
+ICON = palette_editor.icns
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    WheelEditor.cpp \
-    OffsetEditor.cpp \
-    AddOffsetsDialog.cpp
+    PaletteEditor.cpp \
+    PaletteFromImageDialog.cpp \
+    ImageColorPicker.cpp \
+    ColorPickerItem.cpp
 
 HEADERS  += MainWindow.hpp \
-    WheelModel.hpp \
-    WheelEditor.hpp \
-    OffsetEditor.hpp \
-    AddOffsetsDialog.hpp
+    PaletteEditor.hpp \
+    PaletteFromImageDialog.hpp \
+    ImageColorPicker.hpp \
+    ColorPickerItem.hpp
 
 RESOURCES += \
     Resources.qrc
 
 FORMS += \
-    AddOffsetsDialog.ui
+    PaletteFromImageDialog.ui
 
 # CommonWidgets
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CommonWidgets/release/ -lCommonWidgets
@@ -53,3 +54,4 @@ DEPENDPATH += $$PWD/../../../../includes
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
 
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7
