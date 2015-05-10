@@ -135,7 +135,7 @@ tests:
 run_tests: tests
 	@make run -C tests
 
-complete: doc tools tests
+complete: $(COMPLETE_TARGET) tools tests
 
 doc:
 	@doxygen ./doc/octolib.dox
