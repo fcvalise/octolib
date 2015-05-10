@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/10 19:57:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/10 20:19:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,8 @@ namespace octo
 
 		/*!	Draw the current state */
 		void			draw(sf::RenderTarget& render)const;
+
+		/*!	Draw the current transition (if any). */
 		void			drawTransition(sf::RenderTarget& render)const;
 	private:
 		typedef std::shared_ptr<AbstractState>		StatePtr;

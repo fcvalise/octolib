@@ -6,11 +6,10 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/10 20:12:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/10 20:19:46 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>	// TEST
 #include "StateManager.hpp"
 #include "AbstractState.hpp"
 #include <type_traits>
@@ -227,7 +226,6 @@ namespace octo
 		{
 			if (m_transition->update(frameTime, view) == false)
 			{
-				std::cout << "transition reset" << std::endl;
 				m_transition.reset();
 			}
 		}
