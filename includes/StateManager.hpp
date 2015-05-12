@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 02:16:09 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/10 20:19:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ namespace octo
 		 *	\throw std::logic_error if the key \a key is already used
 		 */
 		template <class T>
-		void			registerTransition(Key const& key);
+		void			registerTransition(Key const& key, bool setDefault = false);
 
 		/*!	Push a state on the stack.
 		 *	The state become active and his method AbstractState::start() is called.
@@ -141,6 +141,9 @@ namespace octo
 
 		/*!	Draw the current state */
 		void			draw(sf::RenderTarget& render)const;
+
+		/*!	Draw the current transition (if any). */
+		void			drawTransition(sf::RenderTarget& render)const;
 	private:
 		typedef std::shared_ptr<AbstractState>		StatePtr;
 		typedef std::map<Key, StateCreator>			StateFactory;
@@ -163,6 +166,7 @@ namespace octo
 		TransitionFactory	m_transitionFactory;
 		StateStack			m_stack;
 		TransitionPtr		m_transition;
+		Key					m_defaultTransitionKey;
 		sf::Time			m_transitionDuration;
 	};
 }
