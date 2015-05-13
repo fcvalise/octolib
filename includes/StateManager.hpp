@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/10 20:19:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 23:50:52 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ namespace octo
 		 */
 		template <class T>
 		void			registerTransition(Key const& key, bool setDefault = false);
+
+		/*!	Return true if a state of \a key key is registered */
+		bool			isStateRegistered(Key const& key)const;
+
+		/*!	Return true if a transition of \a key key is registered */
+		bool			isTransitionRegistered(Key const& key)const;
 
 		/*!	Push a state on the stack.
 		 *	The state become active and his method AbstractState::start() is called.

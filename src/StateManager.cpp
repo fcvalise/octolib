@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/10 20:19:46 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 23:56:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,22 @@ namespace octo
 		m_stateFactory.emplace(key, creator);
 	}
 
+	bool	StateManager::isStateRegistered(Key const& key)const
+	{
+		return (m_stateFactory.find(key) != m_stateFactory.end());
+	}
+
+	bool	StateManager::isTransitionRegistered(Key const& key)const
+	{
+		return (m_transitionFactory.find(key) != m_transitionFactory.end());
+	}
+
 	void	StateManager::push(Key const& stateKey, Key const& transitionKey)
 	{
 		if (hasCurrentState())
 		{
+			if (isStateRegistered(stateKey) == false)
+				throw std::range_error("state_manager: invalid state key: " + stateKey);
 			startTransition(transitionKey, [this, stateKey]()
 				{
 					push(createState(stateKey));
@@ -65,6 +77,8 @@ namespace octo
 	{
 		if (hasCurrentState())
 		{
+			if (isStateRegistered(stateKey) == false)
+				throw std::range_error("state_manager: invalid state key: " + stateKey);
 			startTransition(transitionKey, [this, stateKey]()
 				{
 					change(createState(stateKey));
