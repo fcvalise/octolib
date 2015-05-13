@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/10 20:53:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/12 17:10:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 18:23:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ BOOST_AUTO_TEST_CASE( set_frames_test0 )
 	BOOST_CHECK_EQUAL( anim.value(sf::milliseconds(2999)), 1 );
 	BOOST_CHECK_EQUAL( anim.value(sf::milliseconds(3000)), 2 );
 	BOOST_CHECK_EQUAL( anim.value(sf::milliseconds(5999)), 2 );
+	BOOST_CHECK_EQUAL( anim.value(sf::milliseconds(6000)), 2 );
 }
 
 BOOST_AUTO_TEST_CASE( set_frames_test1 )

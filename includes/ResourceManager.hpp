@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/01 03:57:06 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 23:16:21 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define RESOURCEMANAGER_HPP
 # include "NonCopyable.hpp"
 # include "PackageHeader.hpp"
-# include "Palette.hpp"
-# include "ColorWheel.hpp"
 # include "details/ResourceManagerImp.hpp"
 
 # include <SFML/Graphics/Font.hpp>
@@ -26,6 +24,9 @@
 namespace octo
 {
 	class Package;
+	class Palette;
+	class ColorWheel;
+	class SpriteSheet;
 	class IResourceListener;
 
 	/*!
@@ -33,6 +34,25 @@ namespace octo
 	 *	Manage all game resources
 	 *
 	 *	Resource datas are loaded from a package file.<br>
+	 *	Each ressource have a defined file extension:
+	 *	<TABLE>
+	 *	<TR>
+	 *		<TH>Extension</TH>
+	 *		<TH>Description</TH>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>opa</TD>
+	 *		<TD>Palette files</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>ocw</TD>
+	 *		<TD>Color wheel files</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>oss</TD>
+	 *		<TD>Sprite sheet files</TD>
+	 *	</TR>
+	 *	</TABLE>
 	 */
 	class ResourceManager : public NonCopyable
 	{
@@ -95,6 +115,15 @@ namespace octo
 		/*!	Get a color wheel
 		 */
 		ColorWheel const&		getColorWheel(std::string const& fileName)const;
+
+		/*!	Get a sprite sheet
+		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
+		 */
+		SpriteSheet const&		getSpriteSheet(std::uint64_t key)const;
+
+		/*!	Get a sprite sheet
+		 */
+		SpriteSheet const&		getSpriteSheet(std::string const& fileName)const;
 	private:
 		typedef details::StreamedResource<sf::Font>		Font;
 
@@ -105,6 +134,7 @@ namespace octo
 		details::ResourceManagerImp<sf::String>			m_textManager;
 		details::ResourceManagerImp<Palette>			m_paletteManager;
 		details::ResourceManagerImp<ColorWheel>			m_colorWheelManager;
+		details::ResourceManagerImp<SpriteSheet>		m_spriteSheetManager;
 	};
 }
 

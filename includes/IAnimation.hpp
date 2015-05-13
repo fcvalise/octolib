@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/10 20:22:25 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/10 23:52:12 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 18:26:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 namespace octo
 {
-	enum class LoopMode
+	enum class LoopMode : std::uint8_t
 	{
 		NoLoop,
 		Loop
