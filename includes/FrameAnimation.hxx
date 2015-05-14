@@ -6,12 +6,79 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/10 20:26:04 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/12 11:30:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 18:29:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 namespace octo
 {
+	/*!	Public frame datas */
+	template <class T>
+	struct FrameAnimation<T>::Frame
+	{
+		Frame() :
+			value(T())
+		{
+		}
+
+		explicit Frame(sf::Time durationParam, T const& valueParam = T()) :
+			duration(durationParam),
+			value(valueParam)
+		{
+		}
+
+		sf::Time	duration;
+		T			value;
+	};
+
+	/*!	Private frame datas */
+	template <class T>
+	struct FrameAnimation<T>::PrivateFrame
+	{
+		explicit PrivateFrame(sf::Time startParam) :
+			start(startParam)
+		{
+		}
+
+		explicit PrivateFrame(Frame const& other) :
+			duration(other.duration),
+			value(other.value)
+		{
+		}
+
+		bool	operator == (PrivateFrame const& other)const
+		{
+			return (start == other.start);
+		}
+
+		bool	operator < (PrivateFrame const& other)const
+		{
+			return (start < other.start);
+		}
+
+		sf::Time	start;		// Only for binary search
+		sf::Time	duration;
+		T			value;
+	};
+
+	/*!	Compute start value of each frame */
+	template <class T>
+	struct	FrameAnimation<T>::SetupFrames
+	{
+		void	operator()(PrivateFrame& frame)
+		{
+			frame.start = m_currentStart;
+			m_currentStart += frame.duration;
+		}
+
+		operator sf::Time () const
+		{
+			return (m_currentStart);
+		}
+	private:
+		sf::Time	m_currentStart;
+	};
+
 	template <class T>
 	FrameAnimation<T>::FrameAnimation() :
 		m_loopMode(LoopMode::NoLoop)

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 19:13:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 23:18:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include "PausableClock.hpp"
 #include "GraphicsManager.hpp"
 #include "ResourceManager.hpp"
+#include "Palette.hpp"
+#include "ColorWheel.hpp"
+#include "SpriteSheet.hpp"
 #include "Options.hpp"
 #include "Console.hpp"
 #include "PrintSFML.hpp"

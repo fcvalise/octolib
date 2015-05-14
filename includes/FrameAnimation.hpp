@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/10 20:24:50 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/11 01:11:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 16:58:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,12 @@
 namespace octo
 {
 	template <class T>
-	class FrameAnimation
+	class FrameAnimation : public IAnimation<T>
 	{
-		struct PrivateFrame;
-
+		struct	PrivateFrame;
+		struct	SetupFrames;
 	public:
-		struct Frame
-		{
-			Frame() :
-				value(T())
-			{
-			}
-
-			explicit Frame(sf::Time durationParam, T const& valueParam = T()) :
-				duration(durationParam),
-				value(valueParam)
-			{
-			}
-
-			sf::Time	duration;
-			T			value;
-		};
+		struct Frame;
 		
 		typedef std::vector<Frame>	FrameList;
 
@@ -60,58 +45,6 @@ namespace octo
 	private:
 		PrivateFrame const&			binarySearch(PrivateFrame const& start)const;
 	private:
-		struct PrivateFrame
-		{
-			explicit PrivateFrame(sf::Time startParam) :
-				start(startParam)
-			{
-			}
-
-			explicit PrivateFrame(Frame const& other) :
-				duration(other.duration),
-				value(other.value)
-			{
-			}
-
-			bool	operator == (PrivateFrame const& other)const
-			{
-				return (start == other.start);
-			}
-
-			bool	operator < (PrivateFrame const& other)const
-			{
-				return (start < other.start);
-			}
-
-			sf::Time	start;		// Only for binary search
-			sf::Time	duration;
-			T			value;
-		};
-
-		/*!	Compute start value of each frame */
-		struct	SetupFrames
-		{
-			void	operator()(PrivateFrame& frame)
-			{
-				frame.start = m_currentStart;
-				m_currentStart += frame.duration;
-			}
-
-			operator sf::Time () const
-			{
-				return (m_currentStart);
-			}
-		private:
-			sf::Time	m_currentStart;
-		};
-
-		struct	FindFrameByTime
-		{
-			bool	operator()(PrivateFrame const& left, PrivateFrame const& right)
-			{
-				return (left.start < right.start);
-			}
-		};
 
 		LoopMode					m_loopMode;
 		std::vector<PrivateFrame>	m_frames;

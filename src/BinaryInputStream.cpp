@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 14:52:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/24 00:48:45 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 20:33:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ namespace octo
 	{
 	}
 	
+	void	BinaryInputStream::skip(std::size_t count)
+	{
+		m_pos = std::min(m_bytes.size(), m_pos + count);
+	}
+
 	bool	BinaryInputStream::isOk()const
 	{
 		return (m_isOk);
@@ -30,6 +35,11 @@ namespace octo
 	bool	BinaryInputStream::hasDataToRead()const
 	{
 		return (m_pos != m_bytes.size());
+	}
+
+	std::size_t	BinaryInputStream::getPosition()const
+	{
+		return (m_pos);
 	}
 
 	BinaryInputStream::operator bool()const

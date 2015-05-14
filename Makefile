@@ -32,7 +32,8 @@ GRAPHICS_SRC =	GraphicsManager.cpp				\
 				Hsv.cpp							\
 				Palette.cpp						\
 				ColorWheel.cpp					\
-				IColorProvider.cpp
+				IColorProvider.cpp				\
+				SpriteSheet.cpp
 
 MATH_SRC = 	Interpolations.cpp					\
 	 		Math.cpp
