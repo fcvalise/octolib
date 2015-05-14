@@ -64,3 +64,12 @@ Provides basic stuffs to create simple user interface.
  - make tests: builds unit tests
  - make application_tests: builds interactives tests
  - make tools: builds tools
+
+### Debug/Release switch
+
+By default the Makefile builds in release mode.  
+You can switch this mode to debug using MODE variable.  
+Exemple to run make re in debug mode:
+	
+	make re MODE=debug
+

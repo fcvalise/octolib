@@ -155,9 +155,17 @@ namespace octo
 			m_console.addCommand(L"render.set_vsync", m_graphicsManager, &GraphicsManager::setVerticalSyncEnabled);
 			// System commands
 			m_console.addCommand(L"system.quit", [](){Application::stop();});
+			m_console.addCommand(L"system.push_state", [](std::string const& key)
+					{
+						octo::Application::getStateManager().push(key);
+					});
 			m_console.addCommand(L"system.change_state", [](std::string const& key)
 					{
 						octo::Application::getStateManager().change(key);
+					});
+			m_console.addCommand(L"system.pop_state", []()
+					{
+						octo::Application::getStateManager().pop();
 					});
 			m_console.addCommand(L"system.list_states",[]()
 					{
@@ -240,6 +248,7 @@ namespace octo
 			render.setView(m_camera.getView());
 			m_stateManager.draw(render);
 			render.setView(m_camera.getGuiView());
+			m_stateManager.drawTransition(render);
 			m_console.draw(render);
 			if (m_fpsDisplayer)
 				m_fpsDisplayer->draw(render);

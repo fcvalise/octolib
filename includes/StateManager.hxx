@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/15 18:59:07 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 04:49:53 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/10 19:09:09 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ namespace octo
 	}
 
 	template <class T>
-	void	StateManager::registerTransition(Key const& key)
+	void	StateManager::registerTransition(Key const& key, bool setDefault)
 	{
 		static_assert( std::is_base_of<AbstractTransition, T>::value,
 					   "class T must be derived from octo::AbstractTransition" );
@@ -33,5 +33,7 @@ namespace octo
 		if (m_stateFactory.find(key) != m_stateFactory.end())
 			throw std::logic_error("state_manager: register transition: key already used: " + key);
 		m_transitionFactory[key] = [](Action action){return (new T(action));};
+		if (setDefault)
+			m_defaultTransitionKey = key;
 	}
 }
