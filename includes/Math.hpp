@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/17 19:49:53 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/14 16:42:22 by pciavald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MATH_HPP
 # include <type_traits>
 # include <cstdint>
+# include <cmath>
+# include <SFML/System/Vector2.hpp>
 
 namespace octo
 {
@@ -163,6 +165,35 @@ namespace octo
 	 *	Return an approximation of cos with precision of ? decimals.
 	 */
 	float	cosHPA(float x);
+
+	/*!
+	 *	Compute magnitude
+	 */
+	template <class T>
+	inline float	magnitude(sf::Vector2<T> const & v)
+	{
+		return std::sqrt(v.x * v.x + v.y * v.y);
+	}
+
+	/*!
+	 *	Normalize the vector, magnitude = 1
+	 */
+	template <class T>
+	inline void	normalize(sf::Vector2<T> & v)
+	{
+		float magnitude = magnitude(v);
+		v.x /= magnitude;
+		v.y /= magnitude;
+	}
+
+	/*!
+	 *	Compute dot product
+	 */
+	template <class T>
+	inline float	dotProduct(sf::Vector2<T> const & v1, sf::Vector2<T> const & v2)
+	{
+		return (v1.x * v2.x + v1.y * v2.y);
+	}
 
 	/*!
 	 *	@}
