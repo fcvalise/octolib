@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/10 19:57:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 23:53:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,25 @@ namespace octo
 			m_console.addCommand(L"system.quit", [](){Application::stop();});
 			m_console.addCommand(L"system.push_state", [](std::string const& key)
 					{
-						octo::Application::getStateManager().push(key);
+						try
+						{
+							octo::Application::getStateManager().push(key);
+						}
+						catch (std::range_error const& e)
+						{
+							octo::Application::getConsole().printError(e);
+						}
 					});
 			m_console.addCommand(L"system.change_state", [](std::string const& key)
 					{
-						octo::Application::getStateManager().change(key);
+						try
+						{
+							octo::Application::getStateManager().change(key);
+						}
+						catch (std::range_error const& e)
+						{
+							octo::Application::getConsole().printError(e);
+						}
 					});
 			m_console.addCommand(L"system.pop_state", []()
 					{
