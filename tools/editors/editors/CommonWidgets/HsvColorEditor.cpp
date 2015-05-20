@@ -42,15 +42,14 @@ void HsvColorEditor::setup()
     m_value->setMinimum(0);
     m_alpha->setMaximum(255);
     m_alpha->setMinimum(0);
-    connect(m_hue, SIGNAL(valueChanged(int)), SLOT(emitColorChanged()));
-    connect(m_saturation, SIGNAL(valueChanged(int)), SLOT(emitColorChanged()));
-    connect(m_value, SIGNAL(valueChanged(int)), SLOT(emitColorChanged()));
-    connect(m_alpha, SIGNAL(valueChanged(int)), SLOT(emitColorChanged()));
+    connect(m_hue, SIGNAL(valueChanged(int)), SLOT(emitColorChanged()), Qt::DirectConnection);
+    connect(m_saturation, SIGNAL(valueChanged(int)), SLOT(emitColorChanged()), Qt::DirectConnection);
+    connect(m_value, SIGNAL(valueChanged(int)), SLOT(emitColorChanged()), Qt::DirectConnection);
+    connect(m_alpha, SIGNAL(valueChanged(int)), SLOT(emitColorChanged()), Qt::DirectConnection);
     layout->addRow(tr("Hue:"), m_hue);
     layout->addRow(tr("Saturation:"), m_saturation);
     layout->addRow(tr("Value:"), m_value);
     layout->addRow(tr("Alpha:"), m_alpha);
-    layout->setSpacing(3);
 }
 
 void HsvColorEditor::emitColorChanged()

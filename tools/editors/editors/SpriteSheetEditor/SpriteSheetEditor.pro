@@ -10,17 +10,36 @@ CONFIG	+= c++11
 TARGET = "Sprite Sheet Editor"
 TEMPLATE = app
 
+ICON = sprite_sheet_editor.icns
 
 SOURCES += main.cpp\
         MainWindow.cpp \
     SpriteSheetEditor.cpp \
     SpriteSheetView.cpp \
-    SpriteSheetScene.cpp
+    SpriteSheetScene.cpp \
+    RectangleModel.cpp \
+    AbstractSpriteSheetCommand.cpp \
+    RectangleListView.cpp \
+    CommandManager.cpp \
+    PointerSpriteSheetCommand.cpp \
+    TileControlWidget.cpp \
+    RectangleSpriteSheetCommand.cpp \
+    GenerateRectangleDialog.cpp \
+    TilePreview.cpp
 
 HEADERS  += MainWindow.hpp \
     SpriteSheetEditor.hpp \
     SpriteSheetView.hpp \
-    SpriteSheetScene.hpp
+    SpriteSheetScene.hpp \
+    RectangleModel.hpp \
+    AbstractSpriteSheetCommand.hpp \
+    RectangleListView.hpp \
+    CommandManager.hpp \
+    PointerSpriteSheetCommand.hpp \
+    TileControlWidget.hpp \
+    RectangleSpriteSheetCommand.hpp \
+    GenerateRectangleDialog.hpp \
+    TilePreview.hpp
 
 
 
@@ -46,3 +65,6 @@ DEPENDPATH += $$PWD/../../../../includes
 
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
+
+RESOURCES += \
+    Resources.qrc

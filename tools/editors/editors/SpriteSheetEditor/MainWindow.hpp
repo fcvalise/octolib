@@ -23,12 +23,16 @@ public slots:
     bool    saveSpriteSheet();
     bool    saveSpriteSheetAs();
 
+    void    deleteRectangle();
+    void    deleteAllRectangles();
+    void    generateRectangles();
+private slots:
     void    updateAction();
     void    onDocumentFileModified();
 
     void    showAbout();
 protected:
-    void closeEvent(QCloseEvent *event);
+    void    closeEvent(QCloseEvent *event);
 private:
     void    setupDocument();
     void    setupActions();
@@ -44,6 +48,16 @@ private:
     QAction*            m_openSpriteSheet;
     QAction*            m_saveSpriteSheet;
     QAction*            m_saveSpriteSheetAs;
+
+    QAction*            m_generateRectangles;
+    QAction*            m_deleteRectangle;
+    QAction*            m_deleteAllRectangles;
+    QAction*            m_sortRectangles;
+
+    QAction*            m_zoomIn;
+    QAction*            m_zoomOut;
+    QAction*            m_zoomZero;
+    QAction*            m_zoomToFit;
 };
 
 #endif // MAINWINDOW_HPP

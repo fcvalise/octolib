@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/13 18:55:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 22:53:58 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 00:52:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,25 @@ namespace octo
 
 	bool	SpriteSheet::loadFromMemory(ByteArray const& buffer)
 	{
-		std::uint32_t				textureByteCount = 0u;
-		std::uint32_t				rectangleCount = 0u;
 		BinaryInputStream			is(buffer);
-		sf::FloatRect				rect;
 		std::vector<sf::FloatRect>	rects;
 		sf::Texture					texture;
+		std::uint32_t				textureByteCount = 0u;
+		std::uint32_t				rectangleCount = 0u;
+		std::uint32_t				posX = 0u;
+		std::uint32_t				posY = 0u;
+		std::uint32_t				width = 0u;
+		std::uint32_t				height = 0u;
 
 		is.read(textureByteCount);
 		if (texture.loadFromMemory(buffer.bytes() + is.getPosition(), textureByteCount) == false)
 			return (false);
 		is.skip(textureByteCount);
-		is.read(rectangleCount);
+		is.read(width, height, rectangleCount);
 		for (std::uint32_t i = 0u; i < rectangleCount; ++i)
 		{
-			is.read(rect.left, rect.top, rect.width, rect.height);
-			rects.push_back(rect);
+			is.read(posX, posY);
+			rects.push_back(sf::FloatRect(posX, posY, width, height));
 		}
 		std::swap(m_texture, texture);
 		std::swap(m_subRects, rects);
