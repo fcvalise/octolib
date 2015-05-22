@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 23:16:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 01:50:29 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ namespace octo
 		m_textManager.loadPackage(m_reader, TextLoader(), listener);
 		m_paletteManager.loadPackage(m_reader, PaletteLoader(), listener);
 		m_colorWheelManager.loadPackage(m_reader, ColorWheelLoader(), listener);
+		m_spriteSheetManager.loadPackage(m_reader, SpriteSheetLoader(), listener);
 		return (true);
 	}
 

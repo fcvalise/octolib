@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/13 18:55:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 00:52:32 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 01:30:54 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ namespace octo
 		return (m_texture);
 	}
 
-	sf::FloatRect const&	SpriteSheet::getSubRect(std::size_t i)const
+	sf::IntRect const&	SpriteSheet::getSubRect(std::size_t i)const
 	{
 		return (m_subRects.at(i));
 	}
@@ -34,7 +34,7 @@ namespace octo
 	bool	SpriteSheet::loadFromMemory(ByteArray const& buffer)
 	{
 		BinaryInputStream			is(buffer);
-		std::vector<sf::FloatRect>	rects;
+		std::vector<sf::IntRect>	rects;
 		sf::Texture					texture;
 		std::uint32_t				textureByteCount = 0u;
 		std::uint32_t				rectangleCount = 0u;
@@ -51,7 +51,7 @@ namespace octo
 		for (std::uint32_t i = 0u; i < rectangleCount; ++i)
 		{
 			is.read(posX, posY);
-			rects.push_back(sf::FloatRect(posX, posY, width, height));
+			rects.push_back(sf::IntRect(posX, posY, width, height));
 		}
 		std::swap(m_texture, texture);
 		std::swap(m_subRects, rects);
