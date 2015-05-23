@@ -136,7 +136,9 @@ tests:
 run_tests: tests
 	@make run -C tests
 
-complete: $(COMPLETE_TARGET) tools tests
+complete: re
+	@make re -C tools/packager MODE=$(MODE)
+	@make re -C tools/package_reader MODE=$(MODE)
 
 doc:
 	@doxygen ./doc/octolib.dox

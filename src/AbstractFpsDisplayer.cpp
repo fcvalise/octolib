@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/05 02:05:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 11:28:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/13 23:24:47 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ namespace octo
 	void	AbstractFpsDisplayer::addSample(unsigned int frameCount)
 	{
 		if (m_samples.size() == m_maxSamples)
+		{
+			m_averageBuffer -= m_samples.top();
+			--m_averageCount;
 			m_samples.pop();
+		}
 		m_samples.push(frameCount);
 		if (frameCount > m_maxFrameCount)
 			m_maxFrameCount = frameCount;
