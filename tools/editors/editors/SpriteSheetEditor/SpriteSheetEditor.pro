@@ -16,30 +16,28 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     SpriteSheetEditor.cpp \
     SpriteSheetView.cpp \
-    SpriteSheetScene.cpp \
-    RectangleModel.cpp \
     AbstractSpriteSheetCommand.cpp \
     RectangleListView.cpp \
     CommandManager.cpp \
-    PointerSpriteSheetCommand.cpp \
     TileControlWidget.cpp \
-    RectangleSpriteSheetCommand.cpp \
-    GenerateRectangleDialog.cpp \
-    TilePreview.cpp
+    TilePreview.cpp \
+    SpriteSheetModel.cpp \
+    AddTileCommand.cpp \
+    SelectMoveCommand.cpp \
+    CreateTileFromDivisionDialog.cpp
 
 HEADERS  += MainWindow.hpp \
     SpriteSheetEditor.hpp \
     SpriteSheetView.hpp \
-    SpriteSheetScene.hpp \
-    RectangleModel.hpp \
     AbstractSpriteSheetCommand.hpp \
     RectangleListView.hpp \
     CommandManager.hpp \
-    PointerSpriteSheetCommand.hpp \
     TileControlWidget.hpp \
-    RectangleSpriteSheetCommand.hpp \
-    GenerateRectangleDialog.hpp \
-    TilePreview.hpp
+    TilePreview.hpp \
+    SpriteSheetModel.hpp \
+    AddTileCommand.hpp \
+    SelectMoveCommand.hpp \
+    CreateTileFromDivisionDialog.hpp
 
 
 

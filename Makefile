@@ -12,6 +12,7 @@ SRC = 	$(RESOURCE_SRC)							\
 		$(CORE_SRC)								\
 		$(CONSOLE_SRC)							\
 		$(GRAPHICS_SRC)							\
+		$(ANIMATION_SRC)						\
 		$(DEBUG_SRC)
 
 CORE_SRC =	Application.cpp						\
@@ -33,7 +34,10 @@ GRAPHICS_SRC =	GraphicsManager.cpp				\
 				Palette.cpp						\
 				ColorWheel.cpp					\
 				IColorProvider.cpp				\
-				SpriteSheet.cpp
+				SpriteSheet.cpp					\
+				AnimatedSprite.cpp
+
+ANIMATION_SRC =	SpriteAnimation.cpp
 
 MATH_SRC = 	Interpolations.cpp					\
 	 		Math.cpp

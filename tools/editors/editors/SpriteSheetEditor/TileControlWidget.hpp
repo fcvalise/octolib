@@ -11,12 +11,12 @@ class TileControlWidget : public QWidget
 public:
     explicit TileControlWidget(QWidget* parent = nullptr);
     ~TileControlWidget();
-
-    void    setTileSize(QSizeF const& size);
+public slots:
+    void    setTileSize(QSize const& size);
 private slots:
     void    onSpinBoxChanged();
 signals:
-    void    tileSizeChanged(QSize const& size);
+    void    tileSizeEdited(QSize const& size);
 private:
     QSpinBox*   m_width;
     QSpinBox*   m_height;

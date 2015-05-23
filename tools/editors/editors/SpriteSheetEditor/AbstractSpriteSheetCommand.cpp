@@ -2,8 +2,9 @@
 
 #include <QAction>
 
-AbstractSpriteSheetCommand::AbstractSpriteSheetCommand(SpriteSheetScene *scene) :
-    m_scene(scene)
+AbstractSpriteSheetCommand::AbstractSpriteSheetCommand(SpriteSheetModel* model, QItemSelectionModel* selection) :
+    m_model(model),
+    m_selection(selection)
 {
 }
 
@@ -16,8 +17,13 @@ void AbstractSpriteSheetCommand::commandActionSetup(QAction *action) const
     action->setCheckable(true);
 }
 
-SpriteSheetScene *AbstractSpriteSheetCommand::scene() const
+SpriteSheetModel *AbstractSpriteSheetCommand::model() const
 {
-    return (m_scene);
+    return (m_model);
+}
+
+QItemSelectionModel *AbstractSpriteSheetCommand::selection() const
+{
+    return (m_selection);
 }
 

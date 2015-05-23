@@ -28,7 +28,7 @@ TileControlWidget::~TileControlWidget()
 {
 }
 
-void TileControlWidget::setTileSize(const QSizeF &size)
+void TileControlWidget::setTileSize(const QSize &size)
 {
     m_width->blockSignals(true);
     m_height->blockSignals(true);
@@ -40,6 +40,6 @@ void TileControlWidget::setTileSize(const QSizeF &size)
 
 void TileControlWidget::onSpinBoxChanged()
 {
-    emit tileSizeChanged(QSize(m_width->value(), m_height->value()));
+    emit tileSizeEdited(QSize(m_width->value(), m_height->value()));
 }
 

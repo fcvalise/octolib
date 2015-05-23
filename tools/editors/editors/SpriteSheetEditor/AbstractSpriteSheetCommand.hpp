@@ -7,13 +7,15 @@
 class QAction;
 class QGraphicsSceneMouseEvent;
 class QKeyEvent;
+class QItemSelectionModel;
+class QGraphicsScene;
 
-class SpriteSheetScene;
+class SpriteSheetModel;
 
 class AbstractSpriteSheetCommand
 {
 public:
-    explicit AbstractSpriteSheetCommand(SpriteSheetScene* scene);
+    explicit AbstractSpriteSheetCommand(SpriteSheetModel* model, QItemSelectionModel* selection);
     virtual ~AbstractSpriteSheetCommand();
 
     virtual QAction*    action()const = 0;
@@ -24,13 +26,15 @@ public:
     virtual void        mouseReleaseEvent(QGraphicsSceneMouseEvent *event) = 0;
     virtual void        keyPressEvent(QKeyEvent *event) = 0;
     virtual void        keyReleaseEvent(QKeyEvent *event) = 0;
-    virtual void        onStarted() = 0;
-    virtual void        onStopped() = 0;
+    virtual void        onStarted(QGraphicsScene* scene) = 0;
+    virtual void        onStopped(QGraphicsScene* scene) = 0;
 protected:
-    void                commandActionSetup(QAction* action)const;
-    SpriteSheetScene*   scene()const;
+    void                    commandActionSetup(QAction* action)const;
+    SpriteSheetModel*       model()const;
+    QItemSelectionModel*    selection()const;
 private:
-    SpriteSheetScene* const m_scene;
+    SpriteSheetModel* const     m_model;
+    QItemSelectionModel* const  m_selection;
 };
 
 #endif // ABSTRACTSPRITESHEETCOMMAND_HPP

@@ -5,10 +5,12 @@
 #include <ByteArray.hpp>
 
 class SpriteSheetView;
-class RectangleModel;
+class SpriteSheetModel;
 class RectangleListView;
 class TileControlWidget;
 class TilePreview;
+
+class QItemSelectionModel;
 
 class QPixmap;
 class QListView;
@@ -23,12 +25,8 @@ public:
 
     void            newSpriteSheet(QString const& textureFilePath);
     bool            openSpriteSheet(QString const& filePath);
-    bool            saveSpriteSheet(QString const& filePath) const;
-
-    void            deleteCurrentRectangle();
-    void            deleteAllRectangles();
-    void            sortRectangles();
-    void            generateRectangles(QWidget* parent);
+    bool            saveSpriteSheet(QString const& filePath);
+    void            createTileByDivision();
 
     void            zoomIn();
     void            zoomOut();
@@ -37,21 +35,27 @@ public:
 
     bool            hasSelection()const;
     QList<QAction*> commandActions()const;
+public slots:
+    void            selectAllTiles();
+    void            copySelectedTiles();
+    void            cutSelectedTiles();
+    void            pasteTiles();
+    void            deleteSelectedTiles();
+    void            sortTiles();
 signals:
     void            selectionChanged();
     void            modified();
-private slots:
-    void            onCurrentChanged(const QModelIndex&, const QModelIndex&);
-    void            updateTilePreview();
 private:
     void            setup();
+    void            setupCommands();
 private:
-    SpriteSheetView*    m_spriteSheetView;
-    RectangleListView*  m_rectangleView;
-    TileControlWidget*  m_tileControl;
-    TilePreview*        m_tilePreview;
-
-    octo::ByteArray     m_textureBytes; // Hold raw datas of the texture for saving
+    SpriteSheetModel*       m_spriteSheetModel;
+    QItemSelectionModel*    m_selectionModel;
+    SpriteSheetView*        m_spriteSheetView;
+    RectangleListView*      m_rectangleView;
+    TileControlWidget*      m_tileControl;
+    TilePreview*            m_tilePreview;
+    QList<QPoint>           m_tileBuffer;
 };
 
 #endif // SPRITESHEETEDITOR_HPP

@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BinaryOutputStream.cpp                             :+:      :+:    :+:   */
+/*   SpriteAnimation.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/04/02 06:22:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/24 19:12:37 by irabeson         ###   ########.fr       */
+/*   Created: 2015/05/23 14:30:48 by irabeson          #+#    #+#             */
+/*   Updated: 2015/05/23 14:50:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BinaryOutputStream.hpp"
+#ifndef SPRITEANIMATION_HPP
+# define SPRITEANIMATION_HPP
+# include "AbstractFrameAnimation.hpp"
 
 namespace octo
 {
-	BinaryOutputStream::BinaryOutputStream(ByteArray& bytes) :
-		m_bytes(bytes)
-	{
-	}
+	class ByteArray;
 
-	void	BinaryOutputStream::writeBytes(char const* buffer, std::size_t size)
+	class SpriteAnimation : public octo::AbstractFrameAnimation<std::size_t>
 	{
-		m_bytes.append(buffer, size);
-	}
-
-	void	BinaryOutputStream::writeBytes(ByteArray const& buffer)
-	{
-		m_bytes.append(buffer.bytes(), buffer.size());
-	}
+	public:
+		virtual bool	loadFromMemory(ByteArray const& buffer);
+	};
 }
+
+#endif

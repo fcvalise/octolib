@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 14:52:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 20:33:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/24 18:53:04 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ namespace octo
 		return (isOk() && hasDataToRead());
 	}
 
-	void	BinaryInputStream::read(char* buffer, std::size_t size)
+	void	BinaryInputStream::readBytes(char* buffer, std::size_t size)
 	{
 		std::size_t	remaining = m_bytes.size() - m_pos;
 
@@ -58,6 +58,22 @@ namespace octo
 		else
 		{
 			std::copy_n(m_bytes.begin() + m_pos, size, buffer);
+			m_pos += size;
+		}
+	}
+
+	void	BinaryInputStream::readBytes(ByteArray& buffer, std::size_t size)
+	{
+		std::size_t	remaining = m_bytes.size() - m_pos;
+
+		if (m_isOk == false || remaining == 0 || remaining < size)
+		{
+			m_isOk = false;
+		}
+		else
+		{
+			buffer.resize(size);
+			std::copy_n(m_bytes.begin() + m_pos, size, buffer.begin());
 			m_pos += size;
 		}
 	}

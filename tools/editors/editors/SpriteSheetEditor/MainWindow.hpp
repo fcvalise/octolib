@@ -22,14 +22,9 @@ public slots:
     void    openSpriteSheet(QString filePath);
     bool    saveSpriteSheet();
     bool    saveSpriteSheetAs();
-
-    void    deleteRectangle();
-    void    deleteAllRectangles();
-    void    generateRectangles();
 private slots:
     void    updateAction();
     void    onDocumentFileModified();
-
     void    showAbout();
 protected:
     void    closeEvent(QCloseEvent *event);
@@ -49,10 +44,13 @@ private:
     QAction*            m_saveSpriteSheet;
     QAction*            m_saveSpriteSheetAs;
 
-    QAction*            m_generateRectangles;
-    QAction*            m_deleteRectangle;
-    QAction*            m_deleteAllRectangles;
-    QAction*            m_sortRectangles;
+    QAction*            m_selectAllTiles;
+    QAction*            m_copySelectedTiles;
+    QAction*            m_cutSelectedTiles;
+    QAction*            m_pasteTiles;
+    QAction*            m_createTileByDivision;
+    QAction*            m_deleteSelectedTiles;
+    QAction*            m_sortTiles;
 
     QAction*            m_zoomIn;
     QAction*            m_zoomOut;

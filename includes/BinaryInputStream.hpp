@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 14:41:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 20:32:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/24 18:53:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ namespace octo
 	public:
 		explicit BinaryInputStream(ByteArray const& bytes);
 
+		void		readBytes(char* buffer, std::size_t size);
+		void		readBytes(ByteArray& buffer, std::size_t size);
+
 		template <class H, class ... T>
 		void		read(H& value, T&... tails)
 		{
@@ -35,7 +38,7 @@ namespace octo
 		template <class H>
 		void		read(H& value)
 		{
-			read(reinterpret_cast<char *>(&value), sizeof(H));
+			readBytes(reinterpret_cast<char *>(&value), sizeof(H));
 		}
 	
 		void		skip(std::size_t bytes);
@@ -43,8 +46,6 @@ namespace octo
 		bool		hasDataToRead()const;
 		std::size_t	getPosition()const;
 					operator bool()const;
-	private:
-		void	read(char* buffer, std::size_t size);
 	private:
 		ByteArray const&			m_bytes;
 		std::size_t					m_pos;

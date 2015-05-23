@@ -1,3 +1,4 @@
+#include "SpriteSheetModel.hpp"
 #include "TilePreview.hpp"
 
 #include <QGraphicsScene>
@@ -5,6 +6,7 @@
 #include <QGraphicsItemGroup>
 #include <QGraphicsLineItem>
 #include <QAction>
+#include <QItemSelectionModel>
 
 class GraphicsMark : public QGraphicsLineItem
 {
@@ -86,6 +88,8 @@ private:
 
 TilePreview::TilePreview(QWidget *parent) :
     QGraphicsView(parent),
+    m_model(nullptr),
+    m_selectionModel(nullptr),
     m_scene(new QGraphicsScene(this)),
     m_pixmapItem(nullptr),
     m_addVerticalMark(nullptr),
@@ -94,6 +98,8 @@ TilePreview::TilePreview(QWidget *parent) :
 {
     m_pixmapItem = m_scene->addPixmap(QPixmap());
     m_pixmapItem->setZValue(-1);
+    m_borderItem = m_scene->addRect(0, 0, 0, 0, QPen(Qt::black, 0, Qt::DotLine));
+    m_borderItem->setZValue(0);
     setScene(m_scene);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -107,17 +113,36 @@ TilePreview::~TilePreview()
 {
 }
 
-void TilePreview::setRectangleSize(const QSizeF &size)
+void TilePreview::setModel(SpriteSheetModel *model)
 {
-    QRectF  rect(QPointF(0, 0), size);
-
-    m_scene->setSceneRect(rect);
+    if (m_model)
+    {
+        disconnect(m_model, SIGNAL(textureChanged(QPixmap)), this, SLOT(updateTilePreview));
+        disconnect(m_model, SIGNAL(tileSizeChanged(QSize)), this, SLOT(updateTilePreview));
+        disconnect(m_model, &SpriteSheetModel::dataChanged, this, &TilePreview::updateTilePreview);
+        m_selectionModel = nullptr;
+    }
+    m_model = model;
+    if (m_model)
+    {
+        connect(m_model, &SpriteSheetModel::textureChanged, this, &TilePreview::updateTilePreview);
+        connect(m_model, &SpriteSheetModel::tileSizeChanged, this, &TilePreview::updateTilePreview);
+        connect(m_model, &SpriteSheetModel::dataChanged, this, &TilePreview::updateTilePreview);
+        setSelectionModel(new QItemSelectionModel(m_model, this));
+    }
 }
 
-void TilePreview::setPixmap(const QPixmap &pixmap)
+void TilePreview::setSelectionModel(QItemSelectionModel *model)
 {
-    m_pixmapItem->setPixmap(pixmap);
-    fitInView(m_pixmapItem, Qt::KeepAspectRatio);
+    if (m_selectionModel)
+    {
+        disconnect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(updateTilePreview()));
+    }
+    m_selectionModel = model;
+    if (m_selectionModel)
+    {
+        connect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(updateTilePreview()));
+    }
 }
 
 void TilePreview::setupActions()
@@ -163,5 +188,27 @@ void TilePreview::removeMarks()
         delete *it;
         it = m_marks.erase(it);
     }
+}
+
+void TilePreview::updateTilePreview()
+{
+    if (m_model == nullptr || m_selectionModel == nullptr)
+        return;
+    QModelIndex current = m_selectionModel->currentIndex();
+    QPixmap     pixmap(m_model->tileSize());
+    QPainter    painter(&pixmap);
+    QRectF      subRect;
+
+    if (m_model->tileSize().isEmpty())
+        return;
+    painter.fillRect(pixmap.rect(), Qt::white);
+    if (current.isValid())
+    {
+        subRect = m_model->tile(current);
+        painter.drawPixmap(pixmap.rect(), m_model->texture(), subRect);
+    }
+    m_pixmapItem->setPixmap(pixmap);
+    m_borderItem->setRect(m_pixmapItem->boundingRect());
+    fitInView(m_pixmapItem, Qt::KeepAspectRatio);
 }
 

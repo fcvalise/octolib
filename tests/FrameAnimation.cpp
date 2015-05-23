@@ -6,22 +6,31 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/10 20:53:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 18:23:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 14:21:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <boost/test/unit_test.hpp>
 #include <iterator>
 
-#include <FrameAnimation.hpp>
+#include <AbstractFrameAnimation.hpp>
 
 BOOST_AUTO_TEST_SUITE( frame_animation )
 
+class FrameAnimationTest : public octo::AbstractFrameAnimation<int>
+{
+public:
+	virtual bool		loadFromMemory(octo::ByteBuffer const&)
+	{
+		return (false);
+	}
+};
+
 BOOST_AUTO_TEST_CASE( set_frames_test0 )
 {
-	typedef octo::FrameAnimation<int>::FrameList	FrameList;
+	typedef FrameAnimationTest::FrameList	FrameList;
 
-	octo::FrameAnimation<int>	anim;
+	FrameAnimationTest			anim;
 	FrameList					frames;
 	
 	frames.emplace_back(sf::seconds(1), 0);
@@ -42,9 +51,9 @@ BOOST_AUTO_TEST_CASE( set_frames_test0 )
 
 BOOST_AUTO_TEST_CASE( set_frames_test1 )
 {
-	typedef octo::FrameAnimation<int>::FrameList	FrameList;
+	typedef FrameAnimationTest::FrameList	FrameList;
 
-	octo::FrameAnimation<int>	anim;
+	FrameAnimationTest			anim;
 	FrameList					frames;
 	
 	frames.emplace_back(sf::seconds(1), 0);

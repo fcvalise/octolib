@@ -24,15 +24,20 @@ MainWindow::MainWindow(QWidget *parent) :
     m_openSpriteSheet(nullptr),
     m_saveSpriteSheet(nullptr),
     m_saveSpriteSheetAs(nullptr),
-    m_generateRectangles(nullptr),
-    m_deleteRectangle(nullptr),
-    m_sortRectangles(nullptr),
+    m_selectAllTiles(nullptr),
+    m_copySelectedTiles(nullptr),
+    m_cutSelectedTiles(nullptr),
+    m_pasteTiles(nullptr),
+    m_createTileByDivision(nullptr),
+    m_deleteSelectedTiles(nullptr),
+    m_sortTiles(nullptr),
     m_zoomIn(nullptr),
     m_zoomOut(nullptr),
     m_zoomZero(nullptr),
     m_zoomToFit(nullptr)
 {
     connect(m_recentFileMenu, SIGNAL(fileClicked(QString)), this, SLOT(openSpriteSheet(QString)));
+    connect(m_editor, SIGNAL(selectionChanged()), this, SLOT(updateAction()));
     setupDocument();
     setupActions();
     setupToolBar();
@@ -90,7 +95,6 @@ bool MainWindow::saveSpriteSheet()
     }
     else
     {
-        m_editor->sortRectangles();
         m_document->enableWatch(false);
         m_editor->saveSpriteSheet(m_document->absoluteFilePath());
         m_document->documentSaved();
@@ -106,27 +110,11 @@ bool MainWindow::saveSpriteSheetAs()
 
     if (filePath.isEmpty() == false)
     {
-        m_editor->sortRectangles();
         m_editor->saveSpriteSheet(filePath);
         m_document->documentSavedAs(filePath);
         m_recentFileMenu->addFile(m_document->absoluteFilePath());
     }
     return (filePath.isEmpty() == false);
-}
-
-void MainWindow::deleteRectangle()
-{
-    m_editor->deleteCurrentRectangle();
-}
-
-void MainWindow::deleteAllRectangles()
-{
-    m_editor->deleteAllRectangles();
-}
-
-void MainWindow::generateRectangles()
-{
-    m_editor->generateRectangles(this);
 }
 
 void MainWindow::showAbout()
@@ -141,9 +129,12 @@ void MainWindow::updateAction()
     bool    hasDocument = m_document->hasDocument();
     bool    isModified = m_document->isModified();
 
-    m_generateRectangles->setEnabled(hasDocument);
-    m_sortRectangles->setEnabled(hasDocument);
-    m_deleteRectangle->setEnabled(hasDocument && m_editor->hasSelection());
+    m_selectAllTiles->setEnabled(hasDocument);
+    m_createTileByDivision->setEnabled(hasDocument);
+    m_sortTiles->setEnabled(hasDocument);
+    m_copySelectedTiles->setEnabled(hasDocument && m_editor->hasSelection());
+    m_cutSelectedTiles->setEnabled(hasDocument && m_editor->hasSelection());
+    m_deleteSelectedTiles->setEnabled(hasDocument && m_editor->hasSelection());
     m_saveSpriteSheet->setEnabled(isModified);
     m_saveSpriteSheetAs->setEnabled(hasDocument);
     m_zoomIn->setEnabled(hasDocument);
@@ -180,7 +171,6 @@ void MainWindow::setupDocument()
     connect(m_document, &Document::documentModified, this, &MainWindow::updateAction);
     connect(m_document, &Document::documentFileModified, this, &MainWindow::onDocumentFileModified);
     connect(m_editor, SIGNAL(modified()), m_document, SLOT(setDocumentModified()));
-    connect(m_editor, &SpriteSheetEditor::selectionChanged, this, &MainWindow::updateAction);
 }
 
 void MainWindow::setupActions()
@@ -196,10 +186,13 @@ void MainWindow::setupActions()
     m_openSpriteSheet = new QAction(QIcon(":/images/open_sprite_sheet.png"), tr("Open..."), this);
     m_saveSpriteSheet = new QAction(QIcon(":/images/save.png"), tr("Save"), this);
     m_saveSpriteSheetAs = new QAction(QIcon(":/images/save_as.png"), tr("Save as..."), this);
-    m_generateRectangles = new QAction(tr("Generate rectangles..."), this);
-    m_sortRectangles = new QAction(tr("Sort rectangles"), this);
-    m_deleteRectangle = new QAction(QIcon(":/images/remove_rectangle.png"), tr("Delete rectangle"), this);
-    m_deleteAllRectangles = new QAction(tr("Delete all rectangles"), this);
+    m_createTileByDivision = new QAction(tr("Create tiles by division..."), this);
+    m_sortTiles = new QAction(tr("Sort rectangles"), this);
+    m_selectAllTiles = new QAction(tr("Select all"), this);
+    m_copySelectedTiles = new QAction(tr("Copy"), this);
+    m_cutSelectedTiles = new QAction(tr("Cut"), this);
+    m_pasteTiles = new QAction(tr("Paste"), this);
+    m_deleteSelectedTiles = new QAction(QIcon(":/images/remove_rectangle.png"), tr("Delete"), this);
     m_zoomIn = new QAction(QIcon(":/images/zoom_in.png"), tr("Zoom in"), this);
     m_zoomOut = new QAction(QIcon(":/images/zoom_out.png"), tr("Zoom out"), this);
     m_zoomZero = new QAction(QIcon(":/images/zoom_actual.png"), tr("Zoom 1:1"), this);
@@ -224,17 +217,28 @@ void MainWindow::setupActions()
     connect(m_saveSpriteSheetAs, &QAction::triggered, this, &MainWindow::saveSpriteSheetAs);
     connect(quit, &QAction::triggered, this, &MainWindow::close);
     // Edit
-    m_deleteRectangle->setShortcut(QKeySequence::Delete);
-    editMenu->addAction(m_generateRectangles);
+    m_deleteSelectedTiles->setShortcut(QKeySequence(Qt::Key_Backspace));
+    m_copySelectedTiles->setShortcut(QKeySequence::Copy);
+    m_cutSelectedTiles->setShortcut(QKeySequence::Cut);
+    m_pasteTiles->setShortcut(QKeySequence::Paste);
+    m_selectAllTiles->setShortcut(QKeySequence::SelectAll);
+    editMenu->addAction(m_sortTiles);
     editMenu->addSeparator();
-    editMenu->addAction(m_deleteRectangle);
-    editMenu->addAction(m_deleteAllRectangles);
+    editMenu->addAction(m_copySelectedTiles);
+    editMenu->addAction(m_cutSelectedTiles);
+    editMenu->addAction(m_pasteTiles);
+    editMenu->addAction(m_selectAllTiles);
     editMenu->addSeparator();
-    editMenu->addAction(m_sortRectangles);
-    connect(m_generateRectangles, &QAction::triggered, this, &MainWindow::generateRectangles);
-    connect(m_sortRectangles, &QAction::triggered, m_editor, &SpriteSheetEditor::sortRectangles);
-    connect(m_deleteRectangle, &QAction::triggered, this, &MainWindow::deleteRectangle);
-    connect(m_deleteAllRectangles, &QAction::triggered, this, &MainWindow::deleteAllRectangles);
+    editMenu->addAction(m_deleteSelectedTiles);
+    editMenu->addSeparator();
+    editMenu->addAction(m_createTileByDivision);
+    connect(m_selectAllTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::selectAllTiles);
+    connect(m_copySelectedTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::copySelectedTiles);
+    connect(m_cutSelectedTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::cutSelectedTiles);
+    connect(m_pasteTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::pasteTiles);
+    connect(m_createTileByDivision, &QAction::triggered, m_editor, &SpriteSheetEditor::createTileByDivision);
+    connect(m_sortTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::sortTiles);
+    connect(m_deleteSelectedTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::deleteSelectedTiles);
     // View
     viewMenu->addAction(m_zoomIn);
     viewMenu->addAction(m_zoomOut);

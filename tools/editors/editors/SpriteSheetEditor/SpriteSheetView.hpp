@@ -1,30 +1,34 @@
 #ifndef SPRITESHEETVIEW_HPP
 #define SPRITESHEETVIEW_HPP
 #include <QGraphicsView>
+#include <QPointer>
 
-class SpriteSheetScene;
-class RectangleModel;
+class SpriteSheetModel;
+class InteractiveGraphicsScene;
+class AbstractSpriteSheetCommand;
+class GraphicsTileItem;
 
+class QGraphicsScene;
 class QModelIndex;
 class QItemSelectionModel;
+class QItemSelection;
 
 class SpriteSheetView : public QGraphicsView
 {
     Q_OBJECT
+
+    static QPen const       RectanglePen;
+    static QBrush const     SelectedRectangleBrush;
+    static QBrush const     HoveredRectangleBrush;
+    static QPen const       BorderRectanglePen;
+    class GraphicsTileItem;
 public:
     SpriteSheetView(QWidget* parent = nullptr);
     ~SpriteSheetView();
 
+    void                    setModel(SpriteSheetModel* model);
+    void                    setSelectionModel(QItemSelectionModel* model);
     void                    enableBackground(bool enable);
-    void                    setTexturePixmap(QPixmap const& pixmap);
-    void                    clearTexturePixmap();
-
-    void                    resetTiles(QList<QPointF> const& tilePosition, QSizeF const& tileSize);
-    QSizeF                  generateRectangles(int widthSubDiv, int heightSubDiv);
-    void                    setTileSize(QSizeF const& size);
-    void                    removeRectangle(QModelIndex const& index);
-    void                    removeAllRectangles();
-    void                    sortRectangles();
 
     void                    zoomIn();
     void                    zoomOut();
@@ -32,22 +36,34 @@ public:
     void                    zoomToFit();
     void                    setZoom(qreal factor);
 
-    RectangleModel*         rectangleModel()const;
-    QItemSelectionModel*    selectionRectangleModel() const;
+    void                    enableCommands(bool enable);
+    void                    addCommand(AbstractSpriteSheetCommand* command, bool enable = false);
+    void                    restartCurrentCommand();
     QList<QAction*>         commandActions()const;
-    QSizeF                  tileSize()const;
-    QList<QPointF>          tilePositions()const;
-    QRectF                  textureRectangle()const;
-    QPixmap                 texturePixmap()const;
 private:
     void                    setupBackgroundBrush();
     void                    centerOnCurrent();
+    void                    commitChange(int row);
+    GraphicsTileItem*       createTile();
+    void                    setTileSelected(const QModelIndex &index, bool selected);
+private slots:
+    void                    onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void                    onRowsInserted(const QModelIndex &, int start, int end);
+    void                    onRowsAboutToBeRemoved(const QModelIndex &, int start, int end);
+    void                    onModelReset();
+    void                    onCurrentChanged(const QModelIndex& current, const QModelIndex& previous);
+    void                    onSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 signals:
     void                    modified();
-private:
-    SpriteSheetScene*       m_scene;
-    QBrush                  m_backgroundBrush;
-    qreal                   m_zoomFactor;
+private: 
+    QPointer<SpriteSheetModel>      m_model;
+    QPointer<QItemSelectionModel>   m_selectionModel;
+    InteractiveGraphicsScene*       m_scene;
+    QBrush                          m_backgroundBrush;
+    qreal                           m_zoomFactor;
+    QGraphicsPixmapItem*            m_texture;
+    QGraphicsRectItem*              m_textureBorder;
+    QVector<GraphicsTileItem*>      m_tiles;
 };
 
 #endif // SPRITESHEETVIEW_HPP

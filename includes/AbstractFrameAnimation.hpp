@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   FrameAnimation.hpp                                 :+:      :+:    :+:   */
+/*   AbstractFrameAnimation.hpp                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/10 20:24:50 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 16:58:23 by irabeson         ###   ########.fr       */
+/*   Created: 2015/05/23 14:10:56 by irabeson          #+#    #+#             */
+/*   Updated: 2015/05/23 17:10:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRAMEANIMATION_HPP
-# define FRAMEANIMATION_HPP
+#ifndef ABSTRACTFRAMEANIMATION_HPP
+# define ABSTRACTFRAMEANIMATION_HPP
 # include "IAnimation.hpp"
 
 # include <SFML/System/Time.hpp>
@@ -20,37 +20,39 @@
 
 namespace octo
 {
+	/*!
+	 *	\ingroup Animation
+	 *	\brief Base of frame by frame animations
+	 *
+	 */
 	template <class T>
-	class FrameAnimation : public IAnimation<T>
+	class AbstractFrameAnimation : public IAnimation<T>
 	{
 		struct	PrivateFrame;
 		struct	SetupFrames;
 	public:
-		struct Frame;
-		
+		struct 						Frame;
 		typedef std::vector<Frame>	FrameList;
 
-		FrameAnimation();
+		AbstractFrameAnimation();
 
 		virtual T const&			value(sf::Time currentTime)const;
 		virtual sf::Time			duration()const;
 		virtual LoopMode			loopMode()const;
-		virtual bool				loadFromMemory(char* data, std::size_t count);
-		virtual bool				loadFromFile(std::string const& fileName);
-		virtual bool				saveToFile(std::string const& fileName)const;
+		virtual bool				loadFromMemory(ByteArray const& buffer) = 0;
 
 		void						setFrames(std::vector<Frame> const& frames);
+		void						setLoop(LoopMode mode);
 		sf::Time					getFrameDuration(std::size_t i)const;
-		T							getFrameValue(std::size_t i)const;
+		T const&					getFrameValue(std::size_t i)const;
 	private:
 		PrivateFrame const&			binarySearch(PrivateFrame const& start)const;
 	private:
-
 		LoopMode					m_loopMode;
 		std::vector<PrivateFrame>	m_frames;
 		sf::Time					m_duration;
 	};	
 }
 
-#include "FrameAnimation.hxx"
+#include "AbstractFrameAnimation.hxx"
 #endif

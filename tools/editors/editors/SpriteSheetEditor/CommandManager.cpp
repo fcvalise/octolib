@@ -3,8 +3,9 @@
 
 #include <QActionGroup>
 
-CommandManager::CommandManager(QObject *parent) :
+CommandManager::CommandManager(QGraphicsScene *scene, QObject *parent) :
     QObject(parent),
+    m_scene(scene),
     m_group(new QActionGroup(this))
 {
     connect(m_group, SIGNAL(triggered(QAction*)), SLOT(selectCommand(QAction*)));
@@ -19,20 +20,26 @@ AbstractSpriteSheetCommand *CommandManager::currentCommand() const
     return (m_currentCommand.data());
 }
 
-void CommandManager::addCommand(AbstractSpriteSheetCommand *command)
+void CommandManager::restartCurrentCommand()
+{
+    if (m_currentCommand)
+    {
+        m_currentCommand->onStarted(m_scene);
+    }
+}
+
+void CommandManager::addCommand(AbstractSpriteSheetCommand *command, bool enable)
 {
     QAction*        action = command->action();
     CommandPointer  commandPtr(command);
 
     m_mapper.insert(action, commandPtr);
-    // First command added is defined as default command
-    if (m_group->actions().isEmpty())
+    m_group->addAction(action);
+    if (enable)
     {
         action->setChecked(true);
-        m_currentCommand = commandPtr;
-        m_currentCommand->onStarted();
+        selectCommand(action);
     }
-    m_group->addAction(action);
 }
 
 QList<QAction *> CommandManager::commandActions() const
@@ -46,12 +53,12 @@ void CommandManager::selectCommand(QAction *action)
 
     if (m_currentCommand)
     {
-        m_currentCommand->onStopped();
+        m_currentCommand->onStopped(m_scene);
     }
     m_currentCommand = newCommand;
     if (m_currentCommand)
     {
-        m_currentCommand->onStarted();
+        m_currentCommand->onStarted(m_scene);
     }
 }
 

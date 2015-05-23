@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QSharedPointer>
 
+class QGraphicsScene;
 class QActionGroup;
 class QAction;
 
@@ -14,18 +15,20 @@ class CommandManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit CommandManager(QObject *parent = 0);
+    explicit CommandManager(QGraphicsScene* scene, QObject *parent = 0);
     ~CommandManager();
 
     AbstractSpriteSheetCommand* currentCommand()const;
-    void                        addCommand(AbstractSpriteSheetCommand* command);
+    void                        restartCurrentCommand();
+    void                        addCommand(AbstractSpriteSheetCommand* command, bool enable = false);
     QList<QAction*>             commandActions()const;
-private slots:
+public slots:
     void                        selectCommand(QAction* action);
 private:
     typedef QSharedPointer<AbstractSpriteSheetCommand>  CommandPointer;
     typedef QMap<QAction*, CommandPointer>              CommandMapper;
 
+    QGraphicsScene* m_scene;
     QActionGroup*   m_group;
     CommandMapper   m_mapper;
     CommandPointer  m_currentCommand;

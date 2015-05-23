@@ -6,15 +6,23 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/13 17:10:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 17:10:54 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 15:13:58 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ANIMABLEPROPERTY_HPP
 # define ANIMABLEPROPERTY_HPP
+# include <functional>
 
 namespace octo
 {
+	/*!
+	 *	\ingroup Animation
+	 *	Define an animable property
+	 *
+	 *	This class is a wrapper around a function pointer which allows
+	 *	to modify an arbitrary value.
+	 */
 	template <class T>
 	class AnimableProperty
 	{
@@ -25,8 +33,8 @@ namespace octo
 		}
 
 		template <class O>
-		explicit AnimableProperty(O& object, void(O::*function)(T)) :
-			m_setter(function)
+		AnimableProperty(O& object, void(O::*function)(T)) :
+			m_setter(function, object)
 		{
 		}
 
@@ -38,14 +46,9 @@ namespace octo
 
 		AnimableProperty(AnimableProperty<T> const& other) = default;
 		AnimableProperty(AnimableProperty<T>&& other) = default;
+		AnimableProperty<T>& operator = (AnimableProperty<T> const& other) = default;
 
-		AnimableProperty<T>& operator = (AnimableProperty<T> const& other)
-		{
-			std::swap(m_setter, other.m_setter);
-			return (*this);
-		}
-
-		void	setValue(T value)
+		inline void	setValue(T value)
 		{
 			m_setter(value);
 		}

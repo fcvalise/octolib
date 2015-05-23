@@ -6,15 +6,23 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/13 17:11:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 18:25:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 17:24:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ABSTRACTANIMATOR_HPP
 # define ABSTRACTANIMATOR_HPP
+# include "AnimableProperty.hpp"
+# include "IAnimation.hpp"
+# include <SFML/System/Time.hpp>
 
 namespace octo
 {
+	/*!
+	 *	\ingroup Animation
+	 *	\brief Play status
+	 *
+	 */
 	enum class PlayStatus
 	{
 		Stop,
@@ -22,74 +30,51 @@ namespace octo
 		Pause
 	};
 
+	/*!
+	 *	\ingroup Animation
+	 *	\class AbstractAnimator
+	 *	\brief Base of animators
+	 */
 	template <class T>
 	class AbstractAnimator
 	{
 	public:
-		explicit AnimableProperty(AnimableProperty<T> const& property) :
-			m_property(property)
-		{
-		}
+		explicit AbstractAnimator(AnimableProperty<T> const& property);
 
-		void							update(sf::Time frameTime)
-		{
-			if (m_status != PlayStatus::Play)
-				return;
-			IAnimation<T> const&	animation = getCurrentAnimation();
-			sf::Time				duration = animation.duration();
+		/*!	Update the animator states */
+		void							update(sf::Time frameTime);
 
-			m_currentTime += frameTime;
-			if (m_currentTime >= duration)
-			{
-				if (animation.loopMode() == LoopMode::Loop)
-				{
-					m_currentTime -= duration;
-				}
-			}
-			applyCurrentValue();
-		}
+		/*!	Reset time to zero */
+		void							reset();
 
-		void							restart()
-		{
-			m_currentTime = sf::Time::Zero;
-			m_status = PlayStatus::Play;
-		}
+		/*!	Reset time to zero and restart animation */
+		void							restart();
 
-		void							play()
-		{
-			if (m_status == PlayStatus::Stop)
-				m_currentTime = sf::Time::Zero;
-			m_status = PlayStatus::Play;
-		}
+		/*!	Start the animation */
+		void							play();
 
-		void							stop()
-		{
-			m_status = PlayStatus::Stop;
-		}
+		/*!	Stop the animation and reset time to zero */
+		void							stop();
 
-		void							pause()
-		{
-			m_status = PlayStatus::Pause;
-		}
+		/*!	Pause the animation */
+		void							pause();
 
-		PlayStatus						getStatus()const
-		{
-			return (m_status);
-		}
+		/*!	Return play status */
+		PlayStatus						getStatus()const;
+
+		/*!	Define the speed factor */
+		void							setSpeedFactor(float factor);
 	private:
 		virtual IAnimation<T> const&	getCurrentAnimation()const = 0;
-
-		void							applyCurrentValue()
-		{
-			IAnimation<T> const&	animation = getCurrentAnimation();
-
-			m_property(animation->value(m_currentTime));
-		}
+		void							applyCurrentValue();
 	private:
 		sf::Time			m_currentTime;
 		PlayStatus			m_status;
 		AnimableProperty<T>	m_property;
+		float				m_speedFactor;
+		T const*			m_lastValue;
 	};
 }
 
+#include "AbstractAnimator.hxx"
 #endif

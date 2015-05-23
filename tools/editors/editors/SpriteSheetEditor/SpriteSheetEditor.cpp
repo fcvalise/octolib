@@ -1,13 +1,17 @@
 #include "SpriteSheetEditor.hpp"
 #include "SpriteSheetView.hpp"
-#include "RectangleModel.hpp"
+#include "SpriteSheetModel.hpp"
 #include "RectangleListView.hpp"
 #include "TileControlWidget.hpp"
 #include "GenerateRectangleDialog.hpp"
 #include "TilePreview.hpp"
+#include "SelectMoveCommand.hpp"
+#include "AddTileCommand.hpp"
+#include "CreateTileFromDivisionDialog.hpp"
 
 #include <QGridLayout>
 #include <QListView>
+#include <QItemSelectionModel>
 
 #include <BinaryInputStream.hpp>
 #include <BinaryOutputStream.hpp>
@@ -16,12 +20,14 @@
 
 SpriteSheetEditor::SpriteSheetEditor(QWidget *parent) :
     QWidget(parent),
+    m_spriteSheetModel(new SpriteSheetModel(this)),
     m_spriteSheetView(new SpriteSheetView),
     m_rectangleView(new RectangleListView),
     m_tileControl(new TileControlWidget),
     m_tilePreview(new TilePreview)
 {
     setup();
+    setupCommands();
 }
 
 SpriteSheetEditor::~SpriteSheetEditor()
@@ -30,120 +36,31 @@ SpriteSheetEditor::~SpriteSheetEditor()
 
 void SpriteSheetEditor::newSpriteSheet(const QString &textureFilePath)
 {
-    QPixmap         pixmap;
-    std::fstream    file;
-
-    file.open(textureFilePath.toStdString(), std::ios_base::in | std::ios_base::binary);
-    if (file.is_open())
-    {
-        pixmap.load(textureFilePath);
-        m_spriteSheetView->removeAllRectangles();
-        m_spriteSheetView->setTexturePixmap(pixmap);
-        m_spriteSheetView->setTileSize(QSizeF(16, 16));
-        m_tileControl->setTileSize(QSizeF(16, 16));
-        m_tilePreview->setRectangleSize(QSizeF(16, 16));
-        m_tilePreview->removeMarks();
-        m_textureBytes.read(file);
-    }
+    m_spriteSheetModel->reset(textureFilePath);
 }
 
 bool SpriteSheetEditor::openSpriteSheet(const QString &filePath)
 {
-    QPixmap                 pixmap;
-    octo::ByteArray         buffer;
-    octo::BinaryInputStream is(buffer);
-    std::fstream            file;
-    quint32                 textureByteCount = 0u;
-    quint32                 tileWidth = 0u;
-    quint32                 tileHeight = 0u;
-    quint32                 tileCount = 0u;
-    quint32                 x = 0u;
-    quint32                 y = 0u;
-    QList<QPointF>          tilePositions;
-    QSizeF                  tileSize;
+    if (m_spriteSheetModel->loadFromFile(filePath) == false)
+        return (false);
 
-    file.open(filePath.toStdString(), std::ios_base::in | std::ios_base::binary);
-    if (file.is_open() == false)
-        return (false);
-    if (buffer.read(file) == false)
-        return (false);
-    is.read(textureByteCount);
-    if (pixmap.loadFromData(reinterpret_cast<uchar const*>(buffer.bytes() + is.getPosition()), textureByteCount) == false)
-        return (false);
-    m_textureBytes.assign(buffer.bytes() + is.getPosition(), textureByteCount);
-    is.skip(textureByteCount);
-    is.read(tileWidth, tileHeight, tileCount);
-    for (quint32 i = 0u; i < tileCount; ++i)
-    {
-        is.read(x, y);
-        tilePositions.append(QPointF(x, y));
-    }
-    tileSize = QSizeF(tileWidth, tileHeight);
-    m_tileControl->setTileSize(tileSize);
-    m_tilePreview->setRectangleSize(tileSize);
-    m_tilePreview->removeMarks();
-    m_spriteSheetView->resetTiles(tilePositions, tileSize);
-    m_spriteSheetView->setTexturePixmap(pixmap);
+    m_spriteSheetView->restartCurrentCommand();
     return (true);
 }
 
-bool SpriteSheetEditor::saveSpriteSheet(const QString &filePath)const
+bool SpriteSheetEditor::saveSpriteSheet(const QString &filePath)
 {
-    octo::ByteArray             buffer;
-    octo::BinaryOutputStream    os(buffer);
-    std::fstream                file;
-    quint32                     textureByteCount = m_textureBytes.size();
-    QSizeF                      tileSize = m_spriteSheetView->tileSize();
-    QList<QPointF>              tilePositions = m_spriteSheetView->tilePositions();
-
-    file.open(filePath.toStdString(), std::ios_base::out | std::ios_base::binary);
-    if (file.is_open() == false)
-        return (false);
-    os.write(textureByteCount);
-    os.write(m_textureBytes.bytes(), m_textureBytes.size());
-    os.write<quint32>(tileSize.width());
-    os.write<quint32>(tileSize.height());
-    os.write<quint32>(tilePositions.size());
-    for (int i = 0; i < tilePositions.size(); ++i)
-    {
-        os.write<quint32>(tilePositions.at(i).x());
-        os.write<quint32>(tilePositions.at(i).y());
-    }
-    buffer.write(file);
-    return (true);
+    m_spriteSheetModel->sortTiles();
+    return (m_spriteSheetModel->saveToFile(filePath));
 }
 
-void SpriteSheetEditor::deleteCurrentRectangle()
+void SpriteSheetEditor::createTileByDivision()
 {
-    QModelIndex current = m_rectangleView->currentIndex();
-
-    m_spriteSheetView->removeRectangle(current);
-    emit modified();
-}
-
-void SpriteSheetEditor::deleteAllRectangles()
-{
-    m_spriteSheetView->removeAllRectangles();
-    emit modified();
-}
-
-void SpriteSheetEditor::sortRectangles()
-{
-    m_spriteSheetView->sortRectangles();
-    emit modified();
-}
-
-void SpriteSheetEditor::generateRectangles(QWidget *parent)
-{
-    GenerateRectangleDialog dialog(m_spriteSheetView->texturePixmap(), parent);
-    QSizeF                  rectangleSize;
+    CreateTileFromDivisionDialog   dialog(m_spriteSheetModel);
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        rectangleSize = m_spriteSheetView->generateRectangles(dialog.widthSubDivCount(), dialog.heightSubDivCount());
-        m_tileControl->setTileSize(rectangleSize);
-        m_tilePreview->setRectangleSize(rectangleSize);
-        m_spriteSheetView->setTileSize(rectangleSize);
+        m_spriteSheetModel->resetPositions(dialog.positions());
     }
 }
 
@@ -167,9 +84,58 @@ void SpriteSheetEditor::zoomToFit()
     m_spriteSheetView->zoomToFit();
 }
 
+void SpriteSheetEditor::selectAllTiles()
+{
+    for (QModelIndex const& index : m_spriteSheetModel->indexes())
+    {
+        m_selectionModel->select(index, QItemSelectionModel::Select);
+    }
+}
+
+void SpriteSheetEditor::copySelectedTiles()
+{
+    m_tileBuffer.clear();
+    for (QModelIndex const& index : m_selectionModel->selectedIndexes())
+    {
+        m_tileBuffer.append(m_spriteSheetModel->tilePosition(index));
+    }
+}
+
+void SpriteSheetEditor::cutSelectedTiles()
+{
+    m_tileBuffer.clear();
+    for (QModelIndex const& index : m_selectionModel->selectedIndexes())
+    {
+        m_tileBuffer.append(m_spriteSheetModel->tilePosition(index));
+    }
+    m_spriteSheetModel->removeTiles(m_selectionModel->selectedIndexes());
+    m_selectionModel->clearSelection();
+}
+
+void SpriteSheetEditor::pasteTiles()
+{
+    QPair<QModelIndex, QModelIndex> range;
+
+    if (m_tileBuffer.empty())
+        return;
+    m_selectionModel->clearSelection();
+    range = m_spriteSheetModel->addTiles(m_tileBuffer);
+    m_selectionModel->select(QItemSelection(range.first, range.second), QItemSelectionModel::Select);
+}
+
+void SpriteSheetEditor::deleteSelectedTiles()
+{
+    m_spriteSheetModel->removeTiles(m_selectionModel->selectedRows());
+}
+
+void SpriteSheetEditor::sortTiles()
+{
+    m_spriteSheetModel->sortTiles();
+}
+
 bool SpriteSheetEditor::hasSelection() const
 {
-    return (m_rectangleView->currentIndex().isValid());
+    return (m_selectionModel->hasSelection());
 }
 
 QList<QAction *> SpriteSheetEditor::commandActions() const
@@ -177,44 +143,33 @@ QList<QAction *> SpriteSheetEditor::commandActions() const
     return (m_spriteSheetView->commandActions());
 }
 
-void SpriteSheetEditor::onCurrentChanged(const QModelIndex &, const QModelIndex &)
-{
-    updateTilePreview();
-    emit selectionChanged();
-}
-
 void SpriteSheetEditor::setup()
 {
     QGridLayout*    layout = new QGridLayout(this);
 
-    m_rectangleView->setModel(m_spriteSheetView->rectangleModel());
-    m_rectangleView->setSelectionModel(m_spriteSheetView->selectionRectangleModel());
+    m_spriteSheetModel = new SpriteSheetModel(this);
+    m_selectionModel = new QItemSelectionModel(m_spriteSheetModel);
+    m_rectangleView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    m_rectangleView->setModel(m_spriteSheetModel);
+    m_rectangleView->setSelectionModel(m_selectionModel);
+    m_spriteSheetView->setModel(m_spriteSheetModel);
+    m_spriteSheetView->setSelectionModel(m_selectionModel);
+    m_tilePreview->setModel(m_spriteSheetModel);
+    m_tilePreview->setSelectionModel(m_selectionModel);
     layout->addWidget(m_spriteSheetView, 0, 0, 0, 1);
     layout->addWidget(m_tileControl, 0, 1);
     layout->addWidget(m_rectangleView, 1, 1);
     layout->addWidget(m_tilePreview, 2, 1);
     layout->setColumnStretch(0, 4);
-    connect(m_spriteSheetView->selectionRectangleModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(onCurrentChanged(QModelIndex,QModelIndex)));
-    connect(m_spriteSheetView, SIGNAL(modified()), SIGNAL(modified()), Qt::DirectConnection);
-    connect(m_spriteSheetView, SIGNAL(modified()), SLOT(updateTilePreview()));
-    connect(m_tileControl, &TileControlWidget::tileSizeChanged, [this](QSizeF const& size){m_spriteSheetView->setTileSize(size);});
-    connect(m_tileControl, &TileControlWidget::tileSizeChanged, [this](QSizeF const& size){m_tilePreview->setRectangleSize(size);});
+    connect(m_spriteSheetModel, SIGNAL(modified()), SIGNAL(modified()));
+    connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SIGNAL(selectionChanged()));
+    //connect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SIGNAL(selectionChanged()));
+    connect(m_tileControl, SIGNAL(tileSizeEdited(QSize)), m_spriteSheetModel, SLOT(setTileSize(QSize)));
+    connect(m_spriteSheetModel, SIGNAL(tileSizeChanged(QSize)), m_tileControl, SLOT(setTileSize(QSize)));
 }
 
-void SpriteSheetEditor::updateTilePreview()
+void SpriteSheetEditor::setupCommands()
 {
-    QModelIndex current = m_rectangleView->currentIndex();
-    QPixmap     pixmap(m_spriteSheetView->tileSize().toSize());
-    QPainter    painter(&pixmap);
-    QRectF      subRect;
-
-    if (m_spriteSheetView->tileSize().isEmpty())
-        return;
-    painter.fillRect(pixmap.rect(), Qt::white);
-    if (current.isValid())
-    {
-        subRect = m_spriteSheetView->rectangleModel()->rectangle(current);
-        painter.drawPixmap(pixmap.rect(), m_spriteSheetView->texturePixmap(), subRect);
-    }
-    m_tilePreview->setPixmap(pixmap);
+    m_spriteSheetView->addCommand(new SelectMoveCommand(m_spriteSheetModel, m_selectionModel), true);
+    m_spriteSheetView->addCommand(new AddTileCommand(m_spriteSheetModel, m_selectionModel));
 }

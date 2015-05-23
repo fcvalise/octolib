@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 23:16:21 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 17:19:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ namespace octo
 	class Palette;
 	class ColorWheel;
 	class SpriteSheet;
+	class SpriteAnimation;
 	class IResourceListener;
 
 	/*!
@@ -51,6 +52,10 @@ namespace octo
 	 *	<TR>
 	 *		<TD>oss</TD>
 	 *		<TD>Sprite sheet files</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>osa</TD>
+	 *		<TD>Sprite animation files</TD>
 	 *	</TR>
 	 *	</TABLE>
 	 */
@@ -124,6 +129,15 @@ namespace octo
 		/*!	Get a sprite sheet
 		 */
 		SpriteSheet const&		getSpriteSheet(std::string const& fileName)const;
+
+		/*!	Get a sprite animation
+		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
+		 */
+		SpriteAnimation const&	getSpriteAnimation(std::uint64_t key)const;
+
+		/*!	Get a sprite animation
+		 */
+		SpriteAnimation const&	getSpriteAnimation(std::string const& fileName)const;
 	private:
 		typedef details::StreamedResource<sf::Font>		Font;
 
@@ -135,6 +149,7 @@ namespace octo
 		details::ResourceManagerImp<Palette>			m_paletteManager;
 		details::ResourceManagerImp<ColorWheel>			m_colorWheelManager;
 		details::ResourceManagerImp<SpriteSheet>		m_spriteSheetManager;
+		details::ResourceManagerImp<SpriteAnimation>	m_spriteAnimationManager;
 	};
 }
 
