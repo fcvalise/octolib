@@ -6,13 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/02 00:48:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/23 18:13:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 02:53:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVENTMANAGER_HPP
 # define EVENTMANAGER_HPP
-# include "Queue.hpp"
+# include "Stack.hpp"
 
 namespace octo
 {
@@ -20,6 +20,8 @@ namespace octo
 	 *	\class EventManager
 	 *	\brief Generic class for event queuing
 	 *	\tparam E Define events type
+	 *
+	 *	E must be default constructible and copyable.
 	 *
 	 *	This template class is used to allow a class
 	 *	to enqueing events and processing it.<br>
@@ -45,8 +47,8 @@ namespace octo
 	 *		// This method is called once per frame
 	 *		void	update()
 	 *		{
-	 *			// Process event queue
-	 *			processQueue();
+	 *			// Process event stack
+	 *			processEventStack();
 	 *		}
 	 *	private:
 	 *		void	processEvent(MyEvent const& event)
@@ -66,13 +68,13 @@ namespace octo
 	template <class E>
 	class EventManager
 	{
-		typedef Queue<E>	EventQueue;
+		typedef Stack<E>	EventStack;
 	public:
 		typedef E	EventType;
 
 		/*!
 		 *	Create a manager and performe memory allocations
-		 *	\param maxEvent Maximum of event which can be enqueued
+		 *	\param maxEvent Maximum of event which can be enstackd
 		 */
 		explicit EventManager(std::size_t maxEvent);
 
@@ -89,12 +91,12 @@ namespace octo
 		void			emplaceEvent(A&&... args);
 	protected:
 		/*!	This method process and pop each pending event. */
-		void			processEventQueue();
+		void			processEventStack();
 	private:
 		/*!	This method is called for each event processed */
 		virtual void	processEvent(E const& event) = 0;
 	private:
-		EventQueue	m_queue;
+		EventStack	m_stack;
 	};
 }
 
