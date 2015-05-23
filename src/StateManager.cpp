@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 02:57:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 03:12:42 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,5 +304,47 @@ namespace octo
 		default:
 			break;
 		}
+	}
+
+
+	StateManagerEvent::StateManagerEvent() :
+		m_type(Type::Undef)
+	{
+	}
+
+	StateManagerEvent::StateManagerEvent(Type type, std::string const& key) :
+		m_type(type),
+		m_key(key)
+	{
+	}
+
+	StateManagerEvent::Type	StateManagerEvent::getType()const
+	{
+		return (m_type);
+	}
+
+	std::string const&	StateManagerEvent::getKey()const
+	{
+		return (m_key);
+	}
+
+	PushStateEvent::PushStateEvent(std::string const& key) :
+		StateManagerEvent(Type::Push, key)
+	{
+	}
+
+	ChangeStateEvent::ChangeStateEvent(std::string const& key) :
+		StateManagerEvent(Type::Change, key)
+	{
+	}
+
+	PopStateEvent::PopStateEvent() :
+		StateManagerEvent(Type::Pop, std::string())
+	{
+	}
+
+	PopAllStateEvent::PopAllStateEvent() :
+		StateManagerEvent(Type::PopAll, std::string())
+	{
 	}
 }

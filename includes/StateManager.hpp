@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 02:55:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 03:11:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,31 +42,39 @@ namespace octo
 			Undef
 		};
 
-		StateManagerEvent() :
-			m_type(Type::Undef)
-		{
-		}
+		StateManagerEvent();
+		StateManagerEvent(Type type, std::string const& key);
 
-		StateManagerEvent(Type type, std::string const& key) :
-			m_type(type),
-			m_key(key)
-		{
-		}
-
-		Type				getType()const
-		{
-			return (m_type);
-		}
-
-		std::string const&	getKey()const
-		{
-			return (m_key);
-		}
+		Type				getType()const;
+		std::string const&	getKey()const;
 	private:
 		Type		m_type;
 		std::string	m_key;
 	};
 
+	class PushStateEvent : public StateManagerEvent
+	{
+	public:
+		explicit PushStateEvent(std::string const& key);
+	};
+
+	class ChangeStateEvent : public StateManagerEvent
+	{
+	public:
+		explicit ChangeStateEvent(std::string const& key);
+	};
+
+	class PopStateEvent : public StateManagerEvent
+	{
+	public:
+		PopStateEvent();
+	};
+
+	class PopAllStateEvent : public StateManagerEvent
+	{
+	public:
+		PopAllStateEvent();
+	};
 	/*!	
 	 *	\ingroup GameState
 	 *	\class StateManager
