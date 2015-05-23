@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 23:50:52 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 02:55:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,49 @@
 
 # include "NonCopyable.hpp"
 # include "AbstractTransition.hpp"
+# include "EventManager.hpp"
 
 namespace octo
 {
 	class AbstractState;
 	
+	class StateManagerEvent
+	{
+	public:
+		enum class Type
+		{
+			Push,
+			Change,
+			Pop,
+			PopAll,
+			Undef
+		};
+
+		StateManagerEvent() :
+			m_type(Type::Undef)
+		{
+		}
+
+		StateManagerEvent(Type type, std::string const& key) :
+			m_type(type),
+			m_key(key)
+		{
+		}
+
+		Type				getType()const
+		{
+			return (m_type);
+		}
+
+		std::string const&	getKey()const
+		{
+			return (m_key);
+		}
+	private:
+		Type		m_type;
+		std::string	m_key;
+	};
+
 	/*!	
 	 *	\ingroup GameState
 	 *	\class StateManager
@@ -41,7 +79,8 @@ namespace octo
 	 *	your own transition easilly.
 	 *
 	 */
-	class StateManager : public NonCopyable
+	class StateManager : public NonCopyable,
+						 public EventManager<StateManagerEvent>
 	{
 		typedef AbstractTransition::Action					Action;
 		typedef std::function<AbstractState*(void)>			StateCreator;
@@ -167,6 +206,8 @@ namespace octo
 		StatePtr		createState(Key const& key)const;
 		StatePtr		currentState()const;
 		void			startTransition(Key const& key, Action action);
+	private:
+		virtual void	processEvent(StateManagerEvent const& event);
 	private:
 		StateFactory		m_stateFactory;
 		TransitionFactory	m_transitionFactory;

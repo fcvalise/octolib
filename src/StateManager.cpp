@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/13 23:56:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 02:57:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 namespace octo
 {
 	StateManager::StateManager() :
+		EventManager(1),
 		m_transitionDuration(sf::seconds(0.8f))
 	{
 	}
@@ -243,6 +244,7 @@ namespace octo
 				m_transition.reset();
 			}
 		}
+		processEventStack();
 	}
 
 	void	StateManager::drawTransition(sf::RenderTarget& render)const
@@ -281,5 +283,26 @@ namespace octo
 		for (auto const& pair : m_transitionFactory)
 			results.push_back(pair.first);
 		return (results);
+	}
+	
+	void	StateManager::processEvent(StateManagerEvent const& event)
+	{
+		switch (event.getType())
+		{
+		case StateManagerEvent::Type::Push:
+			push(event.getKey());
+			break;
+		case StateManagerEvent::Type::Change:
+			change(event.getKey());
+			break;
+		case StateManagerEvent::Type::Pop:
+			pop();
+			break;
+		case StateManagerEvent::Type::PopAll:
+			popAll();
+			break;
+		default:
+			break;
+		}
 	}
 }
