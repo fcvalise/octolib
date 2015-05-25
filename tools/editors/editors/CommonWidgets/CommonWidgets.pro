@@ -11,6 +11,8 @@ TEMPLATE = lib
 CONFIG += staticlib
 CONFIG += c++11
 
+DEFINES += "GIT_COMMIT_SHORT=\"\\\"$$system(git rev-parse --short HEAD)\\\"\""
+DEFINES += "GIT_BRANCH=\"\\\"$$system(git rev-parse --abbrev-ref HEAD)\\\"\""
 SOURCES += \
     HsvColorEditor.cpp \
     RgbaColorEditor.cpp \

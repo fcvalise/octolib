@@ -4,15 +4,63 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets
+CONFIG	+= c++11
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-TARGET = SpriteSheetEditor
+TARGET = "Sprite Sheet Editor"
 TEMPLATE = app
 
+ICON = sprite_sheet_editor.icns
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+    SpriteSheetEditor.cpp \
+    SpriteSheetView.cpp \
+    AbstractSpriteSheetCommand.cpp \
+    CommandManager.cpp \
+    TileControlWidget.cpp \
+    TilePreview.cpp \
+    SpriteSheetModel.cpp \
+    AddTileCommand.cpp \
+    SelectMoveCommand.cpp \
+    CreateTileFromDivisionDialog.cpp
 
-HEADERS  += MainWindow.hpp
+HEADERS  += MainWindow.hpp \
+    SpriteSheetEditor.hpp \
+    SpriteSheetView.hpp \
+    AbstractSpriteSheetCommand.hpp \
+    CommandManager.hpp \
+    TileControlWidget.hpp \
+    TilePreview.hpp \
+    SpriteSheetModel.hpp \
+    AddTileCommand.hpp \
+    SelectMoveCommand.hpp \
+    CreateTileFromDivisionDialog.hpp
+
+
+
+# CommonWidgets
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../CommonWidgets/release/ -lCommonWidgets
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../CommonWidgets/debug/ -lCommonWidgets
+else:unix: LIBS += -L$$OUT_PWD/../CommonWidgets/ -lCommonWidgets
+
+INCLUDEPATH += $$PWD/../CommonWidgets
+DEPENDPATH += $$PWD/../CommonWidgets
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../CommonWidgets/release/libCommonWidgets.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../CommonWidgets/debug/libCommonWidgets.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../CommonWidgets/release/CommonWidgets.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../CommonWidgets/debug/CommonWidgets.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../CommonWidgets/libCommonWidgets.a
+
+# Octolib
+unix|win32: LIBS += -L$$PWD/../../../../ -locto
+
+INCLUDEPATH += $$PWD/../../../../includes
+DEPENDPATH += $$PWD/../../../../includes
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
+else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
+
+RESOURCES += \
+    Resources.qrc

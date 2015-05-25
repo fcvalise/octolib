@@ -6,13 +6,15 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 15:34:12 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/23 17:19:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ResourceManager.hpp"
 #include "Palette.hpp"
 #include "ColorWheel.hpp"
+#include "SpriteSheet.hpp"
+#include "SpriteAnimation.hpp"
 #include "details/ResourceManagerImp.hpp"
 
 namespace octo
@@ -76,6 +78,22 @@ namespace octo
 				return (palette.loadFromMemory(buffer));
 			}
 		};
+
+		class SpriteSheetLoader : public details::ResourceManagerImp<SpriteSheet>::ILoader
+		{
+			bool	load(ByteArray const& buffer, SpriteSheet& sheet)
+			{
+				return (sheet.loadFromMemory(buffer));
+			}
+		};
+
+		class SpriteAnimationLoader : public details::ResourceManagerImp<SpriteAnimation>::ILoader
+		{
+			bool	load(ByteArray const& buffer, SpriteAnimation& animation)
+			{
+				return (animation.loadFromMemory(buffer));
+			}
+		};
 	}
 
 	ResourceManager::ResourceManager() :
@@ -84,7 +102,9 @@ namespace octo
 		m_soundManager(PackageHeader::EntryType::Sound),
 		m_textManager(PackageHeader::EntryType::Text),
 		m_paletteManager(PackageHeader::EntryType::Palette),
-		m_colorWheelManager(PackageHeader::EntryType::ColorWheel)
+		m_colorWheelManager(PackageHeader::EntryType::ColorWheel),
+		m_spriteSheetManager(PackageHeader::EntryType::SpriteSheet),
+		m_spriteAnimationManager(PackageHeader::EntryType::SpriteAnimation)
 	{
 	}
 
@@ -99,6 +119,8 @@ namespace octo
 		m_textManager.loadPackage(m_reader, TextLoader(), listener);
 		m_paletteManager.loadPackage(m_reader, PaletteLoader(), listener);
 		m_colorWheelManager.loadPackage(m_reader, ColorWheelLoader(), listener);
+		m_spriteSheetManager.loadPackage(m_reader, SpriteSheetLoader(), listener);
+		m_spriteAnimationManager.loadPackage(m_reader, SpriteAnimationLoader(), listener);
 		return (true);
 	}
 
@@ -184,5 +206,33 @@ namespace octo
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get wheel by name: " + fileName + " not found");
 		return (getColorWheel(key));
+	}
+
+	SpriteSheet const&		ResourceManager::getSpriteSheet(std::uint64_t key)const
+	{
+		return (m_spriteSheetManager.get(key));
+	}
+
+	SpriteSheet const&		ResourceManager::getSpriteSheet(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::SpriteSheet, fileName);
+
+		if (key == PackageHeader::NullEntryKey)
+			throw std::range_error("resource manager: get sprite sheet by name: " + fileName + " not found");
+		return (getSpriteSheet(key));
+	}
+
+	SpriteAnimation const&		ResourceManager::getSpriteAnimation(std::uint64_t key)const
+	{
+		return (m_spriteAnimationManager.get(key));
+	}
+
+	SpriteAnimation const&		ResourceManager::getSpriteAnimation(std::string const& fileName)const
+	{
+		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::SpriteAnimation, fileName);
+
+		if (key == PackageHeader::NullEntryKey)
+			throw std::range_error("resource manager: get sprite animation by name: " + fileName + " not found");
+		return (getSpriteAnimation(key));
 	}
 }

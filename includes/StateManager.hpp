@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 03:11:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/25 16:17:22 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,52 +29,12 @@
 namespace octo
 {
 	class AbstractState;
-	
-	class StateManagerEvent
-	{
-	public:
-		enum class Type
-		{
-			Push,
-			Change,
-			Pop,
-			PopAll,
-			Undef
-		};
+	class StateManagerEvent;
+	class PushStateEvent;
+	class ChangeStateEvent;
+	class PopStateEvent;
+	class PopAllStateEvent;
 
-		StateManagerEvent();
-		StateManagerEvent(Type type, std::string const& key);
-
-		Type				getType()const;
-		std::string const&	getKey()const;
-	private:
-		Type		m_type;
-		std::string	m_key;
-	};
-
-	class PushStateEvent : public StateManagerEvent
-	{
-	public:
-		explicit PushStateEvent(std::string const& key);
-	};
-
-	class ChangeStateEvent : public StateManagerEvent
-	{
-	public:
-		explicit ChangeStateEvent(std::string const& key);
-	};
-
-	class PopStateEvent : public StateManagerEvent
-	{
-	public:
-		PopStateEvent();
-	};
-
-	class PopAllStateEvent : public StateManagerEvent
-	{
-	public:
-		PopAllStateEvent();
-	};
 	/*!	
 	 *	\ingroup GameState
 	 *	\class StateManager
@@ -223,6 +183,52 @@ namespace octo
 		TransitionPtr		m_transition;
 		Key					m_defaultTransitionKey;
 		sf::Time			m_transitionDuration;
+	};
+
+	class StateManagerEvent
+	{
+	public:
+		enum class Type
+		{
+			Push,
+			Change,
+			Pop,
+			PopAll,
+			Undef
+		};
+
+		StateManagerEvent();
+		StateManagerEvent(Type type, std::string const& key);
+
+		Type				getType()const;
+		std::string const&	getKey()const;
+	private:
+		Type		m_type;
+		std::string	m_key;
+	};
+
+	class PushStateEvent : public StateManagerEvent
+	{
+	public:
+		explicit PushStateEvent(std::string const& key);
+	};
+
+	class ChangeStateEvent : public StateManagerEvent
+	{
+	public:
+		explicit ChangeStateEvent(std::string const& key);
+	};
+
+	class PopStateEvent : public StateManagerEvent
+	{
+	public:
+		PopStateEvent();
+	};
+
+	class PopAllStateEvent : public StateManagerEvent
+	{
+	public:
+		PopAllStateEvent();
 	};
 }
 
