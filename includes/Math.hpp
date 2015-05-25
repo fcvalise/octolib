@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/14 16:42:22 by pciavald         ###   ########.fr       */
+/*   Updated: 2015/05/25 23:27:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,19 +158,19 @@ namespace octo
 	 *
 	 *	Return an approximation of cos with precision of ? decimals.
 	 */
-	float	cosLPA(float x);
+	static float	cosLPA(float x);
 
 	/*!	High precision cos approximation
 	 *
 	 *	Return an approximation of cos with precision of ? decimals.
 	 */
-	float	cosHPA(float x);
+	static float	cosHPA(float x);
 
 	/*!
 	 *	Compute magnitude
 	 */
 	template <class T>
-	inline float	magnitude(sf::Vector2<T> const & v)
+	inline T	magnitude(sf::Vector2<T> const & v)
 	{
 		return std::sqrt(v.x * v.x + v.y * v.y);
 	}
@@ -182,6 +182,7 @@ namespace octo
 	inline void	normalize(sf::Vector2<T> & v)
 	{
 		float magnitude = magnitude(v);
+
 		v.x /= magnitude;
 		v.y /= magnitude;
 	}
@@ -190,9 +191,9 @@ namespace octo
 	 *	Compute dot product
 	 */
 	template <class T>
-	inline float	dotProduct(sf::Vector2<T> const & v1, sf::Vector2<T> const & v2)
+	inline T	dotProduct(sf::Vector2<T> const & left, sf::Vector2<T> const & right)
 	{
-		return (v1.x * v2.x + v1.y * v2.y);
+		return (left.x * right.x + left.y * right.y);
 	}
 
 	/*!
