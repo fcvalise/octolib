@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/10 20:53:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 14:21:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/25 02:11:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_SUITE( frame_animation )
 class FrameAnimationTest : public octo::AbstractFrameAnimation<int>
 {
 public:
-	virtual bool		loadFromMemory(octo::ByteBuffer const&)
+	virtual bool		loadFromMemory(octo::ByteArray const&)
 	{
 		return (false);
 	}
