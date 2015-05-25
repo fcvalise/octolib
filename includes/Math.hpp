@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 23:28:08 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/26 00:13:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,13 +158,13 @@ namespace octo
 	 *
 	 *	Return an approximation of cos with precision of ? decimals.
 	 */
-	static float	cosLPA(float x);
+	float	cosLPA(float x);
 
 	/*!	High precision cos approximation
 	 *
 	 *	Return an approximation of cos with precision of ? decimals.
 	 */
-	static float	cosHPA(float x);
+	float	cosHPA(float x);
 
 	/*!
 	 *	Compute magnitude
