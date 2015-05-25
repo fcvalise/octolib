@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 00:50:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/25 23:06:12 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ namespace octo
 		m_cursorPosition(0)
 	{
 	}
-
 
 	void	ConsoleCore::updateText()
 	{
