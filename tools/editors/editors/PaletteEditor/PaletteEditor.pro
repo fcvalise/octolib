@@ -54,4 +54,3 @@ DEPENDPATH += $$PWD/../../../../includes
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/../../../../octo.lib
 else:unix|win32-g++: PRE_TARGETDEPS += $$PWD/../../../../libocto.a
 
-QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.7

@@ -4,8 +4,6 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
-#include <QtDebug>
-
 SpinBoxSlider::SpinBoxSlider(QWidget *parent) :
     QWidget(parent),
     m_slider(new QSlider(Qt::Horizontal)),

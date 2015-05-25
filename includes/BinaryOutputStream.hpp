@@ -6,10 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 15:32:23 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/02 08:52:57 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/24 18:54:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef BINARYOUTPUTSTREAM_HPP
+# define BINARYOUTPUTSTREAM_HPP
 # include "ByteArray.hpp"
 # include "details/Meta.hpp"
 
@@ -29,7 +31,8 @@ namespace octo
 			writeImp<T...>(values...);
 		}
 
-		void	write(char const* buffer, std::size_t size);
+		void	writeBytes(char const* buffer, std::size_t size);
+		void	writeBytes(ByteArray const& buffer);
 	private:
 		template <class H, class ... T>
 		void	writeImp(H const& head, T const&...tails)
@@ -41,10 +44,11 @@ namespace octo
 		template <class H>
 		void	writeImp(H const& head)
 		{
-			write(reinterpret_cast<char const*>(&head), sizeof(H));
+			writeBytes(reinterpret_cast<char const*>(&head), sizeof(H));
 		}
-	
 	private:
 		ByteArray&	m_bytes;
 	};
 }
+
+#endif

@@ -17,9 +17,3 @@ script:
  - ./scripts/linux/run_static_analysis.sh
  - make complete
  - make run_tests
-
-branches:
-  only:
-      - dev
-      - master
-      - travis_experiments

@@ -4,4 +4,5 @@ CONFIG += ordered
 SUBDIRS += \
     CommonWidgets \
     PaletteEditor \
-    WheelEditor
+    WheelEditor \
+    SpriteSheetEditor
