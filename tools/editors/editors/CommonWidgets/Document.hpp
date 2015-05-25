@@ -20,9 +20,11 @@ public:
     QString     fileName()const;
     bool        hasExistingFile()const;
     bool        isModified()const;
+    bool        hasDocument()const;
 
     void        enableWatch(bool enable);
 signals:
+    void        hasDocumentChanged(bool hasDocument);
     void        documentFilePathChanged(QString const& filePath);
     void        documentModified(bool modified);
     void        documentFileModified();
@@ -32,14 +34,17 @@ public:
     void        documentReopened();
     void        documentSaved();
     void        documentSavedAs(QString const& filePath);
+    void        documentClosed();
 public slots:
     void        setDocumentModified();
 private:
+    void        setHasDocument(bool hasDocument);
     void        setDocumentModified(bool modified);
     void        setFilePath(QString const& filePath, bool watchFile = false);
 private:
     QFileSystemWatcher  m_watcher;
     QFileInfo           m_file;
+    bool                m_hasDocument;
     bool                m_modified;
 };
 

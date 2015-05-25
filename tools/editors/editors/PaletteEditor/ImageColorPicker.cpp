@@ -7,7 +7,6 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QRgb>
 #include <QPen>
-#include <QtDebug>  // TEST
 
 ImageColorPicker::ImageColorPicker(QWidget *parent) :
     QGraphicsView(parent),

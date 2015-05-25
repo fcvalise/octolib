@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>save_as.png</file>
+        <file>save.png</file>
+        <file>new_sprite_sheet.png</file>
+        <file>open_sprite_sheet.png</file>
+        <file>rectangle.png</file>
+        <file>remove_rectangle.png</file>
+        <file>cursor.png</file>
+        <file>zoom_fit.png</file>
+        <file>zoom_actual.png</file>
+        <file>zoom_out.png</file>
+        <file>zoom_in.png</file>
+        <file>sprite_sheet_editor.png</file>
+    </qresource>
+</RCC>
