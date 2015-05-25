@@ -49,10 +49,15 @@ Provides basic stuffs to create simple user interface.
  - Doxygen for documentation (with Dot if you wants cutes graphs)
  - GNU make
  - SFML 2.2
+ - Qt 5 framework
  - Boost (for units tests only)
 
 ### Building the library
     $> make
+
+### Building editors and tools
+
+All tools are located at <octolib_root>/tools/.
 
 ## Makefile
 ### Rules
