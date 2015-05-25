@@ -59,7 +59,7 @@ Qt::ItemFlags SpriteSheetModel::flags(const QModelIndex &index) const
     Qt::ItemFlags   result;
 
     if (index.isValid())
-        result = Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable;
+        result = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     else
         result = Qt::NoItemFlags;
     return (result);
