@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 04:43:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/25 22:53:52 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ namespace octo
 		class StreamedResource
 		{
 		public:
-			bool				setBuffer(ByteArray const& buffer)
+			bool		setBuffer(ByteArray const& buffer)
 			{
 				m_buffer.assign(buffer.begin(), buffer.end());
 				return (m_resource.loadFromMemory(m_buffer.bytes(), m_buffer.size()));
 			}
 
-			T const&			get()const
+			T const&	get()const
 			{
 				return (m_resource);
 			}
@@ -58,70 +58,17 @@ namespace octo
 			class ILoader
 			{
 			public:
-				virtual ~ILoader(){}
+				virtual ~ILoader();
 				virtual bool load(ByteArray const& buffer, T& resource) = 0;
 			};
 
-			explicit ResourceManagerImp(PackageHeader::EntryType type) :
-				m_type(type),
-				m_offset(0),
-				m_count(0)
-			{
-			}
-
-			~ResourceManagerImp()
-			{
-				m_resources.reset();
-				m_offset = 0;
-				m_count = 0;
-			}
+			explicit ResourceManagerImp(PackageHeader::EntryType type);
+			~ResourceManagerImp();
 
 			bool			loadPackage(PackageReader& reader,
 										ILoader&& loader,
-										IResourceListener* listener)
-			{
-				PackageHeader const&	header = reader.getHeader();
-				std::uint64_t			offset = header.getFirstEntry(m_type);
-				std::uint64_t			count = header.getEntryCount(m_type);
-				std::uint64_t			key = PackageHeader::NullEntryKey;
-				ByteArray				buffer;
-
-				if (offset == PackageHeader::NullEntryKey || count == 0)
-					return (true);
-				m_offset = offset;
-				m_count = count;
-				m_resources.reset(new T[count]);
-				for (std::uint64_t i = 0; i < count; ++i)
-				{
-					key = i + m_offset;
-					if (listener)
-						listener->progress(header.getEntryName(key),
-										   header.getEntryType(key),
-										   i, count);
-					if (reader.load(buffer, key) == false)
-					{
-						if (listener)
-							listener->error("key " + std::to_string(key) + " not found");
-						return (false);
-					}
-					if (loader.load(buffer, m_resources[i]) == false)
-					{
-						if (listener)
-							listener->error("error when loading key " + std::to_string(key));
-						return (false);
-					}
-				}
-				return (true);
-			}
-
-			T const&		get(std::uint64_t key)const
-			{
-				//assert(key >= m_offset && key < (m_offset + m_count));
-				if (key < m_offset || key >= (m_offset + m_count))
-					throw std::range_error("resource manager: get by key: invalid key: " + std::to_string(key));
-				return (m_resources[key - m_offset]);
-			}
-
+										IResourceListener* listener);
+			T const&		get(std::uint64_t key)const;
 		private:
 			std::unique_ptr<T[]>			m_resources;
 			PackageHeader::EntryType const	m_type;
@@ -131,4 +78,5 @@ namespace octo
 	}
 }
 
+#include "ResourceManagerImp.hxx"
 #endif
