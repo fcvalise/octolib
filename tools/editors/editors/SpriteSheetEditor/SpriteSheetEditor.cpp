@@ -1,7 +1,6 @@
 #include "SpriteSheetEditor.hpp"
 #include "SpriteSheetView.hpp"
 #include "SpriteSheetModel.hpp"
-#include "RectangleListView.hpp"
 #include "TileControlWidget.hpp"
 #include "GenerateRectangleDialog.hpp"
 #include "TilePreview.hpp"
@@ -10,19 +9,42 @@
 #include "CreateTileFromDivisionDialog.hpp"
 
 #include <QGridLayout>
-#include <QListView>
+#include <QTableView>
 #include <QItemSelectionModel>
+#include <QStyledItemDelegate>
+#include <QHeaderView>
 
 #include <BinaryInputStream.hpp>
 #include <BinaryOutputStream.hpp>
 
 #include <fstream>
 
+namespace
+{
+    class TileItemDelegate : public QStyledItemDelegate
+    {
+    public:
+        explicit TileItemDelegate(QObject* parent = nullptr) :
+            QStyledItemDelegate(parent)
+        {
+        }
+
+        virtual QString displayText(const QVariant &value, const QLocale &) const;
+    };
+
+    QString TileItemDelegate::displayText(const QVariant &value, const QLocale &) const
+    {
+        QRectF  rect = value.value<QRectF>();
+
+        return (QString("%0;%1").arg(rect.x()).arg(rect.y()));
+    }
+}
+
 SpriteSheetEditor::SpriteSheetEditor(QWidget *parent) :
     QWidget(parent),
     m_spriteSheetModel(new SpriteSheetModel(this)),
     m_spriteSheetView(new SpriteSheetView),
-    m_rectangleView(new RectangleListView),
+    m_tileView(new QTableView),
     m_tileControl(new TileControlWidget),
     m_tilePreview(new TilePreview)
 {
@@ -149,16 +171,20 @@ void SpriteSheetEditor::setup()
 
     m_spriteSheetModel = new SpriteSheetModel(this);
     m_selectionModel = new QItemSelectionModel(m_spriteSheetModel);
-    m_rectangleView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    m_rectangleView->setModel(m_spriteSheetModel);
-    m_rectangleView->setSelectionModel(m_selectionModel);
+    m_tileView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    m_tileView->setModel(m_spriteSheetModel);
+    m_tileView->setSelectionModel(m_selectionModel);
+    m_tileView->setItemDelegate(new TileItemDelegate(this));
+    m_tileView->horizontalHeader()->setStretchLastSection(true);
+    m_tileView->horizontalHeader()->setHidden(true);
+    m_tileView->verticalHeader()->setDefaultSectionSize(20);
     m_spriteSheetView->setModel(m_spriteSheetModel);
     m_spriteSheetView->setSelectionModel(m_selectionModel);
     m_tilePreview->setModel(m_spriteSheetModel);
     m_tilePreview->setSelectionModel(m_selectionModel);
     layout->addWidget(m_spriteSheetView, 0, 0, 0, 1);
     layout->addWidget(m_tileControl, 0, 1);
-    layout->addWidget(m_rectangleView, 1, 1);
+    layout->addWidget(m_tileView, 1, 1);
     layout->addWidget(m_tilePreview, 2, 1);
     layout->setColumnStretch(0, 4);
     connect(m_spriteSheetModel, SIGNAL(modified()), SIGNAL(modified()));

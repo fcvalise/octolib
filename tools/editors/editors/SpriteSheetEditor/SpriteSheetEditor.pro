@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     SpriteSheetEditor.cpp \
     SpriteSheetView.cpp \
     AbstractSpriteSheetCommand.cpp \
-    RectangleListView.cpp \
     CommandManager.cpp \
     TileControlWidget.cpp \
     TilePreview.cpp \
@@ -30,7 +29,6 @@ HEADERS  += MainWindow.hpp \
     SpriteSheetEditor.hpp \
     SpriteSheetView.hpp \
     AbstractSpriteSheetCommand.hpp \
-    RectangleListView.hpp \
     CommandManager.hpp \
     TileControlWidget.hpp \
     TilePreview.hpp \

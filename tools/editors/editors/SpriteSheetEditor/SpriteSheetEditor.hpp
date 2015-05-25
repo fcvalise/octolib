@@ -13,7 +13,7 @@ class TilePreview;
 class QItemSelectionModel;
 
 class QPixmap;
-class QListView;
+class QTableView;
 class QModelIndex;
 
 class SpriteSheetEditor : public QWidget
@@ -52,7 +52,7 @@ private:
     SpriteSheetModel*       m_spriteSheetModel;
     QItemSelectionModel*    m_selectionModel;
     SpriteSheetView*        m_spriteSheetView;
-    RectangleListView*      m_rectangleView;
+    QTableView*             m_tileView;
     TileControlWidget*      m_tileControl;
     TilePreview*            m_tilePreview;
     QList<QPoint>           m_tileBuffer;
