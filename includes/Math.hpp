@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 23:27:07 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/25 23:28:08 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,16 @@ namespace octo
 	inline T	dotProduct(sf::Vector2<T> const & left, sf::Vector2<T> const & right)
 	{
 		return (left.x * right.x + left.y * right.y);
+	}
+
+	/*!	Compute the manhattan length
+	 *
+	 *	The distance between two points in a grid based on a strictly horizontal and/or vertical path.
+	 */
+	template <class T>
+	inline T	manhattanLength(sf::Vector2<T> const& vector)
+	{
+		return (vector.x + vector.y);
 	}
 
 	/*!
