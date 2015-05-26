@@ -37,10 +37,12 @@
 
 /*!
   	\defgroup Graphics Graphics module
+	\brief Provides render services
 */
 
 /*!
   	\defgroup Audio Audio module
+	\brief Basic audio services
 */
 
 /*!
