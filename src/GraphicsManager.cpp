@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 16:51:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/26 18:53:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ namespace octo
 	GraphicsManager::GraphicsManager() :
 		m_fullscreen(false),
 		m_verticalSync(false),
+		m_event(sf::Event()),
 		m_keyboardListenersEnabled(true),
 		m_mouseListenersEnabled(true),
 		m_joystickListenersEnabled(true)

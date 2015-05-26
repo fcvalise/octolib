@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/14 16:42:22 by pciavald         ###   ########.fr       */
+/*   Updated: 2015/05/26 00:13:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ namespace octo
 	 *	Compute magnitude
 	 */
 	template <class T>
-	inline float	magnitude(sf::Vector2<T> const & v)
+	inline T	magnitude(sf::Vector2<T> const & v)
 	{
 		return std::sqrt(v.x * v.x + v.y * v.y);
 	}
@@ -182,6 +182,7 @@ namespace octo
 	inline void	normalize(sf::Vector2<T> & v)
 	{
 		float magnitude = magnitude(v);
+
 		v.x /= magnitude;
 		v.y /= magnitude;
 	}
@@ -190,9 +191,19 @@ namespace octo
 	 *	Compute dot product
 	 */
 	template <class T>
-	inline float	dotProduct(sf::Vector2<T> const & v1, sf::Vector2<T> const & v2)
+	inline T	dotProduct(sf::Vector2<T> const & left, sf::Vector2<T> const & right)
 	{
-		return (v1.x * v2.x + v1.y * v2.y);
+		return (left.x * right.x + left.y * right.y);
+	}
+
+	/*!	Compute the manhattan length
+	 *
+	 *	The distance between two points in a grid based on a strictly horizontal and/or vertical path.
+	 */
+	template <class T>
+	inline T	manhattanLength(sf::Vector2<T> const& vector)
+	{
+		return (vector.x + vector.y);
 	}
 
 	/*!
