@@ -13,6 +13,7 @@ SRC = 	$(RESOURCE_SRC)							\
 		$(CONSOLE_SRC)							\
 		$(GRAPHICS_SRC)							\
 		$(ANIMATION_SRC)						\
+		$(AUDIO_SRC)							\
 		$(DEBUG_SRC)
 
 CORE_SRC =	Application.cpp						\
@@ -36,6 +37,8 @@ GRAPHICS_SRC =	GraphicsManager.cpp				\
 				IColorProvider.cpp				\
 				SpriteSheet.cpp					\
 				AnimatedSprite.cpp
+
+AUDIO_SRC =	AudioManager.cpp
 
 ANIMATION_SRC =	SpriteAnimation.cpp
 
@@ -131,8 +134,8 @@ else
 endif
 
 tools:
-	@make -C tools/packager MODE=$(MODE)
-	@make -C tools/package_reader MODE=$(MODE)
+	@make re -C tools/packager MODE=$(MODE)
+	@make re -C tools/package_reader MODE=$(MODE)
 
 tests:
 	@make -C tests MODE=$(MODE)
