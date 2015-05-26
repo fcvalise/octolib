@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/23 14:55:23 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 17:12:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/26 00:17:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ namespace octo
 {
 	template <class T>
 	AbstractAnimator<T>::AbstractAnimator(AnimableProperty<T> const& property) :
+		m_status(PlayStatus::Stop),
 		m_property(property),
 		m_speedFactor(1.f),
 		m_lastValue(nullptr)

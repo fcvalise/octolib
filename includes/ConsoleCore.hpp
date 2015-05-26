@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:05:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 15:47:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/25 23:11:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ namespace octo
 	 *	
 	 *	The core store current line into a buffer and can start execution
 	 *	with an interpreter.<br>
+	 *	The core is rendering agnostic. Any class who implements IConsoleListener
+	 *	interface will be receives all events requiered to render this console
+	 *	system.<br>
 	 *	The IConsoleListener instance defined by setListener() is
 	 *	notified when a command is executed, on syntax error, etc....<br>
 	 *

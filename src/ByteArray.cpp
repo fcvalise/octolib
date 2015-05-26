@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 10:17:35 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/25 21:33:17 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/26 18:45:09 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ namespace octo
 	{
 	}
 	
+	// cppcheck-suppress uninitMemberVar
 	ByteArray::ByteArray(std::initializer_list<char> bytes) :
 		ByteArray(bytes.begin(), bytes.end())
 	{
