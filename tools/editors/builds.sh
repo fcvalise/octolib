@@ -18,3 +18,4 @@ cd ..
 rm -rf $BUILD_DIR
 $QMACDEPLOY "./Palette Editor.app" -dmg
 $QMACDEPLOY "./Wheel Editor.app" -dmg
+$QMACDEPLOY "./Sprite Sheet Editor.app" -dmg
