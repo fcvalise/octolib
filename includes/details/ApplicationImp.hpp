@@ -6,13 +6,16 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 17:33:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/26 20:29:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef APPLICATIONIMP_HPP
 # define APPLICATIONIMP_HPP
-# include <SFML/Graphics/RenderTexture.hpp>
+# include <chrono>
+# include <algorithm>
+# include <string>
+# include <cctype>
 
 namespace octo
 {

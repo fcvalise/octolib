@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 15:41:17 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/26 19:57:03 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@
 #include "FpsDisplayer.hpp"
 #include "Camera.hpp"
 
-#include "details/ApplicationImp.hpp"
-
-#include <SFML/Graphics/RenderTexture.hpp>
+# include <SFML/Graphics/RenderTexture.hpp>
 
 #include <cassert>
 #include <chrono>
+
+#include "details/ApplicationImp.hpp"
 
 namespace octo
 {
