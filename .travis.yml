@@ -6,14 +6,14 @@ compiler:
  - clang
 
 before_install:
- - chmod u=rx ./scripts/linux/*.sh ./scripts/commons/*.sh
+ - chmod u=rx ./scripts/unix/*.sh
 
 install:
- - sudo ./scripts/linux/install_compiler.sh
- - sudo ./scripts/linux/install_cppcheck.sh
- - sudo ./scripts/commons/install_sfml.sh
+ - sudo ./scripts/unix/install_compiler.sh
+ - sudo ./scripts/unix/install_cppcheck.sh
+ - sudo ./scripts/unix/install_sfml.sh
 
 script:
- - ./scripts/linux/run_static_analysis.sh
+ - sudo ./scripts/unix/run_static_analysis.sh
  - make complete
  - make run_tests

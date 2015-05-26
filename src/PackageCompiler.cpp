@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 17:20:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/26 15:35:38 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ namespace octo
 			{"ogg", PackageHeader::EntryType::Sound},
 			{"wav", PackageHeader::EntryType::Sound},
 			{"flac", PackageHeader::EntryType::Sound},
+			{"aif", PackageHeader::EntryType::Sound},
 			{"aiff", PackageHeader::EntryType::Sound},
 			{"au", PackageHeader::EntryType::Sound},
 			{"raw", PackageHeader::EntryType::Sound},

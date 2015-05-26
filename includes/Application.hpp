@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 19:12:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/26 17:35:02 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,15 @@ namespace octo
 {
 	class ResourceManager;
 	class GraphicsManager;
+	class AudioManager;
 	class Options;
 	class Console;
 	class Camera;
 
-	class ApplicationImp;
+	namespace details
+	{
+		class ApplicationImp;
+	}
 	
 	/*!	\class Application
 	 *	\brief Manage all systems requiered by a game
@@ -195,6 +199,24 @@ namespace octo
 		 *		<TD>Define the count of samples displayed by the FPS counter</TD>
 		 *		<TD>8</TD>
 		 *	</TR>
+		 *	<TR>
+		 *		<TD>max_sounds</TD>
+		 *		<TD>unsigned int</TD>
+		 *		<TD>Define the max count of sound playable at the same time</TD>
+		 *		<TD>128</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>music_volume</TD>
+		 *		<TD>float ]0;100[</TD>
+		 *		<TD>Define the music track volume</TD>
+		 *		<TD>128</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>sfx_volume</TD>
+		 *		<TD>float ]0;100[</TD>
+		 *		<TD>Define the sound effect track volume</TD>
+		 *		<TD>128</TD>
+		 *	</TR>
 		 *	</TABLE>
 		 *
 		 */
@@ -229,12 +251,13 @@ namespace octo
 
 		static StateManager&	getStateManager();
 		static GraphicsManager&	getGraphicsManager();
+		static AudioManager&	getAudioManager();
 		static ResourceManager&	getResourceManager();
 		static Options&			getOptions();
 		static Console&			getConsole();
 		static Camera&			getCamera();
 	private:
-		static ApplicationImp*	s_instance;
+		static details::ApplicationImp*	s_instance;
 	};
 }
 

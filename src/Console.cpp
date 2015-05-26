@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 19:14:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/25 23:03:40 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ namespace octo
 		m_core.setListener(this);
 	}
 
+	/*!	Define the font used to render text */
 	void	Console::setFont(sf::Font const& font, unsigned int fontSize)
 	{
 		m_font = &font;
@@ -133,6 +134,17 @@ namespace octo
 		m_needUpdate = true;
 	}
 
+	/*!	Define the palette used.
+	 *
+	 *	Palette must contains at least 7 colors:
+	 *	- Background
+	 *	- Input
+	 *	- Cursor
+	 *	- Quote
+	 *	- Result
+	 *	- Error
+	 *	- Help
+	 */
 	void	Console::setPalette(Palette const& palette)
 	{
 		m_palette = &palette;
@@ -141,6 +153,10 @@ namespace octo
 		m_rectangle.setFillColor(m_palette->getColor(Background));
 	}
 
+	/*!	Enable or disable the console
+	 *
+	 *	Console is displayed and can respond to text event only if enabled.
+	 */
 	void	Console::setEnabled(bool enable)
 	{
 		if (m_font == nullptr || m_palette == nullptr)
@@ -153,11 +169,13 @@ namespace octo
 		}
 	}
 
+	/*!	Return true if the console is enabled, otherwise false */
 	bool	Console::isEnabled()const
 	{
 		return (m_enabled && (m_font != nullptr));
 	}
 	
+	/*!	Clear the console display */
 	void	Console::clear()
 	{
 		m_core.removeAll();
@@ -264,6 +282,7 @@ namespace octo
 		return (m_enabled == false);
 	}
 
+	/*!	Update the console logic */
 	void	Console::update(sf::Time, sf::View const& view)
 	{
 		sf::Vector2f const&	viewSize = view.getSize();
@@ -286,6 +305,7 @@ namespace octo
 		}			
 	}
 
+	/*!	Draw the console */
 	void	Console::draw(sf::RenderTarget& render)const
 	{
 		if (isEnabled() == false)
@@ -297,6 +317,10 @@ namespace octo
 		m_cursor->draw(render, m_current.getTransform());
 	}
 
+	/*!	Print a message in the console
+	 *	\param str String displayed
+	 *	\param color Color of string displayed
+	 */
 	void	Console::print(std::wstring const& str, sf::Color const& color)
 	{
 		if (isEnabled() == false)
@@ -317,13 +341,18 @@ namespace octo
 		m_needUpdate = true;
 	}
 	
-	void						Console::printError(std::wstring const& str)
+	/*!	Print an error message in the console
+	 *	\param str String displayed
+	 */
+	void	Console::printError(std::wstring const& str)
 	{
 		if (isEnabled() == false)
 			return;
 		print(str, m_palette->getColor(Error));
 	}
-
+	/*!	Print the message of an exception in the console
+	 *	\param str String displayed
+	 */
 	void						Console::printError(std::exception const& e)
 	{
 		if (isEnabled() == false)
@@ -331,6 +360,7 @@ namespace octo
 		printError(L"exception: " + stringToWide(e.what()));
 	}
 
+	/*!	Print a help message */
 	void						Console::printHelp(std::wstring const& str)
 	{
 		if (isEnabled() == false)
@@ -338,11 +368,13 @@ namespace octo
 		print(str, m_palette->getColor(Help));
 	}
 
+	/*!	Return the list of all registered commands keys */
 	std::vector<std::wstring>	Console::getCommandList()const
 	{
 		return (m_core.getCommandList());
 	}
 
+	/*!	Fill the buffer with the next entry in the history */
 	void	Console::nextHistoryEntry()
 	{
 		std::wstring	entry;
@@ -353,6 +385,7 @@ namespace octo
 		}
 	}
 
+	/*!	Fill the buffer with the preivous entry in the history */
 	void	Console::previousHistoryEntry()
 	{
 		std::wstring	entry;
@@ -363,6 +396,10 @@ namespace octo
 		}
 	}
 
+	/*!	Execute the command contained in the buffer
+	 *
+	 *	Buffer content is pushed on the history then the buffer is cleared.
+	 */
 	void	Console::execute()
 	{
 		std::wstring	buffer = m_core.getBuffer();
