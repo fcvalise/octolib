@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 23:07:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 23:51:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,8 @@ namespace octo
 					IConsoleCompletionListener::Changes(m_completionEnabled && m_completion.hasCompletions(),
 														word,
 														current,
-														start));
+														start,
+														m_completion.getCompletions()));
 		}
 	}
 }

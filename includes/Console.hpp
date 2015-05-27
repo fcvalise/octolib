@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 22:34:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 23:54:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,6 @@ namespace octo
 			GraphicsCompletion();
 			void			setColors(sf::Color const& textColor, sf::Color const& bgColor);
 			void			setFont(sf::Font const& font, unsigned int charSize);
-			void			onChanged(bool enabled,
-									  std::wstring const& buffer,
-									  std::wstring const& completion,
-									  std::size_t wordStart);
 			void			updatePosition(float top, float lineMargin);
 			virtual void	draw(sf::RenderTarget& target, sf::RenderStates states)const;
 			virtual void	onCompletionChanged(Changes const& changes);

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 22:51:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 00:02:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,6 @@ namespace octo
 		m_font = &font;
 	}
 
-	void	Console::GraphicsCompletion::onChanged(bool enabled,
-												   std::wstring const& buffer,
-												   std::wstring const& completion,
-												   std::size_t wordStart)
-	{
-		m_enabled = enabled;
-		m_word = buffer.substr(wordStart);
-		m_wordStart = wordStart;
-		m_completion = completion;
-		m_text.setString(m_word + completion);
-	}
-
 	void	Console::GraphicsCompletion::draw(sf::RenderTarget& target, sf::RenderStates states)const
 	{
 		if (m_enabled)
@@ -64,7 +52,7 @@ namespace octo
 		}
 	}
 
-	static sf::Vector2f	textSize(std::wstring const& str, sf::Font const* font, unsigned int fontSize)
+	static sf::Vector2f	textSize(sf::String const& str, sf::Font const* font, unsigned int fontSize)
 	{
 		sf::Vector2f	size;
 
@@ -81,7 +69,7 @@ namespace octo
 	void	Console::GraphicsCompletion::updatePosition(float top, float lineMargin)
 	{
 		sf::Vector2f	wordSize = textSize(m_word, m_font, m_text.getCharacterSize());
-		sf::Vector2f	completeSize = textSize(m_word + m_completion, m_font, m_text.getCharacterSize());
+		sf::Vector2f	completeSize = textSize(m_text.getString(), m_font, m_text.getCharacterSize());
 
 		completeSize.x += m_padding * 2;
 		completeSize.y += lineMargin;
@@ -96,7 +84,10 @@ namespace octo
 		m_word = changes.getWord();
 		m_completion = changes.getCompletion();
 		m_wordStart = changes.getWordStart();
-		m_text.setString(m_word + m_completion);
+		m_text.setString(m_word + m_completion +
+						 L" [" + std::to_wstring(changes.getCurrentPosition()) +
+						 L"/" + std::to_wstring(changes.getCompletionCount()) +  
+						 L"]");
 	}
 
 	//
