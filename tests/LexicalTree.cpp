@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/27 03:42:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 23:08:15 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 00:30:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <iterator>
 #include <random>
 #include <algorithm>
+#include <chrono>
 
 #include <LexicalTree.hpp>
 
