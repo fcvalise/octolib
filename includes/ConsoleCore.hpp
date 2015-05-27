@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:05:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 22:49:43 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 00:44:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ namespace octo
 		void						updateText();
 
 		void						setCompletionEnabled(bool enable);
+		void						addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem);
 		void						nextCompletion();
 		void						prevCompletion();
 		void						execute();

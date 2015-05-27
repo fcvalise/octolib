@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 23:51:07 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 00:45:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ namespace octo
 		m_listener(nullptr),
 		m_completionListener(nullptr)
 	{
+	}
+
+	void	ConsoleCore::addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem)
+	{
+		m_completion.addWord(word, lexem);
 	}
 
 	void	ConsoleCore::setCompletionEnabled(bool enable)

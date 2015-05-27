@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 00:02:45 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:06:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -420,6 +420,30 @@ namespace octo
 			render.draw(text);
 		render.draw(m_completion, m_cursor.getTransform() * m_current.getTransform());
 		m_cursor.draw(render, m_current.getTransform());
+	}
+
+	void	Console::addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem)
+	{
+		m_core.addWord(word, lexem);
+	}
+
+	void	Console::addWord(std::string const& word, ConsoleCompletion::Lexems lexem)
+	{
+		m_core.addWord(stringToWide(word), lexem);
+	}
+
+	void	Console::addWords(std::vector<std::wstring> const& words, ConsoleCompletion::Lexems lexem)
+	{
+		for (std::wstring const& word : words)
+			m_core.addWord(word, lexem);
+	}
+
+	void	Console::addWords(std::vector<std::string> const& words, ConsoleCompletion::Lexems lexem)
+	{
+		for (std::string const& word : words)
+		{
+			m_core.addWord(stringToWide(word), lexem);
+		}
 	}
 
 	/*!	Print a message in the console
