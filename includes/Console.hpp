@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 23:02:04 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 02:20:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "IConsoleListener.hpp"
 # include "GraphicsListeners.hpp"
 # include "ConsoleCore.hpp"
-# include "ConsoleHistory.hpp"
 
 # include <SFML/System/Vector2.hpp>
 # include <SFML/Graphics/Color.hpp>
@@ -113,13 +112,8 @@ namespace octo
 		virtual void				onCursorChanged(unsigned int pos);
 		virtual void				onExecuted(std::wstring const& result);
 		virtual void				onError(std::wstring const& message, std::wstring const& line);
-
-		void						nextHistoryEntry();
-		void						previousHistoryEntry();
-		void						execute();
 	private:
 		ConsoleCore						m_core;
-		ConsoleHistory					m_history;
 		std::shared_ptr<class Cursor>	m_cursor;
 		std::list<sf::Text>				m_log;
 		sf::Text						m_current;

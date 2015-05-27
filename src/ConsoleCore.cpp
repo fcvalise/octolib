@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 23:06:12 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 01:44:30 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@ namespace octo
 	{
 	}
 
+	/*! Force to notify the listener of a text change */
 	void	ConsoleCore::updateText()
 	{
 		emitTextChanged();
 		emitCursorChanged();
 	}
 
+	/*!	Define the unique listener */
 	void	ConsoleCore::setListener(IConsoleListener* listener)
 	{
 		m_listener = listener;
@@ -36,6 +38,7 @@ namespace octo
 		emitCursorChanged();
 	}
 
+	/*!	Insert a character at the cursor position */
 	void	ConsoleCore::insertChar(wchar_t c)
 	{
 		m_buffer.insert(m_cursorPosition, 1, c);
@@ -44,6 +47,7 @@ namespace octo
 		emitCursorChanged();
 	}
 
+	/*!	Remove the character at the cursor position */
 	void	ConsoleCore::removeCurrent()
 	{
 		if (m_buffer.empty() || m_cursorPosition == m_buffer.size())
@@ -54,6 +58,7 @@ namespace octo
 		emitCursorChanged();
 	}
 
+	/*!	Remove the character before the cursor position */
 	void	ConsoleCore::removePrevious()
 	{
 		if (m_buffer.empty() || m_cursorPosition == 0u)
@@ -64,6 +69,7 @@ namespace octo
 		emitCursorChanged();
 	}
 
+	/*!	Clear the buffer */
 	void	ConsoleCore::removeAll()
 	{
 		if (m_buffer.empty())
@@ -74,6 +80,7 @@ namespace octo
 		emitCursorChanged();
 	}
 
+	/*!	Replace the current buffer content */
 	void	ConsoleCore::resetBuffer(std::wstring const& line)
 	{
 		m_buffer = line;
@@ -82,6 +89,7 @@ namespace octo
 		emitCursorChanged();
 	}
 
+	/*! Move the cursor */
 	void	ConsoleCore::moveCursor(int offset)
 	{
 		if (m_buffer.empty())
@@ -100,11 +108,29 @@ namespace octo
 		emitCursorChanged();
 	}
 
-	std::wstring const&	ConsoleCore::getBuffer()const
+	/*!	Fill the buffer with the next entry in the history */
+	void	ConsoleCore::resetFromNext()
 	{
-		return (m_buffer);
+		std::wstring	entry;
+
+		if (m_history.getNextEntry(entry))
+		{
+			resetBuffer(entry);
+		}
 	}
 
+	/*!	Fill the buffer with the preivous entry in the history */
+	void	ConsoleCore::resetFromPrevious()
+	{
+		std::wstring	entry;
+
+		if (m_history.getPreviousEntry(entry))
+		{
+			resetBuffer(entry);
+		}
+	}
+
+	/*!	Execute the current command stored in the buffer */
 	void	ConsoleCore::execute()
 	{
 		std::wstring	result;
@@ -115,6 +141,7 @@ namespace octo
 		{
 			result = m_interpreter.execute(m_buffer);
 			emitExecuted(result);
+			m_history.pushEntry(m_buffer);
 		}
 		catch (ConsoleInterpreter::ArgumentTypeException const& e)
 		{
@@ -141,6 +168,22 @@ namespace octo
 		emitTextChanged();
 		emitCursorChanged();
 	}
+
+	/*!	Return the current line */
+	std::wstring const&	ConsoleCore::getBuffer()const
+	{
+		return (m_buffer);
+	}
+
+	unsigned int	ConsoleCore::getPromptSize()const
+	{
+		return (m_prompt.size());
+	}
+	
+	std::vector<std::wstring>	ConsoleCore::getCommandList()const
+	{
+		return (m_interpreter.getCommandList());
+	}
 	
 	void	ConsoleCore::emitTextChanged()
 	{
@@ -164,15 +207,5 @@ namespace octo
 	{
 		if (m_listener)
 			m_listener->onError(message, m_buffer);
-	}
-
-	unsigned int	ConsoleCore::getPromptSize()const
-	{
-		return (m_prompt.size());
-	}
-	
-	std::vector<std::wstring>	ConsoleCore::getCommandList()const
-	{
-		return (m_interpreter.getCommandList());
 	}
 }

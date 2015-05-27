@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 23:03:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 01:48:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ namespace octo
 			// Enter
 			case 10:
 			case 13:
-				execute();
+				m_core.execute();
 				break;
 			// Delete
 			// Delete do nothing because currently you can move
@@ -254,10 +254,10 @@ namespace octo
 					m_core.moveCursor(1);
 					break;
 				case sf::Keyboard::Up:
-					nextHistoryEntry();
+					m_core.resetFromNext();
 					break;
 				case sf::Keyboard::Down:
-					previousHistoryEntry();
+					m_core.resetFromPrevious();
 					break;
 				default:
 					break;
@@ -372,39 +372,5 @@ namespace octo
 	std::vector<std::wstring>	Console::getCommandList()const
 	{
 		return (m_core.getCommandList());
-	}
-
-	/*!	Fill the buffer with the next entry in the history */
-	void	Console::nextHistoryEntry()
-	{
-		std::wstring	entry;
-
-		if (m_history.getNextEntry(entry))
-		{
-			m_core.resetBuffer(entry);
-		}
-	}
-
-	/*!	Fill the buffer with the preivous entry in the history */
-	void	Console::previousHistoryEntry()
-	{
-		std::wstring	entry;
-
-		if (m_history.getPreviousEntry(entry))
-		{
-			m_core.resetBuffer(entry);
-		}
-	}
-
-	/*!	Execute the command contained in the buffer
-	 *
-	 *	Buffer content is pushed on the history then the buffer is cleared.
-	 */
-	void	Console::execute()
-	{
-		std::wstring	buffer = m_core.getBuffer();
-
-		m_core.execute();
-		m_history.pushEntry(buffer);
 	}
 }
