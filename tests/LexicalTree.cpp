@@ -6,16 +6,97 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/27 03:42:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 05:53:08 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 17:29:29 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <boost/test/unit_test.hpp>
 #include <iterator>
+#include <random>
 
 #include <LexicalTree.hpp>
 
 BOOST_AUTO_TEST_SUITE( lexical_tree )
+
+BOOST_AUTO_TEST_CASE( add_word_tests0 )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string>			result;
+	std::vector<std::string> 			expected
+	{
+		"a",
+		"aa",
+		"ab",
+		"aba",
+		"abab",
+		"abc",
+		"abcd",
+		"b",
+		"bc",
+		"bcd",
+		"abracadra"	
+	};
+
+	for (auto str : expected)
+	{
+		tree.addWord(str, 1);
+	}
+	tree.getWords(result);
+	std::sort(expected.begin(), expected.end());
+	std::sort(result.begin(), result.end());
+	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected.begin(), expected.end() );
+}
+
+BOOST_AUTO_TEST_CASE( add_word_tests1 )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string>			result;
+	std::vector<std::string> 			expected
+	{
+		"a",
+		"a.a",
+		"a.b",
+		"az"
+	};
+
+	for (auto str : expected)
+	{
+		tree.addWord(str, 1);
+	}
+	tree.getWords(result);
+	std::sort(expected.begin(), expected.end());
+	std::sort(result.begin(), result.end());
+	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected.begin(), expected.end() );
+}
+
+BOOST_AUTO_TEST_CASE( add_word_tests2 )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string>			result;
+	std::vector<std::string> 			expected
+	{
+		"a",
+		"aa",
+		"ab",
+		"aba",
+		"abab",
+		"abc",
+		"abcd",
+		"b",
+		"bc",
+		"bcd"	
+	};
+
+	std::shuffle(expected.begin(), expected.end(), std::default_random_engine(154256));
+	for (auto str : expected)
+	{
+		tree.addWord(str, 1);
+	}
+	tree.getWords(result);
+	std::sort(expected.begin(), expected.end());
+	std::sort(result.begin(), result.end());
+	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected.begin(), expected.end() );
+}
 
 BOOST_AUTO_TEST_CASE( get_words_tests0 )
 {
@@ -43,6 +124,30 @@ BOOST_AUTO_TEST_CASE( get_words_tests0 )
 	std::sort(expected.begin(), expected.end());
 	std::sort(result.begin(), result.end());
 	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected.begin(), expected.end() );
+}
+
+BOOST_AUTO_TEST_CASE( add_word_error )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string>			result;
+
+	BOOST_REQUIRE_NO_THROW( tree.addWord("a", 1) );
+	BOOST_REQUIRE_NO_THROW( tree.addWord("b", 1) );
+	BOOST_REQUIRE_NO_THROW( tree.addWord("c", 1) );
+	BOOST_REQUIRE_NO_THROW( tree.addWord("01", 1) );
+	BOOST_REQUIRE_NO_THROW( tree.addWord("01ZZ", 1) );
+	BOOST_REQUIRE_NO_THROW( tree.addWord("10", 1) );
+
+	BOOST_CHECK_THROW (tree.addWord("a", 1), std::runtime_error);
+	BOOST_CHECK_THROW (tree.addWord("a", 1), std::runtime_error);
+	BOOST_CHECK_THROW (tree.addWord("b", 1), std::runtime_error);
+	BOOST_CHECK_THROW (tree.addWord("c", 1), std::runtime_error);
+	BOOST_CHECK_THROW (tree.addWord("01", 1), std::runtime_error);
+	BOOST_CHECK_THROW (tree.addWord("10", 1), std::runtime_error);
+	BOOST_CHECK_NO_THROW( tree.addWord("01Z", 1) );
+	BOOST_CHECK_NO_THROW( tree.addWord("ab", 1) );
+	BOOST_CHECK_NO_THROW( tree.addWord("bc", 1) );
+	BOOST_CHECK_NO_THROW( tree.addWord("cd", 1) );
 }
 
 BOOST_AUTO_TEST_CASE( get_words_tests1 )
@@ -89,6 +194,36 @@ BOOST_AUTO_TEST_CASE( get_words_tests2 )
 		"b",
 		"bc",
 		"bcd"	
+	};
+
+	for (auto str : expected)
+	{
+		tree.addWord(str, 1);
+	}
+	tree.getWords(result);
+	std::sort(expected.begin(), expected.end());
+	std::sort(result.begin(), result.end());
+	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected.begin(), expected.end() );
+}
+
+BOOST_AUTO_TEST_CASE( get_words_tests3 )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string>			result;
+	std::vector<std::string> 			expected
+	{
+		"a",
+		"ab",
+		"abc",
+		"abcd",
+		"b",
+		"bc",
+		"bcd",
+		"demo.a",
+		"demo.ab",
+		"demo.abc",
+		"demoabc"
+		"demoab"
 	};
 
 	for (auto str : expected)
@@ -224,5 +359,92 @@ BOOST_AUTO_TEST_CASE( complete_words_tests3 )
 	std::sort(expected_a.begin(), expected_a.end());
 	std::sort(result.begin(), result.end());
 	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected_a.begin(), expected_a.end() );
+}
+
+BOOST_AUTO_TEST_CASE( complete_words_tests4 )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string> 			words
+	{
+		"a",
+		"ab",
+		"abc",
+		"abcd",
+		"b",
+		"bc",
+		"bcd",
+		"demoabc",
+		"demo.a",
+		"demo.ab",
+		"demo.abc"
+	};
+	std::vector<std::string>			expected_demo =
+	{
+		"a",
+		"ab",
+		"abc"
+	};
+	std::vector<std::string>			result;
+
+	for (auto str : words)
+	{
+		tree.addWord(str, 1);
+	}
+	tree.completeWord("demo.", result);
+	std::sort(expected_demo.begin(), expected_demo.end());
+	std::sort(result.begin(), result.end());
+	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected_demo.begin(), expected_demo.end() );
+}
+
+BOOST_AUTO_TEST_CASE( complete_words_tests5 )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string> 			words
+	{
+		"a",
+		"ab",
+		"abc",
+		"abcd",
+		"b",
+		"bc",
+		"bcd",
+		"demo.a",
+		"demo.ab",
+		"demo.abc",
+		"demoabc",
+		"demoab",
+		"demo.demo"
+	};
+	std::vector<std::string>			expected_demo_dot =
+	{
+		"a",
+		"ab",
+		"abc",
+		"demo"
+	};
+	std::vector<std::string>			expected_demo =
+	{
+		"ab",
+		"abc",
+		".a",
+		".ab",
+		".abc",
+		".demo"
+	};
+	std::vector<std::string>			result;
+
+	for (auto str : words)
+	{
+		tree.addWord(str, 1);
+	}
+	std::sort(expected_demo_dot.begin(), expected_demo_dot.end());
+	std::sort(expected_demo.begin(), expected_demo.end());
+	tree.completeWord("demo.", result);
+	std::sort(result.begin(), result.end());
+	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected_demo_dot.begin(), expected_demo_dot.end() );
+	result.clear();
+	tree.completeWord("demo", result);
+	std::sort(result.begin(), result.end());
+	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected_demo.begin(), expected_demo.end() );
 }
 BOOST_AUTO_TEST_SUITE_END()
