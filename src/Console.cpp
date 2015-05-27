@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 01:48:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 02:43:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,12 +206,11 @@ namespace octo
 			print(result, m_palette->getColor(Result));
 	}
 
-	void	Console::onError(std::wstring const& message, std::wstring const& line)
+	void	Console::onError(std::wstring const& message, std::wstring const&)
 	{
 		if (isEnabled() == false)
 			return;
 		print(L"\t" + message, m_palette->getColor(Error));
-		print(line, m_palette->getColor(Quote));
 	}
 
 	void	Console::onTextEntered(sf::Event::TextEvent const& event)

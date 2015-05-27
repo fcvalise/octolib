@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 01:44:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 02:46:11 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,28 +141,28 @@ namespace octo
 		{
 			result = m_interpreter.execute(m_buffer);
 			emitExecuted(result);
-			m_history.pushEntry(m_buffer);
 		}
 		catch (ConsoleInterpreter::ArgumentTypeException const& e)
 		{
-			emitError(L"invalid argument type (" + std::to_wstring(e.getArgumentIndex()) + L"), expected type: " + e.getExpectedTypeName());
+			emitError(L"interpreter: invalid argument type (" + std::to_wstring(e.getArgumentIndex()) + L"), expected type: " + e.getExpectedTypeName());
 		}
 		catch (ConsoleInterpreter::NotEnoughArgumentException const& e)
 		{
-			emitError(L"not enough arguments");
+			emitError(L"interpreter: not enough arguments (expected: " + std::to_wstring(e.getExpected()) + L" provided: " + std::to_wstring(e.getProvided()) + L")");
 		}
 		catch (ConsoleInterpreter::TooManyArgumentException const& e)
 		{
-			emitError(L"too many arguments");
+			emitError(L"interpreter: too many arguments (expected: " + std::to_wstring(e.getExpected()) + L" provided: " + std::to_wstring(e.getProvided()) + L")");
 		}
 		catch (ConsoleInterpreter::UnknowCommandException const& e)
 		{
-			emitError(L"\'" + e.getCommandName() + L"\' is an unknow command");
+			emitError(L"interpreter: \'" + e.getCommandName() + L"\' is an unknow command");
 		}
 		catch (ConsoleInterpreter::SyntaxErrorException const& e)
 		{
-			emitError(L"syntax error at " + std::to_wstring(e.getPosition()) + L": " + e.getDescription());
+			emitError(L"interpreter: syntax error at " + std::to_wstring(e.getPosition()) + L": " + e.getDescription());
 		}
+		m_history.pushEntry(m_buffer);
 		m_buffer.clear();
 		m_cursorPosition = 0;
 		emitTextChanged();

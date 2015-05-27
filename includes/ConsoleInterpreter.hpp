@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 12:23:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 00:49:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 02:35:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,14 +149,26 @@ namespace octo
 	class ConsoleInterpreter::NotEnoughArgumentException
 	{
 	public:
-		NotEnoughArgumentException() = default;
+		NotEnoughArgumentException(std::size_t expected, std::size_t provided);
+
+		std::size_t	getExpected()const;
+		std::size_t	getProvided()const;
+	private:
+		std::size_t	m_expected;
+		std::size_t	m_provided;
 	};
 
 	/*!	Exception thrown when there too many argument */
 	class ConsoleInterpreter::TooManyArgumentException
 	{
 	public:
-		TooManyArgumentException() = default;
+		TooManyArgumentException(std::size_t expected, std::size_t provided);
+
+		std::size_t	getExpected()const;
+		std::size_t	getProvided()const;
+	private:
+		std::size_t	m_expected;
+		std::size_t	m_provided;
 	};
 
 	/*!	Exception thrown when an unknow command is called */

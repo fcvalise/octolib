@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/05 15:01:38 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 00:47:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 02:30:46 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,11 @@ namespace octo
 			}
 			else if (sizeof...(A) > arguments.size())
 			{
-				throw ConsoleInterpreter::NotEnoughArgumentException();
+				throw ConsoleInterpreter::NotEnoughArgumentException(sizeof...(A), arguments.size());
 			}
 			else if (sizeof...(A) < arguments.size())
 			{
-				throw ConsoleInterpreter::TooManyArgumentException();
+				throw ConsoleInterpreter::TooManyArgumentException(sizeof...(A), arguments.size());
 			}
 		}
 
