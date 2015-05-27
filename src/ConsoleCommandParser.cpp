@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:34:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 14:29:15 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 21:57:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ namespace octo
 		static constexpr wchar_t const		ArgumentIn = L'(';
 		static constexpr wchar_t const		ArgumentOut = L')';
 		static constexpr wchar_t const		ArgumentSeparator = L',';
+		static constexpr wchar_t const		ExplicitParamIn = L'\"';
+		static constexpr wchar_t const		ExplicitParamOut = L'\"';
 
 		bool							isArgumentChar(wchar_t c)
 		{
@@ -91,11 +93,12 @@ namespace octo
 			while (it != end && *it != ArgumentOut)
 			{
 				it = skipSpaces(it, end);
-				if (*it == L'\"')
+				if (*it == ExplicitParamIn)
 				{
+					// Process quoted param
 					++it;
 					begin = it;
-					while (it != end && *it != L'\"')
+					while (it != end && *it != ExplicitParamOut)
 						++it;
 					arguments.emplace_back(begin, it);
 					++it;

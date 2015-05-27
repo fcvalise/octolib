@@ -60,7 +60,8 @@ CONSOLE_SRC = ConsoleCommandParser.cpp			\
 			  ConsoleInterpreter.cpp			\
 			  ConsoleCore.cpp					\
 			  Console.cpp						\
-			  ConsoleHistory.cpp
+			  ConsoleHistory.cpp				\
+			  ConsoleCompletion.cpp
 
 DEBUG_SRC = FpsCounter.cpp						\
 			AbstractFpsDisplayer.cpp			\

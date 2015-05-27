@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 20:29:45 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:07:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ namespace octo
 									 std::uint64_t current,
 									 std::uint64_t total)
 			{
+				octo::Console&	console = octo::Application::getConsole();
+
+				console.addWord(name, ConsoleCompletion::Lexems::Parameter);
 				std::cout << "loading " << name << " [" << (int)type << "] " << current  + 1 << "/" << total << std::endl;
 			}
 
@@ -192,7 +195,7 @@ namespace octo
 
 							std::cout << "Available states:\n";
 
-							for (std::string const& key : stateManager.availableStateKeys())
+							for (std::string const& key : stateManager.availableTransitionKeys())
 							{
 								std::cout << " - " << key << "\n"; 
 							}
@@ -239,6 +242,7 @@ namespace octo
 
 				m_stateManager.push(keyStarted);
 				m_clock.restart();
+				m_console.addWords(m_stateManager.availableStateKeys(), ConsoleCompletion::Lexems::Parameter);
 				m_console.printHelp(L"Starting state " + stringToWide(keyStarted));
 			}
 

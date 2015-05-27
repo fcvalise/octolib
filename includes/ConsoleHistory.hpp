@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 15:29:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 16:25:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 02:27:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ namespace octo
 	public:
 		ConsoleHistory();
 
+		void			setMaxEntries(std::size_t max);
 		void			pushEntry(std::wstring const& entry);
 		bool			isEmpty()const;
 		bool			getNextEntry(std::wstring& entry);
