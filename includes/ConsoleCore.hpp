@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:05:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 00:44:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:31:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ namespace octo
 		void						moveCursor(int offset);
 		void						updateText();
 
-		void						setCompletionEnabled(bool enable);
+		void						setCompletionActive(bool enable);
 		void						addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem);
 		void						nextCompletion();
 		void						prevCompletion();
@@ -65,7 +65,7 @@ namespace octo
 		std::wstring const&			getBuffer()const;
 		unsigned int				getPromptSize()const;
 		std::vector<std::wstring>	getCommandList()const;
-		bool						isCompletionEnabled()const;
+		bool						isCompletionActive()const;
 
 		template <class R, class ... A>
 		void						addCommand(std::wstring const& name, R(*function)(A...));
@@ -98,7 +98,7 @@ namespace octo
 		std::wstring				m_buffer;
 		std::wstring				m_prompt;
 		unsigned int				m_cursorPosition;
-		bool						m_completionEnabled;
+		bool						m_completionActive;
 		IConsoleListener*			m_listener;
 		IConsoleCompletionListener*	m_completionListener;
 	};
