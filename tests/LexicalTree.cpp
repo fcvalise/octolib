@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/27 03:42:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 17:29:29 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 23:08:15 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <boost/test/unit_test.hpp>
 #include <iterator>
 #include <random>
+#include <algorithm>
 
 #include <LexicalTree.hpp>
 
@@ -37,6 +38,7 @@ BOOST_AUTO_TEST_CASE( add_word_tests0 )
 		"abracadra"	
 	};
 
+	std::shuffle(expected.begin(), expected.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 	for (auto str : expected)
 	{
 		tree.addWord(str, 1);
@@ -59,6 +61,7 @@ BOOST_AUTO_TEST_CASE( add_word_tests1 )
 		"az"
 	};
 
+	std::shuffle(expected.begin(), expected.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 	for (auto str : expected)
 	{
 		tree.addWord(str, 1);
@@ -87,7 +90,7 @@ BOOST_AUTO_TEST_CASE( add_word_tests2 )
 		"bcd"	
 	};
 
-	std::shuffle(expected.begin(), expected.end(), std::default_random_engine(154256));
+	std::shuffle(expected.begin(), expected.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
 	for (auto str : expected)
 	{
 		tree.addWord(str, 1);
@@ -447,4 +450,71 @@ BOOST_AUTO_TEST_CASE( complete_words_tests5 )
 	std::sort(result.begin(), result.end());
 	BOOST_CHECK_EQUAL_COLLECTIONS( result.begin(), result.end(), expected_demo.begin(), expected_demo.end() );
 }
+
+BOOST_AUTO_TEST_CASE( contains_word_tests0 )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string> 			words
+	{
+		"a",
+		"aa",
+		"ab",
+		"aba",
+		"abab",
+		"abc",
+		"abcd",
+		"b",
+		"bc",
+		"bcd",
+		"abracadra"	
+	};
+
+	for (auto word : words)
+	{
+		tree.addWord(word, 1);
+	}
+	for (auto word : words)
+	{
+		BOOST_CHECK( tree.contains(word) == true );
+	}
+}
+
+BOOST_AUTO_TEST_CASE( not_contains_word_test )
+{
+	octo::LexicalTree<char, int, -1, 0>	tree;
+	std::vector<std::string> 			words
+	{
+		"a",
+		"aa",
+		"ab",
+		"aba",
+		"abab",
+		"abc",
+		"abcd",
+		"b",
+		"bc",
+		"bcd",
+		"abracadra",
+		"phuqk"
+	};
+
+	std::vector<std::string>			notContained =
+	{
+		"0",
+		"123",
+		"aac",
+		"c",
+		"p"
+	};
+
+	for (auto word : words)
+	{
+		tree.addWord(word, 1);
+	}
+	for (auto word : notContained)
+	{
+		BOOST_CHECK( tree.contains(word) == false );
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()

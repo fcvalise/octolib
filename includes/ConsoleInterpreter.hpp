@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 12:23:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 02:35:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 21:54:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,10 @@ namespace octo
 		std::vector<std::wstring>	getCommandList()const;
 	private:
 		template <class C, class R, class ... A>
-		void			addFunctor(std::wstring const& name, C instance, R(C::*function)(A...));
+		void						addFunctor(std::wstring const& name, C instance, R(C::*function)(A...));
 
 		template <class C, class R, class ... A>
-		void			addFunctor(std::wstring const& name, C instance, R(C::*function)(A...)const);
+		void						addFunctor(std::wstring const& name, C instance, R(C::*function)(A...)const);
 
 		typedef std::shared_ptr<AbstractCallable>	CallablePtr;
 		typedef std::map<std::wstring, CallablePtr>	Map;

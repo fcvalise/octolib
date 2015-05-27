@@ -6,12 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 02:46:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 23:07:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ConsoleCore.hpp"
 #include "IConsoleListener.hpp"
+#include "IConsoleCompletionListener.hpp"
 #include <algorithm>
 #include <cstdlib>
 
@@ -19,8 +20,29 @@ namespace octo
 {
 	ConsoleCore::ConsoleCore() :
 		m_prompt(L"$> "),
-		m_cursorPosition(0)
+		m_cursorPosition(0),
+		m_completionEnabled(false),
+		m_listener(nullptr),
+		m_completionListener(nullptr)
 	{
+	}
+
+	void	ConsoleCore::setCompletionEnabled(bool enable)
+	{
+		m_completionEnabled = enable;
+		emitCompletionChanged();
+	}
+
+	void	ConsoleCore::nextCompletion()
+	{
+		m_completion.nextCompletion();
+		emitCompletionChanged();
+	}
+
+	void	ConsoleCore::prevCompletion()
+	{
+		m_completion.prevCompletion();
+		emitCompletionChanged();
 	}
 
 	/*! Force to notify the listener of a text change */
@@ -36,6 +58,13 @@ namespace octo
 		m_listener = listener;
 		emitTextChanged();
 		emitCursorChanged();
+		emitCompletionChanged();
+	}
+
+	void	ConsoleCore::setCompletionListener(IConsoleCompletionListener* listener)
+	{
+		m_completionListener = listener;
+		emitCompletionChanged();
 	}
 
 	/*!	Insert a character at the cursor position */
@@ -45,6 +74,17 @@ namespace octo
 		++m_cursorPosition;
 		emitTextChanged();
 		emitCursorChanged();
+		emitCompletionChanged();
+	}
+
+	/*!	Insert a string at the cursor position */
+	void	ConsoleCore::insertString(std::wstring const& str)
+	{
+		m_buffer.insert(m_cursorPosition, str);
+		m_cursorPosition += str.size();
+		emitTextChanged();
+		emitCursorChanged();
+		emitCompletionChanged();
 	}
 
 	/*!	Remove the character at the cursor position */
@@ -56,6 +96,7 @@ namespace octo
 		m_cursorPosition = std::min<unsigned int>(m_cursorPosition, m_buffer.size());
 		emitTextChanged();
 		emitCursorChanged();
+		emitCompletionChanged();
 	}
 
 	/*!	Remove the character before the cursor position */
@@ -67,6 +108,7 @@ namespace octo
 		m_buffer.erase(m_cursorPosition, 1);
 		emitTextChanged();
 		emitCursorChanged();
+		emitCompletionChanged();
 	}
 
 	/*!	Clear the buffer */
@@ -78,6 +120,7 @@ namespace octo
 		m_cursorPosition = 0;
 		emitTextChanged();
 		emitCursorChanged();
+		emitCompletionChanged();
 	}
 
 	/*!	Replace the current buffer content */
@@ -87,6 +130,7 @@ namespace octo
 		m_cursorPosition = m_buffer.size();
 		emitTextChanged();
 		emitCursorChanged();
+		emitCompletionChanged();
 	}
 
 	/*! Move the cursor */
@@ -106,6 +150,7 @@ namespace octo
 			m_cursorPosition = std::min<unsigned int>(m_cursorPosition + offset, m_buffer.size());
 		}
 		emitCursorChanged();
+		emitCompletionChanged();
 	}
 
 	/*!	Fill the buffer with the next entry in the history */
@@ -116,10 +161,11 @@ namespace octo
 		if (m_history.getNextEntry(entry))
 		{
 			resetBuffer(entry);
+			setCompletionEnabled(false);
 		}
 	}
 
-	/*!	Fill the buffer with the preivous entry in the history */
+	/*!	Fill the buffer with the previous entry in the history */
 	void	ConsoleCore::resetFromPrevious()
 	{
 		std::wstring	entry;
@@ -127,6 +173,7 @@ namespace octo
 		if (m_history.getPreviousEntry(entry))
 		{
 			resetBuffer(entry);
+			setCompletionEnabled(false);
 		}
 	}
 
@@ -162,11 +209,26 @@ namespace octo
 		{
 			emitError(L"interpreter: syntax error at " + std::to_wstring(e.getPosition()) + L": " + e.getDescription());
 		}
+		setCompletionEnabled(false);
 		m_history.pushEntry(m_buffer);
 		m_buffer.clear();
 		m_cursorPosition = 0;
 		emitTextChanged();
 		emitCursorChanged();
+		emitCompletionChanged();
+	}
+
+	/*!	Complete the current buffer */
+	void	ConsoleCore::complete()
+	{
+		std::wstring	completion;
+
+		if (m_completionEnabled && m_completion.hasCompletions())
+		{
+			m_completion.getCurrentCompletion(completion);
+			insertString(completion);
+			setCompletionEnabled(false);
+		}
 	}
 
 	/*!	Return the current line */
@@ -183,6 +245,11 @@ namespace octo
 	std::vector<std::wstring>	ConsoleCore::getCommandList()const
 	{
 		return (m_interpreter.getCommandList());
+	}
+	
+	bool	ConsoleCore::isCompletionEnabled()const
+	{
+		return (m_completionEnabled);
 	}
 	
 	void	ConsoleCore::emitTextChanged()
@@ -207,5 +274,32 @@ namespace octo
 	{
 		if (m_listener)
 			m_listener->onError(message, m_buffer);
+	}
+
+	void	ConsoleCore::emitCompletionChanged()
+	{
+		// Find the beginning of the word under the cursor
+		auto						start = m_buffer.find_last_of(L" \t\r\n\"(),", m_cursorPosition);
+		std::wstring				word;
+		std::wstring				current;
+
+		if (start == std::wstring::npos)
+			start = 0;
+		else
+			++start;
+		word = m_buffer.substr(start, m_buffer.size() - start);
+		if (word.empty())
+			m_completionEnabled = false;
+		m_completion.resetBuffer(word);
+		m_completion.getCurrentCompletion(current);
+		if (m_completionListener)
+		{
+			m_completion.getCurrentCompletion(current);
+			m_completionListener->onCompletionChanged(
+					IConsoleCompletionListener::Changes(m_completionEnabled && m_completion.hasCompletions(),
+														word,
+														current,
+														start));
+		}
 	}
 }

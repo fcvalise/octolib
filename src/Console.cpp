@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 02:43:57 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 22:51:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,86 +19,168 @@
 
 namespace octo
 {
-	class Console::Cursor
+	//
+	//	Console::GraphicsCompletion;
+	//
+	Console::GraphicsCompletion::GraphicsCompletion() :
+		m_wordStart(std::wstring::npos),
+		m_enabled(false),
+		m_padding(4.f)
 	{
-	public:
-		Cursor() :
-			m_yPos(0.f)
+	}
+
+	void	Console::GraphicsCompletion::setColors(sf::Color const& textColor,
+												   sf::Color const& bgColor)
+	{
+		m_text.setColor(textColor);
+		m_background.setFillColor(bgColor);
+	}
+
+	void	Console::GraphicsCompletion::setFont(sf::Font const& font, unsigned int fontSize)
+	{
+		m_text.setFont(font);
+		m_text.setCharacterSize(fontSize);
+		m_font = &font;
+	}
+
+	void	Console::GraphicsCompletion::onChanged(bool enabled,
+												   std::wstring const& buffer,
+												   std::wstring const& completion,
+												   std::size_t wordStart)
+	{
+		m_enabled = enabled;
+		m_word = buffer.substr(wordStart);
+		m_wordStart = wordStart;
+		m_completion = completion;
+		m_text.setString(m_word + completion);
+	}
+
+	void	Console::GraphicsCompletion::draw(sf::RenderTarget& target, sf::RenderStates states)const
+	{
+		if (m_enabled)
 		{
+			target.draw(m_background, states);
+			target.draw(m_text, states);
 		}
+	}
 
-		void	setCursorWidth(float width)
+	static sf::Vector2f	textSize(std::wstring const& str, sf::Font const* font, unsigned int fontSize)
+	{
+		sf::Vector2f	size;
+
+		for (auto c : str)
 		{
-			sf::Vector2f	size = m_shape.getSize();
+			sf::Glyph const&	glyph = font->getGlyph(c, fontSize, false);
 
-			size.x = width;
-			m_shape.setSize(size);
+			size.x += glyph.advance;
 		}
+		size.y = font->getLineSpacing(fontSize);
+		return (size);
+	}
 
-		void	setCursorHeight(float height)
+	void	Console::GraphicsCompletion::updatePosition(float top, float lineMargin)
+	{
+		sf::Vector2f	wordSize = textSize(m_word, m_font, m_text.getCharacterSize());
+		sf::Vector2f	completeSize = textSize(m_word + m_completion, m_font, m_text.getCharacterSize());
+
+		completeSize.x += m_padding * 2;
+		completeSize.y += lineMargin;
+		m_text.setPosition(-wordSize.x, top);
+		m_background.setPosition(-(wordSize.x + m_padding), top);
+		m_background.setSize(completeSize);
+	}
+
+	void	Console::GraphicsCompletion::onCompletionChanged(Changes const& changes)
+	{
+		m_enabled = changes.getEnabled();
+		m_word = changes.getWord();
+		m_completion = changes.getCompletion();
+		m_wordStart = changes.getWordStart();
+		m_text.setString(m_word + m_completion);
+	}
+
+	//
+	//	Console::Cursor
+	//
+	Console::GraphicsCursor::GraphicsCursor() :
+		m_yPos(0.f)
+	{
+	}
+
+	void	Console::GraphicsCursor::setCursorWidth(float width)
+	{
+		sf::Vector2f	size = m_shape.getSize();
+
+		size.x = width;
+		m_shape.setSize(size);
+	}
+
+	void	Console::GraphicsCursor::setCursorHeight(float height)
+	{
+		sf::Vector2f	size = m_shape.getSize();
+
+		size.y = height;
+		m_shape.setSize(size);
+	}
+
+	void	Console::GraphicsCursor::setBaseLine(float pos)
+	{
+		m_yPos = pos;
+	}
+
+	void	Console::GraphicsCursor::setColor(sf::Color const& color)
+	{
+		m_shape.setFillColor(color);
+	}
+
+	void	Console::GraphicsCursor::onTextChanged(sf::Text const& text)
+	{
+		sf::String const&	str = text.getString();
+		sf::Font const*		font = text.getFont();
+		float				current = 0;
+		std::size_t			i = 0;
+
+		m_offsets.resize(str.getSize() + 1);
+		while (i < str.getSize())
 		{
-			sf::Vector2f	size = m_shape.getSize();
+			sf::Glyph const&	glyph = font->getGlyph(str[i], text.getCharacterSize(), false);
 
-			size.y = height;
-			m_shape.setSize(size);
-		}
-
-		void	setBaseLine(float pos)
-		{
-			m_yPos = pos;
-		}
-
-		void	setColor(sf::Color const& color)
-		{
-			m_shape.setFillColor(color);
-		}
-
-		void	onTextChanged(sf::Text const& text)
-		{
-			sf::String const&	str = text.getString();
-			sf::Font const*		font = text.getFont();
-			float				current = 0;
-			std::size_t			i = 0;
-
-			m_offsets.resize(str.getSize() + 1);
-			while (i < str.getSize())
-			{
-				sf::Glyph const&	glyph = font->getGlyph(str[i], text.getCharacterSize(), false);
-
-				m_offsets.at(i) = current;
-				current += glyph.advance;
-				++i;
-			}
 			m_offsets.at(i) = current;
+			current += glyph.advance;
+			++i;
 		}
+		m_offsets.at(i) = current;
+	}
 
-		void	setCursorPosition(unsigned int cursorPos)
-		{
-			if (cursorPos >= m_offsets.size())
-				return;
-			float			offset = m_offsets.at(cursorPos);
-			sf::Vector2f	pos;
-			
-			pos.x = offset;
-			pos.y = m_yPos;
-			m_shape.setPosition(pos);
-		}
+	void	Console::GraphicsCursor::setCursorPosition(unsigned int cursorPos)
+	{
+		if (cursorPos >= m_offsets.size())
+			return;
+		float			offset = m_offsets.at(cursorPos);
+		sf::Vector2f	pos;
+		
+		pos.x = offset;
+		pos.y = m_yPos;
+		m_shape.setPosition(pos);
+	}
 
-		void	draw(sf::RenderTarget& render, sf::Transform const& parent)const
-		{
-			sf::RenderStates	states;
+	void	Console::GraphicsCursor::draw(sf::RenderTarget& render, sf::Transform const& parent)const
+	{
+		sf::RenderStates	states;
 
-			states.transform = parent;
-			states.blendMode = sf::BlendMode(sf::BlendMode::SrcColor, sf::BlendMode::DstColor, sf::BlendMode::Subtract);
-			render.draw(m_shape, states);
-		}
-	private:
-		std::vector<float>	m_offsets;
-		std::vector<float>	m_widths;
-		sf::RectangleShape	m_shape;
-		float				m_yPos;
-	};
+		states.transform = parent;
+		states.blendMode = sf::BlendMode(sf::BlendMode::SrcColor, sf::BlendMode::DstColor, sf::BlendMode::Subtract);
+		render.draw(m_shape, states);
+	}
 
+	sf::Transform const& Console::GraphicsCursor::getTransform()const
+	{
+		return (m_shape.getTransform());
+	}
+
+	//
+	//	Console
+	//
 	Console::Console() :
 		m_maxLogCount(20u),
 		m_fontSize(24),
@@ -111,8 +193,8 @@ namespace octo
 		m_font(nullptr),
 		m_palette(nullptr)
 	{
-		m_cursor.reset(new class Cursor);
 		m_core.setListener(this);
+		m_core.setCompletionListener(&m_completion);
 	}
 
 	/*!	Define the font used to render text */
@@ -122,15 +204,16 @@ namespace octo
 		m_fontSize = fontSize;
 		m_current.setFont(font);
 		m_current.setCharacterSize(m_fontSize);
+		m_completion.setFont(font, m_fontSize);
 		for (sf::Text& text : m_log)
 		{
 			text.setFont(font);
 			text.setCharacterSize(m_fontSize);
 		}
-		m_cursor->setCursorWidth(font.getGlyph('X', m_fontSize, false).advance);
-		m_cursor->setCursorHeight(font.getLineSpacing(m_fontSize));
-		m_cursor->setBaseLine(0);
-		m_cursor->setColor(m_palette->getColor(Cursor));
+		m_cursor.setCursorWidth(font.getGlyph('X', m_fontSize, false).advance);
+		m_cursor.setCursorHeight(font.getLineSpacing(m_fontSize));
+		m_cursor.setBaseLine(0);
+		m_cursor.setColor(m_palette->getColor(Cursor));
 		m_needUpdate = true;
 	}
 
@@ -150,6 +233,7 @@ namespace octo
 		m_palette = &palette;
 		m_needUpdate = true;
 		m_current.setColor(m_palette->getColor(Input));
+		m_completion.setColors(m_palette->getColor(Quote), m_palette->getColor(Background));
 		m_rectangle.setFillColor(m_palette->getColor(Background));
 	}
 
@@ -188,14 +272,14 @@ namespace octo
 		if (isEnabled() == false)
 			return;
 		m_current.setString(text);
-		m_cursor->onTextChanged(m_current);
+		m_cursor.onTextChanged(m_current);
 	}
 
 	void	Console::onCursorChanged(unsigned int pos)
 	{
 		if (isEnabled() == false)
 			return;
-		m_cursor->setCursorPosition(pos);
+		m_cursor.setCursorPosition(pos);
 	}
 
 	void	Console::onExecuted(std::wstring const& result)
@@ -234,6 +318,18 @@ namespace octo
 			case 127:
 				m_core.removeCurrent();
 				break;
+			// Theses keys triggers the completions before
+			// if completion is visible
+			case '\"':
+			case '(':
+			case ')':
+				if (m_core.isCompletionEnabled())
+					m_core.complete();
+				m_core.insertChar(event.unicode);
+				break;
+			// Tab is disabled because we needs to handle Shift key
+			case '\t':
+				break;
 			default:
 				m_core.insertChar(event.unicode);
 				break;
@@ -247,16 +343,28 @@ namespace octo
 			switch (event.code)
 			{
 				case sf::Keyboard::Left:
+					if (m_core.isCompletionEnabled())
+						m_core.setCompletionEnabled(false);
 					m_core.moveCursor(-1);
 					break;
 				case sf::Keyboard::Right:
-					m_core.moveCursor(1);
+					if (m_core.isCompletionEnabled())
+						m_core.complete();
+					else
+						m_core.moveCursor(1);
 					break;
 				case sf::Keyboard::Up:
 					m_core.resetFromNext();
 					break;
 				case sf::Keyboard::Down:
 					m_core.resetFromPrevious();
+					break;
+				case sf::Keyboard::Tab:
+					m_core.setCompletionEnabled(true);
+					if (event.shift)
+						m_core.prevCompletion();
+					else
+						m_core.nextCompletion();
 					break;
 				default:
 					break;
@@ -272,7 +380,10 @@ namespace octo
 			switch (event.code)
 			{
 				case sf::Keyboard::Escape:
-					setEnabled(false);
+					if (m_core.isCompletionEnabled())
+						m_core.setCompletionEnabled(false);
+					else
+						setEnabled(false);
 					break;
 				default:
 					break;
@@ -286,7 +397,9 @@ namespace octo
 	{
 		sf::Vector2f const&	viewSize = view.getSize();
 		sf::Vector2f const&	viewCenter = view.getCenter();
-		float				top = viewSize.y * m_relativeHeight * 0.5f + viewCenter.y;
+		float const			lineHeight = m_font->getLineSpacing(m_fontSize) + m_lineSpacing;
+		float const			top = viewSize.y * m_relativeHeight * 0.5f + viewCenter.y;
+		float				y = 0.f;
 		float				left = viewSize.x * -0.5f + viewCenter.x;
 		float				leftPadded = left + m_leftPadding;
 
@@ -295,12 +408,13 @@ namespace octo
 			m_rectangle.setSize(sf::Vector2f(viewSize.x, viewSize.y * m_relativeHeight));
 			m_rectangle.setPosition(sf::Vector2f(left, top));
 			m_current.setPosition(leftPadded, top + m_topPadding);
-			top += m_font->getLineSpacing(m_fontSize) + m_lineSpacing + m_topPadding;
+			y = top + lineHeight + m_topPadding;
 			for (sf::Text& text : m_log)
 			{
-				text.setPosition(leftPadded, top);
-				top += m_font->getLineSpacing(m_fontSize) + m_lineSpacing;
+				text.setPosition(leftPadded, y);
+				y += lineHeight;
 			}
+			m_completion.updatePosition(-(lineHeight + m_topPadding), m_lineSpacing);
 		}			
 	}
 
@@ -313,7 +427,8 @@ namespace octo
 		render.draw(m_current);
 		for (sf::Text const& text : m_log)
 			render.draw(text);
-		m_cursor->draw(render, m_current.getTransform());
+		render.draw(m_completion, m_cursor.getTransform() * m_current.getTransform());
+		m_cursor.draw(render, m_current.getTransform());
 	}
 
 	/*!	Print a message in the console

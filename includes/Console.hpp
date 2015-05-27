@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 02:20:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 22:34:47 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CONSOLE_HPP
 # include "NonCopyable.hpp"
 # include "IConsoleListener.hpp"
+# include "IConsoleCompletionListener.hpp"
 # include "GraphicsListeners.hpp"
 # include "ConsoleCore.hpp"
 
@@ -56,7 +57,8 @@ namespace octo
 					public ITextListener,
 					public IKeyboardListener
 	{
-		class Cursor;
+		class GraphicsCursor;
+		class GraphicsCompletion;
 
 		enum	Colors
 		{
@@ -113,8 +115,54 @@ namespace octo
 		virtual void				onExecuted(std::wstring const& result);
 		virtual void				onError(std::wstring const& message, std::wstring const& line);
 	private:
+		class GraphicsCompletion : public sf::Drawable,
+								   public IConsoleCompletionListener
+		{
+		public:	
+			GraphicsCompletion();
+			void			setColors(sf::Color const& textColor, sf::Color const& bgColor);
+			void			setFont(sf::Font const& font, unsigned int charSize);
+			void			onChanged(bool enabled,
+									  std::wstring const& buffer,
+									  std::wstring const& completion,
+									  std::size_t wordStart);
+			void			updatePosition(float top, float lineMargin);
+			virtual void	draw(sf::RenderTarget& target, sf::RenderStates states)const;
+			virtual void	onCompletionChanged(Changes const& changes);
+		private:
+			sf::Text						m_text;
+			sf::RectangleShape				m_background;
+			std::wstring					m_word;
+			std::wstring::size_type			m_wordStart;
+			std::wstring					m_completion;
+			bool							m_enabled;
+			float							m_padding;
+			sf::Font const*					m_font;
+		};
+
+		class GraphicsCursor
+		{
+		public:
+			GraphicsCursor();
+
+			void					setCursorWidth(float width);
+			void					setCursorHeight(float height);
+			void					setBaseLine(float pos);
+			void					setColor(sf::Color const& color);
+			void					onTextChanged(sf::Text const& text);
+			void					setCursorPosition(unsigned int cursorPos);
+			void					draw(sf::RenderTarget& render, sf::Transform const& parent)const;
+			sf::Transform const&	getTransform()const;
+		private:
+			std::vector<float>	m_offsets;
+			std::vector<float>	m_widths;
+			sf::RectangleShape	m_shape;
+			float				m_yPos;
+		};
+
 		ConsoleCore						m_core;
-		std::shared_ptr<class Cursor>	m_cursor;
+		GraphicsCursor					m_cursor;
+		GraphicsCompletion				m_completion;
 		std::list<sf::Text>				m_log;
 		sf::Text						m_current;
 		sf::RectangleShape				m_rectangle;

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:05:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 02:20:12 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 22:49:43 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 # define CONSOLECORE_HPP
 # include "ConsoleInterpreter.hpp"
 # include "ConsoleHistory.hpp"
+# include "ConsoleCompletion.hpp"
 
 namespace octo
 {
 	class IConsoleListener;
+	class IConsoleCompletionListener;
 
 	/*!
 	 *	\ingroup Console
@@ -39,9 +41,11 @@ namespace octo
 		ConsoleCore();
 
 		void						setListener(IConsoleListener* listener);
+		void						setCompletionListener(IConsoleCompletionListener* listener);
 
 		void						resetBuffer(std::wstring const& line);
 		void						insertChar(wchar_t c);
+		void						insertString(std::wstring const& str);
 		void						removeCurrent();
 		void						removePrevious();
 		void						removeAll();
@@ -51,11 +55,16 @@ namespace octo
 		void						moveCursor(int offset);
 		void						updateText();
 
+		void						setCompletionEnabled(bool enable);
+		void						nextCompletion();
+		void						prevCompletion();
 		void						execute();
+		void						complete();
 
 		std::wstring const&			getBuffer()const;
 		unsigned int				getPromptSize()const;
 		std::vector<std::wstring>	getCommandList()const;
+		bool						isCompletionEnabled()const;
 
 		template <class R, class ... A>
 		void						addCommand(std::wstring const& name, R(*function)(A...));
@@ -75,17 +84,22 @@ namespace octo
 		template <class F>
 		void						addCommand(std::wstring const& name, F&& functor);
 	private:
+		std::wstring				getLeftWord()const;
 		void						emitTextChanged();
 		void						emitCursorChanged();
 		void						emitExecuted(std::wstring const& result);
 		void						emitError(std::wstring const& error);
+		void						emitCompletionChanged();
 	private:
-		ConsoleInterpreter	m_interpreter;
-		ConsoleHistory		m_history;
-		std::wstring		m_buffer;
-		std::wstring		m_prompt;
-		unsigned int		m_cursorPosition;
-		IConsoleListener*	m_listener;
+		ConsoleInterpreter			m_interpreter;
+		ConsoleHistory				m_history;
+		ConsoleCompletion			m_completion;
+		std::wstring				m_buffer;
+		std::wstring				m_prompt;
+		unsigned int				m_cursorPosition;
+		bool						m_completionEnabled;
+		IConsoleListener*			m_listener;
+		IConsoleCompletionListener*	m_completionListener;
 	};
 }
 
