@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/27 03:07:56 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 23:38:46 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 00:07:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 # define LEXICALTREE_HPP
 # include <string>
 # include <vector>
-# include <queue>
-# include <set>
 # include <map>
-# include <cassert>
+# include <memory>
 # include <ostream>
 
 namespace octo
@@ -38,15 +36,14 @@ namespace octo
 		LexicalTree();
 		~LexicalTree();
 
-		void	exportDot(OStream& os, String const& graphName)const;
-		void	addWord(String const& word, T const& value);
-		void	completeWord(String const& beginStr, std::vector<String>& results)const;
-		void	getWords(std::vector<String>& results)const;
-		bool	contains(String const& word)const;
+		void			exportDot(OStream& os, String const& graphName)const;
+		void			addWord(String const& word, T const& value);
+		void			completeWord(String const& beginStr, std::vector<String>& results)const;
+		void			getWords(std::vector<String>& results)const;
+		bool			contains(String const& word)const;
 	private:
 		static NodePtr	addLetter(NodePtr& current, C letter, T const& value);
 		static NodePtr	addLetter(NodePtr& current, C letter);
-
 	private:
 		NodePtr	m_root;
 	};

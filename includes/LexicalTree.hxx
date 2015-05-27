@@ -6,9 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/27 23:38:49 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 23:38:57 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 00:07:15 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdexcept>
+#include <set>
 
 namespace octo
 {
