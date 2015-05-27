@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 18:53:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:50:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,16 @@ namespace octo
 		return (m_verticalSync);
 	}
 
+	void	GraphicsManager::setFramerateLimit(unsigned int limit)
+	{
+		m_framerateLimit = limit;
+		m_window.setFramerateLimit(limit);
+	}
+	
+	unsigned int	GraphicsManager::getFramerateLimit()const
+	{
+		return (m_framerateLimit);
+	}
 	void	GraphicsManager::setView(sf::View const& view)
 	{
 		m_window.setView(view);

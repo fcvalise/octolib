@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 20:29:45 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:52:37 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ namespace octo
 											   title,
 											   m_options.getValue("fullscreen", false));
 				m_graphicsManager.setVerticalSyncEnabled(m_options.getValue("vsync", true));
+				m_graphicsManager.setFramerateLimit(m_options.getValue("framerate_limit", 0));
 				m_camera.setup(m_graphicsManager);
 			}
 
