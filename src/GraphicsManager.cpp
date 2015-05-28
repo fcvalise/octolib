@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:50:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 02:29:22 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ namespace octo
 		m_event(sf::Event()),
 		m_keyboardListenersEnabled(true),
 		m_mouseListenersEnabled(true),
-		m_joystickListenersEnabled(true)
+		m_joystickListenersEnabled(true),
+		m_framerateLimit(0)
 	{
 	}
 
