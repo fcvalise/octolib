@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:06:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:30:29 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,7 +314,7 @@ namespace octo
 			case '\"':
 			case '(':
 			case ')':
-				if (m_core.isCompletionEnabled())
+				if (m_core.isCompletionActive())
 					m_core.complete();
 				m_core.insertChar(event.unicode);
 				break;
@@ -334,12 +334,12 @@ namespace octo
 			switch (event.code)
 			{
 				case sf::Keyboard::Left:
-					if (m_core.isCompletionEnabled())
-						m_core.setCompletionEnabled(false);
+					if (m_core.isCompletionActive())
+						m_core.setCompletionActive(false);
 					m_core.moveCursor(-1);
 					break;
 				case sf::Keyboard::Right:
-					if (m_core.isCompletionEnabled())
+					if (m_core.isCompletionActive())
 						m_core.complete();
 					else
 						m_core.moveCursor(1);
@@ -351,7 +351,7 @@ namespace octo
 					m_core.resetFromPrevious();
 					break;
 				case sf::Keyboard::Tab:
-					m_core.setCompletionEnabled(true);
+					m_core.setCompletionActive(true);
 					if (event.shift)
 						m_core.prevCompletion();
 					else
@@ -371,8 +371,8 @@ namespace octo
 			switch (event.code)
 			{
 				case sf::Keyboard::Escape:
-					if (m_core.isCompletionEnabled())
-						m_core.setCompletionEnabled(false);
+					if (m_core.isCompletionActive())
+						m_core.setCompletionActive(false);
 					else
 						setEnabled(false);
 					break;

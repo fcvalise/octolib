@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 17:35:02 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:57:25 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,12 @@ namespace octo
 		 *		<TD>Define render resolution. 
 		 *		The format is: <width>x<height>-<bits_per_pixel></TD>
 		 *		<TD>greatest fullscreen mode available</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>framerate_limit</TD>
+		 *		<TD>unsigned int</TD>
+		 *		<TD>Define the framerate limit (0 to disable the limit). </TD>
+		 *		<TD>0 (no limits)</TD>
 		 *	</TR>
 		 *	<TR>
 		 *		<TD>start_state</TD>
