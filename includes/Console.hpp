@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 23:02:04 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:05:14 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define CONSOLE_HPP
 # include "NonCopyable.hpp"
 # include "IConsoleListener.hpp"
+# include "IConsoleCompletionListener.hpp"
 # include "GraphicsListeners.hpp"
 # include "ConsoleCore.hpp"
-# include "ConsoleHistory.hpp"
 
 # include <SFML/System/Vector2.hpp>
 # include <SFML/Graphics/Color.hpp>
@@ -57,7 +57,8 @@ namespace octo
 					public ITextListener,
 					public IKeyboardListener
 	{
-		class Cursor;
+		class GraphicsCursor;
+		class GraphicsCompletion;
 
 		enum	Colors
 		{
@@ -77,6 +78,10 @@ namespace octo
 		void						setEnabled(bool enable);
 		bool						isEnabled()const;
 
+		void						addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem);
+		void						addWord(std::string const& word, ConsoleCompletion::Lexems lexem);
+		void						addWords(std::vector<std::wstring> const& words, ConsoleCompletion::Lexems lexem);
+		void						addWords(std::vector<std::string> const& words, ConsoleCompletion::Lexems lexem);
 		void						print(std::wstring const& str, sf::Color const& color);
 		void						printError(std::wstring const& str);
 		void						printError(std::exception const& e);
@@ -113,14 +118,51 @@ namespace octo
 		virtual void				onCursorChanged(unsigned int pos);
 		virtual void				onExecuted(std::wstring const& result);
 		virtual void				onError(std::wstring const& message, std::wstring const& line);
-
-		void						nextHistoryEntry();
-		void						previousHistoryEntry();
-		void						execute();
 	private:
+		class GraphicsCompletion : public sf::Drawable,
+								   public IConsoleCompletionListener
+		{
+		public:	
+			GraphicsCompletion();
+			void			setColors(sf::Color const& textColor, sf::Color const& bgColor);
+			void			setFont(sf::Font const& font, unsigned int charSize);
+			void			updatePosition(float top, float lineMargin);
+			virtual void	draw(sf::RenderTarget& target, sf::RenderStates states)const;
+			virtual void	onCompletionChanged(Changes const& changes);
+		private:
+			sf::Text						m_text;
+			sf::RectangleShape				m_background;
+			std::wstring					m_word;
+			std::wstring::size_type			m_wordStart;
+			std::wstring					m_completion;
+			bool							m_enabled;
+			float							m_padding;
+			sf::Font const*					m_font;
+		};
+
+		class GraphicsCursor
+		{
+		public:
+			GraphicsCursor();
+
+			void					setCursorWidth(float width);
+			void					setCursorHeight(float height);
+			void					setBaseLine(float pos);
+			void					setColor(sf::Color const& color);
+			void					onTextChanged(sf::Text const& text);
+			void					setCursorPosition(unsigned int cursorPos);
+			void					draw(sf::RenderTarget& render, sf::Transform const& parent)const;
+			sf::Transform const&	getTransform()const;
+		private:
+			std::vector<float>	m_offsets;
+			std::vector<float>	m_widths;
+			sf::RectangleShape	m_shape;
+			float				m_yPos;
+		};
+
 		ConsoleCore						m_core;
-		ConsoleHistory					m_history;
-		std::shared_ptr<class Cursor>	m_cursor;
+		GraphicsCursor					m_cursor;
+		GraphicsCompletion				m_completion;
 		std::list<sf::Text>				m_log;
 		sf::Text						m_current;
 		sf::RectangleShape				m_rectangle;
