@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:05:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:28:37 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,6 @@ namespace octo
 					public ITextListener,
 					public IKeyboardListener
 	{
-		class GraphicsCursor;
-		class GraphicsCompletion;
-
 		enum	Colors
 		{
 			Background = 0,
@@ -82,6 +79,7 @@ namespace octo
 		void						addWord(std::string const& word, ConsoleCompletion::Lexems lexem);
 		void						addWords(std::vector<std::wstring> const& words, ConsoleCompletion::Lexems lexem);
 		void						addWords(std::vector<std::string> const& words, ConsoleCompletion::Lexems lexem);
+
 		void						print(std::wstring const& str, sf::Color const& color);
 		void						printError(std::wstring const& str);
 		void						printError(std::exception const& e);
