@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:30:29 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 00:54:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,11 +351,17 @@ namespace octo
 					m_core.resetFromPrevious();
 					break;
 				case sf::Keyboard::Tab:
-					m_core.setCompletionActive(true);
-					if (event.shift)
-						m_core.prevCompletion();
+					if (m_core.isCompletionActive())
+					{
+						if (event.shift)
+							m_core.prevCompletion();
+						else
+							m_core.nextCompletion();
+					}
 					else
-						m_core.nextCompletion();
+					{
+						m_core.setCompletionActive(true);
+					}
 					break;
 				default:
 					break;
