@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 18:53:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 02:29:22 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ namespace octo
 		m_event(sf::Event()),
 		m_keyboardListenersEnabled(true),
 		m_mouseListenersEnabled(true),
-		m_joystickListenersEnabled(true)
+		m_joystickListenersEnabled(true),
+		m_framerateLimit(0)
 	{
 	}
 
@@ -215,6 +216,16 @@ namespace octo
 		return (m_verticalSync);
 	}
 
+	void	GraphicsManager::setFramerateLimit(unsigned int limit)
+	{
+		m_framerateLimit = limit;
+		m_window.setFramerateLimit(limit);
+	}
+	
+	unsigned int	GraphicsManager::getFramerateLimit()const
+	{
+		return (m_framerateLimit);
+	}
 	void	GraphicsManager::setView(sf::View const& view)
 	{
 		m_window.setView(view);
