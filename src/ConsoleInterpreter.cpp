@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/04 03:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/01 16:30:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 02:45:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,43 @@ namespace octo
 		return (m_argumentIndex);
 	}
 
+	//
+	//	NotEnoughArgumentException
+	//
+	ConsoleInterpreter::NotEnoughArgumentException::NotEnoughArgumentException(std::size_t expected, std::size_t provided) :
+		m_expected(expected),
+		m_provided(provided)
+	{
+	}
+
+	std::size_t	ConsoleInterpreter::NotEnoughArgumentException::getExpected()const
+	{
+		return (m_expected);
+	}
+
+	std::size_t	ConsoleInterpreter::NotEnoughArgumentException::getProvided()const
+	{
+		return (m_provided);
+	}
+
+	//
+	//	TooManyArgumentException
+	//
+	ConsoleInterpreter::TooManyArgumentException::TooManyArgumentException(std::size_t expected, std::size_t provided) :
+		m_expected(expected),
+		m_provided(provided)
+	{
+	}
+
+	std::size_t	ConsoleInterpreter::TooManyArgumentException::getExpected()const
+	{
+		return (m_expected);
+	}
+
+	std::size_t	ConsoleInterpreter::TooManyArgumentException::getProvided()const
+	{
+		return (m_provided);
+	}
 	//
 	//	UnknowCommandException
 	//

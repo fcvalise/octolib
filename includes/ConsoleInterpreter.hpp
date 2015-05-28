@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 12:23:11 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 00:49:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 21:54:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,10 @@ namespace octo
 		std::vector<std::wstring>	getCommandList()const;
 	private:
 		template <class C, class R, class ... A>
-		void			addFunctor(std::wstring const& name, C instance, R(C::*function)(A...));
+		void						addFunctor(std::wstring const& name, C instance, R(C::*function)(A...));
 
 		template <class C, class R, class ... A>
-		void			addFunctor(std::wstring const& name, C instance, R(C::*function)(A...)const);
+		void						addFunctor(std::wstring const& name, C instance, R(C::*function)(A...)const);
 
 		typedef std::shared_ptr<AbstractCallable>	CallablePtr;
 		typedef std::map<std::wstring, CallablePtr>	Map;
@@ -149,14 +149,26 @@ namespace octo
 	class ConsoleInterpreter::NotEnoughArgumentException
 	{
 	public:
-		NotEnoughArgumentException() = default;
+		NotEnoughArgumentException(std::size_t expected, std::size_t provided);
+
+		std::size_t	getExpected()const;
+		std::size_t	getProvided()const;
+	private:
+		std::size_t	m_expected;
+		std::size_t	m_provided;
 	};
 
 	/*!	Exception thrown when there too many argument */
 	class ConsoleInterpreter::TooManyArgumentException
 	{
 	public:
-		TooManyArgumentException() = default;
+		TooManyArgumentException(std::size_t expected, std::size_t provided);
+
+		std::size_t	getExpected()const;
+		std::size_t	getProvided()const;
+	private:
+		std::size_t	m_expected;
+		std::size_t	m_provided;
 	};
 
 	/*!	Exception thrown when an unknow command is called */

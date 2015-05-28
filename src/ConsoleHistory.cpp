@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/30 15:33:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 16:20:06 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/27 02:28:15 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,23 @@
 
 namespace octo
 {
+	/*!
+	 *	\ingroup Console
+	 *	\class ConsoleHistory
+	 *	\brief Store the history of user command entered
+	 */
+
 	ConsoleHistory::ConsoleHistory() :
-		m_maxEntries(2000),
+		m_maxEntries(1000),
 		m_current(InvalidPosition)
 	{
+	}
+
+	void	ConsoleHistory::setMaxEntries(std::size_t max)
+	{
+		while (m_entries.size() > max)
+			m_entries.pop_back();
+		m_maxEntries = max;
 	}
 
 	void	ConsoleHistory::pushEntry(std::wstring const& entry)
