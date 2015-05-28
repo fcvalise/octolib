@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 00:45:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/28 01:42:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,36 @@ namespace octo
 	ConsoleCore::ConsoleCore() :
 		m_prompt(L"$> "),
 		m_cursorPosition(0),
-		m_completionEnabled(false),
+		m_completionActive(false),
 		m_listener(nullptr),
 		m_completionListener(nullptr)
 	{
 	}
 
+	/*!	Add a word to the completion dictionnary */
 	void	ConsoleCore::addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem)
 	{
 		m_completion.addWord(word, lexem);
 	}
 
-	void	ConsoleCore::setCompletionEnabled(bool enable)
+	/*!	Set completion system active or inactive
+	 *
+	 *	When active, the system must be displayed.
+	 */
+	void	ConsoleCore::setCompletionActive(bool enable)
 	{
-		m_completionEnabled = enable;
+		m_completionActive = enable;
 		emitCompletionChanged();
 	}
 
+	/*!	Change current completion to the next */
 	void	ConsoleCore::nextCompletion()
 	{
 		m_completion.nextCompletion();
 		emitCompletionChanged();
 	}
 
+	/*!	Change current completion to the previous */
 	void	ConsoleCore::prevCompletion()
 	{
 		m_completion.prevCompletion();
@@ -66,6 +73,10 @@ namespace octo
 		emitCompletionChanged();
 	}
 
+	/*!	Define the unique completion listener
+	 *	
+	 *	This listener receives events about text completion.
+	 */
 	void	ConsoleCore::setCompletionListener(IConsoleCompletionListener* listener)
 	{
 		m_completionListener = listener;
@@ -166,7 +177,7 @@ namespace octo
 		if (m_history.getNextEntry(entry))
 		{
 			resetBuffer(entry);
-			setCompletionEnabled(false);
+			setCompletionActive(false);
 		}
 	}
 
@@ -178,7 +189,7 @@ namespace octo
 		if (m_history.getPreviousEntry(entry))
 		{
 			resetBuffer(entry);
-			setCompletionEnabled(false);
+			setCompletionActive(false);
 		}
 	}
 
@@ -214,7 +225,7 @@ namespace octo
 		{
 			emitError(L"interpreter: syntax error at " + std::to_wstring(e.getPosition()) + L": " + e.getDescription());
 		}
-		setCompletionEnabled(false);
+		setCompletionActive(false);
 		m_history.pushEntry(m_buffer);
 		m_buffer.clear();
 		m_cursorPosition = 0;
@@ -228,11 +239,11 @@ namespace octo
 	{
 		std::wstring	completion;
 
-		if (m_completionEnabled && m_completion.hasCompletions())
+		if (m_completionActive && m_completion.hasCompletions())
 		{
 			m_completion.getCurrentCompletion(completion);
 			insertString(completion);
-			setCompletionEnabled(false);
+			setCompletionActive(false);
 		}
 	}
 
@@ -252,9 +263,9 @@ namespace octo
 		return (m_interpreter.getCommandList());
 	}
 	
-	bool	ConsoleCore::isCompletionEnabled()const
+	bool	ConsoleCore::isCompletionActive()const
 	{
-		return (m_completionEnabled);
+		return (m_completionActive);
 	}
 	
 	void	ConsoleCore::emitTextChanged()
@@ -294,14 +305,14 @@ namespace octo
 			++start;
 		word = m_buffer.substr(start, m_buffer.size() - start);
 		if (word.empty())
-			m_completionEnabled = false;
+			m_completionActive = false;
 		m_completion.resetBuffer(word);
 		m_completion.getCurrentCompletion(current);
 		if (m_completionListener)
 		{
 			m_completion.getCurrentCompletion(current);
 			m_completionListener->onCompletionChanged(
-					IConsoleCompletionListener::Changes(m_completionEnabled && m_completion.hasCompletions(),
+					IConsoleCompletionListener::Changes(m_completionActive && m_completion.hasCompletions(),
 														word,
 														current,
 														start,
