@@ -194,11 +194,14 @@ void TilePreview::updateTilePreview()
 {
     if (m_model == nullptr || m_selectionModel == nullptr)
         return;
-    QModelIndex current = m_selectionModel->currentIndex();
-    QPixmap     pixmap(m_model->tileSize());
-    QPainter    painter(&pixmap);
-    QRectF      subRect;
+    QList<QModelIndex>  selection = m_selectionModel->selectedIndexes();
+    QModelIndex         current = m_selectionModel->currentIndex();
+    QPixmap             pixmap(m_model->tileSize());
+    QPainter            painter(&pixmap);
+    QRectF              subRect;
 
+    if (current.isValid() == false && selection.size() > 1)
+        current = selection.first();
     if (m_model->tileSize().isEmpty())
         return;
     painter.fillRect(pixmap.rect(), Qt::white);
