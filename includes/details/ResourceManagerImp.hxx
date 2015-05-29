@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/25 22:53:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 20:06:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 01:15:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,34 @@ namespace octo
 				if (m_resources.find(resourceName) != m_resources.end())
 				{
 					if (listener)
-						listener->error("error when loading '" + resourceName + "': already exists");
+					{
+						listener->error("error when loading '" + resourceName + "': name conflict");
+						listener->finished();
+					}
 					return (false);
 				}
 				if (reader.load(buffer, key) == false)
 				{
 					if (listener)
+					{
 						listener->error("error when loading '" + resourceName + "': key " + std::to_string(key) + " not found");
+						listener->finished();
+					}
 					return (false);
 				}
 				if (loader.load(buffer, *resource) == false)
 				{
 					if (listener)
+					{
 						listener->error("error when loading '" + resourceName + "': unsupported file format");
+						listener->finished();
+					}
 					return (false);
 				}
 				m_resources.emplace(resourceName, resource.release());
 			}
+			if (listener)
+				listener->finished();
 			return (true);
 		}
 
