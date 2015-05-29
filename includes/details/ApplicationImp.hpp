@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:52:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 17:30:11 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,7 +249,7 @@ namespace octo
 
 			void	stop()
 			{
-				m_stateManager.pushEvent(PopAllStateEvent());
+				m_stateManager.popAll();
 			}
 
 			void	drawAll()
