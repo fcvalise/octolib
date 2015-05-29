@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:28:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:37:02 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,6 @@ namespace octo
 {
 	class Palette;
 
-	/*!
-	 *	\ingroup Console
-	 *	\class Console
-	 *	\brief In-game console
-	 *
-	 *	This console is displayed on screen over the game.<br>
-	 *	On enabled, the console takes the keyboard's focus.<br>
-	 *
-	 *	Currently these type are supported as parameter and return of command:
-	 *	<ul>
-	 *		<li>All native types such bool, int, float, double </li>
-	 *		<li>std::string</li>
-	 *		<li>std::wstring</li>
-	 *		<li>sf::Vector2</li>
-	 *		<li>sf::Vector3</li>
-	 *		<li>sf::Rect</li>
-	 *		<li>sf::Color</li>
-	 *		<li>sf::VideoMode</li>
-	 *	</ul>
-	 */
 	class Console :	public NonCopyable,
 					public IConsoleListener,
 					public ITextListener,

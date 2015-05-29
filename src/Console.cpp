@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 00:54:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:38:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,44 @@ namespace octo
 	//
 	//	Console
 	//
+
+	/*!
+	 *	\ingroup Console
+	 *	\class Console
+	 *	\brief In-game console
+	 *
+	 *	This console is displayed on screen over the game.<br>
+	 *	On enabled, the console takes the keyboard's focus.<br>
+	 *
+	 *	<h3>Command registration</h3>
+	 *	Registering a command must be done by using addCommand methods.<br>
+	 *	You can register any C++ function or methods, but overloads are
+	 *	not supported, use a lambda to explicitly specifing the overload
+	 *	to call.<br>
+	 *	Currently these type are supported as parameter and return of command:
+	 *	<ul>
+	 *		<li>All native types such bool, int, float, double </li>
+	 *		<li>std::string</li>
+	 *		<li>std::wstring</li>
+	 *		<li>sf::Vector2</li>
+	 *		<li>sf::Vector3</li>
+	 *		<li>sf::Rect</li>
+	 *		<li>sf::Color</li>
+	 *		<li>sf::VideoMode</li>
+	 *	</ul>
+	 *	<h3>History</h3>
+	 *	Keys UP and DOWN recall respectivly the previous and the next user entry.<br>
+	 *	<h3>Auto completion</h3>
+	 *	Press TAB to active the completion mode.
+	 *	In this mode, TAB and SHIFT+TAB allows
+	 *	to select a particular completion if they are multiple.<br>
+	 *	Press LEFT to complete or ESC to close completion panel.<br>
+	 *	<br>
+	 *	All commands names registered are added to the completion dictionnary but
+	 *	you can add words yourself using addWord methods.
+	 */
+
+	/*!	Construct a default console */
 	Console::Console() :
 		m_maxLogCount(20u),
 		m_fontSize(24),
@@ -353,7 +391,9 @@ namespace octo
 				case sf::Keyboard::Tab:
 					if (m_core.isCompletionActive())
 					{
-						if (event.shift)
+						if (m_core.getCompletionCount() == 1)
+							m_core.complete();
+						else if (event.shift)
 							m_core.prevCompletion();
 						else
 							m_core.nextCompletion();
@@ -428,22 +468,26 @@ namespace octo
 		m_cursor.draw(render, m_current.getTransform());
 	}
 
+	/*!	Register a word to completion dictionnary */
 	void	Console::addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem)
 	{
 		m_core.addWord(word, lexem);
 	}
 
+	/*!	Register a word to completion dictionnary */
 	void	Console::addWord(std::string const& word, ConsoleCompletion::Lexems lexem)
 	{
 		m_core.addWord(stringToWide(word), lexem);
 	}
 
+	/*!	Register a word to completion dictionnary */
 	void	Console::addWords(std::vector<std::wstring> const& words, ConsoleCompletion::Lexems lexem)
 	{
 		for (std::wstring const& word : words)
 			m_core.addWord(word, lexem);
 	}
 
+	/*!	Register a word to completion dictionnary */
 	void	Console::addWords(std::vector<std::string> const& words, ConsoleCompletion::Lexems lexem)
 	{
 		for (std::string const& word : words)
