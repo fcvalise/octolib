@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 22:53:52 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 20:07:11 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <vector>
 # include <cassert>
 # include <stdexcept>
+# include <map>
 
 namespace octo
 {
@@ -68,12 +69,10 @@ namespace octo
 			bool			loadPackage(PackageReader& reader,
 										ILoader&& loader,
 										IResourceListener* listener);
-			T const&		get(std::uint64_t key)const;
+			T const&		get(std::string const& key)const;
 		private:
-			std::unique_ptr<T[]>			m_resources;
 			PackageHeader::EntryType const	m_type;
-			std::uint64_t					m_offset;
-			std::uint64_t					m_count;
+			std::map<std::string, T const*>	m_resources;	// TODO rename to resources
 		};
 	}
 }

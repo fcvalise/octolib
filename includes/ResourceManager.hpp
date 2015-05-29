@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 19:01:55 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 19:56:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ namespace octo
 	private:
 		typedef details::StreamedResource<sf::Font>		Font;
 
-		PackageReader									m_reader;
 		details::ResourceManagerImp<Font>				m_fontManager;
 		details::ResourceManagerImp<sf::Texture>		m_textureManager;
 		details::ResourceManagerImp<sf::SoundBuffer>	m_soundManager;
