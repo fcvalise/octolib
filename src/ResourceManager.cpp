@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:02:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 19:05:45 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,23 +124,13 @@ namespace octo
 		return (true);
 	}
 
-	sf::Font const&	ResourceManager::getFont(std::uint64_t key)const
-	{
-		return (m_fontManager.get(key).get());
-	}
-
 	sf::Font const&		ResourceManager::getFont(std::string const& fileName)const
 	{
 		std::uint64_t	key = m_reader.getHeader().findEntryByName(PackageHeader::EntryType::Font, fileName);
 
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get font by name: " + fileName + " not found");
-		return (getFont(key));
-	}
-
-	sf::Texture const&	ResourceManager::getTexture(std::uint64_t key)const
-	{
-		return (m_textureManager.get(key));
+		return (m_fontManager.get(key).get());
 	}
 
 	sf::Texture const&	ResourceManager::getTexture(std::string const& fileName)const
@@ -149,12 +139,7 @@ namespace octo
 
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get texture by name: " + fileName + " not found");
-		return (getTexture(key));
-	}
-
-	sf::SoundBuffer const&	ResourceManager::getSound(std::uint64_t key)const
-	{
-		return (m_soundManager.get(key));
+		return (m_textureManager.get(key));
 	}
 
 	sf::SoundBuffer const&	ResourceManager::getSound(std::string const& fileName)const
@@ -163,12 +148,7 @@ namespace octo
 
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get sound by name: " + fileName + " not found");
-		return (getSound(key));
-	}
-
-	sf::String const&	ResourceManager::getText(std::uint64_t key)const
-	{
-		return (m_textManager.get(key));
+		return (m_soundManager.get(key));
 	}
 	
 	sf::String const&	ResourceManager::getText(std::string const& fileName)const
@@ -177,12 +157,7 @@ namespace octo
 
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get text by name: " + fileName + " not found");
-		return (getText(key));
-	}
-
-	Palette const&		ResourceManager::getPalette(std::uint64_t key)const
-	{
-		return (m_paletteManager.get(key));
+		return (m_textManager.get(key));
 	}
 
 	Palette const&		ResourceManager::getPalette(std::string const& fileName)const
@@ -191,12 +166,7 @@ namespace octo
 
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get palette by name: " + fileName + " not found");
-		return (getPalette(key));
-	}
-
-	ColorWheel const&		ResourceManager::getColorWheel(std::uint64_t key)const
-	{
-		return (m_colorWheelManager.get(key));
+		return (m_paletteManager.get(key));
 	}
 
 	ColorWheel const&		ResourceManager::getColorWheel(std::string const& fileName)const
@@ -205,12 +175,7 @@ namespace octo
 
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get wheel by name: " + fileName + " not found");
-		return (getColorWheel(key));
-	}
-
-	SpriteSheet const&		ResourceManager::getSpriteSheet(std::uint64_t key)const
-	{
-		return (m_spriteSheetManager.get(key));
+		return (m_colorWheelManager.get(key));
 	}
 
 	SpriteSheet const&		ResourceManager::getSpriteSheet(std::string const& fileName)const
@@ -219,12 +184,7 @@ namespace octo
 
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get sprite sheet by name: " + fileName + " not found");
-		return (getSpriteSheet(key));
-	}
-
-	SpriteAnimation const&		ResourceManager::getSpriteAnimation(std::uint64_t key)const
-	{
-		return (m_spriteAnimationManager.get(key));
+		return (m_spriteSheetManager.get(key));
 	}
 
 	SpriteAnimation const&		ResourceManager::getSpriteAnimation(std::string const& fileName)const
@@ -233,6 +193,6 @@ namespace octo
 
 		if (key == PackageHeader::NullEntryKey)
 			throw std::range_error("resource manager: get sprite animation by name: " + fileName + " not found");
-		return (getSpriteAnimation(key));
+		return (m_spriteAnimationManager.get(key));
 	}
 }

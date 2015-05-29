@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:02:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 19:01:55 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,72 +68,32 @@ namespace octo
 		bool					loadPackage(std::string const& fileName, IResourceListener* listener);
 
 		/*!	Get a font
-		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
-		 */
-		sf::Font const&			getFont(std::uint64_t key)const;
-
-		/*!	Get a font
 		 */
 		sf::Font const&			getFont(std::string const& fileName)const;
-
-		/*!	Get a texture
-		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
-		 */
-		sf::Texture const&		getTexture(std::uint64_t key)const;
 
 		/*!	Get a texture
 		 */
 		sf::Texture const&		getTexture(std::string const& fileName)const;
 
 		/*!	Get a sound buffer
-		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
-		 */
-		sf::SoundBuffer const&	getSound(std::uint64_t key)const;
-
-		/*!	Get a sound buffer
 		 */
 		sf::SoundBuffer const&	getSound(std::string const& fileName)const;
-
-		/*!	Get a text
-		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
-		 */
-		sf::String const&		getText(std::uint64_t key)const;
 
 		/*!	Get a text
 		 */
 		sf::String const&		getText(std::string const& fileName)const;
 
 		/*!	Get a palette
-		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
-		 */
-		Palette const&			getPalette(std::uint64_t key)const;
-
-		/*!	Get a palette
 		 */
 		Palette const&			getPalette(std::string const& fileName)const;
-
-		/*!	Get a color wheel
-		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
-		 */
-		ColorWheel const&		getColorWheel(std::uint64_t key)const;
 
 		/*!	Get a color wheel
 		 */
 		ColorWheel const&		getColorWheel(std::string const& fileName)const;
 
 		/*!	Get a sprite sheet
-		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
-		 */
-		SpriteSheet const&		getSpriteSheet(std::uint64_t key)const;
-
-		/*!	Get a sprite sheet
 		 */
 		SpriteSheet const&		getSpriteSheet(std::string const& fileName)const;
-
-		/*!	Get a sprite animation
-		 *	\param key Key of font defined in generated file ResourceDefinitions.hpp
-		 */
-		SpriteAnimation const&	getSpriteAnimation(std::uint64_t key)const;
 
 		/*!	Get a sprite animation
 		 */
