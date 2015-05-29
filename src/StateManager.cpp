@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 17:43:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 17:44:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,6 @@ namespace octo
 	{
 		if (m_inUpdate)
 		{
-			std::cout << "pop all" << std::endl;
 			pushEvent(PopAllStateEvent());
 			return;
 		}
