@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 16:17:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 17:43:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ namespace octo
 		TransitionPtr		m_transition;
 		Key					m_defaultTransitionKey;
 		sf::Time			m_transitionDuration;
+		bool				m_inUpdate;
 	};
 
 	class StateManagerEvent
@@ -198,38 +199,17 @@ namespace octo
 		};
 
 		StateManagerEvent();
-		StateManagerEvent(Type type, std::string const& key);
+		StateManagerEvent(Type type, std::string const& stateKey, std::string const& transitionKey);
 
 		Type				getType()const;
-		std::string const&	getKey()const;
+		std::string const&	getStateKey()const;
+		std::string const&	getTransitionKey()const;
 	private:
 		Type		m_type;
-		std::string	m_key;
+		std::string	m_stateKey;
+		std::string	m_transitionKey;
 	};
 
-	class PushStateEvent : public StateManagerEvent
-	{
-	public:
-		explicit PushStateEvent(std::string const& key);
-	};
-
-	class ChangeStateEvent : public StateManagerEvent
-	{
-	public:
-		explicit ChangeStateEvent(std::string const& key);
-	};
-
-	class PopStateEvent : public StateManagerEvent
-	{
-	public:
-		PopStateEvent();
-	};
-
-	class PopAllStateEvent : public StateManagerEvent
-	{
-	public:
-		PopAllStateEvent();
-	};
 }
 
 #include "StateManager.hxx"

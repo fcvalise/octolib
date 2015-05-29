@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 03:12:42 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 17:44:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,57 @@
 
 namespace octo
 {
+	namespace
+	{
+		class BooleanLock
+		{
+		public:
+			inline explicit BooleanLock(bool& lock) :
+				m_lock(lock)
+			{
+				m_lock = true;
+			}
+
+			inline ~BooleanLock()
+			{
+				m_lock = false;
+			}
+		private:
+			bool&	m_lock;
+		};
+	}
+
+	class PushStateEvent : public StateManagerEvent
+	{
+	public:
+		explicit PushStateEvent(std::string const& stateKey, std::string const& transitionKey);
+	};
+
+	class ChangeStateEvent : public StateManagerEvent
+	{
+	public:
+		explicit ChangeStateEvent(std::string const& stateKey, std::string const& transitionKey);
+	};
+
+	class PopStateEvent : public StateManagerEvent
+	{
+	public:
+		explicit PopStateEvent(std::string const& transitionKey);
+	};
+
+	class PopAllStateEvent : public StateManagerEvent
+	{
+	public:
+		PopAllStateEvent();
+	};
+
+	//
+	//	class StateManager
+	//
 	StateManager::StateManager() :
 		EventManager(1),
-		m_transitionDuration(sf::seconds(0.8f))
+		m_transitionDuration(sf::seconds(0.8f)),
+		m_inUpdate(false)
 	{
 	}
 
@@ -40,6 +88,11 @@ namespace octo
 
 	void	StateManager::push(Key const& stateKey, Key const& transitionKey)
 	{
+		if (m_inUpdate)
+		{
+			pushEvent(PushStateEvent(stateKey, transitionKey));
+			return;
+		}
 		if (hasCurrentState())
 		{
 			if (isStateRegistered(stateKey) == false)
@@ -57,6 +110,11 @@ namespace octo
 
 	void	StateManager::push(Key const& key)
 	{
+		if (m_inUpdate)
+		{
+			pushEvent(PushStateEvent(key, m_defaultTransitionKey));
+			return;
+		}
 		if (m_defaultTransitionKey.empty() == false)
 		{
 			push(key, m_defaultTransitionKey);
@@ -76,6 +134,11 @@ namespace octo
 
 	void	StateManager::change(Key const& stateKey, Key const& transitionKey)
 	{
+		if (m_inUpdate)
+		{
+			pushEvent(ChangeStateEvent(stateKey, transitionKey));
+			return;
+		}
 		if (hasCurrentState())
 		{
 			if (isStateRegistered(stateKey) == false)
@@ -93,6 +156,11 @@ namespace octo
 
 	void	StateManager::change(Key const& key)
 	{
+		if (m_inUpdate)
+		{
+			pushEvent(ChangeStateEvent(key, m_defaultTransitionKey));
+			return;
+		}
 		if (m_defaultTransitionKey.empty() == false)
 		{
 			change(key, m_defaultTransitionKey);
@@ -119,6 +187,11 @@ namespace octo
 
 	void	StateManager::pop(Key const& transitionKey)
 	{
+		if (m_inUpdate)
+		{
+			pushEvent(PopStateEvent(transitionKey));
+			return;
+		}
 		startTransition(transitionKey, [this]()
 			{
 				stopCurrentState();
@@ -129,6 +202,11 @@ namespace octo
 
 	void	StateManager::pop()
 	{
+		if (m_inUpdate)
+		{
+			pushEvent(PopStateEvent(m_defaultTransitionKey));
+			return;
+		}
 		if (m_defaultTransitionKey.empty() == false)
 		{
 			pop(m_defaultTransitionKey);
@@ -143,6 +221,11 @@ namespace octo
 
 	void	StateManager::popAll()
 	{
+		if (m_inUpdate)
+		{
+			pushEvent(PopAllStateEvent());
+			return;
+		}
 		m_transition.reset();
 		while (m_stack.empty() == false)
 		{
@@ -232,6 +315,7 @@ namespace octo
 	void	StateManager::update(sf::Time frameTime, sf::View const& view)
 	{
 		StatePtr	current = currentState();
+		BooleanLock	lock(m_inUpdate);
 
 		if (current)
 		{
@@ -244,6 +328,7 @@ namespace octo
 				m_transition.reset();
 			}
 		}
+		m_inUpdate = false;
 		processEventStack();
 	}
 
@@ -290,13 +375,13 @@ namespace octo
 		switch (event.getType())
 		{
 		case StateManagerEvent::Type::Push:
-			push(event.getKey());
+			push(event.getStateKey(), event.getTransitionKey());
 			break;
 		case StateManagerEvent::Type::Change:
-			change(event.getKey());
+			change(event.getStateKey(), event.getTransitionKey());
 			break;
 		case StateManagerEvent::Type::Pop:
-			pop();
+			pop(event.getTransitionKey());
 			break;
 		case StateManagerEvent::Type::PopAll:
 			popAll();
@@ -306,15 +391,15 @@ namespace octo
 		}
 	}
 
-
 	StateManagerEvent::StateManagerEvent() :
 		m_type(Type::Undef)
 	{
 	}
 
-	StateManagerEvent::StateManagerEvent(Type type, std::string const& key) :
+	StateManagerEvent::StateManagerEvent(Type type, std::string const& stateKey, std::string const& transitionKey) :
 		m_type(type),
-		m_key(key)
+		m_stateKey(stateKey),
+		m_transitionKey(transitionKey)
 	{
 	}
 
@@ -323,28 +408,33 @@ namespace octo
 		return (m_type);
 	}
 
-	std::string const&	StateManagerEvent::getKey()const
+	std::string const&	StateManagerEvent::getStateKey()const
 	{
-		return (m_key);
+		return (m_stateKey);
 	}
 
-	PushStateEvent::PushStateEvent(std::string const& key) :
-		StateManagerEvent(Type::Push, key)
+	std::string const&	StateManagerEvent::getTransitionKey()const
+	{
+		return (m_transitionKey);
+	}
+
+	PushStateEvent::PushStateEvent(std::string const& stateKey, std::string const& transitionKey) :
+		StateManagerEvent(Type::Push, stateKey, transitionKey)
 	{
 	}
 
-	ChangeStateEvent::ChangeStateEvent(std::string const& key) :
-		StateManagerEvent(Type::Change, key)
+	ChangeStateEvent::ChangeStateEvent(std::string const& stateKey, std::string const& transitionKey) :
+		StateManagerEvent(Type::Change, stateKey, transitionKey)
 	{
 	}
 
-	PopStateEvent::PopStateEvent() :
-		StateManagerEvent(Type::Pop, std::string())
+	PopStateEvent::PopStateEvent(std::string const& transitionKey) :
+		StateManagerEvent(Type::Pop, std::string(), transitionKey)
 	{
 	}
 
 	PopAllStateEvent::PopAllStateEvent() :
-		StateManagerEvent(Type::PopAll, std::string())
+		StateManagerEvent(Type::PopAll, std::string(), std::string())
 	{
 	}
 }

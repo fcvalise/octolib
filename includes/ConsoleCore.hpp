@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:05:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:31:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/29 16:16:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ namespace octo
 		unsigned int				getPromptSize()const;
 		std::vector<std::wstring>	getCommandList()const;
 		bool						isCompletionActive()const;
+		std::size_t					getCompletionCount()const;	
 
 		template <class R, class ... A>
 		void						addCommand(std::wstring const& name, R(*function)(A...));
@@ -85,7 +86,6 @@ namespace octo
 		template <class F>
 		void						addCommand(std::wstring const& name, F&& functor);
 	private:
-		std::wstring				getLeftWord()const;
 		void						emitTextChanged();
 		void						emitCursorChanged();
 		void						emitExecuted(std::wstring const& result);
