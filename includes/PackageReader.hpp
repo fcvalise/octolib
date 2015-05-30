@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 02:51:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 21:54:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 23:44:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace octo
 	class PackageReader
 	{
 	public:
-		PackageReader() = default;
+		PackageReader();
 		PackageReader(PackageReader&& other);
 
 		/*!	Open a package file */
@@ -52,8 +52,9 @@ namespace octo
 		/*!	Return the package header */
 		PackageHeader const&	getHeader()const;
 	private:
+		typedef std::unique_ptr<std::ifstream>	IFStreamPtr;
 		PackageHeader	m_header;
-		std::ifstream	m_file;
+		IFStreamPtr		m_file;
 		ByteArray		m_encryptionMask;
 	};
 }
