@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/25 22:53:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 01:15:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 10:20:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ namespace octo
 
 		template <class T>
 		bool	ResourceManagerImp<T>::loadPackage(PackageReader& reader,
-												   ILoader&& loader,
 												   IResourceListener* listener)
 		{
 			PackageHeader const&		header = reader.getHeader();
@@ -71,7 +70,7 @@ namespace octo
 					}
 					return (false);
 				}
-				if (loader.load(buffer, *resource) == false)
+				if (ResourceLoader<T>::load(buffer, *resource) == false)
 				{
 					if (listener)
 					{
