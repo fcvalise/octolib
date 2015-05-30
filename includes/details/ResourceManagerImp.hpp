@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 10:26:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 10:51:22 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "ColorWheel.hpp"
 # include "SpriteAnimation.hpp"
 # include "SpriteSheet.hpp"
+# include "../ResourceLoading.hpp"
 
 # include <memory>
 # include <vector>
@@ -154,7 +155,7 @@ namespace octo
 		class ResourceManagerImp
 		{
 		public:
-			typedef std::function<bool(ByteArray const&, T& resource)>	Loader;
+			typedef std::function<bool(ByteArray const&, T& resource)>		Loader;
 
 			class ILoader
 			{
@@ -167,6 +168,7 @@ namespace octo
 			~ResourceManagerImp();
 
 			bool			loadPackage(PackageReader& reader, IResourceListener* listener);
+			void			loadPackageAsync(PackageReader& reader, ResourceLoading::LoadActions& actions);
 			T const&		get(std::string const& key)const;
 		private:
 			PackageHeader::EntryType const	m_type;

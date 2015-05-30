@@ -45,7 +45,8 @@ ANIMATION_SRC =	SpriteAnimation.cpp
 MATH_SRC = 	Interpolations.cpp					\
 	 		Math.cpp
 
-RESOURCE_SRC = ResourceManager.cpp
+RESOURCE_SRC = ResourceManager.cpp				\
+			   ResourceLoading.cpp
 
 PACKAGE_SRC = PackageReader.cpp					\
 			  PackageHeader.cpp					\

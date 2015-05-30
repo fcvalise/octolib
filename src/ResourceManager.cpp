@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 10:24:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 11:02:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,25 @@ namespace octo
 		m_spriteSheetManager.loadPackage(reader, listener);
 		m_spriteAnimationManager.loadPackage(reader, listener);
 		return (true);
+	}
+
+	ResourceLoading	ResourceManager::loadPackageAsync(std::string const& fileName, IResourceListener* listener)
+	{
+		ResourceLoading::LoadActions	actions;
+		PackageReader					reader;
+
+		if (reader.open(fileName))
+		{
+			m_fontManager.loadPackageAsync(reader, actions);
+			m_textureManager.loadPackageAsync(reader, actions);
+			m_soundManager.loadPackageAsync(reader, actions);
+			m_textManager.loadPackageAsync(reader, actions);
+			m_paletteManager.loadPackageAsync(reader, actions);
+			m_colorWheelManager.loadPackageAsync(reader, actions);
+			m_spriteSheetManager.loadPackageAsync(reader, actions);
+			m_spriteAnimationManager.loadPackageAsync(reader, actions);
+		}
+		return (ResourceLoading(std::move(reader), std::move(actions), listener));
 	}
 
 	sf::Font const&		ResourceManager::getFont(std::string const& fileName)const

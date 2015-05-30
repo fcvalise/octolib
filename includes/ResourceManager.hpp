@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 10:23:53 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 14:51:15 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ namespace octo
 
 		/*!	Load a package file */
 		bool					loadPackage(std::string const& fileName, IResourceListener* listener);
+
+		/*!	Start a package loading */
+		ResourceLoading			loadPackageAsync(std::string const& fileName, IResourceListener* listener);
 
 		/*!	Get a font
 		 */
