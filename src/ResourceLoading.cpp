@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/30 10:54:26 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 14:53:42 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 15:30:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ResourceLoading.hpp"
+#include "IResourceListener.hpp"
 
 namespace octo
 {
@@ -39,9 +40,9 @@ namespace octo
 				result = (*it)(m_reader, m_listener);
 				m_actions.erase(it);
 			}
-			if (m_actions.empty() && listener)
+			if (m_actions.empty() && m_listener)
 			{
-				listener->finished();
+				m_listener->finished();
 			}
 			return (result);
 		}
