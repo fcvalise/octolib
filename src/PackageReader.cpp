@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:03:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:28:07 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 21:54:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 namespace octo
 {
+	PackageReader::PackageReader(PackageReader&& other) :
+		m_header(std::move(other.m_header)),
+		m_file(std::move(other.m_file)),
+		m_encryptionMask(std::move(m_encryptionMask))
+	{
+	}
+
 	bool	PackageReader::open(std::string const& fileName)
 	{
 		m_file.open(fileName.c_str(), std::ios_base::binary);

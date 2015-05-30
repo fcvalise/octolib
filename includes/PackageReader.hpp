@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 02:51:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:27:05 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 21:54:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ namespace octo
 	class PackageReader
 	{
 	public:
+		PackageReader() = default;
+		PackageReader(PackageReader&& other);
+
 		/*!	Open a package file */
 		bool					open(std::string const& fileName);
 
