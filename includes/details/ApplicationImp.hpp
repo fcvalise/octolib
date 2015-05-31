@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 17:30:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 01:18:21 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,16 @@ namespace octo
 									 std::uint64_t current,
 									 std::uint64_t total)
 			{
-				octo::Console&	console = octo::Application::getConsole();
-
-				console.addWord(name, ConsoleCompletion::Lexems::Parameter);
 				std::cout << "loading " << name << " [" << (int)type << "] " << current  + 1 << "/" << total << std::endl;
 			}
 
 			virtual void	error(std::string const& message)
 			{
 				std::cerr << "resource loading error: " << message << std::endl;
+			}
+
+			virtual void	finished()
+			{
 			}
 		};
 

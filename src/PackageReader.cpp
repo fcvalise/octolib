@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:03:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/01 11:28:07 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 23:45:42 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 
 namespace octo
 {
+	PackageReader::PackageReader() :
+		m_file(new std::ifstream)
+	{
+	}
+
+	PackageReader::PackageReader(PackageReader&& other) :
+		m_header(std::move(other.m_header)),
+		m_file(std::move(other.m_file)),
+		m_encryptionMask(std::move(m_encryptionMask))
+	{
+	}
+
 	bool	PackageReader::open(std::string const& fileName)
 	{
-		m_file.open(fileName.c_str(), std::ios_base::binary);
-		if (m_file.is_open() && m_header.read(m_file))
+		m_file->open(fileName.c_str(), std::ios_base::binary);
+		if (m_file->is_open() && m_header.read(*m_file))
 		{
 			details::generateMask(m_encryptionMask, details::PackageEncryptionMaskSize,
 								  m_header.byteCount());
@@ -33,8 +45,8 @@ namespace octo
 
 		if (isOpen() && m_header.getEntry(key, entry))
 		{
-			m_file.seekg(entry.offset + m_header.byteCount(), std::istream::beg);
-			buffer.read(m_file, entry.size);
+			m_file->seekg(entry.offset + m_header.byteCount(), std::istream::beg);
+			buffer.read(*m_file, entry.size);
 			details::xorEncryptDecrypt(buffer.begin(), buffer.end(), m_encryptionMask);
 			return (true);
 		}
@@ -43,7 +55,7 @@ namespace octo
 
 	bool	PackageReader::isOpen()const
 	{
-		return (m_file.is_open());
+		return (m_file->is_open());
 	}
 	
 	PackageHeader const&	PackageReader::getHeader()const

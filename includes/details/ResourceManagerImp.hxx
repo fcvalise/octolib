@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/25 22:53:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 20:06:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 14:52:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,55 @@ namespace octo
 		}
 
 		template <class T>
+		void	ResourceManagerImp<T>::loadPackageAsync(PackageReader& reader, ResourceLoading::LoadActions& actions)
+		{
+			PackageHeader const&			header = reader.getHeader();
+			std::uint64_t const				count = header.getEntryCount(m_type);
+
+			for (std::uint64_t i = 0; i < count; ++i)
+			{
+				ResourceLoading::LoadAction	action =
+					[this, i, count](PackageReader& reader, IResourceListener* listener)
+					{
+						PackageHeader const&	header = reader.getHeader();
+						std::uint64_t const		offset = header.getFirstEntry(m_type);
+						std::uint64_t const		key = i + offset;
+						std::unique_ptr<T>		resource(new T);
+						std::string const&		resourceName = header.getEntryName(key);
+						ByteArray				buffer;
+
+						if (listener)
+							listener->progress(resourceName, header.getEntryType(key), i, count);
+						if (m_resources.find(resourceName) != m_resources.end())
+						{
+							if (listener)
+								listener->error("error when loading '" + resourceName + "': name conflict");
+							return (false);
+						}
+						if (reader.load(buffer, key) == false)
+						{
+							if (listener)
+								listener->error("error when loading '" + resourceName + "': key " + std::to_string(key) + " not found");
+							return (false);
+						}
+						if (ResourceLoader<T>::load(buffer, *resource) == false)
+						{
+							if (listener)
+							{
+								listener->error("error when loading '" + resourceName + "': unsupported file format");
+								listener->finished();
+							}
+							return (false);
+						}
+						m_resources.emplace(resourceName, resource.release());
+						return (true);
+					};
+				actions.emplace_back(action);
+			}
+		}
+
+		template <class T>
 		bool	ResourceManagerImp<T>::loadPackage(PackageReader& reader,
-												   ILoader&& loader,
 												   IResourceListener* listener)
 		{
 			PackageHeader const&		header = reader.getHeader();
@@ -56,23 +103,31 @@ namespace octo
 				if (m_resources.find(resourceName) != m_resources.end())
 				{
 					if (listener)
-						listener->error("error when loading '" + resourceName + "': already exists");
+					{
+						listener->error("error when loading '" + resourceName + "': name conflict");
+					}
 					return (false);
 				}
 				if (reader.load(buffer, key) == false)
 				{
 					if (listener)
+					{
 						listener->error("error when loading '" + resourceName + "': key " + std::to_string(key) + " not found");
+					}
 					return (false);
 				}
-				if (loader.load(buffer, *resource) == false)
+				if (ResourceLoader<T>::load(buffer, *resource) == false)
 				{
 					if (listener)
+					{
 						listener->error("error when loading '" + resourceName + "': unsupported file format");
+					}
 					return (false);
 				}
 				m_resources.emplace(resourceName, resource.release());
 			}
+			if (listener)
+				listener->finished();
 			return (true);
 		}
 
