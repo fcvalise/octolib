@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/25 22:53:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 22:54:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 14:52:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,65 +16,129 @@ namespace octo
 	{
 		template <class T>
 		ResourceManagerImp<T>::ResourceManagerImp(PackageHeader::EntryType type) :
-			m_type(type),
-			m_offset(0),
-			m_count(0)
+			m_type(type)
 		{
 		}
 
 		template <class T>
 		ResourceManagerImp<T>::~ResourceManagerImp()
 		{
-			m_resources.reset();
-			m_offset = 0;
-			m_count = 0;
+			auto	it = m_resources.begin();
+
+			while (it != m_resources.end())
+			{
+				delete it->second;
+				it = m_resources.erase(it);
+			}
+		}
+
+		template <class T>
+		void	ResourceManagerImp<T>::loadPackageAsync(PackageReader& reader, ResourceLoading::LoadActions& actions)
+		{
+			PackageHeader const&			header = reader.getHeader();
+			std::uint64_t const				count = header.getEntryCount(m_type);
+
+			for (std::uint64_t i = 0; i < count; ++i)
+			{
+				ResourceLoading::LoadAction	action =
+					[this, i, count](PackageReader& reader, IResourceListener* listener)
+					{
+						PackageHeader const&	header = reader.getHeader();
+						std::uint64_t const		offset = header.getFirstEntry(m_type);
+						std::uint64_t const		key = i + offset;
+						std::unique_ptr<T>		resource(new T);
+						std::string const&		resourceName = header.getEntryName(key);
+						ByteArray				buffer;
+
+						if (listener)
+							listener->progress(resourceName, header.getEntryType(key), i, count);
+						if (m_resources.find(resourceName) != m_resources.end())
+						{
+							if (listener)
+								listener->error("error when loading '" + resourceName + "': name conflict");
+							return (false);
+						}
+						if (reader.load(buffer, key) == false)
+						{
+							if (listener)
+								listener->error("error when loading '" + resourceName + "': key " + std::to_string(key) + " not found");
+							return (false);
+						}
+						if (ResourceLoader<T>::load(buffer, *resource) == false)
+						{
+							if (listener)
+							{
+								listener->error("error when loading '" + resourceName + "': unsupported file format");
+								listener->finished();
+							}
+							return (false);
+						}
+						m_resources.emplace(resourceName, resource.release());
+						return (true);
+					};
+				actions.emplace_back(action);
+			}
 		}
 
 		template <class T>
 		bool	ResourceManagerImp<T>::loadPackage(PackageReader& reader,
-												   ILoader&& loader,
 												   IResourceListener* listener)
 		{
-			PackageHeader const&	header = reader.getHeader();
-			std::uint64_t			offset = header.getFirstEntry(m_type);
-			std::uint64_t			count = header.getEntryCount(m_type);
-			std::uint64_t			key = PackageHeader::NullEntryKey;
-			ByteArray				buffer;
+			PackageHeader const&		header = reader.getHeader();
+			std::uint64_t const			offset = header.getFirstEntry(m_type);
+			std::uint64_t const			count = header.getEntryCount(m_type);
+			std::uint64_t				key = PackageHeader::NullEntryKey;
+			ByteArray					buffer;
 
 			if (offset == PackageHeader::NullEntryKey || count == 0)
 				return (true);
-			m_offset = offset;
-			m_count = count;
-			m_resources.reset(new T[count]);
 			for (std::uint64_t i = 0; i < count; ++i)
 			{
-				key = i + m_offset;
+				key = i + offset;
+				std::unique_ptr<T>	resource(new T);
+				std::string const&	resourceName = header.getEntryName(key);
+
 				if (listener)
-					listener->progress(header.getEntryName(key),
-									   header.getEntryType(key),
-									   i, count);
+					listener->progress(resourceName, header.getEntryType(key), i, count);
+				if (m_resources.find(resourceName) != m_resources.end())
+				{
+					if (listener)
+					{
+						listener->error("error when loading '" + resourceName + "': name conflict");
+					}
+					return (false);
+				}
 				if (reader.load(buffer, key) == false)
 				{
 					if (listener)
-						listener->error("key " + std::to_string(key) + " not found");
+					{
+						listener->error("error when loading '" + resourceName + "': key " + std::to_string(key) + " not found");
+					}
 					return (false);
 				}
-				if (loader.load(buffer, m_resources[i]) == false)
+				if (ResourceLoader<T>::load(buffer, *resource) == false)
 				{
 					if (listener)
-						listener->error("error when loading key " + std::to_string(key));
+					{
+						listener->error("error when loading '" + resourceName + "': unsupported file format");
+					}
 					return (false);
 				}
+				m_resources.emplace(resourceName, resource.release());
 			}
+			if (listener)
+				listener->finished();
 			return (true);
 		}
 
 		template <class T>
-		T const&	ResourceManagerImp<T>::get(std::uint64_t key)const
+		T const&	ResourceManagerImp<T>::get(std::string const& key)const
 		{
-			if (key < m_offset || key >= (m_offset + m_count))
-				throw std::range_error("resource manager: get by key: invalid key: " + std::to_string(key));
-			return (m_resources[key - m_offset]);
+			auto	it = m_resources.find(key);
+			
+			if (it == m_resources.end())
+				throw std::range_error("resource manager: not found: '" + key + "'");
+			return (*(it->second));
 		}
 
 		template <class T>

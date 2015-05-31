@@ -335,7 +335,7 @@ namespace octo
 		out << "#if !defined OCTO_PACKAGE_RESOURCE_DEFINITION_HPP\n";
 		out << "#define OCTO_PACKAGE_RESOURCE_DEFINITION_HPP\n";
 		out << "#include <cstdint>\n\n";
-		out << "typedef std::uint64_t	ResourceKey;\n";
+		out << "typedef char const*		ResourceKey;\n";
 		for (key = 0; key < header.count(); ++key)
 		{
 			if (lastType != header.getEntryType(key))
@@ -345,7 +345,7 @@ namespace octo
 			}
 			out << lineBegins[key];
 			std::fill_n(std::ostream_iterator<char>(out), maxSize - lineBegins[key].size(), ' ');
-			out << key << ";\n";
+			out << "\"" << header.getEntryName(key) << "\"" << ";\n";
 		}
 		out << "\n#endif // OCTO_PACKAGE_RESOURCE_DEFINITION_HPP\n";
 		return (true);

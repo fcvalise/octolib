@@ -5,66 +5,68 @@ BUILD_DIR = ./builds
 OUTPUT_DIR = .
 
 # sources
-SRC = 	$(RESOURCE_SRC)							\
-		$(STATE_SYSTEM_SRC)						\
-		$(PACKAGE_SRC)							\
-		$(MATH_SRC)								\
-		$(CORE_SRC)								\
-		$(CONSOLE_SRC)							\
-		$(GRAPHICS_SRC)							\
-		$(ANIMATION_SRC)						\
-		$(AUDIO_SRC)							\
+SRC = 	$(RESOURCE_SRC)								\
+		$(STATE_SYSTEM_SRC)							\
+		$(PACKAGE_SRC)								\
+		$(MATH_SRC)									\
+		$(CORE_SRC)									\
+		$(CONSOLE_SRC)								\
+		$(GRAPHICS_SRC)								\
+		$(ANIMATION_SRC)							\
+		$(AUDIO_SRC)								\
 		$(DEBUG_SRC)
 
-CORE_SRC =	Application.cpp						\
-			PausableClock.cpp					\
-			OptionParser.cpp					\
-			Options.cpp							\
-			ByteArray.cpp						\
-			BinaryInputStream.cpp				\
-			BinaryOutputStream.cpp				\
-			PrintSFML.cpp						\
-			WPrintSFML.cpp						\
+CORE_SRC =	Application.cpp							\
+			PausableClock.cpp						\
+			OptionParser.cpp						\
+			Options.cpp								\
+			ByteArray.cpp							\
+			BinaryInputStream.cpp					\
+			BinaryOutputStream.cpp					\
+			PrintSFML.cpp							\
+			WPrintSFML.cpp							\
 			StringUtils.cpp
 
-GRAPHICS_SRC =	GraphicsManager.cpp				\
-				GraphicsListeners.cpp			\
-				DefaultGraphicsListeners.cpp	\
-				Camera.cpp						\
-				Hsv.cpp							\
-				Palette.cpp						\
-				ColorWheel.cpp					\
-				IColorProvider.cpp				\
-				SpriteSheet.cpp					\
+GRAPHICS_SRC =	GraphicsManager.cpp					\
+				GraphicsListeners.cpp				\
+				DefaultGraphicsListeners.cpp		\
+				Camera.cpp							\
+				Hsv.cpp								\
+				Palette.cpp							\
+				ColorWheel.cpp						\
+				IColorProvider.cpp					\
+				SpriteSheet.cpp						\
 				AnimatedSprite.cpp
 
 AUDIO_SRC =	AudioManager.cpp
 
 ANIMATION_SRC =	SpriteAnimation.cpp
 
-MATH_SRC = 	Interpolations.cpp					\
+MATH_SRC = 	Interpolations.cpp						\
 	 		Math.cpp
 
-RESOURCE_SRC = ResourceManager.cpp
+RESOURCE_SRC = ResourceManager.cpp					\
+			   ResourceLoading.cpp
 
-PACKAGE_SRC = PackageReader.cpp					\
-			  PackageHeader.cpp					\
+PACKAGE_SRC = PackageReader.cpp						\
+			  PackageHeader.cpp						\
 			  PackageCompiler.cpp
 
-STATE_SYSTEM_SRC =	AbstractState.cpp			\
-					AbstractTransition.cpp		\
-					StateManager.cpp			\
-					DefaultTransition.cpp
+STATE_SYSTEM_SRC =	AbstractState.cpp				\
+					AbstractTransition.cpp			\
+					StateManager.cpp				\
+					DefaultTransition.cpp			\
+					AbstractResourceLoadingState.cpp
 
-CONSOLE_SRC = ConsoleCommandParser.cpp			\
-			  ConsoleInterpreter.cpp			\
-			  ConsoleCore.cpp					\
-			  Console.cpp						\
-			  ConsoleHistory.cpp				\
+CONSOLE_SRC = ConsoleCommandParser.cpp				\
+			  ConsoleInterpreter.cpp				\
+			  ConsoleCore.cpp						\
+			  Console.cpp							\
+			  ConsoleHistory.cpp					\
 			  ConsoleCompletion.cpp
 
-DEBUG_SRC = FpsCounter.cpp						\
-			AbstractFpsDisplayer.cpp			\
+DEBUG_SRC = FpsCounter.cpp							\
+			AbstractFpsDisplayer.cpp				\
 			FpsDisplayer.cpp
 
 .PHONY: doc tools tests
