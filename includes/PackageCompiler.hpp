@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 04:59:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 15:59:52 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 15:05:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ namespace octo
 		 *	\see PackageCompiler::IListener
 		 */
 		bool						compile(std::string const& outputFile,
+											std::string const& outputHeaderFile,
 											std::vector<std::string> const& paths);
 	private:
 		bool						getFileInfos(std::vector<std::string> const& paths,
@@ -109,7 +110,7 @@ namespace octo
 								 				 FileInfoArray const& fileInfos,
 								 				 PackageHeader const& header);
 		bool						writeFile(FileInfo const& info, std::ostream& out);
-		bool						writeDefinitionFile(PackageHeader const& header);
+		bool						writeDefinitionFile(PackageHeader const& header, std::string const& outputFilePath);
 		static bool					sortFileInfo(FileInfo const& left,
 												 FileInfo const& right);
 	private:

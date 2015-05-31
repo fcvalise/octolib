@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 15:35:38 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 15:07:06 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ namespace octo
 	}
 
 	bool	PackageCompiler::compile(std::string const& outputFile,
+									 std::string const& outputHeaderFile,
 									 std::vector<std::string> const& paths)
 	{
 		FileInfoArray	fileInfos;
@@ -184,7 +185,7 @@ namespace octo
 		std::for_each(fileInfos.begin(), fileInfos.end(), FillHeader(header));
 		if (writePackage(outputFile, fileInfos, header) == false)
 			return (false);
-		if (writeDefinitionFile(header) == false)
+		if (outputHeaderFile.empty() == false && writeDefinitionFile(header, outputHeaderFile) == false)
 			return (false);
 		if (m_listener)
 			m_listener->finished(header);
@@ -307,9 +308,9 @@ namespace octo
 		return (true);
 	}
 
-	bool	PackageCompiler::writeDefinitionFile(PackageHeader const& header)
+	bool	PackageCompiler::writeDefinitionFile(PackageHeader const& header, std::string const& outputFilePath)
 	{
-		std::ofstream										out("ResourceDefinitions.hpp");
+		std::ofstream										out(outputFilePath);
 		std::vector<std::string>							lineBegins;
 		std::string											lineBegin;
 		std::size_t											maxSize = 0;
@@ -334,7 +335,7 @@ namespace octo
 		out << "#if !defined OCTO_PACKAGE_RESOURCE_DEFINITION_HPP\n";
 		out << "#define OCTO_PACKAGE_RESOURCE_DEFINITION_HPP\n";
 		out << "#include <cstdint>\n\n";
-		out << "typedef std::uint64_t	ResourceKey;\n";
+		out << "typedef char const*		ResourceKey;\n";
 		for (key = 0; key < header.count(); ++key)
 		{
 			if (lastType != header.getEntryType(key))
@@ -344,7 +345,7 @@ namespace octo
 			}
 			out << lineBegins[key];
 			std::fill_n(std::ostream_iterator<char>(out), maxSize - lineBegins[key].size(), ' ');
-			out << key << ";\n";
+			out << "\"" << header.getEntryName(key) << "\"" << ";\n";
 		}
 		out << "\n#endif // OCTO_PACKAGE_RESOURCE_DEFINITION_HPP\n";
 		return (true);

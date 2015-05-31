@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 17:07:58 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 17:44:56 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 16:37:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ namespace octo
 
 	void	StateManager::push(Key const& stateKey, Key const& transitionKey)
 	{
+		if (m_transition)
+			return;
 		if (m_inUpdate)
 		{
 			pushEvent(PushStateEvent(stateKey, transitionKey));
@@ -110,6 +112,8 @@ namespace octo
 
 	void	StateManager::push(Key const& key)
 	{
+		if (m_transition)
+			return;
 		if (m_inUpdate)
 		{
 			pushEvent(PushStateEvent(key, m_defaultTransitionKey));
@@ -134,6 +138,8 @@ namespace octo
 
 	void	StateManager::change(Key const& stateKey, Key const& transitionKey)
 	{
+		if (m_transition)
+			return;
 		if (m_inUpdate)
 		{
 			pushEvent(ChangeStateEvent(stateKey, transitionKey));
@@ -156,6 +162,8 @@ namespace octo
 
 	void	StateManager::change(Key const& key)
 	{
+		if (m_transition)
+			return;
 		if (m_inUpdate)
 		{
 			pushEvent(ChangeStateEvent(key, m_defaultTransitionKey));
@@ -187,6 +195,8 @@ namespace octo
 
 	void	StateManager::pop(Key const& transitionKey)
 	{
+		if (m_transition)
+			return;
 		if (m_inUpdate)
 		{
 			pushEvent(PopStateEvent(transitionKey));
@@ -202,6 +212,8 @@ namespace octo
 
 	void	StateManager::pop()
 	{
+		if (m_transition)
+			return;
 		if (m_inUpdate)
 		{
 			pushEvent(PopStateEvent(m_defaultTransitionKey));

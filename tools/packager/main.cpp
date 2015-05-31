@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 07:34:43 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/27 03:30:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/05/30 15:13:38 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,29 @@ int	main(int argc, char **argv)
 	CompilationListener			listener;
 	std::vector<std::string>	inputPaths;
 	std::string					outputPath;
+	std::string					outputHeaderPath;
+	std::size_t					firstInput = 2;
 
-	if (argc < 3)
+	if (argc < 3 || (argv[2] == std::string("-h") && argc < 4))
 	{
-		std::cerr << "usage: packager <output_file> <input_files...>" << std::endl;
+		std::cerr << "usage: packager <output_file> [-h <header_file_path>] <input_files...>" << std::endl;
 		return (1);
 	}
+	if (argv[2] == std::string("-h"))
+	{
+		outputHeaderPath = argv[3];
+		std::cout << "header: " << outputHeaderPath << std::endl;
+		firstInput += 2;
+	}
 	outputPath = argv[1];
-	inputPaths.assign(argv + 2, argv + argc);
+	inputPaths.assign(argv + firstInput, argv + argc);
 	inputPaths.erase(std::remove(std::begin(inputPaths), std::end(inputPaths), argv[0]), std::end(inputPaths));
 	std::sort(inputPaths.begin(), inputPaths.end());
 	std::unique(inputPaths.begin(), inputPaths.end());
 	if (inputPaths.empty() == false)
 	{
 		compiler.setListener(&listener);
-		if (compiler.compile(outputPath, inputPaths))
+		if (compiler.compile(outputPath, outputHeaderPath, inputPaths))
 			return (0);
 	}
 	return (1);

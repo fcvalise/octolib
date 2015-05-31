@@ -71,7 +71,7 @@ clean:
 	@rm -fr $(BUILD_DIR)
 
 package:
-	$(PACKAGER) $(PACKAGE_FILE) ./resources/*
+	$(PACKAGER) $(PACKAGE_FILE) -h "ResourceDefinitions.hpp" ./resources/*
 
 $(BUILD_DIR):
 	@echo " - $(COLOR_ACTION)creating directory$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
