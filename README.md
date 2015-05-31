@@ -6,30 +6,48 @@ Octodyssey's core library repository.
 Please do it using this [issue tracker](https://github.com/IohannRabeson/octolib/issues).
 
 ## Organisation
-The source files of the library are located in '<root>/includes/' and '<root>/src/' directories.  
-This repository contains an units test program located in '<root>/tests/' directory
-and somes graphics interactives test programs located in '<root>/interactive_tests/' folder.  
-Somes modules provides tools applications which are located in '<root>/tools/directory.
+The source files of the library are located in <code>includes/</code> and <code>src/</code> directories.  
+This repository contains an units test program located in <code>tests/</code>' directory
+and somes graphics interactives test programs located in <code>interactive_tests/</code> folder.  
+Somes modules provides tools applications which are located in <code>tools/</code> directory.
   
 Sources of theses interactives application are a good entry point to discover the library,
 and they are used as examples by generated documentation.
 
+Tools can be found in <code>tools/<tool_name></code>.  
+ - Packager: <code>tools/packager</code>
+ - Package reader: <code>tools/package_reader</code>
+ - Editors: <code>tools/editors</code>
+
+Documentation files are located in <code>doc/</code>
+
 ## How to build?
 ### Requierements
- - C++ 11 compiler
+ - C++ 11 compiler (clang 6, g++ 4.8 or higher)
  - Doxygen for documentation (with Dot if you wants cutes graphs)
  - GNU make
- - SFML 2.2
+ - SFML 2.2 or higher
  - Qt 5 framework
- - Boost (for units tests only)
+ - Boost test library
 
 ### Building the library
-    $> make
+Produces the library <code>libocto.a</code> into the root directory:
 
-### Building editors and tools
+    $> git clone git@github.com:IohannRabeson/octolib.git
+    $> cd octolib
+    $> make complete
 
-All tools are located at <octolib_root>/tools/.
+Generate the documentation:
 
+    $> make doc
+    
+Builds are made in <code>builds/</code> folder.
+### Updating the library
+
+    $> git pull origin master
+    $> git submodule update
+    $> make complete
+    
 ## Makefile
 ### Rules
 
@@ -79,4 +97,5 @@ Provides classes to play music composed in real-time.
 
 #### Gui system  
 Provides basic stuffs to create simple user interface.
+
 

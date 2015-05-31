@@ -154,7 +154,7 @@ doc:
 	@doxygen ./doc/octolib.dox
 
 open_doc:
-	@open ./doc/generated/html/index.html
+	@open ./builds/doc/html/index.html
 
 application_tests:
 	@make re -C benchmarks MODE=$(MODE)
