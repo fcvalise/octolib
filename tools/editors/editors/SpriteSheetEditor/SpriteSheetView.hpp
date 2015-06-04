@@ -2,6 +2,7 @@
 #define SPRITESHEETVIEW_HPP
 #include <QGraphicsView>
 #include <QPointer>
+#include <QObject>
 
 class SpriteSheetModel;
 class InteractiveGraphicsScene;
