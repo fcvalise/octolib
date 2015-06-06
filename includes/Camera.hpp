@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 19:32:49 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 18:31:30 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/06 05:14:52 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ namespace octo
 		sf::Vector2f const&	getSize()const;
 		float				getRotation()const;
 		float				getZoom()const;
+		sf::FloatRect		getRectangle()const;
 		sf::View const&		getView()const;
 		sf::View const&		getGuiView()const;
 
