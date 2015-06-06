@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/30 15:31:08 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 15:56:52 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/06 09:46:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ namespace octo
 		std::uint64_t				m_currentStep;
 		std::uint64_t				m_totalSteps;
 		std::string					m_error;
+		bool						m_noMoreLoadingNotified;
 	};
 }
 
