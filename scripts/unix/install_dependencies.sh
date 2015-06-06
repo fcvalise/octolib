@@ -23,7 +23,7 @@ libxcb-icccm4-dev
 libxcb-image0-dev
 libxcb-util0-dev
 libxcb-randr0-dev
-libboost-all-dev
+libboost-test-dev
 libpcre3-dev
 cmake
 clang-3.5
