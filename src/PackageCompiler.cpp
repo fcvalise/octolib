@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/06 07:17:29 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/06 08:03:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,6 @@ namespace octo
 						c = '_';
 					}
 				});
-			return (str);
-		}
-
-		static std::string	getNow()
-		{
-			std::chrono::time_point<std::chrono::system_clock>	now = std::chrono::system_clock::now();
-			std::time_t											nowTime = std::chrono::system_clock::to_time_t(now);
-			std::string											str(std::ctime(&nowTime));
-
-			if (str.back() == '\n')
-				str.pop_back();
 			return (str);
 		}
 
