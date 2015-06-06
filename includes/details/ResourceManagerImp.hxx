@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/25 22:53:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 14:52:56 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/06 09:41:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,21 @@ namespace octo
 
 			for (std::uint64_t i = 0; i < count; ++i)
 			{
-				ResourceLoading::LoadAction	action =
+				actions.emplace_back(
+					[this, i, count](PackageReader& reader, IResourceListener* listener)
+					{
+						PackageHeader const&	header = reader.getHeader();
+						std::uint64_t const		offset = header.getFirstEntry(m_type);
+						std::uint64_t const		key = i + offset;
+						std::unique_ptr<T>		resource(new T);
+						std::string const&		resourceName = header.getEntryName(key);
+						ByteArray				buffer;
+
+						if (listener)
+							listener->progress(resourceName, header.getEntryType(key), i, count);
+						return (true);
+					});
+				actions.emplace_back(
 					[this, i, count](PackageReader& reader, IResourceListener* listener)
 					{
 						PackageHeader const&	header = reader.getHeader();
@@ -75,8 +89,7 @@ namespace octo
 						}
 						m_resources.emplace(resourceName, resource.release());
 						return (true);
-					};
-				actions.emplace_back(action);
+					});
 			}
 		}
 
