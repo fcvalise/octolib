@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 15:07:06 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/06 07:17:29 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,15 @@ namespace octo
 
 	namespace
 	{
+		static std::string	extractFileName(std::string const& fileName)
+		{
+			std::string::size_type	pos = fileName.find_last_of("/");
+
+			if (pos == std::string::npos)
+				pos = 0;
+			return (fileName.substr(pos));
+		}
+
 		static std::string	makeSymbolName(std::string str)
 		{
 			std::for_each(std::begin(str), std::end(str), [](char& c)
@@ -331,7 +340,8 @@ namespace octo
 			lineBegins.emplace_back(lineBegin);
 		}
 		// Start writing
-		out << "//\n//\tFile generated at " << getNow() << "\n//\n";
+		out << "//\n//\t" << extractFileName(outputFilePath) << "\n";
+		out << "//\tFile generated at " << getNow() << "\n//\n";
 		out << "#if !defined OCTO_PACKAGE_RESOURCE_DEFINITION_HPP\n";
 		out << "#define OCTO_PACKAGE_RESOURCE_DEFINITION_HPP\n";
 		out << "#include <cstdint>\n\n";
