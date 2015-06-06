@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 20:30:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/08 18:31:17 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/06 05:16:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,13 @@ namespace octo
 	sf::View const&	Camera::getGuiView()const
 	{
 		return (m_guiView);
+	}
+
+	sf::FloatRect	Camera::getRectangle()const
+	{
+		sf::Vector2f	size = m_view.getSize();
+
+		return (sf::FloatRect(m_view.getCenter() - size / 2.f, size));
 	}
 
 	sf::Vector2f	Camera::mapPixelToCoords(sf::Vector2i const& position)const
