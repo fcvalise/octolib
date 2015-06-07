@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/30 15:34:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 16:31:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/06 09:47:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ namespace octo
 	AbstractResourceLoadingState::AbstractResourceLoadingState() :
 		m_currentLoading(m_loadings.end()),
 		m_currentStep(0u),
-		m_totalSteps(0u)
+		m_totalSteps(0u),
+		m_noMoreLoadingNotified(false)
 	{
 	}
 
@@ -28,8 +29,6 @@ namespace octo
 		octo::ResourceManager&	resources = octo::Application::getResourceManager();
 
 		m_loadings.push_back(resources.loadPackageAsync(packageFileName, this));
-		if (m_currentLoading == m_loadings.end())
-			m_currentLoading = m_loadings.begin();
 	}
 
 	void	AbstractResourceLoadingState::start()
@@ -60,6 +59,8 @@ namespace octo
 			m_loadings.clear();
 			m_error.clear();
 		}
+		if (m_currentLoading == m_loadings.end() && m_loadings.empty() == false)
+			m_currentLoading = m_loadings.begin();
 		if (m_currentLoading != m_loadings.end())
 		{
 			if (m_currentLoading->loadOne() == false)
@@ -72,8 +73,11 @@ namespace octo
 				m_currentLoading = m_loadings.erase(m_currentLoading);
 			}
 		}
-		if (m_currentLoading == m_loadings.end())
+		if (m_currentLoading == m_loadings.end() && m_noMoreLoadingNotified == false)
+		{
 			onNoMoreLoading();
+			m_noMoreLoadingNotified = true;
+		}
 	}
 
 	void	AbstractResourceLoadingState::progress(std::string const& itemName,
@@ -81,7 +85,6 @@ namespace octo
 					 std::uint64_t current,
 					 std::uint64_t total)
 	{
-		std::cout << itemName << std::endl;
 		m_currentKeyLoaded = itemName;
 		m_currentStep = current;
 		m_totalSteps = total;
