@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 02:43:03 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 18:18:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/08 06:21:29 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,13 +142,14 @@ namespace octo
 	}
 
 	/*!	Play one sound */
-	void	AudioManager::playSound(sf::SoundBuffer const& buffer)
+	void	AudioManager::playSound(sf::SoundBuffer const& buffer, float volume, float pitch)
 	{
 		if (m_soundEnabled == false)
 			return;
 		SoundPtr	sound = createSound(buffer);
 
-		sound->setVolume(m_soundVolume);
+		sound->setVolume(m_soundVolume * volume);
+		sound->setPitch(pitch);
 		sound->play();
 	}
 
@@ -170,6 +171,7 @@ namespace octo
 		if (transitionTime == sf::Time::Zero)
 		{
 			sound->setVolume(m_musicVolume);
+			sound->setPitch(1.f);
 			sound->play();
 			sound->setLoop(loop);
 			m_transition.reset();
