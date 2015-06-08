@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 02:43:03 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/08 06:21:29 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/08 21:06:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ namespace octo
 
 		sound->setVolume(m_soundVolume * volume);
 		sound->setPitch(pitch);
+		sound->setLoop(false);
 		sound->play();
 	}
 
@@ -172,8 +173,8 @@ namespace octo
 		{
 			sound->setVolume(m_musicVolume);
 			sound->setPitch(1.f);
-			sound->play();
 			sound->setLoop(loop);
+			sound->play();
 			m_transition.reset();
 			setMusicSound(sound);
 		}
