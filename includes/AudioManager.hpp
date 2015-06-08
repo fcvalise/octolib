@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:20:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 18:15:42 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/08 06:21:09 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ namespace octo
 
 		void		setup(std::size_t maxSoundCount);
 
-		void		playSound(sf::SoundBuffer const& buffer);
+		void		playSound(sf::SoundBuffer const& buffer, float volume = 1.f, float pitch = 1.f);
 		void		startMusic(sf::SoundBuffer const& buffer, sf::Time transitionTime, bool loop = false);
 		void		stopMusic(sf::Time transitionTime);
 
