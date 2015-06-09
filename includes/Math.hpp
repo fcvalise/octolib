@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 00:13:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/09 19:41:59 by pciavald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,10 +181,10 @@ namespace octo
 	template <class T>
 	inline void	normalize(sf::Vector2<T> & v)
 	{
-		float magnitude = magnitude(v);
+		float mag = magnitude(v);
 
-		v.x /= magnitude;
-		v.y /= magnitude;
+		v.x /= mag;
+		v.y /= mag;
 	}
 
 	/*!
