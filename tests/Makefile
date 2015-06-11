@@ -29,7 +29,8 @@ SRC = main.cpp						\
 	  ColorWheel.cpp				\
 	  StringUtils.cpp				\
 	  FrameAnimation.cpp			\
-	  LexicalTree.cpp
+	  LexicalTree.cpp				\
+	  GenericFactory.cpp
 
 # compiler
 CC = clang++
