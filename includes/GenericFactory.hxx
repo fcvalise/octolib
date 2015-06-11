@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/11 12:11:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/11 12:21:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/11 16:35:25 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace octo
 		auto	it = m_creators.find(key);
 
 		if (it == m_creators.end())
-			throw std::range_error("generic factory: key not found: " + std::to_string(key));
+			throw std::range_error("generic factory: key not found");
 		return (it->second(std::forward<A>(args)...));
 	}
 
