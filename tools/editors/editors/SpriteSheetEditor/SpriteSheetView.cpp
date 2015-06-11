@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QItemSelectionModel>
+#include <QModelIndex>
 
 QPen const          SpriteSheetView::RectanglePen = QPen(Qt::red, 0);
 QBrush const        SpriteSheetView::SelectedRectangleBrush = QBrush(QColor(255, 0, 0, 120));
@@ -188,19 +189,19 @@ void SpriteSheetView::setModel(SpriteSheetModel *model)
     if (m_model)
     {
         setSelectionModel(nullptr);
-        disconnect(m_model, &SpriteSheetModel::dataChanged, this, &SpriteSheetView::onDataChanged);
-        disconnect(m_model, &SpriteSheetModel::rowsInserted, this, &SpriteSheetView::onRowsInserted);
-        disconnect(m_model, &SpriteSheetModel::rowsAboutToBeRemoved, this, &SpriteSheetView::onRowsAboutToBeRemoved);
-        disconnect(m_model, &SpriteSheetModel::modelReset, this, &SpriteSheetView::onModelReset);
+        disconnect(m_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
+        disconnect(m_model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(onRowsInserted(QModelIndex,int,int)));
+        disconnect(m_model, SIGNAL(rowAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
+        disconnect(m_model, SIGNAL(modelReset()), this, SLOT(onModelReset()));
         m_model = nullptr;
     }
     m_model = model;
     if (m_model)
     {
-        connect(m_model, &SpriteSheetModel::dataChanged, this, &SpriteSheetView::onDataChanged);
-        connect(m_model, &SpriteSheetModel::rowsInserted, this, &SpriteSheetView::onRowsInserted);
-        connect(m_model, &SpriteSheetModel::rowsAboutToBeRemoved, this, &SpriteSheetView::onRowsAboutToBeRemoved);
-        connect(m_model, &SpriteSheetModel::modelReset, this, &SpriteSheetView::onModelReset);
+        connect(m_model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
+        connect(m_model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(onRowsInserted(QModelIndex,int,int)));
+        connect(m_model, SIGNAL(rowAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
+        connect(m_model, SIGNAL(modelReset()), this, SLOT(onModelReset()));
         onModelReset();
         setSelectionModel(new QItemSelectionModel(m_model, this));
     }
@@ -210,12 +211,12 @@ void SpriteSheetView::setSelectionModel(QItemSelectionModel *model)
 {
     if (m_selectionModel)
     {
-        disconnect(m_selectionModel, &QItemSelectionModel::selectionChanged, this, &SpriteSheetView::onSelectionChanged);
+        disconnect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(onSelectionChanged(QItemSelection,QItemSelection)));
     }
     m_selectionModel = model;
     if (m_selectionModel)
     {
-        connect(m_selectionModel, &QItemSelectionModel::selectionChanged, this, &SpriteSheetView::onSelectionChanged);
+        connect(m_selectionModel, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(onSelectionChanged(QItemSelection,QItemSelection)));
     }
 }
 
