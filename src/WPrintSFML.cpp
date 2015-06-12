@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/14 20:04:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/20 18:07:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/12 10:21:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,21 @@ namespace octo
 			value.b = b;
 			value.a = a;
 		}
+		return (is);
+	}
+
+	std::wostream&	operator << (std::wostream& os, sf::Time value)
+	{
+		os << value.asSeconds();
+		return (os);
+	}
+
+	std::wistream&	operator >> (std::wistream& is, sf::Time& value)
+	{
+		float	seconds = 0.f;
+
+		is >> seconds;
+		value = sf::seconds(seconds);
 		return (is);
 	}
 }

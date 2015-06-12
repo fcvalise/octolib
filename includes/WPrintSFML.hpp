@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/14 20:03:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 19:20:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/12 10:17:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,16 @@
 
 # include <SFML/System/Vector2.hpp>
 # include <SFML/System/Vector3.hpp>
+# include <SFML/System/Time.hpp>
 # include <SFML/Window/VideoMode.hpp>
 # include <SFML/Graphics/Color.hpp>
 # include <SFML/Graphics/Rect.hpp>
 
 namespace octo
 {
+	//
+	//	sf::Vector2<T>
+	//
 	template <class T>
 	std::wostream&	operator << (std::wostream& os, sf::Vector2<T> const& value)
 	{
@@ -48,6 +52,9 @@ namespace octo
 		return (is);
 	}
 
+	//
+	//	sf::Vector3<T>
+	//
 	template <class T>
 	std::wostream&	operator << (std::wostream& os, sf::Vector3<T> const& value)
 	{
@@ -71,6 +78,10 @@ namespace octo
 		}
 		return (is);
 	}
+
+	//
+	//	sf::Rect<T>
+	//
 	template <class T>
 	std::wostream&	operator << (std::wostream& os, sf::Rect<T> const& value)
 	{
@@ -95,11 +106,23 @@ namespace octo
 		return (is);
 	}
 
+	//
+	//	sf::VideoMode
+	//
 	std::wostream&	operator << (std::wostream& os, sf::VideoMode const& value);
 	std::wistream&	operator >> (std::wistream& is, sf::VideoMode& value);
 
+	//
+	//	sf::Color
+	//
 	std::wostream&	operator << (std::wostream& os, sf::Color const& value);
 	std::wistream&	operator >> (std::wistream& is, sf::Color& value);
+
+	//
+	//	sf::Time
+	//
+	std::wostream&	operator << (std::wostream& os, sf::Time value);
+	std::wistream&	operator >> (std::wistream& is, sf::Time& value);
 }
 
 #endif
