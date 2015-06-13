@@ -30,7 +30,10 @@ SRC = main.cpp						\
 	  StringUtils.cpp				\
 	  FrameAnimation.cpp			\
 	  LexicalTree.cpp				\
-	  GenericFactory.cpp
+	  GenericFactory.cpp			\
+	  Segment.cpp					\
+	  BspCompiler.cpp				\
+	  BspTree.cpp
 
 # compiler
 CC = clang++
