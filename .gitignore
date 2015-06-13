@@ -29,6 +29,8 @@
 
 # Builds
 builds
+build-*
+builds
 
 # Generated documentation
 doc/generated/
@@ -38,10 +40,6 @@ interactive_tests/*/*.pck
 interactive_tests/*/ResourceDefinitions.hpp
 tests/*.pck
 
-# Builds folder
-build-*
-builds
-
 # Qt Creator user file
 *.user
 
@@ -50,3 +48,6 @@ builds
 
 # MacOS files
 *.DS_Store
+
+# Hatedepend files
+.modifications
