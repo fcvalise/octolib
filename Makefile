@@ -25,7 +25,14 @@ CORE_SRC =	Application.cpp							\
 			BinaryOutputStream.cpp					\
 			PrintSFML.cpp							\
 			WPrintSFML.cpp							\
-			StringUtils.cpp
+			StringUtils.cpp							\
+			Segment.cpp								\
+			BspNode.cpp								\
+			BspCompiler.cpp							\
+			BspTree.cpp								\
+			BspTreeUtility.cpp						\
+			BspTree.cpp								\
+			BspTreeUtility.cpp
 
 GRAPHICS_SRC =	GraphicsManager.cpp					\
 				GraphicsListeners.cpp				\
@@ -69,7 +76,7 @@ DEBUG_SRC = FpsCounter.cpp							\
 			AbstractFpsDisplayer.cpp				\
 			FpsDisplayer.cpp
 
-.PHONY: doc tools tests
+.PHONY: doc tools tests depends
 
 # compiler
 CC = clang++
@@ -107,7 +114,7 @@ COLOR_OBJECT = \033[0m
 
 all: print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) depends $(OBJS)
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(AR) $(AR_FLAGS) $(COMPLETE_TARGET) $(OBJS)
 
@@ -128,6 +135,10 @@ clean:
 $(BUILD_DIR):
 	@echo " - $(COLOR_ACTION)creating directory$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
 	@mkdir -p $(BUILD_DIR)
+
+depends:
+	@echo " - $(COLOR_ACTION)check for modified headers$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
+	@hatedepend -v -r -I $(INCLUDE_DIR) -S $(SRC_DIR) -O $(BUILD_DIR)
 
 print_summary:
 ifeq ($(MODE), debug)
@@ -168,5 +179,4 @@ application_tests:
 
 gource:
 	@gource --load-config doc/gource.conf
-
 

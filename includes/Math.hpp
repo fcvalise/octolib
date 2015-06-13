@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/14 16:42:22 by pciavald         ###   ########.fr       */
+/*   Updated: 2015/06/14 01:08:20 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,18 @@ namespace octo
 	inline T	manhattanLength(sf::Vector2<T> const& vector)
 	{
 		return (vector.x + vector.y);
+	}
+
+	template <class T>
+	static inline T	determinant(sf::Vector2<T> const& a, sf::Vector2<T> const& b)
+	{
+		return (a.x * b.y - a.y * b.x);
+	}
+
+	template <class T>
+	static inline T	squaredDistance(sf::Vector2<T> const& a, sf::Vector2<T> const& b)
+	{
+		return (pow<2>(b.x - a.x) + pow<2>(b.y - a.y));
 	}
 
 	/*!
