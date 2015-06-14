@@ -1,5 +1,5 @@
 #include "CommandManager.hpp"
-#include "AbstractSpriteSheetCommand.hpp"
+#include "AbstractCommand.hpp"
 
 #include <QActionGroup>
 
@@ -15,7 +15,7 @@ CommandManager::~CommandManager()
 {
 }
 
-AbstractSpriteSheetCommand *CommandManager::currentCommand() const
+AbstractCommand *CommandManager::currentCommand() const
 {
     return (m_currentCommand.data());
 }
@@ -28,7 +28,7 @@ void CommandManager::restartCurrentCommand()
     }
 }
 
-void CommandManager::addCommand(AbstractSpriteSheetCommand *command, bool enable)
+void CommandManager::addCommand(AbstractCommand *command, bool enable)
 {
     QAction*        action = command->action();
     CommandPointer  commandPtr(command);

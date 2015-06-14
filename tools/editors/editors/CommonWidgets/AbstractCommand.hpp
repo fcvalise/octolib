@@ -1,5 +1,5 @@
-#ifndef ABSTRACTSPRITESHEETCOMMAND_HPP
-#define ABSTRACTSPRITESHEETCOMMAND_HPP
+#ifndef ABSTRACTCOMMAND_HPP
+#define ABSTRACTCOMMAND_HPP
 #include <QString>
 #include <QIcon>
 #include <QCursor>
@@ -12,11 +12,11 @@ class QGraphicsScene;
 
 class SpriteSheetModel;
 
-class AbstractSpriteSheetCommand
+class AbstractCommand
 {
 public:
-    explicit AbstractSpriteSheetCommand(SpriteSheetModel* model, QItemSelectionModel* selection);
-    virtual ~AbstractSpriteSheetCommand();
+    explicit AbstractCommand(SpriteSheetModel* model, QItemSelectionModel* selection);
+    virtual ~AbstractCommand();
 
     virtual QAction*    action()const = 0;
     virtual QCursor     cursor()const = 0;
@@ -37,4 +37,4 @@ private:
     QItemSelectionModel* const  m_selection;
 };
 
-#endif // ABSTRACTSPRITESHEETCOMMAND_HPP
+#endif // ABSTRACTCOMMAND_HPP
