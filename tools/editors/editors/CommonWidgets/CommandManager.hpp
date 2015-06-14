@@ -9,7 +9,7 @@ class QGraphicsScene;
 class QActionGroup;
 class QAction;
 
-class AbstractSpriteSheetCommand;
+class AbstractCommand;
 
 class CommandManager : public QObject
 {
@@ -18,15 +18,15 @@ public:
     explicit CommandManager(QGraphicsScene* scene, QObject *parent = 0);
     ~CommandManager();
 
-    AbstractSpriteSheetCommand* currentCommand()const;
-    void                        restartCurrentCommand();
-    void                        addCommand(AbstractSpriteSheetCommand* command, bool enable = false);
-    QList<QAction*>             commandActions()const;
+    AbstractCommand*    currentCommand()const;
+    void                restartCurrentCommand();
+    void                addCommand(AbstractCommand* command, bool enable = false);
+    QList<QAction*>     commandActions()const;
 public slots:
-    void                        selectCommand(QAction* action);
+    void                selectCommand(QAction* action);
 private:
-    typedef QSharedPointer<AbstractSpriteSheetCommand>  CommandPointer;
-    typedef QMap<QAction*, CommandPointer>              CommandMapper;
+    typedef QSharedPointer<AbstractCommand> CommandPointer;
+    typedef QMap<QAction*, CommandPointer>  CommandMapper;
 
     QGraphicsScene* m_scene;
     QActionGroup*   m_group;

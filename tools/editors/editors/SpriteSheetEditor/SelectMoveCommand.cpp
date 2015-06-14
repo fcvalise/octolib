@@ -11,7 +11,7 @@
 #include <cmath>
 
 SelectMoveCommand::SelectMoveCommand(SpriteSheetModel *model, QItemSelectionModel *selection) :
-    AbstractSpriteSheetCommand(model, selection),
+    AbstractCommand(model, selection),
     m_action(nullptr)
 {
     m_action = new QAction(QIcon(":/images/cursor.png"), QObject::tr("Pointer"), nullptr);
