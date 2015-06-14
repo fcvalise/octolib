@@ -36,7 +36,8 @@ GRAPHICS_SRC =	GraphicsManager.cpp					\
 				ColorWheel.cpp						\
 				IColorProvider.cpp					\
 				SpriteSheet.cpp						\
-				AnimatedSprite.cpp
+				AnimatedSprite.cpp					\
+				VertexBuilder.cpp
 
 AUDIO_SRC =	AudioManager.cpp
 
