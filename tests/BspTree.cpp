@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/05 10:36:15 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/14 01:15:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 05:44:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include <BspTree.hpp>
 #include <BspNode.hpp>
 #include <BspCompiler.hpp>
+#include <ByteArray.hpp>
+#include <BinaryInputStream.hpp>
+#include <BinaryOutputStream.hpp>
 
 #include <sstream>
 #include <list>
@@ -57,6 +60,37 @@ BOOST_AUTO_TEST_CASE( io )
 	tree.write(os);
 	is.str(os.str());
 	loaded.read(is);
+	hyperplans = listHyperplans(tree);
+	loadedHyperplans = listHyperplans(loaded);
+	BOOST_CHECK_EQUAL_COLLECTIONS(hyperplans.begin(), hyperplans.end(),
+								 loadedHyperplans.begin(), loadedHyperplans.end());
+}
+
+BOOST_AUTO_TEST_CASE( binary_io )
+{
+	octo::BspNode*				n0 = new octo::BspNode(octo::Segment(0, 1, 1, 0));	
+	octo::BspNode*				n1 = new octo::BspNode(octo::Segment(2, 3, 3, 2));	
+	octo::BspNode*				n2 = new octo::BspNode(octo::Segment(4, 5, 5, 4));	
+	octo::BspNode*				n3 = new octo::BspNode(octo::Segment(6, 7, 7, 6));	
+	octo::BspNode*				n4 = new octo::BspNode(octo::Segment(8, 9, 9, 8));	
+	octo::BspNode*				n5 = new octo::BspNode(octo::Segment(10, 11, 11, 10));	
+	octo::BspTree				tree;
+	octo::BspTree				loaded;
+	octo::ByteArray				buffer;
+	octo::BinaryOutputStream	os(buffer);
+	octo::BinaryInputStream		is(buffer);
+
+	std::list<octo::Segment>	hyperplans;
+	std::list<octo::Segment>	loadedHyperplans;
+
+	n0->setFrontNode(n1);
+	n0->setBackNode(n2);
+	n1->setFrontNode(n3);
+	n2->setBackNode(n4);
+	n4->setFrontNode(n5);
+	tree.reset(n0);
+	tree.writeToMemory(os);
+	loaded.readFromMemory(is);
 	hyperplans = listHyperplans(tree);
 	loadedHyperplans = listHyperplans(loaded);
 	BOOST_CHECK_EQUAL_COLLECTIONS(hyperplans.begin(), hyperplans.end(),

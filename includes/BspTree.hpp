@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/05 08:32:01 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/14 00:47:21 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 05:30:38 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ namespace octo
 	class BspNode;
 	class Segment;
 	class Collision;
+	class BinaryOutputStream;
+	class BinaryInputStream;
 
 	class BspTree
 	{
@@ -42,6 +44,9 @@ namespace octo
 		void			reset(BspNode* root = nullptr);
 		void			write(std::ostream& os)const;
 		void			read(std::istream& is);
+		void			writeToMemory(BinaryOutputStream& os)const;
+		void			readFromMemory(BinaryInputStream& is);
+
 		BspNode const*	nodeAt(sf::Vector2f const& pos)const;
 		bool			segmentHitTest(Segment const& segment, Collision& collision)const;
 
