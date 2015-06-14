@@ -12,7 +12,7 @@ QPen const          AddTileCommand::GhostRectanglePen = QPen(Qt::green, 0, Qt::D
 QBrush const        AddTileCommand::GhostRectangleBrush = QBrush(QColor(0, 255, 0, 90));
 
 AddTileCommand::AddTileCommand(SpriteSheetModel *model, QItemSelectionModel *selection) :
-    AbstractCommand(model, selection),
+    AbstractSpriteSheetCommand(model, selection),
     m_action(nullptr),
     m_ghost(nullptr)
 {

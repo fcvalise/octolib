@@ -1,7 +1,7 @@
 #include "SpriteSheetView.hpp"
 #include "SpriteSheetModel.hpp"
 #include "CommandManager.hpp"
-#include "AbstractCommand.hpp"
+#include "AbstractSpriteSheetCommand.hpp"
 
 #include <InteractiveGraphicsScene.hpp>
 
@@ -192,7 +192,7 @@ void SpriteSheetView::enableCommands(bool enable)
     m_scene->enableCommands(enable);
 }
 
-void SpriteSheetView::addCommand(AbstractCommand *command, bool enable)
+void SpriteSheetView::addCommand(AbstractSpriteSheetCommand *command, bool enable)
 {
     m_scene->addCommand(command, enable);
 }

@@ -6,7 +6,7 @@
 
 class SpriteSheetModel;
 class InteractiveGraphicsScene;
-class AbstractCommand;
+class AbstractSpriteSheetCommand;
 class GraphicsTileItem;
 
 class QGraphicsScene;
@@ -38,7 +38,7 @@ public:
     void                    setZoom(qreal factor);
 
     void                    enableCommands(bool enable);
-    void                    addCommand(AbstractCommand* command, bool enable = false);
+    void                    addCommand(AbstractSpriteSheetCommand *command, bool enable = false);
     void                    restartCurrentCommand();
     QList<QAction*>         commandActions()const;
 private:

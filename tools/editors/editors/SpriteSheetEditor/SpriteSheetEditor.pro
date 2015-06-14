@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     SpriteSheetModel.cpp \
     AddTileCommand.cpp \
     SelectMoveCommand.cpp \
-    CreateTileFromDivisionDialog.cpp
+    CreateTileFromDivisionDialog.cpp \
+    AbstractSpriteSheetCommand.cpp
 
 HEADERS  += MainWindow.hpp \
     SpriteSheetEditor.hpp \
@@ -31,7 +32,8 @@ HEADERS  += MainWindow.hpp \
     SpriteSheetModel.hpp \
     AddTileCommand.hpp \
     SelectMoveCommand.hpp \
-    CreateTileFromDivisionDialog.hpp
+    CreateTileFromDivisionDialog.hpp \
+    AbstractSpriteSheetCommand.hpp
 
 
 
