@@ -15,7 +15,6 @@ class SpriteSheetModel;
 class AbstractCommand
 {
 public:
-    explicit AbstractCommand(SpriteSheetModel* model, QItemSelectionModel* selection);
     virtual ~AbstractCommand();
 
     virtual QAction*    action()const = 0;
@@ -28,13 +27,6 @@ public:
     virtual void        keyReleaseEvent(QKeyEvent *event) = 0;
     virtual void        onStarted(QGraphicsScene* scene) = 0;
     virtual void        onStopped(QGraphicsScene* scene) = 0;
-protected:
-    void                    commandActionSetup(QAction* action)const;
-    SpriteSheetModel*       model()const;
-    QItemSelectionModel*    selection()const;
-private:
-    SpriteSheetModel* const     m_model;
-    QItemSelectionModel* const  m_selection;
 };
 
 #endif // ABSTRACTCOMMAND_HPP

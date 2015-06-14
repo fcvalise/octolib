@@ -1,11 +1,11 @@
 #ifndef ADDTILECOMMAND_HPP
 #define ADDTILECOMMAND_HPP
-#include <AbstractCommand.hpp>
+#include "AbstractSpriteSheetCommand.hpp"
 
 class QAction;
 class QGraphicsRectItem;
 
-class AddTileCommand : public QObject, public AbstractCommand
+class AddTileCommand : public QObject, public AbstractSpriteSheetCommand
 {
     Q_OBJECT
 
