@@ -13,6 +13,7 @@ CONFIG += c++11
 
 DEFINES += "GIT_COMMIT_SHORT=\"\\\"$$system(git rev-parse --short HEAD)\\\"\""
 DEFINES += "GIT_BRANCH=\"\\\"$$system(git rev-parse --abbrev-ref HEAD)\\\"\""
+
 SOURCES += \
     HsvColorEditor.cpp \
     RgbaColorEditor.cpp \
@@ -30,7 +31,10 @@ SOURCES += \
     ComplementaryOffsetDialog.cpp \
     SquareOffsetDialog.cpp \
     TriadOffsetDialog.cpp \
-    AnaloguousOffsetDialog.cpp
+    AnaloguousOffsetDialog.cpp \
+    InteractiveGraphicsScene.cpp \
+    AbstractCommand.cpp \
+    CommandManager.cpp
 
 HEADERS += \
     SpinBoxSlider.hpp \
@@ -49,7 +53,10 @@ HEADERS += \
     SquareOffsetDialog.hpp \
     TriadOffsetDialog.hpp \
     ComplementaryOffsetDialog.hpp \
-    AnaloguousOffsetDialog.hpp
+    AnaloguousOffsetDialog.hpp \
+    InteractiveGraphicsScene.hpp \
+    AbstractCommand.hpp \
+    CommandManager.hpp
 
 FORMS += \
     SquareOffsetDialog.ui \

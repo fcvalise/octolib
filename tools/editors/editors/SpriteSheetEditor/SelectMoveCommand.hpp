@@ -1,11 +1,11 @@
 #ifndef SELECTMOVECOMMAND_HPP
 #define SELECTMOVECOMMAND_HPP
 
-#include "AbstractSpriteSheetCommand.hpp"
+#include <AbstractCommand.hpp>
 
 #include <QModelIndex>
 
-class SelectMoveCommand : public AbstractSpriteSheetCommand
+class SelectMoveCommand : public AbstractCommand
 {
 public:
     explicit SelectMoveCommand(SpriteSheetModel* model, QItemSelectionModel* selection);

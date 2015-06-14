@@ -16,8 +16,6 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     SpriteSheetEditor.cpp \
     SpriteSheetView.cpp \
-    AbstractSpriteSheetCommand.cpp \
-    CommandManager.cpp \
     TileControlWidget.cpp \
     TilePreview.cpp \
     SpriteSheetModel.cpp \
@@ -28,8 +26,6 @@ SOURCES += main.cpp\
 HEADERS  += MainWindow.hpp \
     SpriteSheetEditor.hpp \
     SpriteSheetView.hpp \
-    AbstractSpriteSheetCommand.hpp \
-    CommandManager.hpp \
     TileControlWidget.hpp \
     TilePreview.hpp \
     SpriteSheetModel.hpp \
