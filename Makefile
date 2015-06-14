@@ -100,7 +100,7 @@ CFLAGS = $(COMMON_FLAGS)
 TARGET = lib$(LIB_NAME).a
 COMPLETE_TARGET = $(OUTPUT_DIR)/$(TARGET)
 MODE = release
-
+DEPEND_MODE = enabled
 ifeq ($(MODE), debug)
 CFLAGS += $(DEBUG_FLAGS)
 COLOR_ACTION = \033[1;32m
@@ -137,8 +137,10 @@ $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
 
 depends:
+ifeq ($(DEPEND_MODE), enabled)
 	@echo " - $(COLOR_ACTION)check for modified headers$(COLOR_OFF)"
 	@hatedepend -r -I $(INCLUDE_DIR) -S $(SRC_DIR) -O $(BUILD_DIR)
+endif
 
 print_summary:
 ifeq ($(MODE), debug)

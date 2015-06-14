@@ -15,5 +15,5 @@ install:
 
 script:
  - sudo ./scripts/unix/run_static_analysis.sh
- - make complete
- - make run_tests
+ - make complete DEPEND_MODE=disabled
+ - make run_tests DEPEND_MODE=disabled
