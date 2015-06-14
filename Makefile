@@ -137,8 +137,8 @@ $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)
 
 depends:
-	@echo " - $(COLOR_ACTION)check for modified headers$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
-	@hatedepend -v -r -I $(INCLUDE_DIR) -S $(SRC_DIR) -O $(BUILD_DIR)
+	@echo " - $(COLOR_ACTION)check for modified headers$(COLOR_OFF)"
+	@hatedepend -r -I $(INCLUDE_DIR) -S $(SRC_DIR) -O $(BUILD_DIR)
 
 print_summary:
 ifeq ($(MODE), debug)

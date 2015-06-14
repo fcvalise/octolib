@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/05 10:26:25 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/14 00:53:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 05:32:28 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "ExpectChar.hpp"
 #include "Segment.hpp"
 #include "Collision.hpp"
+#include "BinaryOutputStream.hpp"
+#include "BinaryInputStream.hpp"
 
 #include <map>
 #include <cstdint>
@@ -52,7 +54,7 @@ namespace octo
 				return (m_nodeIdMap);
 			}
 
-			void		printTable(std::ostream& os)const
+			void		write(std::ostream& os)const
 			{
 				std::uint64_t const	count = m_nodeIdMap.size();
 
@@ -62,6 +64,19 @@ namespace octo
 					os << "[" << it->second << ":" << getId(it->first->front()) << ":" << getId(it->first->back()) << "]";
 				}
 				os << "]";
+			}
+
+			void		writeToMemory(BinaryOutputStream& os)const
+			{
+				std::uint64_t const	count = m_nodeIdMap.size();
+
+				os.write(count);
+				for (auto it = m_nodeIdMap.begin(); it != m_nodeIdMap.end(); ++it)
+				{
+					os.write(it->second);
+				   	os.write(getId(it->first->front()));
+				   	os.write(getId(it->first->back()));
+				}
 			}
 
 			NodeId		getId(NodePtr node)const
@@ -102,6 +117,14 @@ namespace octo
 				return (root.release());
 			}
 
+			NodePtr		readFromMemory(BinaryInputStream& is)
+			{
+				std::unique_ptr<BspNode>	root;
+
+				root.reset(readTable(is));
+				readNodeData(is);
+				return (root.release());
+			}
 		private:
 			void		readNodeData(std::istream& is)
 			{
@@ -140,6 +163,43 @@ namespace octo
 					node->setBackNode(getOrCreate(backId));
 				}
 				is >> ExpectChar(']');
+				return (root.release());
+			}
+
+			void		readNodeData(BinaryInputStream& is)
+			{
+				NodePtr	node = nullptr;
+				NodeId	id = NullNodeId;
+
+				for (unsigned int i = 0; i < m_idNodeMap.size(); ++i)
+				{
+					is.read(id);
+					node = get(id);
+					node->readFromMemory(is);
+				}
+			}
+
+			NodePtr		readTable(BinaryInputStream& is)
+			{
+				std::uint64_t				count = 0;
+				NodePtr						node = nullptr;
+				std::unique_ptr<BspNode>	root;
+				NodeId						id = NullNodeId;
+				NodeId						frontId = NullNodeId;
+				NodeId						backId = NullNodeId;
+
+				is.read(count);
+				for (std::uint64_t i = 0; i < count; ++i)
+				{
+					is.read(id, frontId, backId);
+					node = getOrCreate(id);
+					if (node == nullptr)
+						throw std::runtime_error("invalid bsp table");
+					if (root == nullptr)
+						root.reset(node);
+					node->setFrontNode(getOrCreate(frontId));
+					node->setBackNode(getOrCreate(backId));
+				}
 				return (root.release());
 			}
 		private:
@@ -192,7 +252,7 @@ namespace octo
 		// le noeud racine.
 		visit<VisitorMode::Prefix>(tableMaker);
 		os << "[";
-		tableMaker.printTable(os);
+		tableMaker.write(os);
 		os << ":";
 		for (auto const& entry : tableMaker.table())
 		{
@@ -201,7 +261,6 @@ namespace octo
 			os << ":";
 		}
 		os << "]";
-		(void)os;
 	}
 
 	void	BspTree::read(std::istream& is)
@@ -209,6 +268,29 @@ namespace octo
 		MakeNodeTableIn				reader;
 		
 		m_root.reset(reader.read(is));
+	}
+
+	void	BspTree::writeToMemory(BinaryOutputStream& os)const
+	{
+		MakeNodeTableOut	tableMaker;
+
+		// L'ordre de parcours est important.
+		// On veut en particulier que le premier noeud visite soit
+		// le noeud racine.
+		visit<VisitorMode::Prefix>(tableMaker);
+		tableMaker.writeToMemory(os);
+		for (auto const& entry : tableMaker.table())
+		{
+			os.write(entry.second);
+			entry.first->writeToMemory(os);
+		}
+	}
+
+	void	BspTree::readFromMemory(BinaryInputStream& is)
+	{
+		MakeNodeTableIn				reader;
+
+		m_root.reset(reader.readFromMemory(is));
 	}
 
 	BspNode const*	BspTree::nodeAt(sf::Vector2f const& pos)const

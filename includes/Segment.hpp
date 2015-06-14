@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 22:50:33 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/14 00:49:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 02:09:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 namespace octo
 {
 	class Collision;
+	class BinaryInputStream;
+	class BinaryOutputStream;
 
 	class Segment
 	{
@@ -47,6 +49,9 @@ namespace octo
 		float				location(sf::Vector2f const& point)const;
 		sf::Vector2f		direction()const;
 		float				directorCoef()const;
+
+		void				writeToMemory(BinaryOutputStream& os)const;
+		void				readFromMemory(BinaryInputStream& is);
 
 		static void			split(Segment const &segment, float t, Segment& first, Segment &second);
 		static bool			areParallel(Segment const& left, Segment const& right);

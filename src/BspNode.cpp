@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/04 11:53:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/14 01:11:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 02:25:09 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #include "ExpectChar.hpp"
 #include "Collision.hpp"
 #include "Math.hpp"
+#include "BinaryInputStream.hpp"
+#include "BinaryOutputStream.hpp"
+
 #include <algorithm>
 
 namespace octo
@@ -239,6 +242,47 @@ namespace octo
 			m_backSegments = std::move(backSegments);
 			m_alignedSegments = std::move(alignedSegments);
 		}
+	}
+	namespace
+	{
+		static void	writeToMemory(BinaryOutputStream& os, SegmentArray const& segments)
+		{
+			std::uint64_t	count = segments.size();
+
+			os.write(count);
+			for (auto const& segment : segments)
+				segment.writeToMemory(os);
+		}
+
+		static void	readFromMemory(BinaryInputStream& is, SegmentArray& segments)
+		{
+			std::uint64_t	count = 0;
+			Segment			temp;
+			SegmentArray	tempSegments;
+
+			is.read(count);
+			tempSegments.resize(count);
+			tempSegments.shrink_to_fit();
+			for (auto& segment : tempSegments)
+				segment.readFromMemory(is);
+			segments = std::move(tempSegments);
+		}
+	}
+
+	void	BspNode::writeToMemory(BinaryOutputStream& os)const
+	{
+		m_hyperplan.writeToMemory(os);
+		::octo::writeToMemory(os, m_frontSegments);
+		::octo::writeToMemory(os, m_backSegments);
+		::octo::writeToMemory(os, m_alignedSegments);
+	}
+
+	void	BspNode::readFromMemory(BinaryInputStream& is)
+	{
+		m_hyperplan.readFromMemory(is);
+		::octo::readFromMemory(is, m_frontSegments);
+		::octo::readFromMemory(is, m_backSegments);
+		::octo::readFromMemory(is, m_alignedSegments);
 	}
 
 	SegmentArray&	BspNode::segments(SegmentCollection collection)

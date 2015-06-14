@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 22:59:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/14 01:08:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 02:25:26 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "ExpectChar.hpp"
 #include "PrintSFML.hpp"
 #include "Math.hpp"
+#include "BinaryInputStream.hpp"
+#include "BinaryOutputStream.hpp"
 
 #include <cmath>
 
@@ -240,5 +242,22 @@ namespace octo
 			segments = std::move(temp);
 		}
 		return (is);
+	}
+
+	void	Segment::writeToMemory(BinaryOutputStream& os)const
+	{
+		os.write(m_id, m_p0.x, m_p0.y, m_p1.x, m_p1.y);
+	}
+
+	void	Segment::readFromMemory(BinaryInputStream& is)
+	{
+		Identifier		id = NullId;
+		sf::Vector2f	p0;
+		sf::Vector2f	p1;
+
+		is.read(id, p0.x, p0.y, p1.x, p1.y);
+		m_id = std::move(id);
+		m_p0 = std::move(p0);
+		m_p1 = std::move(p1);
 	}
 }

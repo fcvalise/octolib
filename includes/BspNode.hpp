@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/04 11:12:55 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/14 00:48:18 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 02:18:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ namespace octo
 
 		void				write(std::ostream& os)const;
 		void				read(std::istream& is);
+		void				writeToMemory(BinaryOutputStream& os)const;
+		void				readFromMemory(BinaryInputStream& is);
 	private:
 		SegmentArray	m_frontSegments;
 		SegmentArray	m_backSegments;

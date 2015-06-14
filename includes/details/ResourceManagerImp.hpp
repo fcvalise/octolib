@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 15:26:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 05:32:57 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include "ColorWheel.hpp"
 # include "SpriteAnimation.hpp"
 # include "SpriteSheet.hpp"
-# include "../ResourceLoading.hpp"
+# include "BspTree.hpp"
+# include "ResourceLoading.hpp"
 
 # include <memory>
 # include <vector>

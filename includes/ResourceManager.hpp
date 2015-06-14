@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 14:51:15 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/14 05:33:09 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ namespace octo
 	class ColorWheel;
 	class SpriteSheet;
 	class SpriteAnimation;
+	class BspTree;
 	class IResourceListener;
 
 	/*!
