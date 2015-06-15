@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 06:57:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/24 00:14:14 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/15 16:22:03 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,44 @@ BOOST_AUTO_TEST_CASE( simple_test4 )
 	BOOST_CHECK_EQUAL( oValueB, iValueB );
 	BOOST_CHECK_EQUAL( oValueC, iValueC );
 	BOOST_CHECK_EQUAL( oValueD, iValueD );
+	BOOST_CHECK( is.isOk() );
+	BOOST_CHECK( is.hasDataToRead() == false );
+}
+
+BOOST_AUTO_TEST_CASE( string_test )
+{
+	octo::ByteArray				buffer;
+	octo::BinaryOutputStream	os(buffer);
+	std::string					bufferA = "hello world";
+	std::string					bufferB;
+	
+	os.write(bufferA);
+
+	octo::BinaryInputStream		is(buffer);
+
+	BOOST_CHECK( is.isOk() );
+	BOOST_CHECK( is.hasDataToRead() );
+	is.read(bufferB);
+	BOOST_CHECK_EQUAL( bufferA, bufferB );
+	BOOST_CHECK( is.isOk() );
+	BOOST_CHECK( is.hasDataToRead() == false );
+}
+
+BOOST_AUTO_TEST_CASE( empty_string_test )
+{
+	octo::ByteArray				buffer;
+	octo::BinaryOutputStream	os(buffer);
+	std::string					bufferA = "";
+	std::string					bufferB;
+	
+	os.write(bufferA);
+
+	octo::BinaryInputStream		is(buffer);
+
+	BOOST_CHECK( is.isOk() );
+	BOOST_CHECK( is.hasDataToRead() );
+	is.read(bufferB);
+	BOOST_CHECK_EQUAL( bufferA, bufferB );
 	BOOST_CHECK( is.isOk() );
 	BOOST_CHECK( is.hasDataToRead() == false );
 }
