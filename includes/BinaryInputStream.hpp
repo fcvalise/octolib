@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 14:41:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/15 16:13:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/15 16:22:40 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ namespace octo
 			
 			read(size);
 			value.resize(size);
-			readBytes(&value.front(), size);
+			if (size > 0u)
+				readBytes(&value.front(), size);
 		}
 
 		void		skip(std::size_t bytes);
