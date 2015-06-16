@@ -10,6 +10,7 @@ before_install:
 
 install:
  - sudo ./scripts/unix/install_compiler.sh
+ - sudo ./scripts/unix/install_dependencies.sh
  - sudo ./scripts/unix/install_cppcheck.sh
  - sudo ./scripts/unix/install_sfml.sh
 
