@@ -6,13 +6,15 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 14:41:46 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/15 16:22:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/15 17:03:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BINARYINPUTSTREAM_HPP
 # define BINARYINPUTSTREAM_HPP
 # include "ByteArray.hpp"
+
+# include <string>
 
 namespace octo
 {
