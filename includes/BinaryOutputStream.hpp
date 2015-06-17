@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 15:32:23 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/24 18:54:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/15 16:18:17 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ namespace octo
 
 			m_bytes.reserve(m_bytes.size() + byteCount);
 			writeImp<T...>(values...);
+		}
+
+		void	write(std::string const& value)
+		{
+			write<std::uint32_t>(value.size());
+			writeBytes(value.c_str(), value.size());
 		}
 
 		void	writeBytes(char const* buffer, std::size_t size);

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 16:41:16 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 11:21:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/12 16:35:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,6 @@ namespace octo
 		std::string	m_stateKey;
 		std::string	m_transitionKey;
 	};
-
 }
 
 #include "StateManager.hxx"

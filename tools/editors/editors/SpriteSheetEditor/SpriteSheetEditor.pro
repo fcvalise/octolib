@@ -16,26 +16,24 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     SpriteSheetEditor.cpp \
     SpriteSheetView.cpp \
-    AbstractSpriteSheetCommand.cpp \
-    CommandManager.cpp \
     TileControlWidget.cpp \
     TilePreview.cpp \
     SpriteSheetModel.cpp \
     AddTileCommand.cpp \
     SelectMoveCommand.cpp \
-    CreateTileFromDivisionDialog.cpp
+    CreateTileFromDivisionDialog.cpp \
+    AbstractSpriteSheetCommand.cpp
 
 HEADERS  += MainWindow.hpp \
     SpriteSheetEditor.hpp \
     SpriteSheetView.hpp \
-    AbstractSpriteSheetCommand.hpp \
-    CommandManager.hpp \
     TileControlWidget.hpp \
     TilePreview.hpp \
     SpriteSheetModel.hpp \
     AddTileCommand.hpp \
     SelectMoveCommand.hpp \
-    CreateTileFromDivisionDialog.hpp
+    CreateTileFromDivisionDialog.hpp \
+    AbstractSpriteSheetCommand.hpp
 
 
 

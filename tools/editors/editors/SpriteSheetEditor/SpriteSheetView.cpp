@@ -3,6 +3,8 @@
 #include "CommandManager.hpp"
 #include "AbstractSpriteSheetCommand.hpp"
 
+#include <InteractiveGraphicsScene.hpp>
+
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QItemSelectionModel>
@@ -81,87 +83,6 @@ private:
     States  m_state;
 };
 
-class InteractiveGraphicsScene : public QGraphicsScene
-{
-public:
-    InteractiveGraphicsScene(QObject *parent) :
-        QGraphicsScene(parent),
-        m_commandManager(this),
-        m_commandEnabled(true)
-    {
-    }
-
-    ~InteractiveGraphicsScene()
-    {
-    }
-
-    void    addCommand(AbstractSpriteSheetCommand* command, bool enable)
-    {
-        m_commandManager.addCommand(command, enable);
-    }
-
-    void    restartCurrentCommand()
-    {
-        m_commandManager.restartCurrentCommand();
-    }
-
-    void    enableCommands(bool enable)
-    {
-        m_commandEnabled = enable;
-        if (enable == false)
-            m_commandManager.selectCommand(nullptr);
-    }
-
-    void mousePressEvent(QGraphicsSceneMouseEvent *event)
-    {
-        AbstractSpriteSheetCommand* command = m_commandManager.currentCommand();
-
-        if (m_commandEnabled && command)
-            command->mousePressEvent(event);
-    }
-
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-    {
-        AbstractSpriteSheetCommand* command = m_commandManager.currentCommand();
-
-        if (m_commandEnabled && command)
-            command->mouseMoveEvent(event);
-        QGraphicsScene::mouseMoveEvent(event);
-    }
-
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-    {
-        AbstractSpriteSheetCommand* command = m_commandManager.currentCommand();
-
-        if (m_commandEnabled && command)
-            command->mouseReleaseEvent(event);
-    }
-
-    void keyPressEvent(QKeyEvent *event)
-    {
-        AbstractSpriteSheetCommand* command = m_commandManager.currentCommand();
-
-        if (m_commandEnabled && command)
-            command->keyPressEvent(event);
-    }
-
-    void keyReleaseEvent(QKeyEvent *event)
-    {
-        AbstractSpriteSheetCommand* command = m_commandManager.currentCommand();
-
-        if (m_commandEnabled && command)
-            command->keyReleaseEvent(event);
-    }
-
-    QList<QAction*> commandActions()const
-    {
-        return (m_commandManager.commandActions());
-    }
-private:
-    CommandManager  m_commandManager;
-    bool            m_commandEnabled;
-};
-
 SpriteSheetView::SpriteSheetView(QWidget *parent) :
     QGraphicsView(parent),
     m_model(nullptr),
@@ -191,7 +112,7 @@ void SpriteSheetView::setModel(SpriteSheetModel *model)
         setSelectionModel(nullptr);
         disconnect(m_model.data(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
         disconnect(m_model.data(), SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(onRowsInserted(QModelIndex,int,int)));
-        disconnect(m_model.data(), SIGNAL(rowAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
+        disconnect(m_model.data(), SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(onRowsAboutToBeRemoved(QModelIndex,int,int)));
         disconnect(m_model.data(), SIGNAL(modelReset()), this, SLOT(onModelReset()));
         m_model = nullptr;
     }
@@ -200,7 +121,7 @@ void SpriteSheetView::setModel(SpriteSheetModel *model)
     {
         connect(m_model.data(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
         connect(m_model.data(), SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(onRowsInserted(QModelIndex,int,int)));
-        connect(m_model.data(), SIGNAL(rowAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(onDataChanged(QModelIndex,QModelIndex)));
+        connect(m_model.data(), SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(onRowsAboutToBeRemoved(QModelIndex,int,int)));
         connect(m_model.data(), SIGNAL(modelReset()), this, SLOT(onModelReset()));
         onModelReset();
         setSelectionModel(new QItemSelectionModel(m_model, this));

@@ -26,4 +26,3 @@ QItemSelectionModel *AbstractSpriteSheetCommand::selection() const
 {
     return (m_selection);
 }
-

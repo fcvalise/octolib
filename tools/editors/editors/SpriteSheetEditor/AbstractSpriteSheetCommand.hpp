@@ -1,18 +1,9 @@
 #ifndef ABSTRACTSPRITESHEETCOMMAND_HPP
 #define ABSTRACTSPRITESHEETCOMMAND_HPP
-#include <QString>
-#include <QIcon>
-#include <QCursor>
 
-class QAction;
-class QGraphicsSceneMouseEvent;
-class QKeyEvent;
-class QItemSelectionModel;
-class QGraphicsScene;
+#include <AbstractCommand.hpp>
 
-class SpriteSheetModel;
-
-class AbstractSpriteSheetCommand
+class AbstractSpriteSheetCommand : public AbstractCommand
 {
 public:
     explicit AbstractSpriteSheetCommand(SpriteSheetModel* model, QItemSelectionModel* selection);
