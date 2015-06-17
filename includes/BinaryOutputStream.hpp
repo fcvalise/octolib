@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/01 15:32:23 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/15 16:18:17 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/15 17:03:42 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define BINARYOUTPUTSTREAM_HPP
 # include "ByteArray.hpp"
 # include "details/Meta.hpp"
+
+# include <string>
 
 namespace octo
 {
