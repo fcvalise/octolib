@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/08 05:35:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/14 21:22:59 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/18 03:10:21 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,78 @@ namespace octo
 		}
 	}
 
+	/*!	Make a range of null vertex
+	 *
+	 *	\warning This function admits that the array \a vertices contains at least \a count elements
+	 */
+	void	VertexBuilder::makeNull(sf::Vertex* vertices, std::size_t count)
+	{
+		std::size_t	i = 0u;
+
+		while (i < count)
+			vertices[++i] = sf::Vertex();
+	}
+
+	/*!	Make a line
+	 *
+	 *	\warning This function admits that the array \a vertices contains at least 6 elements
+	 */
+	void	VertexBuilder::makeLine(sf::Vertex* vertices,
+									sf::Vector2f const& p0,
+									sf::Vector2f const& p1,
+									float thickness,
+									sf::Color const& color)
+	{
+		sf::Vector2f	p;
+		float			halfThickness = thickness * .5f;
+
+		p = computeNormale(p1 - p0);
+		normalize(p);
+		p *= halfThickness;
+		makeQuad(vertices, p0 - p, p0 + p, p1 + p, p1 - p, color);
+	}
+
+	/*!	Make a triangle
+	 *
+	 *	\warning This function admits that the array \a vertices contains at least 3 elements
+	 */
+	void	VertexBuilder::makeTriangle(sf::Vertex* vertices, sf::Vector2f const& p0, sf::Vector2f const& p1,
+							 			sf::Vector2f const& p2, sf::Color const& color)
+	{
+		vertices[0].position = p0;
+		vertices[1].position = p1;
+		vertices[2].position = p2;
+		vertices[0].color = color;
+		vertices[1].color = color;
+		vertices[2].color = color;
+	}
+
+	/*!	Make a quad
+	 *
+	 *	\warning This function admits that the array \a vertices contains at least 6 elements
+	 */
+	void	VertexBuilder::makeQuad(sf::Vertex* vertices, sf::Vector2f const& p0, sf::Vector2f const& p1,
+						 			sf::Vector2f const& p2, sf::Vector2f const& p3, sf::Color const& color)
+	{
+		vertices[0].position = p0;
+		vertices[1].position = p1;
+		vertices[2].position = p2;
+		vertices[3].position = p0;
+		vertices[4].position = p3;
+		vertices[5].position = p2;
+		vertices[0].color = color;
+		vertices[1].color = color;
+		vertices[2].color = color;
+		vertices[3].color = color;
+		vertices[4].color = color;
+		vertices[5].color = color;
+	}
+
+	/*!	Create a builder by defining the begin of vertices array and the count of vertices
+	 *	available.
+	 *	\param vertices Begin of vertices array
+	 *	\param count Count of vertices available
+	 */
 	VertexBuilder::VertexBuilder(sf::Vertex* vertices, std::size_t count) :
 		m_vertices(vertices),
 		m_size(count),
@@ -34,6 +106,9 @@ namespace octo
 		assert(count > 0);
 	}
 
+	/*!	Add a vertex by defining his position and color
+	 *	\throw std::runtime_error is thrown if there are not enough vertices
+	 */
 	void	VertexBuilder::createVertex(sf::Vector2f const& pos, sf::Color const& color)
 	{
 		if (m_used + 1 > m_size)
@@ -43,20 +118,23 @@ namespace octo
 		++m_used;
 	}
 
+	/*!	Add a line
+	 *	\throw std::runtime_error is thrown if there are not enough vertices
+	 */
 	void	VertexBuilder::createLine(sf::Vector2f const& p0,
 									  sf::Vector2f const& p1,
 									  float thickness,
 									  sf::Color const& color)
 	{
-		sf::Vector2f	p;
-		float			halfThickness = thickness * .5f;
-
-		p = computeNormale(p1 - p0);
-		octo::normalize(p);
-		p *= halfThickness;
-		createQuad(p0 - p, p0 + p, p1 + p, p1 - p, color);
+		if (m_used + 6 > m_size)
+			throw std::runtime_error("vertex builder: no more vertices");
+		 makeLine(m_vertices + m_used, p0, p1, thickness, color);
+		 m_used += 6;
 	}
 
+	/*!	Add a triangle
+	 *	\throw std::runtime_error is thrown if there are not enough vertices
+	 */
 	void	VertexBuilder::createTriangle(sf::Vector2f const& p0,
 										  sf::Vector2f const& p1,
 										  sf::Vector2f const& p2,
@@ -66,15 +144,13 @@ namespace octo
 			throw std::runtime_error("vertex builder: no more vertices");
 		sf::Vertex* const	vertices = m_vertices + m_used;
 
-		vertices[0].position = p0;
-		vertices[1].position = p1;
-		vertices[2].position = p2;
-		vertices[0].color = color;
-		vertices[1].color = color;
-		vertices[2].color = color;
+		makeTriangle(vertices, p0, p1, p2, color);
 		m_used += 3;
 	}
 
+	/*!	Add a quad
+	 *	\throw std::runtime_error is thrown if there are not enough vertices
+	 */
 	void	VertexBuilder::createQuad(sf::Vector2f const& p0,
 									  sf::Vector2f const& p1,
 									  sf::Vector2f const& p2,
@@ -100,6 +176,18 @@ namespace octo
 		m_used += 6;
 	}
 
+	/*!	Remove all primitives
+	 *
+	 *	This method reset the builder on the first vertex.<br>
+	 *	This method is usefull if you don't want to instanciate a vertex builder
+	 *	many times with the same vertices array. 
+	 */
+	void	VertexBuilder::clear()
+	{
+		m_used = 0;
+	}
+
+	/*!	Get the vertices count which have to be drawn */
 	std::size_t VertexBuilder::getUsed()const
 	{
 		return (m_used);
