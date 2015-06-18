@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 17:08:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/18 21:12:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ namespace octo
 	 *		<TD>render.set_vsync(bool enable)</TD>
 	 *		<TD>enable: define if the v-sync is needed</TD>
 	 *		<TD>Enable or disable the vertical syncronization</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>render.set_framerate_limit(unsigned int limit)</TD>
+	 *		<TD>limit: define the maximum of frame per seconds (0 means no limit)</TD>
+	 *		<TD>Define the framerate limit</TD>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>system.change_state(std::string stateKey)</TD>
