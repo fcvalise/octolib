@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 01:49:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/18 20:32:02 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ namespace octo
 	class IMouseListener;
 	class IJoystickListener;
 	class ITextListener;
+	class Camera;
 
 	/*!
 	 *	\ingroup Graphics
@@ -37,6 +38,7 @@ namespace octo
 	public:
 		GraphicsManager();
 
+		void					setCamera(Camera& camera);
 		void					createRender(sf::VideoMode const& mode,
 											 sf::String const& title,
 									  		 bool fullscreen);

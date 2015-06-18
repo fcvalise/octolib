@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 16:38:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/18 18:25:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,8 +342,6 @@ namespace octo
 				m_core.execute();
 				break;
 			// Delete
-			// Delete do nothing because currently you can move
-			// the cursor into the line
 			case 127:
 				m_core.removeCurrent();
 				break;
