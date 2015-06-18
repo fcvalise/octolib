@@ -73,7 +73,7 @@ DEBUG_SRC = FpsCounter.cpp							\
 .PHONY: doc tools tests
 
 # compiler
-CC = clang++
+CC = $(CXX)
 # archiver
 AR = ar
 # flags used in both mode
@@ -132,7 +132,7 @@ $(BUILD_DIR):
 
 print_summary:
 ifeq ($(MODE), debug)
-	@echo " - Making library $(LIB_NAME) [DEBUG]: $(CFLAGS)"
+	@echo " - Making library $(LIB_NAME) [DEBUG]: $(CFLAGS) - $(CXX)"
 else
 	@echo " - Making library $(LIB_NAME): $(CFLAGS)"
 endif

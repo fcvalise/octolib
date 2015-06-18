@@ -14,7 +14,7 @@ LIBS = octo sfml-system sfml-window sfml-graphics sfml-audio
 SRC = main.cpp
 
 # compiler
-CC = clang++
+CC = $(CXX)
 # flags used in both mode
 COMMON_FLAGS = -Werror -Wextra -Wall -std=c++11
 # flags used in release mode
