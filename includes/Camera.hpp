@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 19:32:49 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/06 05:14:52 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/18 20:43:55 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,12 @@ namespace octo
 {
 	class GraphicsManager;
 
-	/*!
-	 *	\ingroup Graphics
-	 *	\class Camera
-	 *	\brief Camera
-	 *
-	 *	Camera provides unified view controls.
-	 */
 	class Camera : public DefaultWindowListener
 	{
+		friend class GraphicsManager;
 	public:
 		explicit Camera();
 
-		void				setup(GraphicsManager& graphics);
 		void				setCenter(sf::Vector2f const& center);
 		void				setCenter(float x, float y);
 		void				move(sf::Vector2f const& offset);
@@ -55,7 +48,9 @@ namespace octo
 		sf::Vector2i		mapGuiCoordsToPixel(sf::Vector2f const& position)const;
 
 		void				update(sf::Time frameTime);
+	private:
 		virtual void		onResized(sf::Event::SizeEvent const& event);
+		void				setup(GraphicsManager& graphics);
 	private:
 		GraphicsManager*	m_graphicsManager;
 		sf::View			m_view;
