@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 20:32:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/20 01:27:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ namespace octo
 		m_keyboardListenersEnabled(true),
 		m_mouseListenersEnabled(true),
 		m_joystickListenersEnabled(true),
-		m_framerateLimit(0)
+		m_framerateLimit(0),
+		m_antialiasing(0)
 	{
 	}
 
@@ -34,12 +35,14 @@ namespace octo
 
 	void	GraphicsManager::createRender(sf::VideoMode const& mode,
 										 sf::String const& title,
-										 bool fullscreen)
+										 bool fullscreen,
+										 unsigned int antialiasing)
 	{
-		m_window.create(mode, title, (fullscreen) ? sf::Style::Fullscreen : sf::Style::Default);
+		m_window.create(mode, title, (fullscreen) ? sf::Style::Fullscreen : sf::Style::Default, sf::ContextSettings(0, 0, antialiasing));
 		m_videoMode = mode;
 		m_title = title;
 		m_fullscreen = fullscreen;
+		m_antialiasing = antialiasing;
 	}
 
 	void	GraphicsManager::closeRender()
@@ -186,8 +189,21 @@ namespace octo
 	{
 		if (m_videoMode != mode)
 		{
-			createRender(mode, m_title, m_fullscreen);
+			createRender(mode, m_title, m_fullscreen, m_antialiasing);
 		}
+	}
+
+	void	GraphicsManager::setAntialiasing(unsigned int antialiasing)
+	{
+		if (antialiasing != m_antialiasing)
+		{
+			createRender(m_videoMode, m_title, m_fullscreen, m_antialiasing);
+		}
+	}
+
+	unsigned int	GraphicsManager::getAntialiasing()const
+	{
+		return (m_antialiasing);
 	}
 
 	sf::VideoMode const&	GraphicsManager::getVideoMode()const
@@ -199,7 +215,7 @@ namespace octo
 	{
 		if (m_fullscreen != fullscreen)
 		{
-			createRender(m_videoMode, m_title, fullscreen);
+			createRender(m_videoMode, m_title, fullscreen, m_antialiasing);
 		}
 	}
 

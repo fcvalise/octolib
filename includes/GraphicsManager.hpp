@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:35:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 20:32:02 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/20 01:25:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ namespace octo
 		void					setCamera(Camera& camera);
 		void					createRender(sf::VideoMode const& mode,
 											 sf::String const& title,
-									  		 bool fullscreen);
+									  		 bool fullscreen,
+											 unsigned int antialiasing);
 		void					closeRender();
 
 		void					draw(sf::Drawable const& drawble,
@@ -64,6 +65,9 @@ namespace octo
 
 		void					setFramerateLimit(unsigned int limit);
 		unsigned int			getFramerateLimit()const;
+
+		void					setAntialiasing(unsigned int antialiasing);
+		unsigned int			getAntialiasing()const;
 
 		void					setView(sf::View const& view);
 		sf::View const&			getDefaultView()const;
@@ -105,6 +109,7 @@ namespace octo
 		bool						m_mouseListenersEnabled;
 		bool						m_joystickListenersEnabled;
 		unsigned int				m_framerateLimit;
+		unsigned int				m_antialiasing;
 	};
 }
 

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 20:31:36 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/20 01:30:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ namespace octo
 			{
 				m_graphicsManager.createRender(m_options.getValue<sf::VideoMode>("resolution", sf::VideoMode::getFullscreenModes().front()),
 											   title,
-											   m_options.getValue("fullscreen", false));
+											   m_options.getValue("fullscreen", false),
+											   m_options.getValue("antialiasing", 0u));
 				m_graphicsManager.setVerticalSyncEnabled(m_options.getValue("vsync", true));
 				m_graphicsManager.setFramerateLimit(m_options.getValue("framerate_limit", 0));
 				m_graphicsManager.setCamera(m_camera);
@@ -152,6 +153,7 @@ namespace octo
 				m_console.addCommand(L"render.set_fullscreen", m_graphicsManager, &GraphicsManager::setFullscreen);
 				m_console.addCommand(L"render.set_vsync", m_graphicsManager, &GraphicsManager::setVerticalSyncEnabled);
 				m_console.addCommand(L"render.set_framerate_limit", m_graphicsManager, &GraphicsManager::setFramerateLimit);
+				m_console.addCommand(L"render.set_antialiasing", m_graphicsManager, &GraphicsManager::setAntialiasing);
 				// System commands
 				m_console.addCommand(L"system.quit", [](){Application::stop();});
 				m_console.addCommand(L"system.push_state", [](std::string const& key)
