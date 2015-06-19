@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 21:12:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/20 01:32:08 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ namespace octo
 	 *		<TD>Define the framerate limit</TD>
 	 *	</TR>
 	 *	<TR>
+	 *		<TD>render.set_antialiasing(unsigned int level)</TD>
+	 *		<TD>level: level of anti-aliasing</TD>
+	 *		<TD>Define the antialiasing level. This parameter can not give same result on all plateforms</TD>
+	 *	</TR>
+	 *	<TR>
 	 *		<TD>system.change_state(std::string stateKey)</TD>
 	 *		<TD><UL><LI>stateKey: define the state to start</LI></UL></TD>
 	 *		<TD>Change the current state(see StateManager::changeState()</TD>
@@ -156,6 +161,12 @@ namespace octo
 		 *		<TD>unsigned int</TD>
 		 *		<TD>Define the framerate limit (0 to disable the limit). </TD>
 		 *		<TD>0 (no limits)</TD>
+		 *	</TR>
+		 *	<TR>
+		 *		<TD>antialiasing</TD>
+		 *		<TD>unsigned int</TD>
+		 *		<TD>Define the level of antialiasing applied to render. </TD>
+		 *		<TD>0 (no antialiasing)</TD>
 		 *	</TR>
 		 *	<TR>
 		 *		<TD>start_state</TD>
