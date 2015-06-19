@@ -1,0 +1,3 @@
+uninitMemberVar:includes/Array2D.hxx
+uninitMemberVar:includes/Array3D.hxx
+syntaxError:includes/IAnimation.hpp
