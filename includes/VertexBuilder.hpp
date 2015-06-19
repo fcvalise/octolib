@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/08 05:04:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 03:16:12 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/19 05:35:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <SFML/Graphics/Color.hpp>
 # include <SFML/Graphics/Vertex.hpp>
 # include <cstddef>
+# include <vector>
 
 namespace octo
 {
@@ -66,7 +67,10 @@ namespace octo
 							 sf::Vector2f const& p3,
 							 sf::Color const& color);
 
+		VertexBuilder();
 		VertexBuilder(sf::Vertex* vertices, std::size_t count);
+		VertexBuilder(VertexBuilder&& other) = default;
+		VertexBuilder& operator = (VertexBuilder&& other) = default;
 
 		void		createVertex(sf::Vector2f const& pos, sf::Color const& color);
 
@@ -85,13 +89,16 @@ namespace octo
 							   sf::Vector2f const& p2,
 							   sf::Vector2f const& p3,
 							   sf::Color const& color);
+
+		void		createVertices(std::vector<sf::Vertex> const& vertices);
 		
 		void		clear();
 		std::size_t	getUsed()const;
+		bool		isNull()const;
 	private:
-		sf::Vertex* const 	m_vertices;
-		std::size_t const	m_size;
-		std::size_t			m_used;
+		sf::Vertex* m_vertices;
+		std::size_t	m_size;
+		std::size_t	m_used;
 	};
 }
 
