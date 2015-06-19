@@ -19,3 +19,4 @@ script:
  - sudo ./scripts/unix/run_static_analysis.sh
  - make complete
  - make run_tests
+ - ./tools/editors/builds.sh
