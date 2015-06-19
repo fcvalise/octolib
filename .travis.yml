@@ -15,6 +15,7 @@ install:
  - sudo ./scripts/unix/install_sfml.sh
 
 script:
+ - $CXX --version
  - sudo ./scripts/unix/run_static_analysis.sh
  - make complete
  - make run_tests
