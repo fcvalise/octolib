@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/12 16:42:53 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/18 20:31:36 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ namespace octo
 											   m_options.getValue("fullscreen", false));
 				m_graphicsManager.setVerticalSyncEnabled(m_options.getValue("vsync", true));
 				m_graphicsManager.setFramerateLimit(m_options.getValue("framerate_limit", 0));
-				m_camera.setup(m_graphicsManager);
+				m_graphicsManager.setCamera(m_camera);
 			}
 
 			void	setupAudio()
@@ -151,6 +151,7 @@ namespace octo
 				m_console.addCommand(L"render.screenshot", this, &ApplicationImp::screenshot);
 				m_console.addCommand(L"render.set_fullscreen", m_graphicsManager, &GraphicsManager::setFullscreen);
 				m_console.addCommand(L"render.set_vsync", m_graphicsManager, &GraphicsManager::setVerticalSyncEnabled);
+				m_console.addCommand(L"render.set_framerate_limit", m_graphicsManager, &GraphicsManager::setFramerateLimit);
 				// System commands
 				m_console.addCommand(L"system.quit", [](){Application::stop();});
 				m_console.addCommand(L"system.push_state", [](std::string const& key)

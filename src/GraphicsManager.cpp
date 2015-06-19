@@ -6,12 +6,13 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 21:39:51 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/28 02:29:22 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/18 20:32:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "GraphicsManager.hpp"
 #include "GraphicsListeners.hpp"
+#include "Camera.hpp"
 
 namespace octo
 {
@@ -24,6 +25,11 @@ namespace octo
 		m_joystickListenersEnabled(true),
 		m_framerateLimit(0)
 	{
+	}
+
+	void	GraphicsManager::setCamera(Camera& camera)
+	{
+		camera.setup(*this);
 	}
 
 	void	GraphicsManager::createRender(sf::VideoMode const& mode,
