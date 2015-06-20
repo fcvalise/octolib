@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/11 15:52:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 02:44:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/20 17:09:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include <SFML/Graphics/Color.hpp>
 # include <SFML/System/Vector2.hpp>
 # include <cmath>
+
+# include "Math.hpp"
 
 namespace octo
 {
@@ -38,7 +40,7 @@ namespace octo
 	template <class T>
 	static T	cosinusInterpolation(T a, T b, float alpha)
 	{
-		return (a * std::cos((1.f - alpha) * M_PI) + b * alpha);
+		return (a * std::cos((1.f - alpha) * Pi) + b * alpha);
 	}
 
 	sf::Color		linearInterpolation(sf::Color a, sf::Color b, float alpha);
