@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 01:06:48 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/16 02:00:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/20 17:08:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,21 @@ BOOST_AUTO_TEST_CASE( cos )
 	BOOST_CHECK_CLOSE( (octo::cosLPA(3.14f)), std::cos(3.14f), 0.0001f );
 }
 
+BOOST_AUTO_TEST_CASE( convert_angles_deg_to_rad )
+{
+	BOOST_CHECK_CLOSE( (octo::deg2Rad(0)), 0.f, 0.000001f );
+	BOOST_CHECK_CLOSE( (octo::deg2Rad(90)), octo::PiDiv2, 0.000001f );
+	BOOST_CHECK_CLOSE( (octo::deg2Rad(180)), octo::Pi, 0.000001f );
+	BOOST_CHECK_CLOSE( (octo::deg2Rad(270)), octo::Pi + octo::PiDiv2, 0.000001f );
+	BOOST_CHECK_CLOSE( (octo::deg2Rad(360)), octo::Pi2, 0.000001f );
+}
+
+BOOST_AUTO_TEST_CASE( convert_angles_rad_to_deg )
+{
+	BOOST_CHECK_CLOSE( (octo::rad2Deg(0)), 0.f, 0.000001f );
+	BOOST_CHECK_CLOSE( (octo::rad2Deg(octo::PiDiv2)), 90.f, 0.000001f );
+	BOOST_CHECK_CLOSE( (octo::rad2Deg(octo::Pi)), 180.f, 0.000001f );
+	BOOST_CHECK_CLOSE( (octo::rad2Deg(octo::Pi + octo::PiDiv2)), 270.f, 0.000001f );
+	BOOST_CHECK_CLOSE( (octo::rad2Deg(octo::Pi2)), 360.f, 0.000001f );
+}
 BOOST_AUTO_TEST_SUITE_END()
