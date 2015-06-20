@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/20 17:10:59 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/20 17:18:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,25 @@ namespace octo
 	 *	@{
 	 */
 
+	/*!	Constant value of Pi */
 	static constexpr float const	Pi = 3.14159265358979323846f;
+
+	/*!	Constant value of Pi divided by 2 */
 	static constexpr float const	PiDiv2 = Pi / 2.f;
+
+	/*!	Constant value of Pi divided by 4 */
 	static constexpr float const	PiDiv4 = Pi / 4.f;
+
+	/*!	Constant value of Pi multiplied by 2 */
 	static constexpr float const	Pi2 = Pi * 2.f;
+
+	/*!	Constant value of Pi multiplied by 4 */
 	static constexpr float const	Pi4 = Pi * 4.f;
+
+	/*!	Factor to convert degrees in radians */
 	static constexpr float const	Deg2Rad = Pi / 180.f; 
+
+	/*!	Factor to convert radians in degrees */
 	static constexpr float const	Rad2Deg = 180.f / Pi; 
 
 	/*!
@@ -225,13 +238,13 @@ namespace octo
 		return (vector.x + vector.y);
 	}
 
-	/*!	Convert degrees to radians */
+	/*!	Convert degrees in radians */
 	inline constexpr float	deg2Rad(float degrees)
 	{
 		return (degrees * Deg2Rad);
 	}
 
-	/*!	Convert radians to degrees */
+	/*!	Convert radians in degrees */
 	inline constexpr float	rad2Deg(float radians)
 	{
 		return (radians * Rad2Deg);
