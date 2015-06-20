@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 00:52:30 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/14 16:42:22 by pciavald         ###   ########.fr       */
+/*   Updated: 2015/06/20 04:30:28 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,17 @@ namespace octo
 
 		v.x /= mag;
 		v.y /= mag;
+	}
+
+	/*!
+	 *	Normalize the vector, magnitude = 1
+	 */
+	template <class T>
+	inline sf::Vector2f	normalized(sf::Vector2<T> const& v)
+	{
+		float mag = magnitude(v);
+
+		return (sf::Vector2f(v.x / mag, v.y / mag));
 	}
 
 	/*!
