@@ -20,5 +20,5 @@ install:
 
 script:
  - if [ "$MODE" = "debug" ]; then sudo ./scripts/travis/run_static_analysis.sh; fi
- - make complete
- - make run_tests
+ - make complete MODE=$MODE
+ - make run_tests MODE=$MODE
