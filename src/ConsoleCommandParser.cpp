@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/02 14:34:12 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/27 21:57:13 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/20 05:41:08 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace octo
 		bool							isArgumentChar(wchar_t c)
 		{
 			return (std::isalpha(c, s_locale) || std::isdigit(c, s_locale) ||
-					c == L'_' || c == L'.' || c == L';');
+					c == L'_' || c == L'.' || c == L';' || c == '-');
 		}
 
 		std::wstring::const_iterator	skipSpaces(std::wstring::const_iterator it,
