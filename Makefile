@@ -81,7 +81,7 @@ COMMON_FLAGS = -Werror -Wextra -Wall -std=c++11
 # flags used with archiver
 AR_FLAGS = -rs
 # flags used in release mode
-RELEASE_FLAGS = -O3
+RELEASE_FLAGS = -O3 -DNDEBUG
 # flags used in debug mode
 DEBUG_FLAGS = -g
 # includes dirs paths
