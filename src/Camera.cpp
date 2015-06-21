@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 20:30:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 20:44:25 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/21 02:53:54 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ namespace octo
 	void	Camera::setCenter(sf::Vector2f const& center)
 	{
 		m_view.setCenter(center);
+		for (auto* listener : m_listeners)
+			listener->onCenterChanged(center);
 	}
 
 	/*!	Defines the center of the camera */
@@ -57,7 +59,7 @@ namespace octo
 	/*!	Moves the center of the camera */
 	void	Camera::move(sf::Vector2f const& offset)
 	{
-		m_view.move(offset);
+		setCenter(getCenter() + offset);
 	}
 
 	/*!	Moves the center of the camera */
@@ -72,6 +74,8 @@ namespace octo
 	void	Camera::setRotation(float angle)
 	{
 		m_view.setRotation(angle);
+		for (auto* listener : m_listeners)
+			listener->onRotationChanged(angle);
 	}
 
 	/*!	Rotate the camera
@@ -79,7 +83,7 @@ namespace octo
 	 */
 	void	Camera::rotate(float angle)
 	{
-		m_view.rotate(angle);
+		setRotation(getRotation() + angle);
 	}
 
 	/*!	Define the zoom factor */
@@ -87,6 +91,8 @@ namespace octo
 	{
 		m_zoomFactor = factor;
 		m_view.zoom(m_zoomFactor);
+		for (auto* listener : m_listeners)
+			listener->onZoomChanged(factor);
 	}
 
 	/*!	Get the position of the center of the camera */
@@ -116,6 +122,16 @@ namespace octo
 	/*! Update the camera */
 	void	Camera::update(sf::Time)
 	{
+	}
+
+	void	Camera::addListener(ICameraListener* listener)
+	{
+		::octo::appendListener(listener, m_listeners);	
+	}
+
+	void	Camera::removeListener(ICameraListener* listener)
+	{
+		::octo::removeListener(listener, m_listeners);	
 	}
 
 	/*!	Get the SFML view handled by the camera */
