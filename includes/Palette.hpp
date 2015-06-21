@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 20:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 05:47:54 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/21 22:34:30 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ namespace octo
 		/*!	Get the available colors count */
 		virtual std::size_t	getColorCount()const;
 
-		virtual bool		loadFromMemory(ByteArray const& buffer);
-		virtual bool		saveToMemory(ByteArray& buffer)const;
+		bool				loadFromMemory(ByteArray const& buffer);
+		bool				saveToMemory(ByteArray& buffer)const;
 	private:
 		void				resize(std::size_t count);
 	private:

@@ -34,7 +34,7 @@ GRAPHICS_SRC =	GraphicsManager.cpp					\
 				Hsv.cpp								\
 				Palette.cpp							\
 				ColorWheel.cpp						\
-				IColorProvider.cpp					\
+				OneColor.cpp						\
 				SpriteSheet.cpp						\
 				AnimatedSprite.cpp					\
 				VertexBuilder.cpp
