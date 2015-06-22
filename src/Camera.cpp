@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 20:30:10 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 20:44:25 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/22 20:25:55 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,35 @@ namespace octo
 		m_guiView = graphicsManager.getDefaultView();
 		m_graphicsManager = &graphicsManager;
 		m_zoomFactor = 1.f;
+		updateRectangle();
 	}
 
 	/*!	Defines the center of the camera */
 	void	Camera::setCenter(sf::Vector2f const& center)
 	{
 		m_view.setCenter(center);
+		updateRectangle();
 	}
 
 	/*!	Defines the center of the camera */
 	void	Camera::setCenter(float x, float y)
 	{
 		m_view.setCenter(x, y);
+		updateRectangle();
 	}
 
 	/*!	Moves the center of the camera */
 	void	Camera::move(sf::Vector2f const& offset)
 	{
 		m_view.move(offset);
+		updateRectangle();
 	}
 
 	/*!	Moves the center of the camera */
 	void	Camera::move(float offsetX, float offsetY)
 	{
 		m_view.move(offsetX, offsetY);
+		updateRectangle();
 	}
 
 	/*!	Defines the camera rotation in degrees
@@ -72,6 +77,7 @@ namespace octo
 	void	Camera::setRotation(float angle)
 	{
 		m_view.setRotation(angle);
+		updateRectangle();
 	}
 
 	/*!	Rotate the camera
@@ -80,6 +86,7 @@ namespace octo
 	void	Camera::rotate(float angle)
 	{
 		m_view.rotate(angle);
+		updateRectangle();
 	}
 
 	/*!	Define the zoom factor */
@@ -87,6 +94,7 @@ namespace octo
 	{
 		m_zoomFactor = factor;
 		m_view.zoom(m_zoomFactor);
+		updateRectangle();
 	}
 
 	/*!	Get the position of the center of the camera */
@@ -131,11 +139,9 @@ namespace octo
 	}
 
 	/*!	Get the camera rectangle */
-	sf::FloatRect	Camera::getRectangle()const
+	sf::FloatRect const& Camera::getRectangle()const
 	{
-		sf::Vector2f	size = m_view.getSize();
-
-		return (sf::FloatRect(m_view.getCenter() - size / 2.f, size));
+		return (m_rectangle);
 	}
 
 	/*!	Convert a pixel position on the screen to a position in world coordinate using the game view */
@@ -176,5 +182,11 @@ namespace octo
 
 		m_view.setSize(newSize);
 		m_guiView.setSize(newSize);
+		updateRectangle();
+	}
+
+	void	Camera::updateRectangle()
+	{
+		m_rectangle = sf::FloatRect(getCenter() - getSize() / 2.f, getSize());
 	}
 }
