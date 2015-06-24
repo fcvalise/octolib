@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:29:44 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 16:37:02 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 16:27:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ namespace octo
 		void						printError(std::exception const& e);
 		void						printHelp(std::wstring const& str);
 		void						clear();
+
+		void						run(std::string const& fileName);
 
 		void						update(sf::Time frameTime, sf::View const& view);
 		void						draw(sf::RenderTarget& render)const;

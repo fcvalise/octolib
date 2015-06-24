@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 02:22:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 16:49:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,18 @@ namespace octo
 	 *		<TH>Name</TH>
 	 *		<TH>Parameters</TH>
 	 *		<TH>Description</TH>
+	 *	</TR>
+	 *	<TR>
+	 *		<TH>console.execute(fileName)</TH>
+	 *		<TH>
+	 *			fileName: the path to the file to execute.<br>
+	 *			This path is relative to the application directory.
+	 *		</TH>
+	 *		<TH>
+	 *			Execute the commands readed from a file.<br>
+	 *			The file is readed line by line, and each line are interpreted
+	 *			as a command.
+	 *		</TH>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>console.list_commands()</TD>
