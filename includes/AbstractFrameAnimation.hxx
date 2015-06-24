@@ -6,11 +6,12 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/23 14:09:01 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/25 02:42:02 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 18:49:40 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <algorithm>
+#include <stdexcept>
 
 namespace octo
 {
