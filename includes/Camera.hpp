@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 19:32:49 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 20:43:55 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/22 20:25:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,35 +26,37 @@ namespace octo
 	public:
 		explicit Camera();
 
-		void				setCenter(sf::Vector2f const& center);
-		void				setCenter(float x, float y);
-		void				move(sf::Vector2f const& offset);
-		void				move(float offsetX, float offsetY);
-		void				setRotation(float angle);
-		void				rotate(float angle);
-		void				setZoom(float factor);
+		void					setCenter(sf::Vector2f const& center);
+		void					setCenter(float x, float y);
+		void					move(sf::Vector2f const& offset);
+		void					move(float offsetX, float offsetY);
+		void					setRotation(float angle);
+		void					rotate(float angle);
+		void					setZoom(float factor);
 
-		sf::Vector2f const&	getCenter()const;
-		sf::Vector2f const&	getSize()const;
-		float				getRotation()const;
-		float				getZoom()const;
-		sf::FloatRect		getRectangle()const;
-		sf::View const&		getView()const;
-		sf::View const&		getGuiView()const;
+		sf::Vector2f const&		getCenter()const;
+		sf::Vector2f const&		getSize()const;
+		sf::FloatRect const&	getRectangle()const;
+		float					getRotation()const;
+		float					getZoom()const;
+		sf::View const&			getView()const;
+		sf::View const&			getGuiView()const;
 
-		sf::Vector2f		mapPixelToCoords(sf::Vector2i const& position)const;
-		sf::Vector2f		mapGuiPixelToCoords(sf::Vector2i const& position)const;
-		sf::Vector2i		mapCoordsToPixel(sf::Vector2f const& position)const;
-		sf::Vector2i		mapGuiCoordsToPixel(sf::Vector2f const& position)const;
+		sf::Vector2f			mapPixelToCoords(sf::Vector2i const& position)const;
+		sf::Vector2f			mapGuiPixelToCoords(sf::Vector2i const& position)const;
+		sf::Vector2i			mapCoordsToPixel(sf::Vector2f const& position)const;
+		sf::Vector2i			mapGuiCoordsToPixel(sf::Vector2f const& position)const;
 
-		void				update(sf::Time frameTime);
+		void					update(sf::Time frameTime);
 	private:
-		virtual void		onResized(sf::Event::SizeEvent const& event);
-		void				setup(GraphicsManager& graphics);
+		virtual void			onResized(sf::Event::SizeEvent const& event);
+		void					setup(GraphicsManager& graphics);
+		void					updateRectangle();
 	private:
 		GraphicsManager*	m_graphicsManager;
 		sf::View			m_view;
 		sf::View			m_guiView;
+		sf::FloatRect		m_rectangle;
 		float				m_zoomFactor;
 	};
 }
