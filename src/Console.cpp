@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/18 18:25:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 16:46:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "Palette.hpp"
 #include "StringUtils.hpp"
 #include <iostream>
+#include <fstream>
 
 namespace octo
 {
@@ -296,6 +297,146 @@ namespace octo
 		m_needUpdate = true;
 	}
 
+	/*!	Update the console logic */
+	void	Console::update(sf::Time, sf::View const& view)
+	{
+		sf::Vector2f const&	viewSize = view.getSize();
+		sf::Vector2f const&	viewCenter = view.getCenter();
+		float const			lineHeight = m_font->getLineSpacing(m_fontSize) + m_lineSpacing;
+		float const			top = viewSize.y * m_relativeHeight * 0.5f + viewCenter.y;
+		float				y = 0.f;
+		float				left = viewSize.x * -0.5f + viewCenter.x;
+		float				leftPadded = left + m_leftPadding;
+
+		if (isEnabled())
+		{
+			m_rectangle.setSize(sf::Vector2f(viewSize.x, viewSize.y * m_relativeHeight));
+			m_rectangle.setPosition(sf::Vector2f(left, top));
+			m_current.setPosition(leftPadded, top + m_topPadding);
+			y = top + lineHeight + m_topPadding;
+			for (sf::Text& text : m_log)
+			{
+				text.setPosition(leftPadded, y);
+				y += lineHeight;
+			}
+			m_completion.updatePosition(-(lineHeight + m_topPadding), m_lineSpacing);
+		}			
+	}
+
+	/*!	Draw the console */
+	void	Console::draw(sf::RenderTarget& render)const
+	{
+		if (isEnabled() == false)
+			return;
+		render.draw(m_rectangle);
+		render.draw(m_current);
+		for (sf::Text const& text : m_log)
+			render.draw(text);
+		render.draw(m_completion, m_cursor.getTransform() * m_current.getTransform());
+		m_cursor.draw(render, m_current.getTransform());
+	}
+
+	/*!	Run a list of commands readed from a file */
+	void	Console::run(std::string const& fileName)
+	{
+		std::wfstream	file;
+
+		file.open(fileName, std::ios_base::in);
+		if (file.is_open())
+		{
+			m_core.executeStream(file);
+		}
+		else
+		{
+			printError(std::wstring(L"Unable to open '") + stringToWide(fileName) + L"'");
+		}
+	}
+
+	/*!	Register a word to completion dictionnary */
+	void	Console::addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem)
+	{
+		m_core.addWord(word, lexem);
+	}
+
+	/*!	Register a word to completion dictionnary */
+	void	Console::addWord(std::string const& word, ConsoleCompletion::Lexems lexem)
+	{
+		m_core.addWord(stringToWide(word), lexem);
+	}
+
+	/*!	Register a word to completion dictionnary */
+	void	Console::addWords(std::vector<std::wstring> const& words, ConsoleCompletion::Lexems lexem)
+	{
+		for (std::wstring const& word : words)
+			m_core.addWord(word, lexem);
+	}
+
+	/*!	Register a word to completion dictionnary */
+	void	Console::addWords(std::vector<std::string> const& words, ConsoleCompletion::Lexems lexem)
+	{
+		for (std::string const& word : words)
+		{
+			m_core.addWord(stringToWide(word), lexem);
+		}
+	}
+
+	/*!	Print a message in the console
+	 *	\param str String displayed
+	 *	\param color Color of string displayed
+	 */
+	void	Console::print(std::wstring const& str, sf::Color const& color)
+	{
+		if (isEnabled() == false)
+			return;
+		sf::Text					text("", *m_font, m_fontSize);
+		std::vector<std::wstring>	lines;
+
+		text.setColor(color);
+		splits(str, L'\n', lines);
+		std::reverse(lines.begin(), lines.end());
+		for (std::wstring const& line : lines)
+		{
+			text.setString(line);
+			if (m_log.size() == m_maxLogCount)
+				m_log.pop_back();
+			m_log.push_front(text);
+		}
+		m_needUpdate = true;
+	}
+	
+	/*!	Print an error message in the console
+	 *	\param str String displayed
+	 */
+	void	Console::printError(std::wstring const& str)
+	{
+		if (isEnabled() == false)
+			return;
+		print(str, m_palette->getColor(Error));
+	}
+	/*!	Print the message of an exception in the console
+	 *	\param str String displayed
+	 */
+	void						Console::printError(std::exception const& e)
+	{
+		if (isEnabled() == false)
+			return;
+		printError(L"exception: " + stringToWide(e.what()));
+	}
+
+	/*!	Print a help message */
+	void						Console::printHelp(std::wstring const& str)
+	{
+		if (isEnabled() == false)
+			return;
+		print(str, m_palette->getColor(Help));
+	}
+
+	/*!	Return the list of all registered commands keys */
+	std::vector<std::wstring>	Console::getCommandList()const
+	{
+		return (m_core.getCommandList());
+	}
+
 	void	Console::onTextChanged(std::wstring const& text)
 	{
 		if (isEnabled() == false)
@@ -427,127 +568,4 @@ namespace octo
 		return (m_enabled == false);
 	}
 
-	/*!	Update the console logic */
-	void	Console::update(sf::Time, sf::View const& view)
-	{
-		sf::Vector2f const&	viewSize = view.getSize();
-		sf::Vector2f const&	viewCenter = view.getCenter();
-		float const			lineHeight = m_font->getLineSpacing(m_fontSize) + m_lineSpacing;
-		float const			top = viewSize.y * m_relativeHeight * 0.5f + viewCenter.y;
-		float				y = 0.f;
-		float				left = viewSize.x * -0.5f + viewCenter.x;
-		float				leftPadded = left + m_leftPadding;
-
-		if (isEnabled())
-		{
-			m_rectangle.setSize(sf::Vector2f(viewSize.x, viewSize.y * m_relativeHeight));
-			m_rectangle.setPosition(sf::Vector2f(left, top));
-			m_current.setPosition(leftPadded, top + m_topPadding);
-			y = top + lineHeight + m_topPadding;
-			for (sf::Text& text : m_log)
-			{
-				text.setPosition(leftPadded, y);
-				y += lineHeight;
-			}
-			m_completion.updatePosition(-(lineHeight + m_topPadding), m_lineSpacing);
-		}			
-	}
-
-	/*!	Draw the console */
-	void	Console::draw(sf::RenderTarget& render)const
-	{
-		if (isEnabled() == false)
-			return;
-		render.draw(m_rectangle);
-		render.draw(m_current);
-		for (sf::Text const& text : m_log)
-			render.draw(text);
-		render.draw(m_completion, m_cursor.getTransform() * m_current.getTransform());
-		m_cursor.draw(render, m_current.getTransform());
-	}
-
-	/*!	Register a word to completion dictionnary */
-	void	Console::addWord(std::wstring const& word, ConsoleCompletion::Lexems lexem)
-	{
-		m_core.addWord(word, lexem);
-	}
-
-	/*!	Register a word to completion dictionnary */
-	void	Console::addWord(std::string const& word, ConsoleCompletion::Lexems lexem)
-	{
-		m_core.addWord(stringToWide(word), lexem);
-	}
-
-	/*!	Register a word to completion dictionnary */
-	void	Console::addWords(std::vector<std::wstring> const& words, ConsoleCompletion::Lexems lexem)
-	{
-		for (std::wstring const& word : words)
-			m_core.addWord(word, lexem);
-	}
-
-	/*!	Register a word to completion dictionnary */
-	void	Console::addWords(std::vector<std::string> const& words, ConsoleCompletion::Lexems lexem)
-	{
-		for (std::string const& word : words)
-		{
-			m_core.addWord(stringToWide(word), lexem);
-		}
-	}
-
-	/*!	Print a message in the console
-	 *	\param str String displayed
-	 *	\param color Color of string displayed
-	 */
-	void	Console::print(std::wstring const& str, sf::Color const& color)
-	{
-		if (isEnabled() == false)
-			return;
-		sf::Text					text("", *m_font, m_fontSize);
-		std::vector<std::wstring>	lines;
-
-		text.setColor(color);
-		splits(str, L'\n', lines);
-		std::reverse(lines.begin(), lines.end());
-		for (std::wstring const& line : lines)
-		{
-			text.setString(line);
-			if (m_log.size() == m_maxLogCount)
-				m_log.pop_back();
-			m_log.push_front(text);
-		}
-		m_needUpdate = true;
-	}
-	
-	/*!	Print an error message in the console
-	 *	\param str String displayed
-	 */
-	void	Console::printError(std::wstring const& str)
-	{
-		if (isEnabled() == false)
-			return;
-		print(str, m_palette->getColor(Error));
-	}
-	/*!	Print the message of an exception in the console
-	 *	\param str String displayed
-	 */
-	void						Console::printError(std::exception const& e)
-	{
-		if (isEnabled() == false)
-			return;
-		printError(L"exception: " + stringToWide(e.what()));
-	}
-
-	/*!	Print a help message */
-	void						Console::printHelp(std::wstring const& str)
-	{
-		if (isEnabled() == false)
-			return;
-		print(str, m_palette->getColor(Help));
-	}
-
-	/*!	Return the list of all registered commands keys */
-	std::vector<std::wstring>	Console::getCommandList()const
-	{
-		return (m_core.getCommandList());
-	}
 }
