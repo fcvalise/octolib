@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/20 01:30:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 17:14:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ namespace octo
 				m_console.addCommand(L"render.set_antialiasing", m_graphicsManager, &GraphicsManager::setAntialiasing);
 				// System commands
 				m_console.addCommand(L"system.quit", [](){Application::stop();});
+				m_console.addCommand(L"system.version", [](){return (Application::getOctolibVersion());});
 				m_console.addCommand(L"system.push_state", [](std::string const& key)
 						{
 							try
