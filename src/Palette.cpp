@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/19 21:14:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 04:41:03 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 17:33:12 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ namespace octo
 	{
 	}
 
-	Palette::Palette(std::initializer_list<sf::Color> colors) :
-		Palette()
+	Palette::Palette(std::initializer_list<sf::Color> colors)
 	{
 		std::size_t	i = 0;
 
