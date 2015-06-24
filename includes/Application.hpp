@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 02:22:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 17:17:34 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,11 @@ namespace octo
 	 *		<TD>render.set_antialiasing(unsigned int level)</TD>
 	 *		<TD>level: level of anti-aliasing</TD>
 	 *		<TD>Define the antialiasing level. This parameter can not give same result on all plateforms</TD>
+	 *	</TR>
+	 *	<TR>
+	 *		<TD>system.version()</TD>
+	 *		<TD></TD>
+	 *		<TD>Display libocto version</TD>
 	 *	</TR>
 	 *	<TR>
 	 *		<TD>system.change_state(std::string stateKey)</TD>
