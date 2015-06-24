@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/20 01:32:08 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 02:22:47 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,9 @@ namespace octo
 	class Application : public NonCopyable
 	{
 	public:
+		/*!	Return the octolib version infos */
+		static std::string	getOctolibVersion();
+
 		/*!	Initialize the application
 		 *	\param title Window title
 		 *	\param optionFilePath option file path
