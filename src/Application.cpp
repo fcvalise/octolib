@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/26 19:57:03 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 02:28:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@
 namespace octo
 {
 	details::ApplicationImp*	Application::s_instance = nullptr;
+
+	std::string	Application::getOctolibVersion()
+	{
+		return (std::string(LIBOCTO_GIT_BRANCH) + " - " + LIBOCTO_GIT_SHORT_COMMIT);
+	}
 
 	void	Application::initialize(std::string const& title, std::string const& optionFilePath, int argc, char **argv)
 	{
