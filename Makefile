@@ -4,6 +4,10 @@ SRC_DIR = ./src
 BUILD_DIR = ./builds
 OUTPUT_DIR = .
 
+TARGET_VERSION = $(shell git describe --abbrev=0 --tags)
+GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD)
+GIT_SHORT_COMMIT = $(shell git rev-parse --short HEAD)
+
 # sources
 SRC = 	$(RESOURCE_SRC)								\
 		$(STATE_SYSTEM_SRC)							\
@@ -86,7 +90,9 @@ RELEASE_FLAGS = -O3 -DNDEBUG
 DEBUG_FLAGS = -g
 # includes dirs paths
 INCLUDE_DIRS = $(addprefix -I, $(INCLUDE_DIR))
-
+# defines
+DEFINES = -DLIBOCTO_GIT_BRANCH="\"$(GIT_BRANCH)\"" 				\
+		  -DLIBOCTO_GIT_SHORT_COMMIT="\"$(GIT_SHORT_COMMIT)\""
 
 OBJS = $(addprefix $(BUILD_DIR)/, $(SRC:.cpp=.o))
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC))
@@ -114,7 +120,7 @@ $(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
 
 $(addprefix $(BUILD_DIR)/, %.o) : $(addprefix $(SRC_DIR)/, %.cpp)
 	@echo " - $(COLOR_ACTION)compiling$(COLOR_OFF): $(COLOR_OBJECT)$<$(COLOR_OFF)"
-	@$(CC) $(INCLUDE_DIRS) $(CFLAGS) -c $< -o $@
+	@$(CC) $(DEFINES) $(INCLUDE_DIRS) $(CFLAGS) -c $< -o $@
 
 re: fclean print_summary $(COMPLETE_TARGET)
 
