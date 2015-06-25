@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/21 04:15:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/21 23:29:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/21 22:24:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static unsigned int const	MeasureCount = 200000;
 int	main(int argc, char **argv)
 {
 	std::default_random_engine 				generator;
-	std::uniform_real_distribution<float>	distribution(M_PI * -2.f, M_PI * 2.f);
+	std::uniform_real_distribution<float>	distribution(octo::Pi * -2.f, octo::Pi * 2.f);
 
 	BenchmarkSuite	powSuite("pow");
 	powSuite.emplace("stl pow 2", [](float x){return (std::pow(x, 2));});

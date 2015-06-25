@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 16:17:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 16:25:35 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,48 @@ namespace octo
 		{
 			resetBuffer(entry);
 			setCompletionActive(false);
+		}
+	}
+
+	void	ConsoleCore::executeStream(std::wistream& is)
+	{
+		std::wstring	line;
+		std::wstring	result;
+		std::size_t		lineId = 1u;
+
+		while (std::getline(is, line))
+		{
+			try
+			{
+				result = m_interpreter.execute(line);
+				emitExecuted(result);
+			}
+			catch (ConsoleInterpreter::ArgumentTypeException const& e)
+			{
+				emitError(L"interpreter: line " + std::to_wstring(lineId) +
+						  L": invalid argument type (" + std::to_wstring(e.getArgumentIndex()) + L"), expected type: " + e.getExpectedTypeName());
+			}
+			catch (ConsoleInterpreter::NotEnoughArgumentException const& e)
+			{
+				emitError(L"interpreter: line " + std::to_wstring(lineId) +
+						  L": not enough arguments (expected: " + std::to_wstring(e.getExpected()) + L" provided: " + std::to_wstring(e.getProvided()) + L")");
+			}
+			catch (ConsoleInterpreter::TooManyArgumentException const& e)
+			{
+				emitError(L"interpreter: line " + std::to_wstring(lineId) +
+						  L": too many arguments (expected: " + std::to_wstring(e.getExpected()) + L" provided: " + std::to_wstring(e.getProvided()) + L")");
+			}
+			catch (ConsoleInterpreter::UnknowCommandException const& e)
+			{
+				emitError(L"interpreter: line " + std::to_wstring(lineId) +
+						  L": \'" + e.getCommandName() + L"\' is an unknow command");
+			}
+			catch (ConsoleInterpreter::SyntaxErrorException const& e)
+			{
+				emitError(L"interpreter: line " + std::to_wstring(lineId) +
+						  L": syntax error at " + std::to_wstring(e.getPosition()) + L": " + e.getDescription());
+			}
+			++lineId;
 		}
 	}
 

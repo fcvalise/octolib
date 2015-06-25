@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/21 23:38:32 by irabeson          #+#    #+#             */
-/*   Updated: 2015/04/30 04:48:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/21 22:34:12 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ namespace octo
 	 *	Abstract of a provider of color
 	 *
 	 *	Each color provider can get colors mapped to an unique id.<br>
+	 *
+	 *	\todo I/O virtual methods must be moved into a dedicated interface IResource.
 	 */
 	class IColorProvider
 	{
@@ -40,18 +42,6 @@ namespace octo
 
 		/*!	Get the available color count */
 		virtual std::size_t	getColorCount()const = 0;
-
-		/*!	Load datas from a byte buffer */
-		virtual bool		loadFromMemory(ByteArray const& buffer) = 0;
-
-		/*!	Write datas to a byte buffer */
-		virtual bool		saveToMemory(ByteArray& buffer)const = 0;
-
-		/*!	Load datas from a file */
-		bool				loadFromFile(std::string const& fileName);
-
-		/*!	Save datas to a file */
-		bool				saveToFile(std::string const& fileName)const;
 	};
 }
 

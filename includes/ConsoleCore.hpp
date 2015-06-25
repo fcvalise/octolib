@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:05:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/29 16:16:07 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/24 16:26:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ namespace octo
 		void						nextCompletion();
 		void						prevCompletion();
 		void						execute();
+		void						executeStream(std::wistream& is);
 		void						complete();
 
 		std::wstring const&			getBuffer()const;
