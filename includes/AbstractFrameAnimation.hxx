@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/23 14:09:01 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 18:49:40 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/03 17:21:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,19 @@ namespace octo
 
 	template <class T>
 	void		AbstractFrameAnimation<T>::setFrames(std::vector<Frame> const& frames)
+	{
+		std::vector<PrivateFrame>	tempFrames;
+
+		for (auto frame : frames)
+		{
+			tempFrames.push_back(PrivateFrame(frame));
+		}
+		m_frames = std::move(tempFrames);
+		m_duration = std::for_each(m_frames.begin(), m_frames.end(), SetupFrames());	
+	}
+
+	template <class T>
+	void		AbstractFrameAnimation<T>::setFrames(std::initializer_list<Frame> const& frames)
 	{
 		std::vector<PrivateFrame>	tempFrames;
 

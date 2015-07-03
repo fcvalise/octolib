@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/23 14:10:56 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 17:10:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/03 17:23:19 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <SFML/System/Time.hpp>
 
 # include <vector>
+# include <initializer_list>
 
 namespace octo
 {
@@ -42,6 +43,7 @@ namespace octo
 		virtual bool				loadFromMemory(ByteArray const& buffer) = 0;
 
 		void						setFrames(std::vector<Frame> const& frames);
+		void						setFrames(std::initializer_list<Frame> const& frames);
 		void						setLoop(LoopMode mode);
 		sf::Time					getFrameDuration(std::size_t i)const;
 		T const&					getFrameValue(std::size_t i)const;
