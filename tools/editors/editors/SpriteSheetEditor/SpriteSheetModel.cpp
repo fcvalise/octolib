@@ -113,6 +113,11 @@ void SpriteSheetModel::resetPositions(const QList<QPoint> &positions)
     emit modified();
 }
 
+void SpriteSheetModel::resetTexture(const QString &textureFileName)
+{
+    reset(textureFileName, m_tilePositions, m_tileSize);
+}
+
 void SpriteSheetModel::subDivideTexture(int widthSubDiv, int heightSubDiv)
 {
     QRect           textureRect(QPoint(0, 0), m_texture.size());

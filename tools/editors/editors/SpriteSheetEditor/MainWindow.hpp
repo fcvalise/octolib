@@ -22,6 +22,7 @@ public slots:
     void    openSpriteSheet(QString filePath);
     bool    saveSpriteSheet();
     bool    saveSpriteSheetAs();
+    void    resetTexture();
 private slots:
     void    updateAction();
     void    onDocumentFileModified();
@@ -51,6 +52,7 @@ private:
     QAction*            m_createTileByDivision;
     QAction*            m_deleteSelectedTiles;
     QAction*            m_sortTiles;
+    QAction*            m_resetTexture;
 
     QAction*            m_zoomIn;
     QAction*            m_zoomOut;

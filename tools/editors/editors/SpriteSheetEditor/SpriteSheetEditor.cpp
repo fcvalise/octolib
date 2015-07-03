@@ -86,6 +86,11 @@ void SpriteSheetEditor::createTileByDivision()
     }
 }
 
+void SpriteSheetEditor::resetTexture(const QString &textureFilePath)
+{
+    m_spriteSheetModel->resetTexture(textureFilePath);
+}
+
 void SpriteSheetEditor::zoomIn()
 {
     m_spriteSheetView->zoomIn();

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/23 15:06:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 16:19:43 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/03 18:17:55 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,20 @@ namespace octo
 	sf::FloatRect	AnimatedSprite::getGlobalBounds()const
 	{
 		return (m_sprite.getGlobalBounds());
+	}
+
+	sf::Vector2f	AnimatedSprite::getLocalSize()const
+	{
+		sf::FloatRect	rect = getLocalBounds();
+
+		return (sf::Vector2f(rect.width, rect.height));
+	}
+
+	sf::Vector2f	AnimatedSprite::getGlobalSize()const
+	{
+		sf::FloatRect	rect = getGlobalBounds();
+
+		return (sf::Vector2f(rect.width, rect.height));
 	}
 
 	void	AnimatedSprite::setPosition(float x, float y)
