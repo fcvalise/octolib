@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/11 15:52:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/20 17:09:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/14 16:16:38 by pciavald         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ namespace octo
 	template <class T>
 	static T	cosinusInterpolation(T a, T b, float alpha)
 	{
-		return (a * std::cos((1.f - alpha) * Pi) + b * alpha);
+		return linearInterpolation(a, b, 0.5f - (std::cos(alpha * Pi) / 2.f));
 	}
 
 	sf::Color		linearInterpolation(sf::Color a, sf::Color b, float alpha);
