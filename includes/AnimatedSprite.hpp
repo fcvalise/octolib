@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/13 18:30:04 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 17:14:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/03 18:17:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ namespace octo
 		sf::Color const&		getColor()const;
 		sf::FloatRect			getLocalBounds()const;
 		sf::FloatRect			getGlobalBounds()const;
+		sf::Vector2f			getLocalSize()const;
+		sf::Vector2f			getGlobalSize()const;
 		void					setPosition(float x, float y);
 		void					setPosition(sf::Vector2f const& position);
 		void					setRotation(float angle);

@@ -49,6 +49,7 @@ public slots:
                                           QList<QPoint> const& positions = {},
                                           QSize const& tileSize = {0, 0});
     void                            resetPositions(QList<QPoint> const& positions);
+    void                            resetTexture(QString const& textureFileName);
     void                            setTileSize(const QSize &size);
     QModelIndex                     addTile(QPoint const& position);
     QPair<QModelIndex, QModelIndex> addTiles(QList<QPoint> const& positions);
