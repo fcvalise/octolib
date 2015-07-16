@@ -45,6 +45,11 @@ QList<QPoint> CreateTileFromDivisionDialog::positions() const
     return (m_model->tilePositions());
 }
 
+QSize CreateTileFromDivisionDialog::tileSize() const
+{
+    return (m_model->tileSize());
+}
+
 QSpinBox *CreateTileFromDivisionDialog::createSpinBox(const QString &label, int min, int max, int current, QFormLayout *layout)
 {
     QSpinBox*   spinBox = new QSpinBox;
