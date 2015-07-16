@@ -84,6 +84,7 @@ void SpriteSheetEditor::createTileByDivision()
     if (dialog.exec() == QDialog::Accepted)
     {
         m_spriteSheetModel->resetPositions(dialog.positions());
+        m_spriteSheetModel->setTileSize(dialog.tileSize());
     }
 }
 

@@ -17,10 +17,10 @@ public:
     ~CreateTileFromDivisionDialog();
 
     QList<QPoint>   positions()const;
-
+    QSize           tileSize()const;
 protected:
-    virtual void showEvent(QShowEvent *);
-    virtual void resizeEvent(QResizeEvent *);
+    virtual void    showEvent(QShowEvent *);
+    virtual void    resizeEvent(QResizeEvent *);
 private:
     QSpinBox*       createSpinBox(QString const& label, int min, int max, int current, QFormLayout *layout);
 private slots:
