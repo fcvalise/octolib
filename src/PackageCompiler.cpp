@@ -104,7 +104,8 @@ namespace octo
 			{octo::PackageHeader::EntryType::ColorWheel, "COLOR WHEELS"},
 			{octo::PackageHeader::EntryType::SpriteSheet, "SPRITE SHEETS"},
 			{octo::PackageHeader::EntryType::SpriteAnimation, "SPRITE ANIMATIONS"},
-			{octo::PackageHeader::EntryType::Invalid, "INVALID"}
+			{octo::PackageHeader::EntryType::Invalid, "INVALID"},
+            {octo::PackageHeader::EntryType::LevelMap, "LEVEL MAP"}
 		};
 
 		std::string	getEntryTypeLabel(PackageHeader::EntryType type)
@@ -161,7 +162,8 @@ namespace octo
 			{"opa", PackageHeader::EntryType::Palette},
 			{"ocw", PackageHeader::EntryType::ColorWheel},
 			{"oss", PackageHeader::EntryType::SpriteSheet},
-			{"osa", PackageHeader::EntryType::SpriteAnimation}
+			{"osa", PackageHeader::EntryType::SpriteAnimation},
+            {"omp", PackageHeader::EntryType::LevelMap}
 		}
 	{
 	}
