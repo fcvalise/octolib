@@ -30,7 +30,8 @@ SRC = main.cpp						\
 	  StringUtils.cpp				\
 	  FrameAnimation.cpp			\
 	  LexicalTree.cpp				\
-	  GenericFactory.cpp
+	  GenericFactory.cpp			\
+	  RingBuffer.cpp
 
 # compiler
 CC = $(CXX)
