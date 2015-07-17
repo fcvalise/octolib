@@ -101,6 +101,10 @@ namespace octo
 		/*!	Get a sprite animation
 		 */
 		SpriteAnimation const&	getSpriteAnimation(std::string const& fileName)const;
+
+		/*!	Get a level map
+		 */
+		LevelMap const&         getLevelMap(std::string const& fileName)const;
 	private:
 		typedef details::StreamedResource<sf::Font>		Font;
 
@@ -111,7 +115,7 @@ namespace octo
 		details::ResourceManagerImp<Palette>			m_paletteManager;
 		details::ResourceManagerImp<ColorWheel>			m_colorWheelManager;
 		details::ResourceManagerImp<SpriteSheet>		m_spriteSheetManager;
-		details::ResourceManagerImp<SpriteAnimation>	m_spriteAnimationManager;
+		details::ResourceManagerImp<LevelMap>           m_levelMapManager;
 	};
 }
 
