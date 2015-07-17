@@ -1,5 +1,6 @@
 #include <LevelMap.hpp>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 namespace octo
@@ -29,12 +30,12 @@ namespace octo
         return m_sprites[index];
     }
 
-    LevelMap::SpriteTrigger LevelMap::getSpriteByIndexPackage(std::size_t indexPackage)
+    LevelMap::SpriteTrigger LevelMap::getSpriteByIndexPackage(std::size_t)
     {
         return m_sprites[0];
     }
 
-   LevelMap::SpriteTrigger LevelMap::getSpriteByIndexMap(std::size_t indexMap)
+   LevelMap::SpriteTrigger LevelMap::getSpriteByIndexMap(std::size_t)
     {
         return m_sprites[0];
     }
@@ -42,6 +43,8 @@ namespace octo
 
     bool LevelMap::loadFromMemory(ByteArray const& buffer)
     {
+        if (!buffer.size())
+            return false;
         std::string map = std::string(buffer.bytes(), buffer.size());
         std::istringstream mapS;
         mapS.str(map.c_str());
