@@ -29,6 +29,7 @@ namespace octo
 	class SpriteSheet;
 	class SpriteAnimation;
 	class IResourceListener;
+    class LevelMap;
 
 	/*!
 	 *	\ingroup Resource
@@ -115,6 +116,7 @@ namespace octo
 		details::ResourceManagerImp<Palette>			m_paletteManager;
 		details::ResourceManagerImp<ColorWheel>			m_colorWheelManager;
 		details::ResourceManagerImp<SpriteSheet>		m_spriteSheetManager;
+		details::ResourceManagerImp<SpriteAnimation>		m_spriteAnimationManager;
 		details::ResourceManagerImp<LevelMap>           m_levelMapManager;
 	};
 }

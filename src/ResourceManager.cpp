@@ -15,6 +15,7 @@
 #include "ColorWheel.hpp"
 #include "SpriteSheet.hpp"
 #include "SpriteAnimation.hpp"
+#include "LevelMap.hpp"
 #include "details/ResourceManagerImp.hpp"
 
 namespace octo
