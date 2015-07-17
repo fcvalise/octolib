@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/04 01:29:57 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/05 19:34:10 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/17 14:32:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ namespace octo
 		/*!	Create an empty stack.
 		 *	\param maxSize Max size of stack
 		 */
-		explicit RingBuffer(std::size_t maxSize);
+		explicit RingBuffer(int maxSize);
 
 		/*!	Move constructor */
 		RingBuffer(RingBuffer<T>&& other) = default;
@@ -70,9 +70,43 @@ namespace octo
 		 */
 		T&				top();
 
-		T&				operator[](std::size_t index);
+		/*!	Access to an element of the buffer
+		 *
+		 *	\param index Index of the element accessed.<br>
+		 *	This index can be negative, or higher than the elements number.<br>
+		 *	\code
+		 *	RingBuffer<int>	buffer(2);
+		 *
+		 *	buffer.push(1);
+		 *	buffer.push(2);
+		 *	std::cout << buffer[0] << std::endl; // print 1
+		 *	std::cout << buffer[1] << std::endl; // print 2
+		 *	std::cout << buffer[2] << std::endl; // print 1
+		 *	std::cout << buffer[-1] << std::endl; // print 2
+		 *	std::cout << buffer[-2] << std::endl; // print 1
+		 *	\endcode
+		 *	\throw std::range_error if the ring buffer is empty.
+		 */
+		T&				operator[](int index);
 
-		T const&		operator[](std::size_t index)const;
+		/*!	Constant access to an element of the buffer
+		 *
+		 *	\param index Index of the element accessed.<br>
+		 *	This index can be negative, or higher than the elements number.<br>
+		 *	\code
+		 *	RingBuffer<int>	buffer(2);
+		 *
+		 *	buffer.push(1);
+		 *	buffer.push(2);
+		 *	std::cout << buffer[0] << std::endl; // print 1
+		 *	std::cout << buffer[1] << std::endl; // print 2
+		 *	std::cout << buffer[2] << std::endl; // print 1
+		 *	std::cout << buffer[-1] << std::endl; // print 2
+		 *	std::cout << buffer[-2] << std::endl; // print 1
+		 *	\endcode
+		 *	\throw std::range_error if the ring buffer is empty.
+		 */
+		T const&		operator[](int index)const;
 
 		/*!	Indicate if the stack is empty */
 		bool			empty()const;
@@ -83,12 +117,13 @@ namespace octo
 		/*!	Remove all values pushed */
 		void			clear();
 	private:
-		std::size_t		advanceIndex(std::size_t index)const;
+		int				advanceIndex(int index)const;
+		int				computeIndex(int index)const;
 	private:
 		std::unique_ptr<T[]>	m_values;
-		std::size_t const		m_maxSize;
-		std::size_t				m_head;
-		std::size_t				m_tail;
+		int const				m_maxSize;
+		int						m_head;
+		int						m_tail;
 	};
 }
 #include "RingBuffer.hxx"
