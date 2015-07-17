@@ -6,17 +6,18 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/20 22:52:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/06 06:13:00 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/17 14:32:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cassert>
 #include <limits>
+#include <stdexcept>
 
 namespace octo
 {
 	template <class T>
-	RingBuffer<T>::RingBuffer(std::size_t maxSize) :
+	RingBuffer<T>::RingBuffer(int maxSize) :
 		m_values(new T[maxSize + 1]),
 		m_maxSize(maxSize + 1),
 		m_head(0u),
@@ -65,12 +66,16 @@ namespace octo
 	template <class T>
 	T const&	RingBuffer<T>::top()const
 	{
+		assert (empty() == false);
+
 		return (m_values[m_head]);
 	}
 
 	template <class T>
 	T&	RingBuffer<T>::top()
 	{
+		assert (empty() == false);
+
 		return (m_values[m_head]);
 	}
 
@@ -97,20 +102,42 @@ namespace octo
 	}
 
 	template <class T>
-	std::size_t	RingBuffer<T>::advanceIndex(std::size_t index)const
+	int	RingBuffer<T>::advanceIndex(int index)const
 	{
 		return ((index + 1) % m_maxSize);
 	}
 
 	template <class T>
-	T&	RingBuffer<T>::operator[](std::size_t index)
+	int		RingBuffer<T>::computeIndex(int index)const
 	{
-		return (m_values[(m_head + index) % m_maxSize]);
+		int	result = 0;
+
+		if (index < 0)
+		{
+			index = abs(index) % size();
+			result = (size() + index) % size();
+			result = (size() - abs(index)) % size();
+		}
+		else
+		{
+			result = (m_head + index) % size();
+		}
+		return (result);
 	}
 
 	template <class T>
-	T const&	RingBuffer<T>::operator[](std::size_t index)const
+	T&	RingBuffer<T>::operator[](int index)
 	{
-		return (m_values[(m_head + index) % m_maxSize]);
+		if (empty())
+			throw std::range_error("empty ring buffer");
+		return (m_values[computeIndex(index)]);
+	}
+
+	template <class T>
+	T const&	RingBuffer<T>::operator[](int index)const
+	{
+		if (empty())
+			throw std::range_error("empty ring buffer");
+		return (m_values[computeIndex(index)]);
 	}
 }
