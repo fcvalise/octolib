@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/16 18:54:35 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/17 14:09:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/18 15:59:24 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,61 @@ BOOST_AUTO_TEST_CASE( trivials_tests )
 	BOOST_CHECK_EQUAL( ringBuffer[2], 2 );
 	BOOST_CHECK_EQUAL( ringBuffer[3], 3 );
 	BOOST_CHECK_EQUAL( ringBuffer[4], 4 );
+}
+
+BOOST_AUTO_TEST_CASE( capacity )
+{
+	octo::RingBuffer<int>	ringBuffer(5);
+
+	BOOST_CHECK_EQUAL( ringBuffer.empty(), true );
+	BOOST_CHECK_EQUAL( ringBuffer.size(), 0 );
+	
+	BOOST_CHECK_EQUAL( ringBuffer.capacity(), 5 );
+	ringBuffer.push(0);
+	BOOST_CHECK_EQUAL( ringBuffer.capacity(), 4 );
+	ringBuffer.push(1);
+	BOOST_CHECK_EQUAL( ringBuffer.capacity(), 3 );
+	ringBuffer.push(2);
+	BOOST_CHECK_EQUAL( ringBuffer.capacity(), 2 );
+	ringBuffer.push(3);
+	BOOST_CHECK_EQUAL( ringBuffer.capacity(), 1 );
+	ringBuffer.push(4);
+	BOOST_CHECK_EQUAL( ringBuffer.capacity(), 0 );
+	BOOST_CHECK_EQUAL( ringBuffer[0], 0 );
+	BOOST_CHECK_EQUAL( ringBuffer[1], 1 );
+	BOOST_CHECK_EQUAL( ringBuffer[2], 2 );
+	BOOST_CHECK_EQUAL( ringBuffer[3], 3 );
+	BOOST_CHECK_EQUAL( ringBuffer[4], 4 );
+}
+BOOST_AUTO_TEST_CASE( push_pop )
+{
+	octo::RingBuffer<int>	ringBuffer(1);
+
+	BOOST_CHECK_EQUAL( ringBuffer.empty(), true );
+	BOOST_CHECK_EQUAL( ringBuffer.size(), 0 );
+	ringBuffer.push(0);
+	BOOST_CHECK_EQUAL( ringBuffer.empty(), false );
+	BOOST_CHECK_EQUAL( ringBuffer.size(), 1 );
+	BOOST_CHECK_EQUAL( ringBuffer[0], 0 );
+	BOOST_CHECK_EQUAL( ringBuffer.capacity(), 0 );
+	ringBuffer.pop();
+	BOOST_CHECK_EQUAL( ringBuffer.empty(), true );
+	BOOST_CHECK_EQUAL( ringBuffer.size(), 0 );
+}
+
+BOOST_AUTO_TEST_CASE( top )
+{
+	octo::RingBuffer<int>	ringBuffer(2);
+
+	ringBuffer.push(0);
+	ringBuffer.push(1);
+	BOOST_CHECK_EQUAL( ringBuffer.top(), 0 );
+	ringBuffer.pop();
+	BOOST_CHECK_EQUAL( ringBuffer.top(), 1 );
+	ringBuffer.push(2);
+	BOOST_CHECK_EQUAL( ringBuffer.top(), 1 );
+	ringBuffer.pop();
+	BOOST_CHECK_EQUAL( ringBuffer.top(), 2 );
 }
 
 BOOST_AUTO_TEST_CASE( access_tests )
