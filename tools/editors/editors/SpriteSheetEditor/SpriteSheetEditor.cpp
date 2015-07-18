@@ -43,6 +43,7 @@ namespace
 SpriteSheetEditor::SpriteSheetEditor(QWidget *parent) :
     QWidget(parent),
     m_spriteSheetModel(new SpriteSheetModel(this)),
+    m_selectionModel(new QItemSelectionModel(m_spriteSheetModel)),
     m_spriteSheetView(new SpriteSheetView),
     m_tileView(new QTableView),
     m_tileControl(new TileControlWidget),
@@ -169,8 +170,6 @@ void SpriteSheetEditor::setup()
 {
     QGridLayout*    layout = new QGridLayout(this);
 
-    m_spriteSheetModel = new SpriteSheetModel(this);
-    m_selectionModel = new QItemSelectionModel(m_spriteSheetModel);
     m_tileView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     m_tileView->setModel(m_spriteSheetModel);
     m_tileView->setSelectionModel(m_selectionModel);
