@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/20 22:52:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/17 14:32:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/18 16:01:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ namespace octo
 	template <class T>
 	void	RingBuffer<T>::push(T const& value)
 	{
-		assert(m_head != (m_tail + 1) % m_maxSize);
+		static_assert( std::is_copy_assignable<T>::value, "T must be assignable" );
+		assert (capacity() > 0);
 
 		m_values[m_tail] = value;
 		m_tail = advanceIndex(m_tail);
@@ -39,9 +40,10 @@ namespace octo
 	template <class T>
 	void	RingBuffer<T>::push(T&& value)
 	{
-		assert(m_head != (m_tail + 1) % m_maxSize);
+		static_assert( std::is_copy_assignable<T>::value, "T must be assignable" );
+		assert (capacity() > 0);
 
-		m_values[m_tail] = std::move(value);
+		m_values[m_tail] = std::forward<T>(value);
 		m_tail = advanceIndex(m_tail);
 	}
 
@@ -49,7 +51,8 @@ namespace octo
 	template <class ... A>
 	void	RingBuffer<T>::emplace(A&&... args)
 	{
-		assert(m_head != (m_tail + 1) % m_maxSize);
+		static_assert( std::is_move_assignable<T>::value, "T must be move assignable" );
+		assert (capacity() > 0);
 
 		m_values[m_tail] = T(std::forward<A>(args)...);
 		m_tail = advanceIndex(m_tail);
@@ -58,7 +61,7 @@ namespace octo
 	template <class T>
 	void	RingBuffer<T>::pop()
 	{
-		assert(empty() == false);
+		assert (empty() == false);
 
 		m_head = advanceIndex(m_head);
 	}
@@ -95,6 +98,12 @@ namespace octo
 	}
 
 	template <class T>
+	std::size_t	RingBuffer<T>::capacity()const
+	{
+		return (m_maxSize - size() - 1);
+	}
+
+	template <class T>
 	void	RingBuffer<T>::clear()
 	{
 		m_head = 0u;
@@ -110,17 +119,18 @@ namespace octo
 	template <class T>
 	int		RingBuffer<T>::computeIndex(int index)const
 	{
-		int	result = 0;
+		int			result = 0;
+		int	const	size = this->size();
 
 		if (index < 0)
 		{
-			index = abs(index) % size();
-			result = (size() + index) % size();
-			result = (size() - abs(index)) % size();
+			index = abs(index) % size;
+			result = (size + index) % size;
+			result = (size - abs(index)) % size;
 		}
 		else
 		{
-			result = (m_head + index) % size();
+			result = (m_head + index) % size;
 		}
 		return (result);
 	}
