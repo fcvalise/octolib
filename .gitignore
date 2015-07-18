@@ -41,6 +41,7 @@ tests/*.pck
 # Builds folder
 build-*
 builds
+auto_build
 
 # Qt Creator user file
 *.user

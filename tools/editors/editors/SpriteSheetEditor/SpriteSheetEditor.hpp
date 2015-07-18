@@ -27,6 +27,7 @@ public:
     bool            openSpriteSheet(QString const& filePath);
     bool            saveSpriteSheet(QString const& filePath);
     void            createTileByDivision();
+    void            resetTexture(const QString &textureFilePath);
 
     void            zoomIn();
     void            zoomOut();

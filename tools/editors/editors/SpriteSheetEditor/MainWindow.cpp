@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_createTileByDivision(nullptr),
     m_deleteSelectedTiles(nullptr),
     m_sortTiles(nullptr),
+    m_resetTexture(nullptr),
     m_zoomIn(nullptr),
     m_zoomOut(nullptr),
     m_zoomZero(nullptr),
@@ -117,6 +118,15 @@ bool MainWindow::saveSpriteSheetAs()
     return (filePath.isEmpty() == false);
 }
 
+void MainWindow::resetTexture()
+{
+    QString textureFilePath = QFileDialog::getOpenFileName(this, tr("Choose a texture"), QString(), tr("Images (*.png *.jpg *.jpeg)"));
+    if (textureFilePath.isEmpty() == false)
+    {
+        m_editor->resetTexture(textureFilePath);
+    }
+}
+
 void MainWindow::showAbout()
 {
     AboutDialog dialog(QPixmap(":/images/sprite_sheet_editor.png"), this);
@@ -193,6 +203,7 @@ void MainWindow::setupActions()
     m_cutSelectedTiles = new QAction(tr("Cut"), this);
     m_pasteTiles = new QAction(tr("Paste"), this);
     m_deleteSelectedTiles = new QAction(QIcon(":/images/remove_rectangle.png"), tr("Delete"), this);
+    m_resetTexture = new QAction(tr("Change texture..."), this);
     m_zoomIn = new QAction(QIcon(":/images/zoom_in.png"), tr("Zoom in"), this);
     m_zoomOut = new QAction(QIcon(":/images/zoom_out.png"), tr("Zoom out"), this);
     m_zoomZero = new QAction(QIcon(":/images/zoom_actual.png"), tr("Zoom 1:1"), this);
@@ -232,6 +243,8 @@ void MainWindow::setupActions()
     editMenu->addAction(m_deleteSelectedTiles);
     editMenu->addSeparator();
     editMenu->addAction(m_createTileByDivision);
+    editMenu->addSeparator();
+    editMenu->addAction(m_resetTexture);
     connect(m_selectAllTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::selectAllTiles);
     connect(m_copySelectedTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::copySelectedTiles);
     connect(m_cutSelectedTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::cutSelectedTiles);
@@ -239,6 +252,7 @@ void MainWindow::setupActions()
     connect(m_createTileByDivision, &QAction::triggered, m_editor, &SpriteSheetEditor::createTileByDivision);
     connect(m_sortTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::sortTiles);
     connect(m_deleteSelectedTiles, &QAction::triggered, m_editor, &SpriteSheetEditor::deleteSelectedTiles);
+    connect(m_resetTexture, &QAction::triggered, this, &MainWindow::resetTexture);
     // View
     viewMenu->addAction(m_zoomIn);
     viewMenu->addAction(m_zoomOut);

@@ -31,6 +31,7 @@ SRC = main.cpp						\
 	  FrameAnimation.cpp			\
 	  LexicalTree.cpp				\
 	  GenericFactory.cpp			\
+	  RingBuffer.cpp				\
 	  LevelMap.cpp
 
 # package files

@@ -6,13 +6,14 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/07 19:32:49 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/22 20:25:31 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/15 15:28:18 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_HPP
 # define CAMERA_HPP
 # include "DefaultGraphicsListeners.hpp"
+# include "NonCopyable.hpp"
 
 # include <SFML/Graphics/View.hpp>
 
@@ -20,7 +21,8 @@ namespace octo
 {
 	class GraphicsManager;
 
-	class Camera : public DefaultWindowListener
+	class Camera : public DefaultWindowListener,
+				   public NonCopyable
 	{
 		friend class GraphicsManager;
 	public:
