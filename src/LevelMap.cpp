@@ -121,7 +121,7 @@ namespace octo
     }
 
 
-    void LevelMap::addLineAt(int map, int index, std::string  line)
+    void LevelMap::addLineAt(int map, int index, std::string & line)
     {
         int indexInTile = index * m_size.x;
         std::string delimiter = ",";

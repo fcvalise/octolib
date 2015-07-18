@@ -48,7 +48,7 @@ namespace octo
     private:
         bool                        load(std::istream & ile);
         void                        setup(int len);
-        void                        addLineAt(int map, int index, std::string line);
+        void                        addLineAt(int map, int index, std::string & line);
         void                        addSprite(std::string line, int map);
         std::size_t                 m_spritesCount;
         std::vector<int *>          m_tileMap;
