@@ -40,7 +40,7 @@ PACKAGE_FILE = map.pck
 # compiler
 CC = $(CXX)
 # packager
-PACKAGER = $(CORE_DIR)/tools/packager/packager.app
+PACKAGER = $(CORE_DIR)tools/packager/packager.app
 # flags used in both mode
 COMMON_FLAGS = -Werror -Wextra -Wall -std=c++11
 # flags used in release mode
