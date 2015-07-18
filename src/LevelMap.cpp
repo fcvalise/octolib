@@ -10,7 +10,7 @@ namespace octo
         return m_tileMap.size();
     }
 
-    sf::Vector2i LevelMap::getMapSize() const
+    sf::Vector2i const & LevelMap::getMapSize() const
     {
         return m_size;
     }
@@ -22,24 +22,44 @@ namespace octo
 
     std::size_t LevelMap::getSpriteCount() const
     {
-        return m_spritesCount;
+        return m_sprites.size();
     }
 
-    LevelMap::SpriteTrigger LevelMap::getSprite(std::size_t index)
+    LevelMap::SpriteTrigger const & LevelMap::getSprite(std::size_t index) const
     {
-        return m_sprites[index];
+        return m_sprites.at(index);
     }
 
-    LevelMap::SpriteTrigger LevelMap::getSpriteByIndexPackage(std::size_t)
+    LevelMap::SpriteTrigger & LevelMap::getSprite(std::size_t index)
     {
-        return m_sprites[0];
+        return m_sprites.at(index);
     }
 
-   LevelMap::SpriteTrigger LevelMap::getSpriteByIndexMap(std::size_t)
+    void LevelMap::getSpritesByIndexPackage(std::size_t index, std::vector<LevelMap::SpriteTrigger>& sprites)
     {
-        return m_sprites[0];
+        sprites.clear();
+        std::size_t i = 0;
+        for (auto sprite : m_sprites){
+            if (sprite.spriteIndex == index){
+                sprites.push_back(sprite);
+                i++;
+            }
+        }
+        sprites.resize(i);
     }
 
+    void LevelMap::getSpritesByIndexMap(std::size_t index, std::vector<LevelMap::SpriteTrigger>& sprites)
+    {
+        sprites.clear();
+        std::size_t i = 0;
+        for (auto sprite : m_sprites){
+            if (sprite.mapIndex == index){
+                sprites.push_back(sprite);
+                i++;
+            }
+        }
+        sprites.resize(i);
+    }
 
     bool LevelMap::loadFromMemory(ByteArray const& buffer)
     {
@@ -51,6 +71,7 @@ namespace octo
         if (!load(mapS))
             return false;
         return true;
+        m_sprites.resize(m_spritesCount);
     }
 
     bool LevelMap::load(std::istream & file)
@@ -72,10 +93,8 @@ namespace octo
                 indexLine = 0;
                 currentMap++;
             }
-
-            if (line.at(0) == '#'){
+            if (line.at(0) == '#')
                 addSprite(line.substr(1, line.length()), currentMap);
-            }
             else{
                 if (currentMap == nbrOfMap)
                     continue;
@@ -89,6 +108,8 @@ namespace octo
     void LevelMap::setup(int len)
     {
         int size = m_size.x * m_size.y;
+        m_spritesCount = 0;
+        m_sprites.resize(0);
         m_tileMap.reserve(len);
         for (int x = 0; x < len; x++){
             m_tileMap.push_back(new int[sizeof(int) * size]);
@@ -96,10 +117,11 @@ namespace octo
                 m_tileMap[x][i] = 0;
             }
         }
+        m_tileMap.resize(len);
     }
 
 
-    void LevelMap::addLineAt(int map, int index, std::string line)
+    void LevelMap::addLineAt(int map, int index, std::string  line)
     {
         int indexInTile = index * m_size.x;
         std::string delimiter = ",";
@@ -138,6 +160,7 @@ namespace octo
             rec.setFillColor(sf::Color::Transparent);
             rec.setOutlineThickness(5.0f);
         }
-        m_sprites[m_spritesCount++] = SpriteTrigger(pos, index, rec , map);
+        m_sprites.push_back(SpriteTrigger(pos, index, rec , map));
+        m_spritesCount++;
     }
 }
