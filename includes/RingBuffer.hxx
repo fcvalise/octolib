@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/20 22:52:53 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/18 16:01:33 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/18 16:56:10 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ namespace octo
 		if (index < 0)
 		{
 			index = abs(index) % size;
-			result = (size + index) % size;
 			result = (size - abs(index)) % size;
 		}
 		else
