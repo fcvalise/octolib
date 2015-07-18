@@ -117,4 +117,4 @@ fclean_core_library:
 
 
 package:
-	$(PACKAGER) $(PACKAGE_FILE) ../../resources/test_map.omp
+	$(PACKAGER) $(PACKAGE_FILE) test_map.omp
