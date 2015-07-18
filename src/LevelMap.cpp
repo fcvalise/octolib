@@ -70,8 +70,8 @@ namespace octo
         mapS.str(map.c_str());
         if (!load(mapS))
             return false;
-        return true;
         m_sprites.resize(m_spritesCount);
+        return true;
     }
 
     bool LevelMap::load(std::istream & file)
