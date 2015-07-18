@@ -41,10 +41,11 @@ BOOST_AUTO_TEST_CASE( simple )
         BOOST_CHECK(lm0.getMapSize() == sf::Vector2i(120, 50));
         BOOST_CHECK_EQUAL(lm0.getSpriteCount(), 5);
 
-        BOOST_CHECK(lm0.getSprite(0).position == sf::Vector2f(240, 416));
-        BOOST_CHECK(lm0.getSprite(0).trigger.getSize() == sf::Vector2f(0, 0));
-        BOOST_CHECK(lm0.getSprite(4).trigger.getPosition() == sf::Vector2f(0, 48));
-        BOOST_CHECK(lm0.getSprite(4).trigger.getSize() == sf::Vector2f(128, 16));
+        BOOST_CHECK(lm0.getSprite(0).position == sf::Vector2f(0, 0));
+        BOOST_CHECK(lm0.getSprite(0).trigger.getSize() == sf::Vector2f(160, 16));
+        BOOST_CHECK(lm0.getSprite(2).position == sf::Vector2f(736, 336));
+        BOOST_CHECK(lm0.getSprite(4).trigger.getPosition() == sf::Vector2f(1408, 480));
+        BOOST_CHECK(lm0.getSprite(4).trigger.getSize() == sf::Vector2f(464, 48));
         BOOST_CHECK_EQUAL(lm0.getSprite(4).mapIndex, 0);
         BOOST_CHECK_EQUAL(lm0.getSprite(4).spriteIndex, 1);
 
@@ -54,12 +55,13 @@ BOOST_AUTO_TEST_CASE( simple )
 
         lm0.getSpritesByIndexMap(0, sprites);
         BOOST_CHECK_EQUAL(sprites.size(), 5);
-        BOOST_CHECK(sprites.at(0).position == sf::Vector2f(240, 416));
-        BOOST_CHECK(sprites.at(4).trigger.getSize() == sf::Vector2f(128, 16));
+        BOOST_CHECK(sprites.at(0).position == sf::Vector2f(0, 0));
+        BOOST_CHECK(sprites.at(4).trigger.getSize() == sf::Vector2f(464, 48));
 
         lm0.getSpritesByIndexMap(1, sprites);
         BOOST_CHECK_EQUAL(sprites.size(), 0);
     } 
+    BOOST_CHECK(file.isOpen());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
