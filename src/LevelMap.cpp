@@ -81,11 +81,15 @@ namespace octo
         int nbrOfMap = 0;
         m_spritesCount = 0;
         std::string line;
+        size_t lastFind;
 
         std::getline(file, line);
-        nbrOfMap = std::stoi(line.substr(0, line.find(";")));
-        m_size = sf::Vector2i(std::stoi(line.substr(line.find(";") + 1, line.find("x"))),
-                std::stoi(line.substr(line.find("x") + 1, line.length())));
+        lastFind = line.find(';');
+        nbrOfMap = std::stoi(line.substr(0, lastFind));
+        line.erase(0, lastFind + 1);
+        lastFind = line.find('x');
+        m_size = sf::Vector2i(std::stoi(line.substr(0 , lastFind)),
+                std::stoi(line.substr(lastFind + 1, line.length())));
         setup(nbrOfMap);
         while ( std::getline(file, line) )
         {
@@ -94,7 +98,7 @@ namespace octo
                 currentMap++;
             }
             if (line.at(0) == '#')
-                addSprite(line.substr(1, line.length()), currentMap);
+                addSprite(line , currentMap);
             else{
                 if (currentMap == nbrOfMap)
                     continue;
@@ -120,45 +124,55 @@ namespace octo
         m_tileMap.resize(len);
     }
 
-
     void LevelMap::addLineAt(int map, int index, std::string & line)
     {
         int indexInTile = index * m_size.x;
-        std::string delimiter = ",";
+        char delimiter = ',';
         size_t pos = 0;
         while ((pos = line.find(delimiter)) != std::string::npos) {
             m_tileMap[map][indexInTile++] = std::stoi(line.substr(0, pos));
-            line.erase(0, pos + delimiter.length());
+            line.erase(0, pos + 1);
         }
         m_tileMap[map][indexInTile] = std::stoi(line);
     }
 
-    void LevelMap::addSprite(std::string line, int map)
+    void LevelMap::addSprite(std::string & line, int map)
     {
         octo::ByteArray image;
         sf::Vector2f    pos;
         sf::Vector2f    topLeftRec;
         sf::Vector2f    sizeRec;
         sf::RectangleShape  rec;
+        size_t              lastFind;
 
-        int index = std::stoi(line.substr(0, line.find("(")));
-        line.erase(0, line.find("(") + 1);
-        pos.x = std::stoi(line.substr(0, line.find(";")));
-        line.erase(0, line.find(";") + 1);
-        pos.y = std::stoi(line.substr(0, line.find(")")));
-        if (line.find("[")){
-            line.erase(0, line.find("[") + 1);
-            topLeftRec.x = std::stoi(line.substr(0, line.find("/")));
-            line.erase(0, line.find("/") + 1);
-            topLeftRec.y = std::stoi(line.substr(0, line.find("]")));
-            line.erase(0, line.find("[") + 1);
-            sizeRec.x = std::stoi(line.substr(0, line.find("/")));
-            line.erase(0, line.find("/") + 1);
-            sizeRec.y = std::stoi(line.substr(0, line.find("]")));
-            rec.setPosition(topLeftRec);
-            rec.setSize(sizeRec);
-            rec.setFillColor(sf::Color::Transparent);
-            rec.setOutlineThickness(5.0f);
+        lastFind = line.find('(');
+        int index = std::stoi(line.substr(1, lastFind));
+        line.erase(0, lastFind + 1);
+        lastFind = line.find(';');
+        pos.x = std::stoi(line.substr(0, lastFind));
+        line.erase(0, lastFind + 1);
+        lastFind = line.find(')');
+        pos.y = std::stoi(line.substr(0, lastFind));
+        lastFind = line.find('[');
+        if (lastFind != std::string::npos){
+            line.erase(0, lastFind + 1);
+            lastFind = line.find('/');
+            topLeftRec.x = std::stoi(line.substr(0, lastFind));
+            line.erase(0, lastFind + 1);
+            lastFind = line.find(']');
+            topLeftRec.y = std::stoi(line.substr(0, lastFind));
+            line.erase(0, lastFind + 1);
+            lastFind = line.find('[');
+            if (lastFind != std::string::npos){
+                line.erase(0, lastFind + 1);
+                lastFind = line.find('/');
+                sizeRec.x = std::stoi(line.substr(0, lastFind));
+                line.erase(0, lastFind + 1);
+                lastFind = line.find(']');
+                sizeRec.y = std::stoi(line.substr(0, lastFind));
+                rec.setPosition(topLeftRec);
+                rec.setSize(sizeRec);
+            }
         }
         m_sprites.push_back(SpriteTrigger(pos, index, rec , map));
         m_spritesCount++;

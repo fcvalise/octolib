@@ -21,15 +21,20 @@ BOOST_AUTO_TEST_CASE( simple )
     octo::PackageReader file;
     std::vector<octo::LevelMap::SpriteTrigger> sprites;
     int   * map;
+    size_t index;
+
+    BOOST_TEST_MESSAGE("open pck");
 
     if (file.open("map.pck")){
         int max =  file.getHeader().count();
+        BOOST_TEST_MESSAGE("load map");
         for(int i = 0; i < max; ++i){
             if (octo::PackageHeader::EntryType::LevelMap == file.getHeader().getEntryType(i)){
                 file.load(buffer, i);
                 break;
             }
         }
+        BOOST_TEST_MESSAGE("testing map int");
         BOOST_CHECK(lm0.loadFromMemory(buffer));
         BOOST_CHECK_EQUAL(lm0.getMapCount() , 3);
         for (std::size_t i = 0; i < 3; i++){
@@ -38,9 +43,12 @@ BOOST_AUTO_TEST_CASE( simple )
                 BOOST_CHECK_EQUAL(map[x], i);
             }
         }
+        BOOST_TEST_MESSAGE("testing spriteTrigger");
         BOOST_CHECK(lm0.getMapSize() == sf::Vector2i(120, 50));
-        BOOST_CHECK_EQUAL(lm0.getSpriteCount(), 5);
-
+        index = lm0.getSpriteCount();
+        BOOST_CHECK_EQUAL(index, 5);
+        if (index != 5)
+            return;
         BOOST_CHECK(lm0.getSprite(0).position == sf::Vector2f(0, 0));
         BOOST_CHECK(lm0.getSprite(0).trigger.getSize() == sf::Vector2f(160, 16));
         BOOST_CHECK(lm0.getSprite(2).position == sf::Vector2f(736, 336));
