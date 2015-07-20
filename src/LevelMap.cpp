@@ -15,9 +15,9 @@ namespace octo
         return m_size;
     }
 
-    int * const& LevelMap::getMap(std::size_t i) const
+    int * const& LevelMap::getMap(std::size_t index) const
     {
-        return m_tileMap.at(i);
+        return m_tileMap.at(index);
     }
 
     std::size_t LevelMap::getSpriteCount() const
