@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/03 14:24:18 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 17:26:01 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 21:34:22 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace octo
 		 *
 		 *	If a change has been programmed then performes it.<br>
 		 */
-		void		update(sf::Time frameTime);
+		bool		update(sf::Time frameTime);
 
 		/*!	Define the start state */
 		void		setStart(StatePtr const& state);

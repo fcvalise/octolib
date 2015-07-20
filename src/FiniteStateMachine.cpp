@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/03 14:51:35 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 17:52:49 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 21:35:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ namespace octo
 		m_nextEventId = eventId;
 	}
 
-	void	FiniteStateMachine::update(sf::Time frameTime)
+	bool	FiniteStateMachine::update(sf::Time frameTime)
 	{
 		assert (m_current != nullptr);
+		bool	changed = false;
 
 		if (m_nextEventId != NullEvent)
 		{
@@ -57,8 +58,10 @@ namespace octo
 			m_current = m_current->getNext(m_nextEventId);
 			m_current->start();
 			m_nextEventId = NullEvent;
+			changed = true;
 		}
 		m_current->update(frameTime);
+		return (changed);
 	}
 
 	void	FiniteStateMachine::setStart(StatePtr const& state)

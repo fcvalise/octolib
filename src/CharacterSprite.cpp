@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/20 17:05:26 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 17:54:52 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 21:36:08 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,20 @@
 
 namespace octo
 {
+	//
+	// class ACharacterState
+	//
+
+	CharacterSprite::ACharacterState::ACharacterState(std::string const& name, CharacterAnimation const& animation, CharacterSprite& character) :
+		AState(name),
+		m_animation(animation),
+		m_animator(character.m_animator)
+	{
+	}
+
+	//
+	//	class CharacterSprite
+	//
 	CharacterSprite::CharacterSprite() :
 		m_animator(AnimableProperty<CharacterFrame>([this](CharacterFrame const& frame)
 				{
@@ -30,7 +44,16 @@ namespace octo
 
 	void	CharacterSprite::update(sf::Time frameTime)
 	{
-		m_machine.update(frameTime);
+		auto					state = m_machine.getCurrentState();
+
+		if (m_machine.update(frameTime))
+		{
+			m_possibleEvents.clear();
+			for (auto transition : *state)
+			{
+				m_possibleEvents.push_back(transition.second.getTriggerEvent());
+			}
+		}
 	}
 
 	void 	CharacterSprite::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -223,5 +246,10 @@ namespace octo
 	sf::Vector2f const&		CharacterSprite::getHotPoint()const
 	{
 		return (m_hotPoint);
+	}
+	
+	std::vector<CharacterSprite::EventId> const&	CharacterSprite::getPossibleEvents()const
+	{
+		return (m_possibleEvents);
 	}
 }
