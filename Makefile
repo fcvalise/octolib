@@ -47,7 +47,9 @@ AUDIO_SRC =	AudioManager.cpp
 
 ANIMATION_SRC =	SpriteAnimation.cpp					\
 				CharacterFrame.cpp					\
-				CharacterAnimation.cpp
+				CharacterAnimation.cpp				\
+				CharacterSprite.cpp					\
+				FiniteStateMachine.cpp
 
 MATH_SRC = 	Interpolations.cpp						\
 	 		Math.cpp

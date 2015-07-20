@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AnimatedSprite.hpp                                 :+:      :+:    :+:   */
+/*   CharacterSprite.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/13 18:30:04 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 17:15:06 by irabeson         ###   ########.fr       */
+/*   Created: 2015/07/20 17:04:23 by irabeson          #+#    #+#             */
+/*   Updated: 2015/07/20 17:19:11 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ANIMATEDSPRITE_HPP
-# define ANIMATEDSPRITE_HPP
+#ifndef CHARACTERSPRITE_HPP
+# define CHARACTERSPRITE_HPP
 # include "SingleAnimator.hpp"
-# include "SpriteAnimation.hpp"
+# include "CharacterAnimation.hpp"
 # include "SpriteSheet.hpp"
 
 # include <SFML/Graphics/Drawable.hpp>
@@ -23,21 +23,21 @@ namespace octo
 {
 	/*!
 	 *	\ingroup Graphics
-	 *	\class AnimatedSprite
+	 *	\class CharacterSprite
 	 *	\brief Frame by frame animated sprite
 	 *
 	 *	This class is very similar to sf::Sprite but it uses
 	 *	a sprite sheet and an animation to be animated frame by frame.
 	 */
-	class AnimatedSprite : public sf::Drawable
+	class CharacterSprite : public sf::Drawable
 	{
 	public:
-		AnimatedSprite();
+		CharacterSprite();
 
 		void					update(sf::Time frameTime);
 		void 					draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-		void					setAnimation(SpriteAnimation const& animation);
+		void					setAnimation(CharacterAnimation const& animation);
 		void					setSpriteSheet(SpriteSheet const& spriteSheet);
 
 		void					restart();
@@ -71,10 +71,14 @@ namespace octo
 		void					scale(sf::Vector2f const& factor);
 		sf::Transform const&	getTransform()const;
 		sf::Transform const&	getInverseTransform()const;
+		sf::FloatRect const&	getBoundingBox()const;
+		sf::Vector2f const&		getHotPoint()const;
 	private:
 		sf::Sprite						m_sprite;
-		SingleAnimator<std::size_t>		m_animator;
+		SingleAnimator<CharacterFrame>	m_animator;
 		SpriteSheet const*				m_spriteSheet;
+		sf::FloatRect					m_boundingBox;
+		sf::Vector2f					m_hotPoint;
 	};
 }
 
