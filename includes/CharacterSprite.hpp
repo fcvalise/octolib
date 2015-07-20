@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/20 17:04:23 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 17:19:11 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 17:55:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "SingleAnimator.hpp"
 # include "CharacterAnimation.hpp"
 # include "SpriteSheet.hpp"
+# include "FiniteStateMachine.hpp"
 
 # include <SFML/Graphics/Drawable.hpp>
 # include <SFML/Graphics/Sprite.hpp>
@@ -32,12 +33,15 @@ namespace octo
 	class CharacterSprite : public sf::Drawable
 	{
 	public:
+		typedef octo::FiniteStateMachine::EventId	EventId;
+
 		CharacterSprite();
 
 		void					update(sf::Time frameTime);
 		void 					draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
 		void					setAnimation(CharacterAnimation const& animation);
+		void					setMachine(FiniteStateMachine&& machine);
 		void					setSpriteSheet(SpriteSheet const& spriteSheet);
 
 		void					restart();
@@ -46,6 +50,7 @@ namespace octo
 		void					pause();
 		PlayStatus				getStatus()const;
 		void					setSpeedFactor(float factor);
+		void					setNextEvent(EventId eventId);
 
 		void					setColor(sf::Color const& color);
 		sf::Color const&		getColor()const;
@@ -76,6 +81,7 @@ namespace octo
 	private:
 		sf::Sprite						m_sprite;
 		SingleAnimator<CharacterFrame>	m_animator;
+		FiniteStateMachine				m_machine;
 		SpriteSheet const*				m_spriteSheet;
 		sf::FloatRect					m_boundingBox;
 		sf::Vector2f					m_hotPoint;

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/03 14:51:35 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 17:26:43 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 17:52:49 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ namespace octo
 
 	void	FiniteStateMachine::update(sf::Time frameTime)
 	{
+		assert (m_current != nullptr);
+
 		if (m_nextEventId != NullEvent)
 		{
 			m_current->stop();
