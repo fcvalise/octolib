@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 03:40:52 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/23 17:18:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 16:19:32 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ namespace octo
 		ColorWheel,
 		SpriteSheet,
 		SpriteAnimation,
+		CharacterAnimation,
 		Count,
 		Invalid
 	};

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/06 08:03:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 16:23:15 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ namespace octo
 			{octo::PackageHeader::EntryType::ColorWheel, "COLOR WHEELS"},
 			{octo::PackageHeader::EntryType::SpriteSheet, "SPRITE SHEETS"},
 			{octo::PackageHeader::EntryType::SpriteAnimation, "SPRITE ANIMATIONS"},
+			{octo::PackageHeader::EntryType::CharacterAnimation, "CHARACTER ANIMATIONS"},
 			{octo::PackageHeader::EntryType::Invalid, "INVALID"}
 		};
 
@@ -161,7 +162,8 @@ namespace octo
 			{"opa", PackageHeader::EntryType::Palette},
 			{"ocw", PackageHeader::EntryType::ColorWheel},
 			{"oss", PackageHeader::EntryType::SpriteSheet},
-			{"osa", PackageHeader::EntryType::SpriteAnimation}
+			{"osa", PackageHeader::EntryType::SpriteAnimation},
+			{"oca", PackageHeader::EntryType::CharacterAnimation}
 		}
 	{
 	}

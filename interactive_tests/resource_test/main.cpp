@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/22 02:35:21 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/07 20:17:55 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 16:37:06 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <GraphicsManager.hpp>
 #include <DefaultGraphicsListeners.hpp>
 #include <ResourceManager.hpp>
+#include <Camera.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Audio/Sound.hpp>
@@ -115,16 +116,15 @@ int main(int argc, char **argv)
 
 	Application::initialize("Resource system works!", "test.conf", argc, argv);
 	GraphicsManager&						graphics = Application::getGraphicsManager();
+	Camera&									camera = Application::getCamera();
 	StateManager&							states = Application::getStateManager();
-	sf::View								view = graphics.getDefaultView();
 	SimpleWindowListener					windowListener;
 	KeyboardControl							keyboardControl;
 
-	view.setCenter(0.f, 0.f);
 	graphics.addWindowListener(&windowListener);
 	graphics.addKeyboardListener(&keyboardControl);
-	graphics.setView(view);
 	graphics.setVerticalSyncEnabled(true);
+	camera.setCenter(sf::Vector2f(0, 0));
 	states.registerState<MainState>("main");
 	states.registerTransition<octo::BlackFadeTransition>("black_f");
 	Application::run("main");

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 05:03:00 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 14:51:15 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 16:24:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@ namespace octo
 	 *		<TD>osa</TD>
 	 *		<TD>Sprite animation files</TD>
 	 *	</TR>
+	 *	<TR>
+	 *		<TD>oca</TD>
+	 *		<TD>Character animation files</TD>
+	 *	</TR>
 	 *	</TABLE>
 	 */
 	class ResourceManager : public NonCopyable
@@ -65,42 +69,46 @@ namespace octo
 		ResourceManager();
 
 		/*!	Load a package file */
-		bool					loadPackage(std::string const& fileName, IResourceListener* listener);
+		bool						loadPackage(std::string const& fileName, IResourceListener* listener);
 
 		/*!	Start a package loading */
-		ResourceLoading			loadPackageAsync(std::string const& fileName, IResourceListener* listener);
+		ResourceLoading				loadPackageAsync(std::string const& fileName, IResourceListener* listener);
 
 		/*!	Get a font
 		 */
-		sf::Font const&			getFont(std::string const& fileName)const;
+		sf::Font const&				getFont(std::string const& fileName)const;
 
 		/*!	Get a texture
 		 */
-		sf::Texture const&		getTexture(std::string const& fileName)const;
+		sf::Texture const&			getTexture(std::string const& fileName)const;
 
 		/*!	Get a sound buffer
 		 */
-		sf::SoundBuffer const&	getSound(std::string const& fileName)const;
+		sf::SoundBuffer const&		getSound(std::string const& fileName)const;
 
 		/*!	Get a text
 		 */
-		sf::String const&		getText(std::string const& fileName)const;
+		sf::String const&			getText(std::string const& fileName)const;
 
 		/*!	Get a palette
 		 */
-		Palette const&			getPalette(std::string const& fileName)const;
+		Palette const&				getPalette(std::string const& fileName)const;
 
 		/*!	Get a color wheel
 		 */
-		ColorWheel const&		getColorWheel(std::string const& fileName)const;
+		ColorWheel const&			getColorWheel(std::string const& fileName)const;
 
 		/*!	Get a sprite sheet
 		 */
-		SpriteSheet const&		getSpriteSheet(std::string const& fileName)const;
+		SpriteSheet const&			getSpriteSheet(std::string const& fileName)const;
 
 		/*!	Get a sprite animation
 		 */
-		SpriteAnimation const&	getSpriteAnimation(std::string const& fileName)const;
+		SpriteAnimation const&		getSpriteAnimation(std::string const& fileName)const;
+
+		/*!	Get a character animation
+		 */
+		CharacterAnimation const&	getCharacterAnimation(std::string const& fileName)const;
 	private:
 		typedef details::StreamedResource<sf::Font>		Font;
 
@@ -112,6 +120,7 @@ namespace octo
 		details::ResourceManagerImp<ColorWheel>			m_colorWheelManager;
 		details::ResourceManagerImp<SpriteSheet>		m_spriteSheetManager;
 		details::ResourceManagerImp<SpriteAnimation>	m_spriteAnimationManager;
+		details::ResourceManagerImp<CharacterAnimation>	m_characterAnimationManager;
 	};
 }
 

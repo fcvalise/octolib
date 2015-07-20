@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:39:42 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 15:26:44 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 16:22:02 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "ColorWheel.hpp"
 # include "SpriteAnimation.hpp"
 # include "SpriteSheet.hpp"
+# include "CharacterAnimation.hpp"
 # include "../ResourceLoading.hpp"
 
 # include <memory>
@@ -146,6 +147,16 @@ namespace octo
 		{
 		public:
 			inline static bool	load(ByteArray const& buffer, SpriteAnimation& animation)
+			{
+				return (animation.loadFromMemory(buffer));
+			}
+		};
+
+		template <>
+		class ResourceLoader<CharacterAnimation>
+		{
+		public:
+			inline static bool	load(ByteArray const& buffer, CharacterAnimation& animation)
 			{
 				return (animation.loadFromMemory(buffer));
 			}
