@@ -40,11 +40,16 @@ BOOST_AUTO_TEST_CASE( simple )
 		BOOST_CHECK_EQUAL(map.columns(), 120);
 		BOOST_CHECK_EQUAL(map.rows(), 50);
 		BOOST_CHECK_EQUAL(map.depth(), 3);
-		BOOST_CHECK_EQUAL(map.count(), 18000) ;
+		BOOST_CHECK_EQUAL(map.count(), 18000);
+
 		BOOST_CHECK(map.get(0, 0 , 0) == octo::LevelMap::TileType::Empty);
+		/* Error return TileType::TopRightCorner */
 		BOOST_CHECK(map.get(119, 49, 0) == octo::LevelMap::TileType::Empty);
+		
 		BOOST_CHECK(map.get(0, 0, 1) == octo::LevelMap::TileType::Square);
+		/* Error return TileType::TopRightCorner */
 		BOOST_CHECK(map.get(119, 49, 1) == octo::LevelMap::TileType::Square);
+
 		BOOST_CHECK(map.get(0, 0, 2) == octo::LevelMap::TileType::TopRightCorner);
 		BOOST_CHECK(map.get(119, 49, 2) == octo::LevelMap::TileType::TopRightCorner);
 
