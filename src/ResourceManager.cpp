@@ -15,6 +15,7 @@
 #include "ColorWheel.hpp"
 #include "SpriteSheet.hpp"
 #include "SpriteAnimation.hpp"
+#include "LevelMap.hpp"
 #include "details/ResourceManagerImp.hpp"
 
 namespace octo
@@ -27,7 +28,8 @@ namespace octo
 		m_paletteManager(PackageHeader::EntryType::Palette),
 		m_colorWheelManager(PackageHeader::EntryType::ColorWheel),
 		m_spriteSheetManager(PackageHeader::EntryType::SpriteSheet),
-		m_spriteAnimationManager(PackageHeader::EntryType::SpriteAnimation)
+		m_spriteAnimationManager(PackageHeader::EntryType::SpriteAnimation),
+        m_levelMapManager(PackageHeader::EntryType::LevelMap) 
 	{
 	}
 
@@ -46,6 +48,7 @@ namespace octo
 		m_colorWheelManager.loadPackage(reader, listener);
 		m_spriteSheetManager.loadPackage(reader, listener);
 		m_spriteAnimationManager.loadPackage(reader, listener);
+		m_levelMapManager.loadPackage(reader, listener);
 		return (true);
 	}
 
@@ -64,6 +67,7 @@ namespace octo
 			m_colorWheelManager.loadPackageAsync(reader, actions);
 			m_spriteSheetManager.loadPackageAsync(reader, actions);
 			m_spriteAnimationManager.loadPackageAsync(reader, actions);
+			m_levelMapManager.loadPackageAsync(reader, actions);
 		}
 		return (ResourceLoading(std::move(reader), std::move(actions), listener));
 	}
@@ -106,5 +110,10 @@ namespace octo
 	SpriteAnimation const&		ResourceManager::getSpriteAnimation(std::string const& fileName)const
 	{
 		return (m_spriteAnimationManager.get(fileName));
+	}
+
+	LevelMap const&		ResourceManager::getLevelMap(std::string const& fileName)const
+	{
+		return (m_levelMapManager.get(fileName));
 	}
 }

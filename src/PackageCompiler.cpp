@@ -104,6 +104,7 @@ namespace octo
 			{octo::PackageHeader::EntryType::ColorWheel, "COLOR WHEELS"},
 			{octo::PackageHeader::EntryType::SpriteSheet, "SPRITE SHEETS"},
 			{octo::PackageHeader::EntryType::SpriteAnimation, "SPRITE ANIMATIONS"},
+            {octo::PackageHeader::EntryType::LevelMap, "LEVEL MAP"},
 			{octo::PackageHeader::EntryType::Invalid, "INVALID"}
 		};
 
@@ -161,7 +162,8 @@ namespace octo
 			{"opa", PackageHeader::EntryType::Palette},
 			{"ocw", PackageHeader::EntryType::ColorWheel},
 			{"oss", PackageHeader::EntryType::SpriteSheet},
-			{"osa", PackageHeader::EntryType::SpriteAnimation}
+			{"osa", PackageHeader::EntryType::SpriteAnimation},
+            {"omp", PackageHeader::EntryType::LevelMap}
 		}
 	{
 	}

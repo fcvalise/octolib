@@ -16,6 +16,7 @@ SRC = 	$(RESOURCE_SRC)								\
 		$(CORE_SRC)									\
 		$(CONSOLE_SRC)								\
 		$(GRAPHICS_SRC)								\
+		$(LEVELMAP_SRC)								\
 		$(ANIMATION_SRC)							\
 		$(AUDIO_SRC)								\
 		$(DEBUG_SRC)
@@ -42,6 +43,8 @@ GRAPHICS_SRC =	GraphicsManager.cpp					\
 				SpriteSheet.cpp						\
 				AnimatedSprite.cpp					\
 				VertexBuilder.cpp
+
+LEVELMAP_SRC =	LevelMap.cpp
 
 AUDIO_SRC =	AudioManager.cpp
 
