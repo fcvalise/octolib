@@ -39,7 +39,7 @@ namespace octo
     {
         sprites.clear();
         std::size_t i = 0;
-        for (auto sprite : m_sprites){
+        for (auto & sprite : m_sprites){
             if (sprite.spriteIndex == index){
                 sprites.push_back(sprite);
                 i++;
@@ -52,7 +52,7 @@ namespace octo
     {
         sprites.clear();
         std::size_t i = 0;
-        for (auto sprite : m_sprites){
+        for (auto & sprite : m_sprites){
             if (sprite.mapIndex == index){
                 sprites.push_back(sprite);
                 i++;
@@ -117,7 +117,7 @@ namespace octo
         m_tileMap.reserve(len);
         for (int x = 0; x < len; x++){
             m_tileMap.push_back(new int[sizeof(int) * size]);
-            for(int i = 0; i < size ; i++){
+            for (int i = 0; i < size ; i++){
                 m_tileMap[x][i] = 0;
             }
         }
