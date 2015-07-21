@@ -20,11 +20,10 @@ BOOST_AUTO_TEST_CASE( simple )
     octo::ByteArray		buffer;
     octo::PackageReader file;
     std::vector<octo::LevelMap::SpriteTrigger> sprites;
-    int   * map;
+    octo::LevelMap::TileType   * map;
     size_t index;
 
     BOOST_TEST_MESSAGE("open pck");
-
     if (file.open("map.pck")){
         int max =  file.getHeader().count();
         BOOST_TEST_MESSAGE("load map");
@@ -37,10 +36,14 @@ BOOST_AUTO_TEST_CASE( simple )
         BOOST_TEST_MESSAGE("testing map int");
         BOOST_CHECK(lm0.loadFromMemory(buffer));
         BOOST_CHECK_EQUAL(lm0.getMapCount() , 3);
+
+        BOOST_CHECK(lm0.getMap(0)[420] == octo::LevelMap::TileType::Empty);
+        BOOST_CHECK(lm0.getMap(1)[42] == octo::LevelMap::TileType::Square);
+
         for (std::size_t i = 0; i < 3; i++){
             map = lm0.getMap(i);
             for(int x = 0; x < 6000; x++){
-                BOOST_CHECK_EQUAL(map[x], i);
+                BOOST_CHECK_EQUAL(static_cast<size_t>(map[x]), i);
             }
         }
         BOOST_TEST_MESSAGE("testing spriteTrigger");
