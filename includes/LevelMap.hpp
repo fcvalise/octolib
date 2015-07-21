@@ -14,7 +14,20 @@ namespace octo
 	class LevelMap
 	{
 		public:
-			enum class TileType : int;
+			/*!	Identifiers of tileType
+			 *
+			 * add custom tileType here, defined in editor
+			 */
+			enum class TileType : std::uint8_t
+			{
+				Empty,
+				Square,
+				TopRightCorner,
+				TopLeftCorner,
+				BotLeftCorner,
+				BotRightCorner,
+				Custom = 6,
+			};
 
 			/*! struct SpriteTrigger */
 			struct SpriteTrigger
@@ -86,21 +99,6 @@ namespace octo
 			std::vector<TileType *>			m_tileMap;
 			std::vector<SpriteTrigger>		m_sprites;
 			sf::Vector2i					m_size;
-	};
-
-	/*!	Identifiers of tileType
-	 *
-	 * add custom tileType here, defined in editor
-	 */
-	enum class LevelMap::TileType : int
-	{
-		Empty,
-		Square,
-		TopRightCorner,
-		TopLeftCorner,
-		BotLeftCorner,
-		BotRightCorner,
-		Custom = 6,
 	};
 }
 
