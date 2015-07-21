@@ -2,7 +2,7 @@
 # define LEVELMAP_HPP
 # include <SFML/Graphics/RectangleShape.hpp>
 # include "ByteArray.hpp"
-
+# include "Array3D.hpp"
 namespace octo
 {
 	/*!
@@ -54,11 +54,10 @@ namespace octo
 			/*!	Get the size of map */
 			sf::Vector2i const &	getMapSize() const;
 
-			/*!	Get map by index 
-			 *
-			 *	\param index => 0 and < map count
+			/*!	Get all map 
+			 *  return all map storage in octo::Array3D
 			 */
-			TileType * const &		getMap(std::size_t index) const;
+			Array3D<TileType>const &		getMap() const;
 
 
 			/*!	Get the sprite count */
@@ -81,7 +80,7 @@ namespace octo
 
 			/*! Get collection of spriteTrigger by indexMap
 			 *
-			 *	\param indexMap => 0 and < map count
+			 *	\param indexMap => 0 and < map count (Array3D.depth())
 			 *	\param sprites vector of LevelMap::SpriteTrigger
 			 */
 			void	getSpritesByIndexMap(std::size_t indexMap,
@@ -96,7 +95,7 @@ namespace octo
 			void							addLineAt(int map, int index, std::string & line);
 			void							addSprite(std::string & line, int map);
 			std::size_t						m_spritesCount;
-			std::vector<TileType *>			m_tileMap;
+			Array3D<TileType>				m_tileMap;
 			std::vector<SpriteTrigger>		m_sprites;
 			sf::Vector2i					m_size;
 	};

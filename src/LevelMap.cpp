@@ -7,7 +7,7 @@ namespace octo
 {
 	std::size_t LevelMap::getMapCount() const
 	{
-		return m_tileMap.size();
+		return m_tileMap.depth();
 	}
 
 	sf::Vector2i const & LevelMap::getMapSize() const
@@ -15,9 +15,9 @@ namespace octo
 		return m_size;
 	}
 
-	LevelMap::TileType * const& LevelMap::getMap(std::size_t index) const
+	Array3D<LevelMap::TileType> const & LevelMap::getMap() const
 	{
-		return m_tileMap.at(index);
+		return m_tileMap;
 	}
 
 	std::size_t LevelMap::getSpriteCount() const
@@ -111,29 +111,21 @@ namespace octo
 
 	void LevelMap::setup(int len)
 	{
-		int	size = m_size.x * m_size.y;
 		m_spritesCount = 0;
 		m_sprites.resize(0);
-		m_tileMap.reserve(len);
-		for (int x = 0; x < len; x++){
-			m_tileMap.push_back(new TileType[sizeof(TileType) * size]);
-			for (int i = 0; i < size ; i++){
-				m_tileMap[x][i] = LevelMap::TileType::Empty;
-			}
-		}
-		m_tileMap.resize(len);
+		m_tileMap = Array3D<TileType>(m_size.x, m_size.y, len);
 	}
 
 	void LevelMap::addLineAt(int map, int index, std::string & line)
 	{
-		int			indexInTile = index * m_size.x;
 		char		delimiter = ',';
 		size_t	pos = 0;
-		while ((pos = line.find(delimiter)) != std::string::npos) {
-			m_tileMap[map][indexInTile++] = static_cast<TileType>(std::stoi(line.substr(0, pos)));
-			line.erase(0, pos + 1);
-		}
-		m_tileMap[map][indexInTile] = static_cast<TileType>(std::stoi(line));
+		size_t	i = 0;
+			while ((pos = line.find(delimiter)) != std::string::npos) {
+				m_tileMap.set(i++, index, map ,static_cast<TileType>(std::stoi(line.substr(0, pos))));
+				line.erase(0, pos + 1);
+			}
+		m_tileMap.set(i, index, map, static_cast<TileType>(std::stoi(line)));
 	}
 
 	void LevelMap::addSprite(std::string & line, int map)
