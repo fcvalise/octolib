@@ -34,7 +34,7 @@ namespace octo
 			{
 				SpriteTrigger() = default;
 				explicit SpriteTrigger(sf::Vector2f const& pos, int index,
-						sf::IntRect const& rec, int mapIndex) :
+						sf::FloatRect const& rec, int mapIndex) :
 					positionSprite(pos),
 					trigger(rec),
 					mapIndex(mapIndex),
@@ -43,7 +43,7 @@ namespace octo
 				}
 
 				sf::Vector2f		positionSprite;
-				sf::IntRect			trigger;
+				sf::FloatRect		trigger;
 				std::size_t			mapIndex;
 				std::size_t			spriteIndex;
 			};

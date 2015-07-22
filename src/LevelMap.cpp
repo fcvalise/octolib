@@ -121,7 +121,7 @@ namespace octo
 		char		delimiter = ',';
 		size_t	pos = 0;
 		size_t	i = 0;
-			while ((pos = line.find(delimiter)) != std::string::npos) {
+			while ((pos = line.find(delimiter)) != std::string::npos){
 				m_tileMap.set(i++, index, map ,static_cast<TileType>(std::stoi(line.substr(0, pos))));
 				line.erase(0, pos + 1);
 			}
@@ -132,9 +132,9 @@ namespace octo
 	{
 		octo::ByteArray		image;
 		sf::Vector2f		pos;
-		sf::Vector2i		topLeftRec;
-		sf::Vector2i		sizeRec;
-		sf::IntRect			rec;
+		sf::Vector2f		topLeftRec;
+		sf::Vector2f		sizeRec;
+		sf::FloatRect			rec;
 		size_t				lastFind;
 
 		lastFind = line.find('(');
@@ -162,7 +162,7 @@ namespace octo
 				line.erase(0, lastFind + 1);
 				lastFind = line.find(']');
 				sizeRec.y = std::stoi(line.substr(0, lastFind));
-				rec = sf::IntRect(topLeftRec, sizeRec);
+				rec = sf::FloatRect(topLeftRec, sizeRec);
 			}
 		}
 		m_sprites.push_back(SpriteTrigger(pos, index, rec , map));
