@@ -201,6 +201,8 @@ namespace octo
 		/*!	Remove dead particles and updates alives particles */
 		virtual void	update(sf::Time frameTime);
 
+		virtual void	update(sf::Time frameTime, VertexBuilder & builder);
+
 		/*!	Draw alives particles */
 		void			draw(sf::RenderTarget& render, sf::RenderStates states = sf::RenderStates())const;
 
