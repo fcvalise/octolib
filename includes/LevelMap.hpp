@@ -34,16 +34,16 @@ namespace octo
 			{
 				SpriteTrigger() = default;
 				explicit SpriteTrigger(sf::Vector2f const& pos, int index,
-						sf::RectangleShape const& rec, int mapIndex) :
-					position(pos),
+						sf::IntRect const& rec, int mapIndex) :
+					positionSprite(pos),
 					trigger(rec),
 					mapIndex(mapIndex),
 					spriteIndex(index)
 				{
 				}
 
-				sf::Vector2f		position;
-				sf::RectangleShape	trigger;
+				sf::Vector2f		positionSprite;
+				sf::IntRect			trigger;
 				std::size_t			mapIndex;
 				std::size_t			spriteIndex;
 			};
@@ -58,7 +58,6 @@ namespace octo
 			 *  return all map storage in octo::Array3D
 			 */
 			Array3D<TileType>const &		getMap() const;
-
 
 			/*!	Get the sprite count */
 			std::size_t				getSpriteCount() const;

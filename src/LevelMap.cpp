@@ -35,7 +35,7 @@ namespace octo
 		return m_sprites.at(index);
 	}
 
-	void LevelMap::getSpritesByIndexPackage(std::size_t index, std::vector<LevelMap::SpriteTrigger>& sprites)
+	void LevelMap::getSpritesByIndexPackage(std::size_t index, std::vector<LevelMap::SpriteTrigger> & sprites)
 	{
 		sprites.clear();
 		std::size_t i = 0;
@@ -48,7 +48,7 @@ namespace octo
 		sprites.resize(i);
 	}
 
-	void LevelMap::getSpritesByIndexMap(std::size_t index, std::vector<LevelMap::SpriteTrigger>& sprites)
+	void LevelMap::getSpritesByIndexMap(std::size_t index, std::vector<LevelMap::SpriteTrigger> & sprites)
 	{
 		sprites.clear();
 		std::size_t i = 0;
@@ -132,9 +132,9 @@ namespace octo
 	{
 		octo::ByteArray		image;
 		sf::Vector2f		pos;
-		sf::Vector2f		topLeftRec;
-		sf::Vector2f		sizeRec;
-		sf::RectangleShape	rec;
+		sf::Vector2i		topLeftRec;
+		sf::Vector2i		sizeRec;
+		sf::IntRect			rec;
 		size_t				lastFind;
 
 		lastFind = line.find('(');
@@ -162,8 +162,7 @@ namespace octo
 				line.erase(0, lastFind + 1);
 				lastFind = line.find(']');
 				sizeRec.y = std::stoi(line.substr(0, lastFind));
-				rec.setPosition(topLeftRec);
-				rec.setSize(sizeRec);
+				rec = sf::IntRect(topLeftRec, sizeRec);
 			}
 		}
 		m_sprites.push_back(SpriteTrigger(pos, index, rec , map));
