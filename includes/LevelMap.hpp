@@ -75,7 +75,7 @@ namespace octo
 			 *	\param sprites vector of LevelMap::SpriteTrigger
 			 */
 			void	getSpritesByIndexPackage(std::size_t indexPackage,
-					std::vector<LevelMap::SpriteTrigger> & sprites);
+					std::vector<LevelMap::SpriteTrigger *> & sprites);
 
 			/*! Get collection of spriteTrigger by indexMap
 			 *
@@ -83,7 +83,7 @@ namespace octo
 			 *	\param sprites vector of LevelMap::SpriteTrigger
 			 */
 			void	getSpritesByIndexMap(std::size_t indexMap,
-					std::vector<LevelMap::SpriteTrigger> & sprites);
+					std::vector<LevelMap::SpriteTrigger *> & sprites);
 
 			/*! Load from octo::ByteArray */
 			bool							loadFromMemory(ByteArray const& buffer);

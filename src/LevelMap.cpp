@@ -35,26 +35,26 @@ namespace octo
 		return m_sprites.at(index);
 	}
 
-	void LevelMap::getSpritesByIndexPackage(std::size_t index, std::vector<LevelMap::SpriteTrigger> & sprites)
+	void LevelMap::getSpritesByIndexPackage(std::size_t index, std::vector<LevelMap::SpriteTrigger *> & sprites)
 	{
 		sprites.clear();
 		std::size_t i = 0;
 		for (auto & sprite : m_sprites){
 			if (sprite.spriteIndex == index){
-				sprites.push_back(sprite);
+				sprites.push_back(&sprite);
 				i++;
 			}
 		}
 		sprites.resize(i);
 	}
 
-	void LevelMap::getSpritesByIndexMap(std::size_t index, std::vector<LevelMap::SpriteTrigger> & sprites)
+	void LevelMap::getSpritesByIndexMap(std::size_t index, std::vector<LevelMap::SpriteTrigger *> & sprites)
 	{
 		sprites.clear();
 		std::size_t i = 0;
 		for (auto & sprite : m_sprites){
 			if (sprite.mapIndex == index){
-				sprites.push_back(sprite);
+				sprites.push_back(&sprite);
 				i++;
 			}
 		}

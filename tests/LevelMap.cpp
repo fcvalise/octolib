@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE( simple )
 	octo::LevelMap	lm0;
 	octo::ByteArray		buffer;
 	octo::PackageReader file;
-	std::vector<octo::LevelMap::SpriteTrigger> sprites;
+	std::vector<octo::LevelMap::SpriteTrigger *> sprites;
 	size_t index;
 
 	BOOST_TEST_MESSAGE("open pck");
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE( simple )
 		BOOST_CHECK(map.get(0, 0 , 0) == octo::LevelMap::TileType::Empty);
 		/* Error return TileType::TopRightCorner */
 		BOOST_CHECK(map.get(119, 49, 0) == octo::LevelMap::TileType::Empty);
-		
+
 		BOOST_CHECK(map.get(0, 0, 1) == octo::LevelMap::TileType::Square);
 		/* Error return TileType::TopRightCorner */
 		BOOST_CHECK(map.get(119, 49, 1) == octo::LevelMap::TileType::Square);
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE( simple )
 		BOOST_CHECK(lm0.getSprite(0).positionSprite == sf::Vector2f(0, 0));
 		BOOST_CHECK_EQUAL(lm0.getSprite(0).trigger.top, 48);
 		BOOST_CHECK_EQUAL(lm0.getSprite(0).trigger.left, 0);
-		
+
 		BOOST_CHECK(lm0.getSprite(2).positionSprite == sf::Vector2f(736, 336));
 
 		BOOST_CHECK_EQUAL(lm0.getSprite(4).trigger.top, 480);
@@ -76,9 +76,12 @@ BOOST_AUTO_TEST_CASE( simple )
 
 		lm0.getSpritesByIndexMap(0, sprites);
 		BOOST_CHECK_EQUAL(sprites.size(), 5);
-		BOOST_CHECK(sprites.at(0).positionSprite == sf::Vector2f(0, 0));
-		BOOST_CHECK_EQUAL(sprites.at(4).trigger.width, 464);
-		BOOST_CHECK_EQUAL(sprites.at(4).trigger.height, 48);
+		BOOST_CHECK(sprites.at(0)->positionSprite == sf::Vector2f(0, 0));
+		BOOST_CHECK_EQUAL(sprites.at(4)->trigger.width, 464);
+		BOOST_CHECK_EQUAL(sprites.at(4)->trigger.height, 48);
+		sprites.at(0)->positionSprite = sf::Vector2f(2,2);
+		BOOST_CHECK(lm0.getSprite(0).positionSprite == sf::Vector2f(2, 2));
+
 
 		lm0.getSpritesByIndexMap(1, sprites);
 		BOOST_CHECK_EQUAL(sprites.size(), 0);
