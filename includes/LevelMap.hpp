@@ -32,7 +32,7 @@ namespace octo
 			/*! struct SpriteTrigger */
 			struct SpriteTrigger
 			{
-				SpriteTrigger(){};
+				SpriteTrigger() = default;
 				explicit SpriteTrigger(sf::Vector2f const& pos, int index,
 						sf::RectangleShape const& rec, int mapIndex) :
 					position(pos),
