@@ -3,12 +3,13 @@
 # include <SFML/Graphics/RectangleShape.hpp>
 # include "ByteArray.hpp"
 # include "Array3D.hpp"
+
 namespace octo
 {
 	/*!
 	 *	\ingroup Level
 	 *	\class LevelMap
-	 *	\brief get a LevelMap from ByteArray 
+	 *	\brief get a LevelMap from ByteArray
 	 */
 	class LevelMap
 	{
