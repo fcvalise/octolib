@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/20 17:04:23 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 21:32:55 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/23 02:05:30 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace octo
 		void						update(sf::Time frameTime);
 		void						draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
-		void						setMachine(FiniteStateMachine&& machine);
+		void						setMachine(FiniteStateMachine const& machine);
 		void						setSpriteSheet(SpriteSheet const& spriteSheet);
 
 		void						restart();
@@ -93,9 +93,11 @@ namespace octo
 
 	class CharacterSprite::ACharacterState : public octo::FiniteStateMachine::AState
 	{
-	protected:
-		ACharacterState(std::string const& name, CharacterAnimation const& animation, CharacterSprite& character);
 	public:
+		ACharacterState(std::string const& name, CharacterAnimation const& animation, CharacterSprite& character);
+
+		virtual ~ACharacterState(){}
+
 		void	start()
 		{
 			m_animator.setAnimation(m_animation);

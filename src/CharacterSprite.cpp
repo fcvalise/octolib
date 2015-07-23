@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/20 17:05:26 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 21:36:08 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/23 02:35:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ namespace octo
 				m_possibleEvents.push_back(transition.second.getTriggerEvent());
 			}
 		}
+		m_animator.update(frameTime);
 	}
 
 	void 	CharacterSprite::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -67,9 +68,9 @@ namespace octo
 		m_animator.reset();
 	}
 
-	void	CharacterSprite::setMachine(FiniteStateMachine&& machine)
+	void	CharacterSprite::setMachine(FiniteStateMachine const& machine)
 	{
-		m_machine = std::move(machine);
+		m_machine = machine;
 	}
 
 	void	CharacterSprite::setSpriteSheet(SpriteSheet const& spriteSheet)
@@ -85,8 +86,8 @@ namespace octo
 
 	void	CharacterSprite::restart()
 	{
-		m_animator.restart();
 		m_machine.start();
+		m_animator.restart();
 	}
 
 	void	CharacterSprite::play()

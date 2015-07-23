@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/07/20 15:42:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/07/20 15:59:55 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/23 00:51:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 
 namespace octo
 {
+	CharacterFrame::CharacterFrame() :
+		m_textureRectangleId(0)
+	{
+	}
+
+	CharacterFrame::CharacterFrame(std::size_t textureRectangleId, sf::FloatRect const& box, sf::Vector2f const& hotPoint) :
+		m_box(box),
+		m_hotPoint(hotPoint),
+		m_textureRectangleId(textureRectangleId)
+	{
+	}
+
 	void	CharacterFrame::loadFromMemory(BinaryInputStream& is)
 	{
 		sf::Rect<std::uint32_t>		box;
