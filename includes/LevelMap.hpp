@@ -9,7 +9,6 @@ namespace octo
 	 *	\ingroup Level
 	 *	\class LevelMap
 	 *	\brief get a LevelMap from ByteArray 
-	 *
 	 */
 	class LevelMap
 	{
@@ -19,22 +18,22 @@ namespace octo
 			 * add custom tileType here, defined in editor
 			 */
 			enum class TileType : std::uint8_t
-			{
-				Empty,
-				Square,
-				TopRightCorner,
-				TopLeftCorner,
-				BotLeftCorner,
-				BotRightCorner,
-				Custom = 6,
-			};
+		{
+			Empty,
+			Square,
+			TopRightCorner,
+			TopLeftCorner,
+			BotLeftCorner,
+			BotRightCorner,
+			Custom = 6,
+		};
 
 			/*! struct SpriteTrigger */
 			struct SpriteTrigger
 			{
 				SpriteTrigger() = default;
-				explicit SpriteTrigger(sf::Vector2f const& pos, int index,
-						sf::FloatRect const& rec, int mapIndex) :
+				explicit SpriteTrigger(sf::Vector2f const& pos, std::size_t index,
+						sf::FloatRect const& rec, std::size_t mapIndex) :
 					positionSprite(pos),
 					trigger(rec),
 					mapIndex(mapIndex),
@@ -57,10 +56,10 @@ namespace octo
 			/*!	Get all map 
 			 *  return all map storage in octo::Array3D
 			 */
-			Array3D<TileType>const &		getMap() const;
+			Array3D<TileType>const &			getMap() const;
 
 			/*!	Get the sprite count */
-			std::size_t				getSpriteCount() const;
+			std::size_t							getSpriteCount() const;
 
 			/*! Get spriteTrigger 
 			 *
@@ -90,9 +89,9 @@ namespace octo
 
 		private:
 			bool							load(std::istream & file);
-			void							setup(int len);
-			void							addLineAt(int map, int index, std::string & line);
-			void							addSprite(std::string & line, int map);
+			void							setup(std::size_t len);
+			void							addLineAt(std::size_t map, std::size_t index, std::string & line);
+			void							addSprite(std::string & line, std::size_t map);
 			std::size_t						m_spritesCount;
 			Array3D<TileType>				m_tileMap;
 			std::vector<SpriteTrigger>		m_sprites;

@@ -23,9 +23,9 @@ BOOST_AUTO_TEST_CASE( simple )
 
 	BOOST_TEST_MESSAGE("open pck");
 	if (file.open("map.pck")){
-		int max =  file.getHeader().count();
+		std::size_t max =  file.getHeader().count();
 		BOOST_TEST_MESSAGE("load map");
-		for(int i = 0; i < max; ++i){
+		for(std::size_t i = 0; i < max; ++i){
 			if (octo::PackageHeader::EntryType::LevelMap == file.getHeader().getEntryType(i)){
 				file.load(buffer, i);
 				break;

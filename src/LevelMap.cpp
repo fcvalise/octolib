@@ -76,11 +76,11 @@ namespace octo
 
 	bool LevelMap::load(std::istream & file)
 	{
-		int			indexLine = 0;
-		int			currentMap = 0;
-		int			nbrOfMap = 0;
-		std::string	line;
-		size_t		lastFind;
+		std::size_t			indexLine = 0;
+		std::size_t			currentMap = 0;
+		std::size_t			nbrOfMap = 0;
+		std::string			line;
+		std::size_t			lastFind;
 		m_spritesCount = 0;
 
 		std::getline(file, line);
@@ -93,7 +93,7 @@ namespace octo
 		setup(nbrOfMap);
 		while ( std::getline(file, line) )
 		{
-			if (indexLine == m_size.y){
+			if (indexLine == static_cast<std::size_t>(m_size.y)){
 				indexLine = 0;
 				currentMap++;
 			}
@@ -109,18 +109,18 @@ namespace octo
 		return true;
 	}
 
-	void LevelMap::setup(int len)
+	void LevelMap::setup(std::size_t len)
 	{
 		m_spritesCount = 0;
 		m_sprites.resize(0);
 		m_tileMap = Array3D<TileType>(m_size.x, m_size.y, len);
 	}
 
-	void LevelMap::addLineAt(int map, int index, std::string & line)
+	void LevelMap::addLineAt(std::size_t map, std::size_t index, std::string & line)
 	{
 		char		delimiter = ',';
-		size_t	pos = 0;
-		size_t	i = 0;
+		std::size_t	pos = 0;
+		std::size_t	i = 0;
 			while ((pos = line.find(delimiter)) != std::string::npos){
 				m_tileMap.set(i++, index, map ,static_cast<TileType>(std::stoi(line.substr(0, pos))));
 				line.erase(0, pos + 1);
@@ -128,17 +128,17 @@ namespace octo
 		m_tileMap.set(i, index, map, static_cast<TileType>(std::stoi(line)));
 	}
 
-	void LevelMap::addSprite(std::string & line, int map)
+	void LevelMap::addSprite(std::string & line, std::size_t map)
 	{
 		octo::ByteArray		image;
 		sf::Vector2f		pos;
 		sf::Vector2f		topLeftRec;
 		sf::Vector2f		sizeRec;
 		sf::FloatRect			rec;
-		size_t				lastFind;
+		std::size_t				lastFind;
 
 		lastFind = line.find('(');
-		int index = std::stoi(line.substr(1, lastFind));
+		std::size_t index = std::stoi(line.substr(1, lastFind));
 		line.erase(0, lastFind + 1);
 		lastFind = line.find(';');
 		pos.x = std::stoi(line.substr(0, lastFind));
