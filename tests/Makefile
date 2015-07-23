@@ -31,10 +31,16 @@ SRC = main.cpp						\
 	  FrameAnimation.cpp			\
 	  LexicalTree.cpp				\
 	  GenericFactory.cpp			\
-	  RingBuffer.cpp
+	  RingBuffer.cpp				\
+	  LevelMap.cpp
+
+# package files
+PACKAGE_FILE = map.pck
 
 # compiler
 CC = $(CXX)
+# packager
+PACKAGER = $(CORE_DIR)tools/packager/packager.app
 # flags used in both mode
 COMMON_FLAGS = -Werror -Wextra -Wall -std=c++11
 # flags used in release mode
@@ -64,7 +70,7 @@ COLOR_OBJECT = \033[0m
 
 all: core_library print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS) package_test_map
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(CC) $(CFLAGS) $(OBJS) -o $@ $(CLIBS_FLAGS) 
 
@@ -78,13 +84,15 @@ fclean: clean
 	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(TARGET)$(COLOR_OFF)"
 	@rm -f $(COMPLETE_TARGET)
 	
-clean:
+clean: 
 	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(addprefix "\\n\\t", $(notdir $(OBJS)))$(COLOR_OFF)"
 	@rm -f $(OBJS)
 	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
 	@rm -fr $(BUILD_DIR)
+	@echo " - $(COLOR_ACTION)removing$(COLOR_OFF): $(COLOR_OBJECT)$(PACKAGE_FILE)$(COLOR_OFF)"
+	@rm -f $(PACKAGE_FILE)
 
-$(BUILD_DIR):
+$(BUILD_DIR): 
 	@echo " - $(COLOR_ACTION)creating directory$(COLOR_OFF): $(COLOR_OBJECT)$(BUILD_DIR)$(COLOR_OFF)"
 	@mkdir -p $(BUILD_DIR)
 
@@ -106,3 +114,6 @@ clean_core_library:
 
 fclean_core_library:
 	@make -s -C $(CORE_DIR) fclean MODE=$(MODE)
+
+package_test_map:
+	$(PACKAGER) $(PACKAGE_FILE) test_map.omp

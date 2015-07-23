@@ -20,6 +20,7 @@
 # include "SpriteAnimation.hpp"
 # include "SpriteSheet.hpp"
 # include "CharacterAnimation.hpp"
+# include "LevelMap.hpp"
 # include "../ResourceLoading.hpp"
 
 # include <memory>
@@ -159,6 +160,16 @@ namespace octo
 			inline static bool	load(ByteArray const& buffer, CharacterAnimation& animation)
 			{
 				return (animation.loadFromMemory(buffer));
+			}
+		};
+
+		template <>
+		class ResourceLoader<LevelMap>
+		{
+		public:
+			inline static bool	load(ByteArray const& buffer, LevelMap & map)
+            {
+				return (map.loadFromMemory(buffer));
 			}
 		};
 

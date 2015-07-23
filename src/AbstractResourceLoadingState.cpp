@@ -114,6 +114,9 @@ namespace octo
 			case PackageHeader::EntryType::SpriteAnimation:
 				m_currentTypeLoaded = "Sprite animation";
 				break;
+			case PackageHeader::EntryType::LevelMap:
+				m_currentTypeLoaded = "Level map";
+				break;
 			default:
 				m_currentTypeLoaded.clear();
 				break;
