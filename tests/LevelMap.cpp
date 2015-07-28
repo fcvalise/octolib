@@ -15,24 +15,28 @@ BOOST_AUTO_TEST_CASE( basic )
 
 BOOST_AUTO_TEST_CASE( simple )
 {
-	octo::LevelMap	lm0;
-	octo::ByteArray		buffer;
-	octo::PackageReader file;
-	std::vector<octo::LevelMap::SpriteTrigger *> sprites;
-	size_t index;
+	octo::LevelMap			lm0;
+	octo::ByteArray			buffer;
+	octo::PackageReader		file;
+	size_t					index;
+	bool					loadFromMemory;
+	std::vector<octo::LevelMap::SpriteTrigger *>	sprites;
 
 	BOOST_TEST_MESSAGE("open pck");
 	if (file.open("map.pck")){
 		std::size_t max =  file.getHeader().count();
 		BOOST_TEST_MESSAGE("load map");
-		for(std::size_t i = 0; i < max; ++i){
+		for(std::size_t i = 0; i < max; i++){
 			if (octo::PackageHeader::EntryType::LevelMap == file.getHeader().getEntryType(i)){
-				file.load(buffer, i);
+				BOOST_CHECK(file.load(buffer, i));
 				break;
 			}
 		}
 		BOOST_TEST_MESSAGE("testing map");
-		BOOST_CHECK(lm0.loadFromMemory(buffer));
+		loadFromMemory = lm0.loadFromMemory(buffer);
+		BOOST_CHECK(loadFromMemory);
+		if (!loadFromMemory)
+			return ;
 		BOOST_CHECK(lm0.getMapSize() == sf::Vector2i(120, 50));
 		BOOST_CHECK_EQUAL(lm0.getMapCount() , 3);
 
@@ -82,10 +86,9 @@ BOOST_AUTO_TEST_CASE( simple )
 		sprites.at(0)->positionSprite = sf::Vector2f(2,2);
 		BOOST_CHECK(lm0.getSprite(0).positionSprite == sf::Vector2f(2, 2));
 
-
 		lm0.getSpritesByIndexMap(1, sprites);
 		BOOST_CHECK_EQUAL(sprites.size(), 0);
-	} 
+	}
 	BOOST_CHECK(file.isOpen());
 }
 
