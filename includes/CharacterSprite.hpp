@@ -80,6 +80,7 @@ namespace octo
 		sf::FloatRect const&		getBoundingBox()const;
 		sf::Vector2f const&			getHotPoint()const;
 		std::vector<EventId> const&	getPossibleEvents()const;
+		bool						canGetEvent(EventId eventId) const;
 	private:
 		void						setAnimation(CharacterAnimation const& animation);
 	private:
