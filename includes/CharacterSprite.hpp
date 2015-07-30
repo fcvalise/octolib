@@ -51,6 +51,7 @@ namespace octo
 		PlayStatus					getStatus()const;
 		void						setSpeedFactor(float factor);
 		void						setNextEvent(EventId eventId);
+		EventId						getCurrentEvent();
 
 		void						setColor(sf::Color const& color);
 		sf::Color const&			getColor()const;
@@ -84,6 +85,7 @@ namespace octo
 	private:
 		sf::Sprite						m_sprite;
 		SingleAnimator<CharacterFrame>	m_animator;
+		EventId							m_currentEvent;
 		std::vector<EventId>			m_possibleEvents;
 		FiniteStateMachine				m_machine;
 		SpriteSheet const*				m_spriteSheet;

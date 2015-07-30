@@ -40,6 +40,7 @@ namespace octo
 					m_sprite.setTextureRect(rect);
 				}))
 	{
+		m_currentEvent = FiniteStateMachine::NullEvent;
 	}
 
 	void	CharacterSprite::update(sf::Time frameTime)
@@ -81,7 +82,13 @@ namespace octo
 
 	void	CharacterSprite::setNextEvent(EventId eventId)
 	{
+		m_currentEvent = eventId;
 		m_machine.setNextEvent(eventId);
+	}
+
+	CharacterSprite::EventId	CharacterSprite::getCurrentEvent()
+	{
+		return m_currentEvent;
 	}
 
 	void	CharacterSprite::restart()
