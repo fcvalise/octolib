@@ -12,7 +12,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <iterator>
-#include "test.hpp"
+#include "Test.hpp"
 
 BOOST_AUTO_TEST_SUITE( array_3d )
 
