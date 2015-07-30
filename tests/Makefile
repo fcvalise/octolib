@@ -32,6 +32,7 @@ SRC = main.cpp						\
 	  LexicalTree.cpp				\
 	  GenericFactory.cpp			\
 	  RingBuffer.cpp				\
+	  Test.cpp						\
 	  LevelMap.cpp
 
 # package files

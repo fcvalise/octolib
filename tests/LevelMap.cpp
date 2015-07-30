@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( simple )
 
 		BOOST_CHECK(map.get(0, 0 , 0) == octo::LevelMap::TileType::Empty);
 		/* Error return TileType::TopRightCorner */
-		BOOST_CHECK(map.get(119, 49, 0) == octo::LevelMap::TileType::Empty);
+		BOOST_CHECK(map.get(0, 3, 0) == octo::LevelMap::TileType::Empty);
 
 		BOOST_CHECK(map.get(0, 0, 1) == octo::LevelMap::TileType::Square);
 		/* Error return TileType::TopRightCorner */

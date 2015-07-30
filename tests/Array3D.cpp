@@ -12,8 +12,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include <iterator>
-
-#include <Array3D.hpp>
+#include "test.hpp"
 
 BOOST_AUTO_TEST_SUITE( array_3d )
 
@@ -96,9 +95,19 @@ BOOST_AUTO_TEST_CASE( get_tests )
 	array0.set( 0, 0, 0, 2 );
 	array0.set( 0, 1, 0, 3 );
 	array0.set( 1, 0, 0, 4 );
+
 	BOOST_CHECK_EQUAL( array0.get(0, 0, 0), 2 );
 	BOOST_CHECK_EQUAL( array0.get(0, 1, 0), 3 );
 	BOOST_CHECK_EQUAL( array0.get(1, 0, 0), 4 );
+}
+
+BOOST_AUTO_TEST_CASE( some_tests )
+{
+	Test a = Test(50, 20, 3);
+
+	BOOST_CHECK_EQUAL(a.getArray().get(49, 19, 0), 0);
+	BOOST_CHECK_EQUAL(a.getArray().get(49, 19, 1), 1);
+	BOOST_CHECK_EQUAL(a.getArray().get(49, 19, 2), 2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

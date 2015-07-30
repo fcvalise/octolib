@@ -113,7 +113,7 @@ namespace octo
 	{
 		m_spritesCount = 0;
 		m_sprites.resize(0);
-		m_tileMap = Array3D<TileType>(m_size.x, m_size.y, len);
+		m_tileMap.resize(m_size.x, m_size.y, len);
 	}
 
 	void LevelMap::addLineAt(std::size_t map, std::size_t index, std::string & line)
