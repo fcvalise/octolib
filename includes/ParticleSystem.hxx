@@ -99,6 +99,29 @@ namespace octo
 		}
 	}
 
+	//TODO: See with Iohann to find a proper way to do it
+	template <class ... C>
+	void	ParticleSystem<C...>::update(sf::Time frameTime, VertexBuilder & builder)
+	{
+		sf::Transform	transform;
+
+		m_particles.erase(std::remove_if(m_particles.begin(), m_particles.end(), 
+										 [this](Particle const& p)
+										 {
+											return (this->isDeadParticle(p));
+										 }), m_particles.end());
+		for (auto& particle : m_particles)
+		{
+			updateParticle(frameTime, particle);
+			transform = sf::Transform::Identity;
+			transform.translate(std::get<Component::Position>(particle));
+			transform.rotate(std::get<Component::Rotation>(particle));
+			transform.scale(std::get<Component::Scale>(particle));
+			for (auto const& point : m_prototype)
+				builder.createVertex(transform * point, std::get<Component::Color>(particle));	
+		}
+	}
+
 	template <class ... C>
 	void	ParticleSystem<C...>::draw(sf::RenderTarget& render, sf::RenderStates states)const
 	{
