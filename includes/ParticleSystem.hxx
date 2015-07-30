@@ -99,6 +99,7 @@ namespace octo
 		}
 	}
 
+	//TODO: See with Iohann to find a proper way to do it
 	template <class ... C>
 	void	ParticleSystem<C...>::update(sf::Time frameTime, VertexBuilder & builder)
 	{

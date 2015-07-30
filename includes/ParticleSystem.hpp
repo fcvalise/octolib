@@ -200,7 +200,7 @@ namespace octo
 
 		/*!	Remove dead particles and updates alives particles */
 		virtual void	update(sf::Time frameTime);
-
+		//TODO: See with Iohann to find a proper way to do it
 		virtual void	update(sf::Time frameTime, VertexBuilder & builder);
 
 		/*!	Draw alives particles */
