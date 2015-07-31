@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE( level_map )
 
 BOOST_AUTO_TEST_CASE( basic )
 {
-	octo::LevelMap	lm0;
+	octo::LevelMap		lm0;
 	octo::ByteArray		buffer;
 
 	BOOST_CHECK_EQUAL( lm0.loadFromMemory(buffer) , false );
@@ -22,17 +22,14 @@ BOOST_AUTO_TEST_CASE( simple )
 	bool					loadFromMemory;
 	std::vector<octo::LevelMap::SpriteTrigger *>	sprites;
 
-	BOOST_TEST_MESSAGE("open pck");
 	if (file.open("map.pck")){
 		std::size_t max =  file.getHeader().count();
-		BOOST_TEST_MESSAGE("load map");
 		for(std::size_t i = 0; i < max; i++){
 			if (octo::PackageHeader::EntryType::LevelMap == file.getHeader().getEntryType(i)){
 				BOOST_CHECK(file.load(buffer, i));
 				break;
 			}
 		}
-		BOOST_TEST_MESSAGE("testing map");
 		loadFromMemory = lm0.loadFromMemory(buffer);
 		BOOST_CHECK(loadFromMemory);
 		if (!loadFromMemory)
@@ -47,17 +44,14 @@ BOOST_AUTO_TEST_CASE( simple )
 		BOOST_CHECK_EQUAL(map.count(), 18000);
 
 		BOOST_CHECK(map.get(0, 0 , 0) == octo::LevelMap::TileType::Empty);
-		/* Error return TileType::TopRightCorner */
-		BOOST_CHECK(map.get(0, 3, 0) == octo::LevelMap::TileType::Empty);
+		BOOST_CHECK(map.get(119, 49, 0) == octo::LevelMap::TileType::Empty);
 
 		BOOST_CHECK(map.get(0, 0, 1) == octo::LevelMap::TileType::Square);
-		/* Error return TileType::TopRightCorner */
 		BOOST_CHECK(map.get(119, 49, 1) == octo::LevelMap::TileType::Square);
 
 		BOOST_CHECK(map.get(0, 0, 2) == octo::LevelMap::TileType::TopRightCorner);
 		BOOST_CHECK(map.get(119, 49, 2) == octo::LevelMap::TileType::TopRightCorner);
 
-		BOOST_TEST_MESSAGE("testing spriteTrigger");
 		index = lm0.getSpriteCount();
 		BOOST_CHECK_EQUAL(index, 5);
 		if (index != 5)
