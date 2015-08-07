@@ -46,5 +46,10 @@
 */
 
 /*!
+	\defgroup Level Level map module
+	\brief load level map
+*/
+
+/*!
   	\defgroup Gui GUI module
 */

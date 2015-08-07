@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/20 18:00:45 by irabeson          #+#    #+#             */
-/*   Updated: 2015/03/20 22:24:06 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/30 15:24:31 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ namespace octo
 	template <class T>
 	std::size_t	Array3D<T>::index3dToIndex1D(std::size_t column, std::size_t row, std::size_t depth)const
 	{
-		return (column + (row * m_columns) + (depth * m_columns * m_depth));
+		return (row + m_rows * (column + m_columns * depth));
 	}
 
 	template <class T>
