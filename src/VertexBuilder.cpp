@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/08 05:35:34 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/19 05:35:26 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/07 10:58:17 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,24 @@ namespace octo
 			throw std::runtime_error("vertex builder: no more vertices");
 		m_vertices[m_used].position = pos;
 		m_vertices[m_used].color = color;
+		++m_used;
+	}
+
+	void	VertexBuilder::createVertex(sf::Vertex const& vertex)
+	{
+		assert(m_vertices != nullptr);
+		if (m_used + 1 > m_size)
+			throw std::runtime_error("vertex builder: no more vertices");
+		m_vertices[m_used] = vertex;
+		++m_used;
+	}
+
+	void	VertexBuilder::createVertex(sf::Vertex&& vertex)
+	{
+		assert(m_vertices != nullptr);
+		if (m_used + 1 > m_size)
+			throw std::runtime_error("vertex builder: no more vertices");
+		m_vertices[m_used] = std::move(vertex);
 		++m_used;
 	}
 
@@ -152,8 +170,21 @@ namespace octo
 		assert(m_vertices != nullptr);
 		if (m_used + vertices.size() > m_size)
 			throw std::runtime_error("vertex builder: no more vertices");
-
 		std::copy(vertices.begin(), vertices.end(), m_vertices + m_used);
+		m_used += vertices.size();
+	}
+
+	void	VertexBuilder::createVertices(std::vector<sf::Vertex> const& vertices,
+								   		  sf::Color const& color)
+	{
+		assert(m_vertices != nullptr);
+		if (m_used + vertices.size() > m_size)
+			throw std::runtime_error("vertex builder: no more vertices");
+		for (auto i = 0u; i < vertices.size(); ++i)
+		{
+			m_vertices[m_used + i] = vertices[i];
+			m_vertices[m_used + i].color = color;
+		}
 		m_used += vertices.size();
 	}
 

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/25 06:01:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/06 08:03:20 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/07 11:54:13 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,9 @@ namespace octo
 			{"ocw", PackageHeader::EntryType::ColorWheel},
 			{"oss", PackageHeader::EntryType::SpriteSheet},
 			{"osa", PackageHeader::EntryType::SpriteAnimation},
-            {"omp", PackageHeader::EntryType::LevelMap}
+            {"omp", PackageHeader::EntryType::LevelMap},
+			{"frag", PackageHeader::EntryType::Text},
+			{"vert", PackageHeader::EntryType::Text}
 		}
 	{
 	}

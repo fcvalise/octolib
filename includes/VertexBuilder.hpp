@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/08 05:04:37 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/19 05:35:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/07 10:58:29 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ namespace octo
 		VertexBuilder& operator = (VertexBuilder&& other) = default;
 
 		void		createVertex(sf::Vector2f const& pos, sf::Color const& color);
+		void		createVertex(sf::Vertex const& vertex);
+		void		createVertex(sf::Vertex&& vertex);
 
 		void		createLine(sf::Vector2f const& p0,
 							   sf::Vector2f const& p1,
@@ -91,6 +93,8 @@ namespace octo
 							   sf::Color const& color);
 
 		void		createVertices(std::vector<sf::Vertex> const& vertices);
+		void		createVertices(std::vector<sf::Vertex> const& vertices,
+								   sf::Color const& color);
 		
 		void		clear();
 		std::size_t	getUsed()const;
