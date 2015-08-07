@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/18 21:36:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 02:06:09 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/07 10:43:27 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ namespace octo
 	{
 	public:
 		/*!	Particle shape prototype */
-		typedef std::vector<sf::Vector2f>	Prototype;
+		typedef std::vector<sf::Vertex>	Prototype;
 
 		/*!	Type of the tuple which store each particle datas
 		 *
@@ -139,6 +139,7 @@ namespace octo
 		 *	<li>a position</li>
 		 *	<li>a scale factor</li>
 		 *	<li>a rotation angle (in degrees)</li>
+		 *	</ul>
 		 */
 		typedef std::tuple<sf::Color,
 						   sf::Vector2f,
@@ -185,6 +186,8 @@ namespace octo
 							  sf::PrimitiveType type,
 							  std::size_t maxParticleCount);
 
+		void			setTexture(sf::Texture const& texture);
+
 		/*!	Add a new particle */
 		void			add(Particle const& particle);
 
@@ -200,6 +203,7 @@ namespace octo
 
 		/*!	Remove dead particles and updates alives particles */
 		virtual void	update(sf::Time frameTime);
+
 		//TODO: See with Iohann to find a proper way to do it
 		virtual void	update(sf::Time frameTime, VertexBuilder & builder);
 
@@ -234,6 +238,7 @@ namespace octo
 		sf::PrimitiveType			m_primitiveType;
 		VertexBuilder				m_builder;
 		std::size_t					m_maxParticleCount;
+		sf::Texture const*			m_texture;
 	};
 }
 

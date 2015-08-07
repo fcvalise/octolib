@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/19 00:55:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 02:00:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/07 10:57:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ namespace octo
 	ParticleSystem<C...>::ParticleSystem() :
 		m_verticesCount(0u),
 		m_primitiveType(sf::Triangles),
-		m_maxParticleCount(0u)
+		m_maxParticleCount(0u),
+		m_texture(nullptr)
 	{
 	}
 
@@ -37,6 +38,12 @@ namespace octo
 		m_verticesCount = maxParticleCount * m_prototype.size();
 		m_builder = VertexBuilder(m_vertices.get(), m_verticesCount);
 		m_maxParticleCount = maxParticleCount;
+	}
+
+	template <class ... C>
+	void	ParticleSystem<C...>::setTexture(sf::Texture const& texture)
+	{
+		m_texture = &texture;
 	}
 
 	template <class ... C>
@@ -94,8 +101,12 @@ namespace octo
 			transform.translate(std::get<Component::Position>(particle));
 			transform.rotate(std::get<Component::Rotation>(particle));
 			transform.scale(std::get<Component::Scale>(particle));
-			for (auto const& point : m_prototype)
-				m_builder.createVertex(transform * point, std::get<Component::Color>(particle));	
+			for (auto vertex : m_prototype)
+			{
+				vertex.color = std::get<Component::Color>(particle);
+				vertex.position = transform * vertex.position;
+				m_builder.createVertex(std::move(vertex));
+			}
 		}
 	}
 
@@ -118,7 +129,7 @@ namespace octo
 			transform.rotate(std::get<Component::Rotation>(particle));
 			transform.scale(std::get<Component::Scale>(particle));
 			for (auto const& point : m_prototype)
-				builder.createVertex(transform * point, std::get<Component::Color>(particle));	
+				builder.createVertex(transform * point.position, std::get<Component::Color>(particle));	
 		}
 	}
 
@@ -126,6 +137,7 @@ namespace octo
 	void	ParticleSystem<C...>::draw(sf::RenderTarget& render, sf::RenderStates states)const
 	{
 		states.transform *= getTransform();
+		states.texture = m_texture;
 		render.draw(m_vertices.get(), m_builder.getUsed(), m_primitiveType, states);
 	}
 }
