@@ -260,13 +260,4 @@ namespace octo
 	{
 		return (m_possibleEvents);
 	}
-
-	bool		CharacterSprite::canGetEvent(EventId eventId) const
-	{
-		for (auto it : m_possibleEvents){
-			if (it == eventId)
-				return true;
-		}
-		return false;
-	}
 }
