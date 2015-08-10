@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 02:28:32 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/10 23:23:37 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,12 @@ namespace octo
 		assert (s_instance != nullptr);
 
 		return (s_instance->m_camera);
+	}
+
+	PostEffectManager&	Application::getPostEffectManager()
+	{
+		assert (s_instance != nullptr);
+
+		return (s_instance->m_postEffectManager);
 	}
 }

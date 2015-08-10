@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:42:36 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 17:17:34 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/10 23:23:07 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ namespace octo
 	class Options;
 	class Console;
 	class Camera;
+	class PostEffectManager;
 
 	namespace details
 	{
@@ -292,13 +293,14 @@ namespace octo
 		/*!	Takes a screenshot */
 		static std::string		screenshot(bool captureConsole);
 
-		static StateManager&	getStateManager();
-		static GraphicsManager&	getGraphicsManager();
-		static AudioManager&	getAudioManager();
-		static ResourceManager&	getResourceManager();
-		static Options&			getOptions();
-		static Console&			getConsole();
-		static Camera&			getCamera();
+		static StateManager&		getStateManager();
+		static GraphicsManager&		getGraphicsManager();
+		static AudioManager&		getAudioManager();
+		static ResourceManager&		getResourceManager();
+		static Options&				getOptions();
+		static Console&				getConsole();
+		static Camera&				getCamera();
+		static PostEffectManager&	getPostEffectManager();
 	private:
 		static details::ApplicationImp*	s_instance;
 	};
