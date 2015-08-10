@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 17:14:19 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/10 22:26:41 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <algorithm>
 # include <string>
 # include <cctype>
+
+# include "PostEffectManager.hpp"
 
 namespace octo
 {
@@ -84,7 +86,8 @@ namespace octo
 
 			void	setupGraphics(std::string const& title)
 			{
-				m_graphicsManager.createRender(m_options.getValue<sf::VideoMode>("resolution", sf::VideoMode::getFullscreenModes().front()),
+				sf::VideoMode	videoMode = m_options.getValue<sf::VideoMode>("resolution", sf::VideoMode::getFullscreenModes().front());
+				m_graphicsManager.createRender(videoMode,
 											   title,
 											   false,
 											   m_options.getValue("antialiasing", 0u));
@@ -92,6 +95,7 @@ namespace octo
 				m_graphicsManager.setFramerateLimit(m_options.getValue("framerate_limit", 0));
 				m_graphicsManager.setCamera(m_camera);
 				m_graphicsManager.setFullscreen(m_options.getValue("fullscreen", false));
+				m_postEffectManager.createRender(videoMode);
 			}
 
 			void	setupAudio()
@@ -263,8 +267,10 @@ namespace octo
 			{
 				sf::RenderTarget&	render = m_graphicsManager.getRender();
 
-				render.setView(m_camera.getView());
-				m_stateManager.draw(render);
+				render.clear();
+				m_postEffectManager.setView(m_camera.getView());
+				m_stateManager.draw(m_postEffectManager.getRender());
+				m_postEffectManager.display(render);
 				render.setView(m_camera.getGuiView());
 				m_stateManager.drawTransition(render);
 				m_console.draw(render);
@@ -321,6 +327,7 @@ namespace octo
 			std::unique_ptr<FpsDisplayer>		m_fpsDisplayer;
 			StateManager						m_stateManager;
 			GraphicsManager						m_graphicsManager;
+			PostEffectManager					m_postEffectManager;
 			ResourceManager						m_resourceManager;
 			AudioManager						m_audioManager;
 			Options								m_options;
