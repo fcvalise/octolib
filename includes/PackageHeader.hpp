@@ -143,7 +143,7 @@ namespace octo
 		SpriteAnimation,
 		CharacterAnimation,
 		Count,
-        LevelMap,
+		LevelMap,
 		Invalid
 	};
 
