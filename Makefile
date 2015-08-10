@@ -42,7 +42,8 @@ GRAPHICS_SRC =	GraphicsManager.cpp					\
 				OneColor.cpp						\
 				SpriteSheet.cpp						\
 				AnimatedSprite.cpp					\
-				VertexBuilder.cpp
+				VertexBuilder.cpp					\
+				PostEffectManager.cpp
 
 LEVELMAP_SRC =	LevelMap.cpp
 
