@@ -1,7 +1,6 @@
 #include <LevelMap.hpp>
 #include <iostream>
 #include <sstream>
-#include <string>
 
 namespace octo
 {
