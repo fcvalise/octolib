@@ -69,6 +69,8 @@ namespace octo
 		void					setAntialiasing(unsigned int antialiasing);
 		unsigned int			getAntialiasing()const;
 
+		void					setIcon(sf::Image const & icon);
+
 		void					setView(sf::View const& view);
 		sf::View const&			getDefaultView()const;
 		sf::Vector2f			mapPixelToCoords(sf::Vector2i const& position, sf::View const& view)const;

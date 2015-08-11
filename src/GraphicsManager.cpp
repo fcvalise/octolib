@@ -38,7 +38,8 @@ namespace octo
 										 bool fullscreen,
 										 unsigned int antialiasing)
 	{
-		m_window.create(mode, title, (fullscreen) ? sf::Style::Fullscreen : sf::Style::Default, sf::ContextSettings(0, 0, antialiasing));
+		m_window.create(mode, title, (fullscreen) ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, antialiasing));
+		m_window.setVerticalSyncEnabled(m_verticalSync);
 		m_videoMode = mode;
 		m_title = title;
 		m_fullscreen = fullscreen;
@@ -248,6 +249,12 @@ namespace octo
 	{
 		return (m_framerateLimit);
 	}
+
+	void GraphicsManager::setIcon(sf::Image const & icon)
+	{
+		m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+	}
+
 	void	GraphicsManager::setView(sf::View const& view)
 	{
 		m_window.setView(view);
