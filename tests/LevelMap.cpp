@@ -67,9 +67,9 @@ BOOST_AUTO_TEST_CASE( simple )
 		BOOST_CHECK_EQUAL(lm0.getSprite(4).trigger.width, 464);
 		BOOST_CHECK_EQUAL(lm0.getSprite(4).trigger.height, 48);
 		BOOST_CHECK_EQUAL(lm0.getSprite(4).mapIndex, 0);
-		BOOST_CHECK_EQUAL(lm0.getSprite(4).spriteIndex, 1);
+		BOOST_CHECK_EQUAL(lm0.getSprite(4).name, "octo_complete.oss");
 
-		lm0.getSpritesByIndexPackage(1, sprites);
+		lm0.getSpritesByName("octo_complete.oss", sprites);
 		BOOST_CHECK_EQUAL(sprites.size(), 5);
 
 		lm0.getSpritesByIndexMap(0, sprites);
