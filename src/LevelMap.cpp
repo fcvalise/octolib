@@ -1,6 +1,7 @@
 #include <LevelMap.hpp>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 namespace octo
 {
@@ -126,7 +127,7 @@ namespace octo
 			}
 		m_tileMap.set(i, index, map, static_cast<TileType>(std::stoi(line)));
 	}
-#include <iostream>
+
 	void LevelMap::addSprite(std::string & line, std::size_t map)
 	{
 		octo::ByteArray		image;
