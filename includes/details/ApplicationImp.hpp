@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/10 22:26:41 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/11 20:51:16 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,17 +265,25 @@ namespace octo
 
 			void	drawAll()
 			{
-				sf::RenderTarget&	render = m_graphicsManager.getRender();
+				sf::RenderTarget&	finalRender = m_graphicsManager.getRender();
 
-				render.clear();
-				m_postEffectManager.setView(m_camera.getView());
-				m_stateManager.draw(m_postEffectManager.getRender());
-				m_postEffectManager.display(render);
-				render.setView(m_camera.getGuiView());
-				m_stateManager.drawTransition(render);
-				m_console.draw(render);
+				finalRender.clear();
+				if (m_postEffectManager.hasEnabledShaders())
+				{
+					m_postEffectManager.setView(m_camera.getView());
+					m_stateManager.draw(m_postEffectManager.getRender());
+					m_postEffectManager.display(finalRender);
+				}
+				else
+				{
+					finalRender.setView(m_camera.getView());
+					m_stateManager.draw(finalRender);
+				}
+				finalRender.setView(m_camera.getGuiView());
+				m_stateManager.drawTransition(finalRender);
+				m_console.draw(finalRender);
 				if (m_fpsDisplayer)
-					m_fpsDisplayer->draw(render);
+					m_fpsDisplayer->draw(finalRender);
 				m_graphicsManager.display();
 			}
 

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 14:45:01 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/11 00:07:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/11 20:42:51 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ namespace octo
 	PostEffectManager::Shader::Shader(sf::Shader& shader, bool enabled) :
 		shader(&shader),
 		enabled(enabled)
+	{
+	}
+
+	PostEffectManager::PostEffectManager() :
+		m_enabledCount(0u)
 	{
 	}
 
@@ -96,6 +101,10 @@ namespace octo
 		std::size_t	newIndex = m_shaders.size();
 
 		m_shaders.emplace_back(shader, enable);
+		if (enable)
+		{
+			++m_enabledCount;
+		}
 		return (newIndex);
 	}
 
@@ -103,6 +112,10 @@ namespace octo
 	{
 		if (index < m_shaders.size())
 		{
+			if (isShaderEnabled(index))
+			{
+				--m_enabledCount;
+			}
 			m_shaders.erase(m_shaders.begin() + index);
 		}
 	}
@@ -110,10 +123,19 @@ namespace octo
 	void	PostEffectManager::removeShaders()
 	{
 		m_shaders.clear();
+		m_enabledCount = 0u;
 	}
 
 	void	PostEffectManager::enableShader(std::size_t index, bool enable)
 	{
+		if (isShaderEnabled(index) && enable == false)
+		{
+			--m_enabledCount;
+		}
+		else if (isShaderEnabled(index) == false && enable)
+		{
+			++m_enabledCount;
+		}
 		m_shaders.at(index).enabled = enable;
 	}
 
@@ -130,5 +152,10 @@ namespace octo
 	std::size_t	PostEffectManager::getShaderCount()const
 	{
 		return (m_shaders.size());
+	}
+
+	bool	PostEffectManager::hasEnabledShaders()const
+	{
+		return (m_enabledCount > 0u);
 	}
 }
