@@ -49,7 +49,11 @@ LEVELMAP_SRC =	LevelMap.cpp
 
 AUDIO_SRC =	AudioManager.cpp
 
-ANIMATION_SRC =	SpriteAnimation.cpp
+ANIMATION_SRC =	SpriteAnimation.cpp					\
+				CharacterFrame.cpp					\
+				CharacterAnimation.cpp				\
+				CharacterSprite.cpp					\
+				FiniteStateMachine.cpp
 
 MATH_SRC = 	Interpolations.cpp						\
 	 		Math.cpp
@@ -104,6 +108,7 @@ CFLAGS = $(COMMON_FLAGS)
 TARGET = lib$(LIB_NAME).a
 COMPLETE_TARGET = $(OUTPUT_DIR)/$(TARGET)
 MODE = release
+RUN_DEPEND = "1"
 
 ifeq ($(MODE), debug)
 CFLAGS += $(DEBUG_FLAGS)
@@ -118,7 +123,7 @@ COLOR_OBJECT = \033[0m
 
 all: print_summary $(COMPLETE_TARGET)
 
-$(COMPLETE_TARGET): $(BUILD_DIR) $(OBJS)
+$(COMPLETE_TARGET): $(BUILD_DIR) depend $(OBJS)
 	@echo " - $(COLOR_ACTION)building$(COLOR_OFF): $(COLOR_OBJECT)$@$(COLOR_OFF)"
 	@$(AR) $(AR_FLAGS) $(COMPLETE_TARGET) $(OBJS)
 
@@ -180,4 +185,8 @@ application_tests:
 gource:
 	@gource --load-config doc/gource.conf
 
-
+depend:
+ifeq ($(RUN_DEPEND), "1")
+	@echo " - $(COLOR_ACTION)Running hatedepend...$(COLOR_OFF)"
+	@hatedepend -r -I $(INCLUDE_DIR) -S $(SRC_DIR) -O $(BUILD_DIR)
+endif

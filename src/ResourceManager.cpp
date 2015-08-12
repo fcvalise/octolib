@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/27 18:30:13 by irabeson          #+#    #+#             */
-/*   Updated: 2015/05/30 11:02:24 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/23 13:32:05 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ namespace octo
 		m_colorWheelManager(PackageHeader::EntryType::ColorWheel),
 		m_spriteSheetManager(PackageHeader::EntryType::SpriteSheet),
 		m_spriteAnimationManager(PackageHeader::EntryType::SpriteAnimation),
+		m_characterAnimationManager(PackageHeader::EntryType::CharacterAnimation),
         m_levelMapManager(PackageHeader::EntryType::LevelMap) 
 	{
 	}
@@ -48,6 +49,7 @@ namespace octo
 		m_colorWheelManager.loadPackage(reader, listener);
 		m_spriteSheetManager.loadPackage(reader, listener);
 		m_spriteAnimationManager.loadPackage(reader, listener);
+		m_characterAnimationManager.loadPackage(reader, listener);
 		m_levelMapManager.loadPackage(reader, listener);
 		return (true);
 	}
@@ -67,6 +69,7 @@ namespace octo
 			m_colorWheelManager.loadPackageAsync(reader, actions);
 			m_spriteSheetManager.loadPackageAsync(reader, actions);
 			m_spriteAnimationManager.loadPackageAsync(reader, actions);
+			m_characterAnimationManager.loadPackageAsync(reader, actions);
 			m_levelMapManager.loadPackageAsync(reader, actions);
 		}
 		return (ResourceLoading(std::move(reader), std::move(actions), listener));
@@ -112,6 +115,11 @@ namespace octo
 		return (m_spriteAnimationManager.get(fileName));
 	}
 
+	CharacterAnimation const&	ResourceManager::getCharacterAnimation(std::string const& fileName)const
+	{
+		return (m_characterAnimationManager.get(fileName));
+	}
+	
 	LevelMap const&		ResourceManager::getLevelMap(std::string const& fileName)const
 	{
 		return (m_levelMapManager.get(fileName));
