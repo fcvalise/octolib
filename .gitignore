@@ -26,6 +26,7 @@
 *.exe
 *.out
 *.app
+*.dmg
 
 # Builds
 builds
@@ -41,7 +42,7 @@ tests/*.pck
 # Builds folder
 build-*
 builds
-auto_build
+auto_builds
 
 # Qt Creator user file
 *.user
@@ -51,3 +52,6 @@ auto_build
 
 # MacOS files
 *.DS_Store
+
+# Hatedepend
+.modifications

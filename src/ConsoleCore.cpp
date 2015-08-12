@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 18:09:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 16:25:35 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/06/25 17:24:08 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,11 @@ namespace octo
 		{
 			try
 			{
-				result = m_interpreter.execute(line);
-				emitExecuted(result);
+				if (line.empty() == false)
+				{
+					result = m_interpreter.execute(line);
+					emitExecuted(result);
+				}
 			}
 			catch (ConsoleInterpreter::ArgumentTypeException const& e)
 			{

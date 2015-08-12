@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/11 22:50:31 by irabeson          #+#    #+#             */
-/*   Updated: 2015/06/24 16:46:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/07/20 16:32:48 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,8 @@ namespace octo
 	/*!	Update the console logic */
 	void	Console::update(sf::Time, sf::View const& view)
 	{
+		if (isEnabled() == false)
+			return;
 		sf::Vector2f const&	viewSize = view.getSize();
 		sf::Vector2f const&	viewCenter = view.getCenter();
 		float const			lineHeight = m_font->getLineSpacing(m_fontSize) + m_lineSpacing;
@@ -308,19 +310,16 @@ namespace octo
 		float				left = viewSize.x * -0.5f + viewCenter.x;
 		float				leftPadded = left + m_leftPadding;
 
-		if (isEnabled())
+		m_rectangle.setSize(sf::Vector2f(viewSize.x, viewSize.y * m_relativeHeight));
+		m_rectangle.setPosition(sf::Vector2f(left, top));
+		m_current.setPosition(leftPadded, top + m_topPadding);
+		y = top + lineHeight + m_topPadding;
+		for (sf::Text& text : m_log)
 		{
-			m_rectangle.setSize(sf::Vector2f(viewSize.x, viewSize.y * m_relativeHeight));
-			m_rectangle.setPosition(sf::Vector2f(left, top));
-			m_current.setPosition(leftPadded, top + m_topPadding);
-			y = top + lineHeight + m_topPadding;
-			for (sf::Text& text : m_log)
-			{
-				text.setPosition(leftPadded, y);
-				y += lineHeight;
-			}
-			m_completion.updatePosition(-(lineHeight + m_topPadding), m_lineSpacing);
-		}			
+			text.setPosition(leftPadded, y);
+			y += lineHeight;
+		}
+		m_completion.updatePosition(-(lineHeight + m_topPadding), m_lineSpacing);
 	}
 
 	/*!	Draw the console */
