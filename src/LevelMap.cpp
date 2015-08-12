@@ -121,10 +121,10 @@ namespace octo
 		char		delimiter = ',';
 		std::size_t	pos = 0;
 		std::size_t	i = 0;
-			while ((pos = line.find(delimiter)) != std::string::npos){
-				m_tileMap.set(i++, index, map , static_cast<TileType>(std::stoi(line.substr(0, pos))));
-				line.erase(0, pos + 1);
-			}
+		while ((pos = line.find(delimiter)) != std::string::npos){
+			m_tileMap.set(i++, index, map , static_cast<TileType>(std::stoi(line.substr(0, pos))));
+			line.erase(0, pos + 1);
+		}
 		m_tileMap.set(i, index, map, static_cast<TileType>(std::stoi(line)));
 	}
 

@@ -58,6 +58,10 @@ namespace octo
 	 *		<TD>osa</TD>
 	 *		<TD>Sprite animation files</TD>
 	 *	</TR>
+	 *	<TR>
+	 *		<TD>omp</TD>
+	 *		<TD>level map files</TD>
+	 *	</TR>
 	 *	</TABLE>
 	 */
 	class ResourceManager : public NonCopyable
@@ -105,7 +109,7 @@ namespace octo
 
 		/*!	Get a level map
 		 */
-		LevelMap const&         getLevelMap(std::string const& fileName)const;
+		LevelMap const&			getLevelMap(std::string const& fileName)const;
 	private:
 		typedef details::StreamedResource<sf::Font>		Font;
 
@@ -116,8 +120,8 @@ namespace octo
 		details::ResourceManagerImp<Palette>			m_paletteManager;
 		details::ResourceManagerImp<ColorWheel>			m_colorWheelManager;
 		details::ResourceManagerImp<SpriteSheet>		m_spriteSheetManager;
-		details::ResourceManagerImp<SpriteAnimation>		m_spriteAnimationManager;
-		details::ResourceManagerImp<LevelMap>           m_levelMapManager;
+		details::ResourceManagerImp<SpriteAnimation>	m_spriteAnimationManager;
+		details::ResourceManagerImp<LevelMap>			m_levelMapManager;
 	};
 }
 
