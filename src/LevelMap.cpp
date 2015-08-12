@@ -35,7 +35,7 @@ namespace octo
 		return m_sprites.at(index);
 	}
 
-	void LevelMap::getSpritesByName(std::string name, std::vector<LevelMap::SpriteTrigger *> & sprites)
+	void LevelMap::getSpritesByName(std::string const& name, std::vector<LevelMap::SpriteTrigger *> & sprites)
 	{
 		sprites.clear();
 		std::size_t i = 0;

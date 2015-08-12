@@ -33,7 +33,7 @@ namespace octo
 			struct SpriteTrigger
 			{
 				SpriteTrigger() = default;
-				explicit SpriteTrigger(sf::Vector2f const& pos, std::string fileName,
+				explicit SpriteTrigger(sf::Vector2f const& pos, std::string const& fileName,
 						sf::FloatRect const& rec, std::size_t mapIndex) :
 					positionSprite(pos),
 					trigger(rec),
@@ -73,7 +73,7 @@ namespace octo
 			 *	\param name = fileName of spriteSheet
 			 *	\param sprites vector of LevelMap::SpriteTrigger
 			 */
-			void	getSpritesByName(std::string name,
+			void	getSpritesByName(std::string const& name,
 					std::vector<LevelMap::SpriteTrigger *> & sprites);
 
 			/*! Get collection of spriteTrigger by indexMap
