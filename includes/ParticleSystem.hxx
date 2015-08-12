@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/19 00:55:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/07 10:57:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/12 17:00:50 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace octo
 	//
 	template <class ... C>
 	ParticleSystem<C...>::ParticleSystem() :
-		m_verticesCount(0u),
+		m_particleCount(0u),
 		m_primitiveType(sf::Triangles),
 		m_maxParticleCount(0u),
 		m_texture(nullptr)
@@ -34,10 +34,11 @@ namespace octo
 	{
 		m_prototype = prototype;
 		m_primitiveType = type;
+		m_particles.reset(new Particle[maxParticleCount]);
 		m_vertices.reset(new sf::Vertex[maxParticleCount * m_prototype.size()]);
-		m_verticesCount = maxParticleCount * m_prototype.size();
-		m_builder = VertexBuilder(m_vertices.get(), m_verticesCount);
+		m_builder = VertexBuilder(m_vertices.get(), maxParticleCount * m_prototype.size());
 		m_maxParticleCount = maxParticleCount;
+		m_particleCount = 0u;
 	}
 
 	template <class ... C>
@@ -49,53 +50,59 @@ namespace octo
 	template <class ... C>
 	void	ParticleSystem<C...>::add(Particle const& particle)
 	{
-		m_particles.push_front(particle);
+		m_particles[m_particleCount] = particle;
+		++m_particleCount;
 	}
 
 	template <class ... C>
 	void	ParticleSystem<C...>::add(Particle&& particle)
 	{
-		m_particles.push_front(particle);
+		m_particles[m_particleCount] = std::move(particle);
+		++m_particleCount;
 	}
 
 	template <class ... C>
 	template <class ... T>
 	void	ParticleSystem<C...>::emplace(T&& ... args)
 	{
-		m_particles.emplace_front(std::forward<T>(args)...);
+		m_particles[m_particleCount] = Particle(std::forward<T>(args)...);
+		++m_particleCount;
 	}
 
 	template <class ... C>
 	void	ParticleSystem<C...>::clear()
 	{
-		m_particles.clear();
+		m_particleCount = 0u;
 	}
 
 	template <class ... C>
 	std::size_t	ParticleSystem<C...>::getCapacity()const
 	{
-		return (m_maxParticleCount - m_particles.size());
+		return (m_maxParticleCount - m_particleCount);
 	}
 
 	template <class ... C>
 	std::size_t	ParticleSystem<C...>::getCount()const
 	{
-		return (m_particles.size());
+		return (m_particleCount);
 	}
 
 	template <class ... C>
 	void	ParticleSystem<C...>::update(sf::Time frameTime)
 	{
 		sf::Transform	transform;
+		auto			it = std::remove_if(m_particles.get(), m_particles.get() + m_particleCount, 
+										 	[this](Particle const& p)
+										 	{
+												return (this->isDeadParticle(p));
+										 	});
 
-		m_particles.erase(std::remove_if(m_particles.begin(), m_particles.end(), 
-										 [this](Particle const& p)
-										 {
-											return (this->isDeadParticle(p));
-										 }), m_particles.end());
+		m_particleCount = std::distance(m_particles.get(), it);
 		m_builder.clear();
-		for (auto& particle : m_particles)
+		for (std::size_t i = 0u; i < m_particleCount; ++i)
 		{
+			Particle&	particle = m_particles[i];
+
 			updateParticle(frameTime, particle);
 			transform = sf::Transform::Identity;
 			transform.translate(std::get<Component::Position>(particle));
@@ -107,29 +114,6 @@ namespace octo
 				vertex.position = transform * vertex.position;
 				m_builder.createVertex(std::move(vertex));
 			}
-		}
-	}
-
-	//TODO: See with Iohann to find a proper way to do it
-	template <class ... C>
-	void	ParticleSystem<C...>::update(sf::Time frameTime, VertexBuilder & builder)
-	{
-		sf::Transform	transform;
-
-		m_particles.erase(std::remove_if(m_particles.begin(), m_particles.end(), 
-										 [this](Particle const& p)
-										 {
-											return (this->isDeadParticle(p));
-										 }), m_particles.end());
-		for (auto& particle : m_particles)
-		{
-			updateParticle(frameTime, particle);
-			transform = sf::Transform::Identity;
-			transform.translate(std::get<Component::Position>(particle));
-			transform.rotate(std::get<Component::Rotation>(particle));
-			transform.scale(std::get<Component::Scale>(particle));
-			for (auto const& point : m_prototype)
-				builder.createVertex(transform * point.position, std::get<Component::Color>(particle));	
 		}
 	}
 

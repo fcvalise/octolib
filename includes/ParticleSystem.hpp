@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/18 21:36:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/07 10:43:27 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/12 17:01:01 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <SFML/System/Time.hpp>
 
 # include <functional>
-# include <list>
+# include <deque>
 # include <tuple>
 # include <memory>
 
@@ -205,7 +205,7 @@ namespace octo
 		virtual void	update(sf::Time frameTime);
 
 		//TODO: See with Iohann to find a proper way to do it
-		virtual void	update(sf::Time frameTime, VertexBuilder & builder);
+		//virtual void	update(sf::Time frameTime, VertexBuilder & builder);
 
 		/*!	Draw alives particles */
 		void			draw(sf::RenderTarget& render, sf::RenderStates states = sf::RenderStates())const;
@@ -231,9 +231,9 @@ namespace octo
 		 */
 		virtual bool	isDeadParticle(Particle const& particle) = 0;
 	private:
-		std::list<Particle>			m_particles;
+		std::unique_ptr<Particle[]>	m_particles;
 		std::unique_ptr<sf::Vertex>	m_vertices;
-		std::size_t					m_verticesCount;
+		std::size_t					m_particleCount;
 		Prototype					m_prototype;
 		sf::PrimitiveType			m_primitiveType;
 		VertexBuilder				m_builder;
