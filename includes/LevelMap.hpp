@@ -3,7 +3,7 @@
 # include <SFML/Graphics/RectangleShape.hpp>
 # include "ByteArray.hpp"
 # include "Array3D.hpp"
-
+# include <string>
 namespace octo
 {
 	/*!
@@ -33,19 +33,18 @@ namespace octo
 			struct SpriteTrigger
 			{
 				SpriteTrigger() = default;
-				explicit SpriteTrigger(sf::Vector2f const& pos, std::size_t index,
+				explicit SpriteTrigger(sf::Vector2f const& pos, std::string const& fileName,
 						sf::FloatRect const& rec, std::size_t mapIndex) :
 					positionSprite(pos),
 					trigger(rec),
-					mapIndex(mapIndex),
-					spriteIndex(index)
+					name(fileName),
+					mapIndex(mapIndex)
 				{
 				}
-
 				sf::Vector2f		positionSprite;
 				sf::FloatRect		trigger;
+				std::string			name;
 				std::size_t			mapIndex;
-				std::size_t			spriteIndex;
 			};
 
 			/*!	Get the map count */
@@ -71,10 +70,10 @@ namespace octo
 
 			/*! Get collection of spriteTrigger by indexPackage
 			 *
-			 *	\param indexPackage = index sprite in package
+			 *	\param name = fileName of spriteSheet
 			 *	\param sprites vector of LevelMap::SpriteTrigger
 			 */
-			void	getSpritesByIndexPackage(std::size_t indexPackage,
+			void	getSpritesByName(std::string const& name,
 					std::vector<LevelMap::SpriteTrigger *> & sprites);
 
 			/*! Get collection of spriteTrigger by indexMap

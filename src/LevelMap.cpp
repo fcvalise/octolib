@@ -35,12 +35,12 @@ namespace octo
 		return m_sprites.at(index);
 	}
 
-	void LevelMap::getSpritesByIndexPackage(std::size_t index, std::vector<LevelMap::SpriteTrigger *> & sprites)
+	void LevelMap::getSpritesByName(std::string const& name, std::vector<LevelMap::SpriteTrigger *> & sprites)
 	{
 		sprites.clear();
 		std::size_t i = 0;
 		for (auto & sprite : m_sprites){
-			if (sprite.spriteIndex == index){
+			if (sprite.name == name){
 				sprites.push_back(&sprite);
 				i++;
 			}
@@ -121,10 +121,10 @@ namespace octo
 		char		delimiter = ',';
 		std::size_t	pos = 0;
 		std::size_t	i = 0;
-			while ((pos = line.find(delimiter)) != std::string::npos){
-				m_tileMap.set(i++, index, map , static_cast<TileType>(std::stoi(line.substr(0, pos))));
-				line.erase(0, pos + 1);
-			}
+		while ((pos = line.find(delimiter)) != std::string::npos){
+			m_tileMap.set(i++, index, map , static_cast<TileType>(std::stoi(line.substr(0, pos))));
+			line.erase(0, pos + 1);
+		}
 		m_tileMap.set(i, index, map, static_cast<TileType>(std::stoi(line)));
 	}
 
@@ -136,9 +136,10 @@ namespace octo
 		sf::Vector2f		sizeRec;
 		sf::FloatRect			rec;
 		std::size_t				lastFind;
+		std::string				name;
 
 		lastFind = line.find('(');
-		std::size_t index = std::stoi(line.substr(1, lastFind));
+		name = line.substr(1, lastFind - 1);
 		line.erase(0, lastFind + 1);
 		lastFind = line.find(';');
 		pos.x = std::stoi(line.substr(0, lastFind));
@@ -165,7 +166,7 @@ namespace octo
 				rec = sf::FloatRect(topLeftRec, sizeRec);
 			}
 		}
-		m_sprites.push_back(SpriteTrigger(pos, index, rec , map));
+		m_sprites.push_back(SpriteTrigger(pos, name, rec, map));
 		m_spritesCount++;
 	}
 }
