@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 14:42:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/11 00:08:28 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/11 20:43:23 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ namespace octo
 			bool		enabled;
 		};
 	public:
+		PostEffectManager();
+
 		void				createRender(sf::VideoMode const& videoMode);
 		void				draw(sf::Drawable const& drawable, sf::RenderStates const& states);
 		void				draw(sf::Vertex const* vertices, unsigned int count,
@@ -48,12 +50,14 @@ namespace octo
 
 		sf::Shader&			getShader(std::size_t index);
 		std::size_t			getShaderCount()const;
+		bool				hasEnabledShaders()const;
 	private:
 		void				applyShaders(sf::Sprite& sprite);
 	private:
 		sf::RenderTexture	m_firstRender;
 		sf::RenderTexture	m_secondRender;
 		std::vector<Shader>	m_shaders;
+		std::size_t			m_enabledCount;
 	};
 }
 
