@@ -6,18 +6,17 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/19 00:55:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/12 17:00:50 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/12 17:40:46 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Transform.hpp>
 
+#include <cassert>
+
 namespace octo
 {
-	//
-	//	ParticleSystem
-	//
 	template <class ... C>
 	ParticleSystem<C...>::ParticleSystem() :
 		m_particleCount(0u),
@@ -50,6 +49,8 @@ namespace octo
 	template <class ... C>
 	void	ParticleSystem<C...>::add(Particle const& particle)
 	{
+		assert(m_particleCount < m_maxParticleCount);
+
 		m_particles[m_particleCount] = particle;
 		++m_particleCount;
 	}
@@ -57,6 +58,8 @@ namespace octo
 	template <class ... C>
 	void	ParticleSystem<C...>::add(Particle&& particle)
 	{
+		assert(m_particleCount < m_maxParticleCount);
+
 		m_particles[m_particleCount] = std::move(particle);
 		++m_particleCount;
 	}
@@ -65,6 +68,8 @@ namespace octo
 	template <class ... T>
 	void	ParticleSystem<C...>::emplace(T&& ... args)
 	{
+		assert(m_particleCount < m_maxParticleCount);
+
 		m_particles[m_particleCount] = Particle(std::forward<T>(args)...);
 		++m_particleCount;
 	}

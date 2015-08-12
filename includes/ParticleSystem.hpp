@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/18 21:36:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/12 17:01:01 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/12 17:39:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <SFML/System/Time.hpp>
 
 # include <functional>
-# include <deque>
 # include <tuple>
 # include <memory>
 
@@ -203,9 +202,6 @@ namespace octo
 
 		/*!	Remove dead particles and updates alives particles */
 		virtual void	update(sf::Time frameTime);
-
-		//TODO: See with Iohann to find a proper way to do it
-		//virtual void	update(sf::Time frameTime, VertexBuilder & builder);
 
 		/*!	Draw alives particles */
 		void			draw(sf::RenderTarget& render, sf::RenderStates states = sf::RenderStates())const;
