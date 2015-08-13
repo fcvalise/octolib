@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/06/18 21:36:14 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/12 17:39:39 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/13 22:31:30 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,12 +179,21 @@ namespace octo
 		 *	\param maxParticleCount Define the maximum of particles
 		 *
 		 *	Allocate the memory and prepare the system to run.<br>
-		 *	All particles are destroyed when this methods is called.
+		 *	All particles are destroyed when this methods is called.<br>
+		 *	\note This method does the unique required reallocation so is time consuming.<br>
+		 *	Don't call it too often.
 		 */	 
 		void			reset(Prototype const& prototype,
 							  sf::PrimitiveType type,
 							  std::size_t maxParticleCount);
 
+		/*!	Define the system texture.
+		 *
+		 *	You can define the texture coordinates for each vertices of each
+		 *	particle by defining the prototype.
+		 *
+		 *	\see reset()
+		 */
 		void			setTexture(sf::Texture const& texture);
 
 		/*!	Add a new particle */
@@ -193,7 +202,13 @@ namespace octo
 		/*!	Add a new particle */
 		void			add(Particle&& particle);
 
-		/*!	Emplace a new particle */
+		/*!	Emplace a new particle
+		 *
+		 *	This method has the same parameters than your particle class defined
+		 *	with the class template parameters.<br> 
+		 *	Remind a particule have some default components
+		 *	(color, position, scale, rotation).<br>
+		 */
 		template <class ... T>
 		void			emplace(T&& ... args);
 
