@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 02:43:03 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/12 00:03:15 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/13 02:21:21 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,13 +142,13 @@ namespace octo
 	}
 
 	/*!	Play one sound */
-	void	AudioManager::playSound(sf::SoundBuffer const& buffer, float volume,
-									float pitch, sf::Vector3f const& position,
-						  		 	float minimumDistance,
-						  		 	float attenuation)
+	AudioManager::SoundPtr	AudioManager::playSound(sf::SoundBuffer const& buffer, float volume,
+													float pitch, sf::Vector3f const& position,
+													float minimumDistance,
+													float attenuation)
 	{
 		if (m_soundEnabled == false)
-			return;
+			return(nullptr);
 		SoundPtr	sound = createSound(buffer);
 
 		sound->setVolume(m_soundVolume * volume);
@@ -158,6 +158,7 @@ namespace octo
 		sound->setMinDistance(minimumDistance);
 		sound->setAttenuation(attenuation);
 		sound->play();
+		return (sound);
 	}
 
 	/*!	Play a music

@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:20:39 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/12 00:02:48 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/13 02:22:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ namespace octo
 {
 	class AudioManager
 	{
+	public:
 		typedef std::shared_ptr<sf::Sound>	SoundPtr;
+	private:
 		class Transition
 		{
 		public:
@@ -53,7 +55,12 @@ namespace octo
 
 		void		setup(std::size_t maxSoundCount);
 
-		void		playSound(sf::SoundBuffer const& buffer,
+		/*!	Start sound playing.
+		 *
+		 *	\return A pointer on the new sound played, or a null pointeur if
+		 *	sounds are disabled.
+		 */
+		SoundPtr	playSound(sf::SoundBuffer const& buffer,
 							  float volume = 1.f,
 							  float pitch = 1.f,
 							  sf::Vector3f const& position = sf::Vector3f(),
