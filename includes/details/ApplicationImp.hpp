@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 01:22:47 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/11 20:51:16 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/13 15:14:33 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,17 +268,9 @@ namespace octo
 				sf::RenderTarget&	finalRender = m_graphicsManager.getRender();
 
 				finalRender.clear();
-				if (m_postEffectManager.hasEnabledShaders())
-				{
-					m_postEffectManager.setView(m_camera.getView());
-					m_stateManager.draw(m_postEffectManager.getRender());
-					m_postEffectManager.display(finalRender);
-				}
-				else
-				{
-					finalRender.setView(m_camera.getView());
-					m_stateManager.draw(finalRender);
-				}
+				m_postEffectManager.setView(m_camera.getView());
+				m_stateManager.draw(m_postEffectManager.getRender());
+				m_postEffectManager.display(finalRender);
 				finalRender.setView(m_camera.getGuiView());
 				m_stateManager.drawTransition(finalRender);
 				m_console.draw(finalRender);
