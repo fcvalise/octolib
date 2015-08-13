@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 14:42:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/11 20:43:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/14 01:37:58 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <SFML/Graphics/Sprite.hpp>
 # include <SFML/Window/VideoMode.hpp>
 # include <vector>
+# include <map>
 
 namespace octo
 {
@@ -54,10 +55,10 @@ namespace octo
 	private:
 		void				applyShaders(sf::Sprite& sprite);
 	private:
-		sf::RenderTexture	m_firstRender;
-		sf::RenderTexture	m_secondRender;
-		std::vector<Shader>	m_shaders;
-		std::size_t			m_enabledCount;
+		sf::RenderTexture				m_firstRender;
+		sf::RenderTexture				m_secondRender;
+		std::map<std::size_t, Shader>	m_shaders;
+		std::size_t						m_enabledCount;
 	};
 }
 
