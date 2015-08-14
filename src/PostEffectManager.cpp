@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 14:45:01 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/14 02:06:47 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/14 03:58:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,20 +130,18 @@ namespace octo
 
 	void	PostEffectManager::enableShader(std::size_t index, bool enable)
 	{
-		if (isShaderEnabled(index) && enable == false)
+		auto	it = m_shaders.find(index);
+		bool	enabled = it->second.enabled;
+
+		if (enabled && enable == false)
 		{
 			--m_enabledCount;
 		}
-		else if (isShaderEnabled(index) == false && enable)
+		else if (enabled == false && enable)
 		{
 			++m_enabledCount;
 		}
-		m_shaders.at(index).enabled = enable;
-	}
-
-	bool	PostEffectManager::isShaderEnabled(std::size_t index)const
-	{
-		return (m_shaders.at(index).enabled);
+		it->second.enabled = enable;
 	}
 
 	sf::Shader&	PostEffectManager::getShader(std::size_t index)
