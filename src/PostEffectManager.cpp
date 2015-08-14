@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 14:45:01 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/11 20:42:51 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/14 03:58:56 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,10 @@ namespace octo
 		m_firstRender.setView(m_firstRender.getDefaultView());
 		for (auto const& shader : m_shaders)
 		{
-			if (shader.enabled)
+			if (shader.second.enabled)
 			{
 				sprite.setTexture(source->getTexture());
-				target->draw(sprite, shader.shader);
+				target->draw(sprite, shader.second.shader);
 				target->display();
 				std::swap(source, target);
 			}
@@ -98,25 +98,27 @@ namespace octo
 
 	std::size_t	PostEffectManager::addShader(sf::Shader& shader, bool enable)
 	{
-		std::size_t	newIndex = m_shaders.size();
+		static std::size_t	newIndex = 0;
 
-		m_shaders.emplace_back(shader, enable);
+		m_shaders[newIndex] = PostEffectManager::Shader(shader, enable);
 		if (enable)
 		{
 			++m_enabledCount;
 		}
-		return (newIndex);
+		return (newIndex++);
 	}
 
 	void	PostEffectManager::removeShader(std::size_t index)
 	{
-		if (index < m_shaders.size())
+		auto	it = m_shaders.find(index);
+
+		if (it != m_shaders.end())
 		{
-			if (isShaderEnabled(index))
+			if (it->second.enabled)
 			{
 				--m_enabledCount;
 			}
-			m_shaders.erase(m_shaders.begin() + index);
+			m_shaders.erase(it);
 		}
 	}
 
@@ -128,20 +130,18 @@ namespace octo
 
 	void	PostEffectManager::enableShader(std::size_t index, bool enable)
 	{
-		if (isShaderEnabled(index) && enable == false)
+		auto	it = m_shaders.find(index);
+		bool	enabled = it->second.enabled;
+
+		if (enabled && enable == false)
 		{
 			--m_enabledCount;
 		}
-		else if (isShaderEnabled(index) == false && enable)
+		else if (enabled == false && enable)
 		{
 			++m_enabledCount;
 		}
-		m_shaders.at(index).enabled = enable;
-	}
-
-	bool	PostEffectManager::isShaderEnabled(std::size_t index)const
-	{
-		return (m_shaders.at(index).enabled);
+		it->second.enabled = enable;
 	}
 
 	sf::Shader&	PostEffectManager::getShader(std::size_t index)

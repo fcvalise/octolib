@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 14:42:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/11 20:43:23 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/14 04:08:00 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <SFML/Graphics/Shader.hpp>
 # include <SFML/Graphics/Sprite.hpp>
 # include <SFML/Window/VideoMode.hpp>
-# include <vector>
+# include <map>
 
 namespace octo
 {
@@ -46,7 +46,6 @@ namespace octo
 		void				removeShader(std::size_t index);
 		void				removeShaders();
 		void				enableShader(std::size_t index, bool enable);
-		bool				isShaderEnabled(std::size_t index)const;
 
 		sf::Shader&			getShader(std::size_t index);
 		std::size_t			getShaderCount()const;
@@ -54,10 +53,10 @@ namespace octo
 	private:
 		void				applyShaders(sf::Sprite& sprite);
 	private:
-		sf::RenderTexture	m_firstRender;
-		sf::RenderTexture	m_secondRender;
-		std::vector<Shader>	m_shaders;
-		std::size_t			m_enabledCount;
+		sf::RenderTexture				m_firstRender;
+		sf::RenderTexture				m_secondRender;
+		std::map<std::size_t, Shader>	m_shaders;
+		std::size_t						m_enabledCount;
 	};
 }
 
