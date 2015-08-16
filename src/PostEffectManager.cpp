@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 14:45:01 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/14 03:58:56 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/16 16:00:39 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,9 @@
 
 namespace octo
 {
-	PostEffectManager::Shader::Shader() :
-		shader(nullptr),
-		enabled(false)
-	{
-	}
-
-	PostEffectManager::Shader::Shader(sf::Shader& shader, bool enabled) :
-		shader(&shader),
-		enabled(enabled)
-	{
-	}
-
+	//
+	// class PostEffectManager
+	//
 	PostEffectManager::PostEffectManager() :
 		m_enabledCount(0u)
 	{
@@ -66,29 +57,28 @@ namespace octo
 		sf::Sprite	sprite;
 
 		m_firstRender.display();
-		if (m_shaders.empty())
+		if (m_effects.empty())
 		{
 			sprite.setTexture(m_firstRender.getTexture());
 		}
 		else
 		{
-			applyShaders(sprite);
+			applyEffects(sprite);
 		}
 		render.draw(sprite);
 	}
 	
-	void	PostEffectManager::applyShaders(sf::Sprite& sprite)
+	void	PostEffectManager::applyEffects(sf::Sprite& sprite)
 	{
 		sf::RenderTexture*	source = &m_firstRender;
 		sf::RenderTexture*	target = &m_secondRender;
 
 		m_firstRender.setView(m_firstRender.getDefaultView());
-		for (auto const& shader : m_shaders)
+		for (auto const& pair : m_effects)
 		{
-			if (shader.second.enabled)
+			if (pair.second->isEnabled())
 			{
-				sprite.setTexture(source->getTexture());
-				target->draw(sprite, shader.second.shader);
+				pair.second->applyEffect(sprite, source->getTexture(), *target);
 				target->display();
 				std::swap(source, target);
 			}
@@ -96,42 +86,42 @@ namespace octo
 		sprite.setTexture(source->getTexture());
 	}
 
-	std::size_t	PostEffectManager::addShader(sf::Shader& shader, bool enable)
+	std::size_t	PostEffectManager::addEffect(PostEffect&& effect)
 	{
 		static std::size_t	newIndex = 0;
 
-		m_shaders[newIndex] = PostEffectManager::Shader(shader, enable);
-		if (enable)
+		m_effects[newIndex].reset(new PostEffect(std::move(effect)));
+		if (m_effects[newIndex]->isEnabled())
 		{
 			++m_enabledCount;
 		}
 		return (newIndex++);
 	}
 
-	void	PostEffectManager::removeShader(std::size_t index)
+	void	PostEffectManager::removeEffect(std::size_t index)
 	{
-		auto	it = m_shaders.find(index);
+		auto	it = m_effects.find(index);
 
-		if (it != m_shaders.end())
+		if (it != m_effects.end())
 		{
-			if (it->second.enabled)
+			if (it->second->isEnabled())
 			{
 				--m_enabledCount;
 			}
-			m_shaders.erase(it);
+			m_effects.erase(it);
 		}
 	}
 
-	void	PostEffectManager::removeShaders()
+	void	PostEffectManager::removeEffects()
 	{
-		m_shaders.clear();
+		m_effects.clear();
 		m_enabledCount = 0u;
 	}
 
-	void	PostEffectManager::enableShader(std::size_t index, bool enable)
+	void	PostEffectManager::enableEffect(std::size_t index, bool enable)
 	{
-		auto	it = m_shaders.find(index);
-		bool	enabled = it->second.enabled;
+		auto	it = m_effects.find(index);
+		bool	enabled = it->second->isEnabled();
 
 		if (enabled && enable == false)
 		{
@@ -141,20 +131,25 @@ namespace octo
 		{
 			++m_enabledCount;
 		}
-		it->second.enabled = enable;
+		it->second->setEnabled(enable);
 	}
 
-	sf::Shader&	PostEffectManager::getShader(std::size_t index)
+	PostEffect const&	PostEffectManager::getEffect(std::size_t index)const
 	{
-		return (*m_shaders.at(index).shader);
+		return (*m_effects.at(index));
 	}
 
-	std::size_t	PostEffectManager::getShaderCount()const
+	PostEffect&	PostEffectManager::getEffect(std::size_t index)
 	{
-		return (m_shaders.size());
+		return (*m_effects.at(index));
 	}
 
-	bool	PostEffectManager::hasEnabledShaders()const
+	std::size_t	PostEffectManager::getEffectCount()const
+	{
+		return (m_effects.size());
+	}
+
+	bool	PostEffectManager::hasEnabledEffects()const
 	{
 		return (m_enabledCount > 0u);
 	}

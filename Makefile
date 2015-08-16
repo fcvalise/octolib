@@ -43,7 +43,8 @@ GRAPHICS_SRC =	GraphicsManager.cpp					\
 				SpriteSheet.cpp						\
 				AnimatedSprite.cpp					\
 				VertexBuilder.cpp					\
-				PostEffectManager.cpp
+				PostEffectManager.cpp				\
+				PostEffect.cpp
 
 LEVELMAP_SRC =	LevelMap.cpp
 
