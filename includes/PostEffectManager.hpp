@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/08/10 14:42:29 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/16 15:59:03 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/08/16 16:51:21 by irabeson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 # include <SFML/Graphics/Shader.hpp>
 # include <SFML/Graphics/Sprite.hpp>
 # include <SFML/Window/VideoMode.hpp>
+
 # include <map>
+# include <memory>
 
 namespace octo
 {
