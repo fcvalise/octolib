@@ -250,6 +250,17 @@ namespace octo
 		return (radians * Rad2Deg);
 	}
 
+	/*!	Rotate vector around zero. Result is store in vector */
+	void rotateVector(sf::Vector2f & vector,
+						float const cosAngle,
+						float const sinAngle);
+
+	/*!	Rotate vector around an origin. Result is store in vector */
+	void rotateVector(sf::Vector2f & vector,
+						sf::Vector2f const & origin,
+						float const cosAngle,
+						float const sinAngle);
+
 	/*!
 	 *	@}
 	 */
