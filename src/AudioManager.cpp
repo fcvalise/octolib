@@ -48,6 +48,7 @@ namespace octo
 	{
 		if (m_newSound)
 		{
+			m_newSound->setPitch(1.f);
 			m_newSound->play();
 			m_newSound->setVolume(0.f);
 		}
