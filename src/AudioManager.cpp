@@ -38,7 +38,7 @@ namespace octo
 		};
 	}
 
-	AudioManager::Transition::Transition(SoundPtr const& newSound, SoundPtr const& oldSound, sf::Time duration, float finalVolume) :
+	AudioManager::Transition::Transition(SoundPtr const& newSound, SoundPtr const& oldSound, sf::Time duration, float finalVolume, sf::Time offset) :
 		m_duration(duration),
 		m_newSound(newSound),
 		m_oldSound(oldSound),
@@ -48,6 +48,7 @@ namespace octo
 	{
 		if (m_newSound)
 		{
+			m_newSound->setPlayingOffset(offset);
 			m_newSound->setPitch(1.f);
 			m_newSound->play();
 			m_newSound->setVolume(0.f);
@@ -106,7 +107,7 @@ namespace octo
 	 */
 
 	/*!	Default constructor
-	 *	
+	 *
 	 *	Initialize volumes to 100.
 	 */
 	AudioManager::AudioManager() :
@@ -170,7 +171,7 @@ namespace octo
 	 *	If transitionTime is null then the old music (if any) is immediatly stopped
 	 *	and the new music starts directly at full volume.
 	 */
-	void	AudioManager::startMusic(sf::SoundBuffer const& buffer, sf::Time transitionTime, bool loop)
+	void	AudioManager::startMusic(sf::SoundBuffer const& buffer, sf::Time transitionTime, sf::Time offset, bool loop)
 	{
 		if (m_musicEnabled == false)
 			return;
@@ -179,6 +180,7 @@ namespace octo
 		sound = createSound(buffer);
 		if (transitionTime == sf::Time::Zero)
 		{
+			sound->setPlayingOffset(offset);
 			sound->setVolume(m_musicVolume);
 			sound->setPitch(1.f);
 			sound->setLoop(loop);
@@ -188,7 +190,7 @@ namespace octo
 		}
 		else
 		{
-			m_transition.reset(new Transition(sound, getMusicSound(), transitionTime, m_musicVolume));
+			m_transition.reset(new Transition(sound, getMusicSound(), transitionTime, m_musicVolume, offset));
 		}
 	}
 
