@@ -35,7 +35,8 @@ namespace octo
 			Transition(SoundPtr const& newSound,
 					   SoundPtr const& oldSound,
 					   sf::Time duration,
-					   float finalVolume);
+					   float finalVolume,
+					   sf::Time offset = sf::Time::Zero);
 
 			SoundPtr	getNewSound()const;
 			bool		update(sf::Time frameTime);
@@ -67,7 +68,7 @@ namespace octo
 							  float minimumDistance = 1.f,
 							  float attenuation = 1.f);
 
-		void		startMusic(sf::SoundBuffer const& buffer, sf::Time transitionTime, bool loop = false);
+		void		startMusic(sf::SoundBuffer const& buffer, sf::Time transitionTime, sf::Time offset = sf::Time::Zero, bool loop = false);
 		void		stopMusic(sf::Time transitionTime);
 
 		void		setSoundVolume(float volume);
