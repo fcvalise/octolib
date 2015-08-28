@@ -33,11 +33,11 @@ namespace octo
 	{
 	}
 
-	void Camera::setup(GraphicsManager& graphicsManager)
+	void Camera::setup(GraphicsManager& graphicsManager, sf::View const & cameraView)
 	{
 		graphicsManager.addWindowListener(this);
-		m_view = graphicsManager.getDefaultView();
-		m_guiView = graphicsManager.getDefaultView();
+		m_view = cameraView;
+		m_guiView = cameraView;
 		m_graphicsManager = &graphicsManager;
 		m_zoomFactor = 1.f;
 		updateRectangle();

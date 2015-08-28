@@ -86,15 +86,21 @@ namespace octo
 
 			void	setupGraphics(std::string const& title)
 			{
+				// Adapt resolution to screenSize
 				sf::VideoMode	videoMode = m_options.getValue<sf::VideoMode>("resolution", sf::VideoMode::getFullscreenModes().front());
+				sf::VideoMode	fullscreen = sf::VideoMode::getFullscreenModes().front();
+				videoMode.height = videoMode.width * fullscreen.height / fullscreen.width;
+
+				// Create cameraView before createRender to use the automatic resize of the view
+				m_cameraView = sf::View(sf::FloatRect(0, 0, videoMode.width, videoMode.height));
+				m_graphicsManager.setCamera(m_camera, m_cameraView);
+
 				m_graphicsManager.createRender(videoMode,
 											   title,
-											   false,
+											   m_options.getValue("fullscreen", false),
 											   m_options.getValue("antialiasing", 0u));
 				m_graphicsManager.setVerticalSyncEnabled(m_options.getValue("vsync", true));
 				m_graphicsManager.setFramerateLimit(m_options.getValue("framerate_limit", 0));
-				m_graphicsManager.setCamera(m_camera);
-				m_graphicsManager.setFullscreen(m_options.getValue("fullscreen", false));
 				m_postEffectManager.createRender(videoMode);
 			}
 
@@ -334,6 +340,7 @@ namespace octo
 			Console								m_console;
 			FpsCounter							m_fpsCounter;
 			Camera								m_camera;
+			sf::View							m_cameraView;
 			PausableClock						m_clock;
 			sf::Event							m_event;
 			bool								m_paused;

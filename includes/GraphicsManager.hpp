@@ -38,7 +38,7 @@ namespace octo
 	public:
 		GraphicsManager();
 
-		void					setCamera(Camera& camera);
+		void					setCamera(Camera& camera, sf::View const & cameraView);
 		void					createRender(sf::VideoMode const& mode,
 											 sf::String const& title,
 									  		 bool fullscreen,

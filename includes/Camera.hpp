@@ -52,7 +52,7 @@ namespace octo
 		void					update(sf::Time frameTime);
 	private:
 		virtual void			onResized(sf::Event::SizeEvent const& event);
-		void					setup(GraphicsManager& graphics);
+		void					setup(GraphicsManager& graphics, sf::View const & cameraView);
 		void					updateRectangle();
 	private:
 		GraphicsManager*	m_graphicsManager;

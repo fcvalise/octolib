@@ -28,9 +28,9 @@ namespace octo
 	{
 	}
 
-	void	GraphicsManager::setCamera(Camera& camera)
+	void	GraphicsManager::setCamera(Camera& camera, sf::View const & cameraView)
 	{
-		camera.setup(*this);
+		camera.setup(*this, cameraView);
 	}
 
 	void	GraphicsManager::createRender(sf::VideoMode const& mode,
