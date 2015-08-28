@@ -50,7 +50,8 @@ BOOST_AUTO_TEST_CASE( simple )
 		BOOST_CHECK(map.get(119, 49, 1) == octo::LevelMap::TileType::Square);
 
 		BOOST_CHECK(map.get(0, 0, 2) == octo::LevelMap::TileType::TopRightCorner);
-		BOOST_CHECK(map.get(119, 49, 2) == octo::LevelMap::TileType::TopRightCorner);
+		BOOST_CHECK(map.get(118, 49, 2) == octo::LevelMap::TileType::Custom);
+		BOOST_CHECK(map.get(119, 49, 2) == octo::LevelMap::TileType::Rock);
 
 		index = lm0.getSpriteCount();
 		BOOST_CHECK_EQUAL(index, 5);
