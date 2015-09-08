@@ -279,6 +279,26 @@ namespace octo
 		}
 	}
 
+	float		AudioManager::getSoundVolume(void) const
+	{
+		return m_soundVolume;
+	}
+
+	float		AudioManager::getMusicVolume(void) const
+	{
+		return m_musicVolume;
+	}
+
+	bool		AudioManager::getSoundEnabled(void) const
+	{
+		return m_soundEnabled;
+	}
+
+	bool		AudioManager::getMusicEnabled(void) const
+	{
+		return m_musicEnabled;
+	}
+
 	/*!	This method must be called at each frame */
 	void	AudioManager::update(sf::Time frameTime)
 	{
