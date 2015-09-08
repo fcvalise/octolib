@@ -50,6 +50,8 @@ namespace octo
 		sf::Shader&			getShader(std::size_t index);
 		std::size_t			getShaderCount()const;
 		bool				hasEnabledShaders()const;
+
+		void				setAllShaderEnabled(bool isAllShaderEnable);
 	private:
 		void				applyShaders(sf::Sprite& sprite);
 	private:
@@ -57,6 +59,7 @@ namespace octo
 		sf::RenderTexture				m_secondRender;
 		std::map<std::size_t, Shader>	m_shaders;
 		std::size_t						m_enabledCount;
+		bool							m_allShaderEnabled;
 	};
 }
 

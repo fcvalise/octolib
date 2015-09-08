@@ -29,7 +29,8 @@ namespace octo
 	}
 
 	PostEffectManager::PostEffectManager() :
-		m_enabledCount(0u)
+		m_enabledCount(0u),
+		m_allShaderEnabled(true)
 	{
 	}
 
@@ -82,15 +83,18 @@ namespace octo
 		sf::RenderTexture*	source = &m_firstRender;
 		sf::RenderTexture*	target = &m_secondRender;
 
-		m_firstRender.setView(m_firstRender.getDefaultView());
-		for (auto const& shader : m_shaders)
+		if (m_allShaderEnabled)
 		{
-			if (shader.second.enabled)
+			m_firstRender.setView(m_firstRender.getDefaultView());
+			for (auto const& shader : m_shaders)
 			{
-				sprite.setTexture(source->getTexture());
-				target->draw(sprite, shader.second.shader);
-				target->display();
-				std::swap(source, target);
+				if (shader.second.enabled)
+				{
+					sprite.setTexture(source->getTexture());
+					target->draw(sprite, shader.second.shader);
+					target->display();
+					std::swap(source, target);
+				}
 			}
 		}
 		sprite.setTexture(source->getTexture());
@@ -157,5 +161,10 @@ namespace octo
 	bool	PostEffectManager::hasEnabledShaders()const
 	{
 		return (m_enabledCount > 0u);
+	}
+
+	void	PostEffectManager::setAllShaderEnabled(bool isAllShaderEnable)
+	{
+		m_allShaderEnabled = isAllShaderEnable;
 	}
 }
