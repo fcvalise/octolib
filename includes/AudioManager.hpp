@@ -76,6 +76,11 @@ namespace octo
 		void		setSoundEnabled(bool enable);
 		void		setMusicEnabled(bool enable);
 
+		float		getSoundVolume(void) const;
+		float		getMusicVolume(void) const;
+		bool		getSoundEnabled(void) const;
+		bool		getMusicEnabled(void) const;
+
 		void		update(sf::Time frameTime);
 	private:
 		SoundPtr	createSound(sf::SoundBuffer const& buffer);
