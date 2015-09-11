@@ -26,7 +26,8 @@ namespace octo
 			TopLeftCorner,
 			BotLeftCorner,
 			BotRightCorner,
-			Custom = 6,
+			Rock = 6,
+			Custom = 7,
 		};
 
 			/*! struct SpriteTrigger */
