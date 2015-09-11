@@ -49,6 +49,7 @@ namespace octo
 		PostEffect const&	getEffect(std::size_t index)const;
 		std::size_t			getEffectCount()const;
 		bool				hasEnabledEffects()const;
+		void				setAllShaderEnabled(bool isAllShaderEnable);
 	private:
 		void				applyEffects(sf::Sprite& sprite);
 	private:
@@ -58,6 +59,7 @@ namespace octo
 		sf::RenderTexture	m_secondRender;
 		EffectMap			m_effects;
 		std::size_t			m_enabledCount;
+		bool				m_allShaderEnabled;
 	};
 }
 
