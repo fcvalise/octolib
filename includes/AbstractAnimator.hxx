@@ -38,10 +38,14 @@ namespace octo
 			{
 				m_currentTime -= duration;
 			}
-			else
-				stop();
 		}
 		applyCurrentValue();
+	}
+
+	template <class T>
+	bool	AbstractAnimator<T>::isTerminated()const
+	{
+		return (m_currentTime >= getCurrentAnimation().duration());
 	}
 
 	template <class T>
