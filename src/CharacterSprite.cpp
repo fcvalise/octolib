@@ -117,6 +117,11 @@ namespace octo
 		return (m_animator.getStatus());
 	}
 
+	bool		CharacterSprite::isTerminated()const
+	{
+		return (m_animator.isTerminated());
+	}
+
 	void	CharacterSprite::setSpeedFactor(float factor)
 	{
 		m_animator.setSpeedFactor(factor);

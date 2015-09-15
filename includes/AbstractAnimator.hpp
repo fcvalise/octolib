@@ -61,6 +61,7 @@ namespace octo
 
 		/*!	Return play status */
 		PlayStatus						getStatus()const;
+		bool							isTerminated()const;
 
 		/*!	Define the speed factor */
 		void							setSpeedFactor(float factor);

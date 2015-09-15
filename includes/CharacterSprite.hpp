@@ -49,6 +49,7 @@ namespace octo
 		void						stop();
 		void						pause();
 		PlayStatus					getStatus()const;
+		bool						isTerminated()const;
 		void						setSpeedFactor(float factor);
 		void						setNextEvent(EventId eventId);
 		EventId						getCurrentEvent();

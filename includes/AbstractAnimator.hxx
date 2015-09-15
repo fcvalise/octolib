@@ -43,6 +43,12 @@ namespace octo
 	}
 
 	template <class T>
+	bool	AbstractAnimator<T>::isTerminated()const
+	{
+		return (m_currentTime >= getCurrentAnimation().duration());
+	}
+
+	template <class T>
 	void	AbstractAnimator<T>::reset()
 	{
 		m_currentTime = sf::Time::Zero;
