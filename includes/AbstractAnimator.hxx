@@ -38,6 +38,8 @@ namespace octo
 			{
 				m_currentTime -= duration;
 			}
+			else
+				stop();
 		}
 		applyCurrentValue();
 	}
