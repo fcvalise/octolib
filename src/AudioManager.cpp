@@ -227,7 +227,8 @@ namespace octo
 		{
 			if (sound && sound != m_music)
 			{
-				sound->setVolume(volume);
+				
+				sound->setVolume(sound->getVolume() * volume);
 			}
 		}
 	}
