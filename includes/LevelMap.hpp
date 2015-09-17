@@ -48,6 +48,20 @@ namespace octo
 				std::size_t			mapIndex;
 			};
 
+			struct Decor
+			{
+				Decor() = default;
+				explicit Decor(sf::Vector2f const& pos, sf::Vector2f const& scale, std::string const& fileName) :
+					position(pos),
+					scale(scale),
+					name(fileName)
+				{
+				}
+				sf::Vector2f		position;
+				sf::Vector2f		scale;
+				std::string			name;
+			};
+
 			/*!	Get the map count */
 			std::size_t				getMapCount() const;
 
@@ -61,6 +75,8 @@ namespace octo
 
 			/*!	Get the sprite count */
 			std::size_t							getSpriteCount() const;
+			/*!	Get decors count */
+			std::size_t							getDecorCount() const;
 
 			/*! Get spriteTrigger 
 			 *
@@ -68,6 +84,13 @@ namespace octo
 			 */
 			LevelMap::SpriteTrigger const &		getSprite(std::size_t index) const;
 			LevelMap::SpriteTrigger &			getSprite(std::size_t index);
+
+			/*! Get decor
+			 *
+			 *	\param index =	between 0 and map count
+			 */
+			LevelMap::Decor const &		getDecor(std::size_t index) const;
+			LevelMap::Decor &			getDecor(std::size_t index);
 
 			/*! Get collection of spriteTrigger by indexPackage
 			 *
@@ -93,9 +116,12 @@ namespace octo
 			void							setup(std::size_t len);
 			void							addLineAt(std::size_t map, std::size_t index, std::string & line);
 			void							addSprite(std::string & line, std::size_t map);
+			void							addDecor(std::string & line);
 			std::size_t						m_spritesCount;
+			std::size_t						m_decorsCount;
 			Array3D<TileType>				m_tileMap;
 			std::vector<SpriteTrigger>		m_sprites;
+			std::vector<Decor>				m_decors;
 			sf::Vector2i					m_size;
 	};
 }

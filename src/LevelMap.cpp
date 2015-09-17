@@ -25,6 +25,11 @@ namespace octo
 		return m_sprites.size();
 	}
 
+	std::size_t LevelMap::getDecorCount() const
+	{
+		return m_decors.size();
+	}
+
 	LevelMap::SpriteTrigger const & LevelMap::getSprite(std::size_t index) const
 	{
 		return m_sprites.at(index);
@@ -33,6 +38,16 @@ namespace octo
 	LevelMap::SpriteTrigger & LevelMap::getSprite(std::size_t index)
 	{
 		return m_sprites.at(index);
+	}
+
+	LevelMap::Decor const & LevelMap::getDecor(std::size_t index) const
+	{
+		return m_decors.at(index);
+	}
+
+	LevelMap::Decor & LevelMap::getDecor(std::size_t index)
+	{
+		return m_decors.at(index);
 	}
 
 	void LevelMap::getSpritesByName(std::string const& name, std::vector<LevelMap::SpriteTrigger *> & sprites)
@@ -99,6 +114,8 @@ namespace octo
 			}
 			if (line.at(0) == '#')
 				addSprite(line , currentMap);
+			else if (line.at(0) == '!')
+				addDecor(line);
 			else{
 				if (currentMap == nbrOfMap)
 					continue;
@@ -130,7 +147,6 @@ namespace octo
 
 	void LevelMap::addSprite(std::string & line, std::size_t map)
 	{
-		octo::ByteArray		image;
 		sf::Vector2f		pos;
 		sf::Vector2f		topLeftRec;
 		sf::Vector2f		sizeRec;
@@ -168,5 +184,33 @@ namespace octo
 		}
 		m_sprites.push_back(SpriteTrigger(pos, name, rec, map));
 		m_spritesCount++;
+	}
+
+	void LevelMap::addDecor(std::string & line)
+	{
+		sf::Vector2f		pos;
+		sf::Vector2f		scale;
+		std::size_t				lastFind;
+		std::string				name;
+
+		lastFind = line.find('(');
+		name = line.substr(1, lastFind - 1);
+		line.erase(0, lastFind + 1);
+		lastFind = line.find(';');
+		pos.x = std::stoi(line.substr(0, lastFind));
+		line.erase(0, lastFind + 1);
+		lastFind = line.find(')');
+		pos.y = std::stoi(line.substr(0, lastFind));
+		lastFind = line.find('[');
+		if (lastFind != std::string::npos){
+			line.erase(0, lastFind + 1);
+			lastFind = line.find('/');
+			scale.x = std::stof(line.substr(0, lastFind));
+			line.erase(0, lastFind + 1);
+			lastFind = line.find(']');
+			scale.y = std::stof(line.substr(0, lastFind));
+		}
+		m_decors.push_back(Decor(pos, scale, name));
+		m_decorsCount++;
 	}
 }
