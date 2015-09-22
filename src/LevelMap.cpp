@@ -1,6 +1,7 @@
 #include <LevelMap.hpp>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <string>
 
 namespace octo
@@ -87,6 +88,14 @@ namespace octo
 			return false;
 		m_sprites.resize(m_spritesCount);
 		return true;
+	}
+
+	bool LevelMap::loadFromFile(std::string fileName)
+	{
+		std::ifstream	file(fileName);
+		if (file.is_open() && load(file))
+			return true;
+		return false;
 	}
 
 	bool LevelMap::load(std::istream & file)

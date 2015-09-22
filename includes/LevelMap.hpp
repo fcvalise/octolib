@@ -110,7 +110,8 @@ namespace octo
 
 			/*! Load from octo::ByteArray */
 			bool							loadFromMemory(ByteArray const& buffer);
-
+			/*! Load from file */
+			bool							loadFromFile(std::string filename);
 		private:
 			bool							load(std::istream & file);
 			void							setup(std::size_t len);
