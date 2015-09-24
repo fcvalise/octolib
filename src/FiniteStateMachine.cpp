@@ -57,7 +57,7 @@ namespace octo
 			{
 				m_current->stop();
 				m_current = m_current->getNext(m_nextEventId);
-				std::cout << static_cast<int>(m_nextEventId) << std::endl;
+				std::cout << static_cast<int>(m_nextEventId) << "*" << std::endl;
 				assert(m_current != nullptr);
 				m_current->start();
 				m_nextEventId = NullEvent;
