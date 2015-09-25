@@ -13,7 +13,7 @@
 #include "CharacterSprite.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
-#include <iostream>
+
 namespace octo
 {
 	//
@@ -84,7 +84,6 @@ namespace octo
 	void	CharacterSprite::setNextEvent(EventId eventId)
 	{
 		m_nextEvent = eventId;
-		std::cout << static_cast<int>(eventId) << std::endl;
 		m_machine.setNextEvent(eventId);
 	}
 

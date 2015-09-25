@@ -13,7 +13,7 @@
 #include "FiniteStateMachine.hpp"
 #include <cassert>
 #include <stdexcept>
-#include <iostream>
+
 namespace octo
 {
 	FiniteStateMachine::FiniteStateMachine() :
@@ -57,7 +57,6 @@ namespace octo
 			{
 				m_current->stop();
 				m_current = m_current->getNext(m_nextEventId);
-				std::cout << static_cast<int>(m_nextEventId) << "*" << std::endl;
 				assert(m_current != nullptr);
 				m_current->start();
 				m_nextEventId = NullEvent;
