@@ -54,6 +54,7 @@ namespace octo
 			{
 				m_possibleEvents.push_back(transition.second.getTriggerEvent());
 			}
+			m_currentEvent = m_nextEvent;
 		}
 		m_animator.update(frameTime);
 	}
@@ -82,11 +83,11 @@ namespace octo
 
 	void	CharacterSprite::setNextEvent(EventId eventId)
 	{
-		m_currentEvent = eventId;
+		m_nextEvent = eventId;
 		m_machine.setNextEvent(eventId);
 	}
 
-	CharacterSprite::EventId	CharacterSprite::getCurrentEvent()
+	FiniteStateMachine::EventId	CharacterSprite::getCurrentEvent()
 	{
 		return m_currentEvent;
 	}
