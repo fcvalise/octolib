@@ -44,6 +44,7 @@ namespace octo
 		m_title = title;
 		m_fullscreen = fullscreen;
 		m_antialiasing = antialiasing;
+		m_window.setMouseCursorVisible(false);
 	}
 
 	void	GraphicsManager::closeRender()
