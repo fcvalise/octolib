@@ -87,6 +87,7 @@ namespace octo
 		sf::Sprite						m_sprite;
 		SingleAnimator<CharacterFrame>	m_animator;
 		EventId							m_currentEvent;
+		EventId							m_nextEvent;
 		std::vector<EventId>			m_possibleEvents;
 		FiniteStateMachine				m_machine;
 		SpriteSheet const*				m_spriteSheet;
