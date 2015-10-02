@@ -34,16 +34,18 @@ namespace octo
 			struct SpriteTrigger
 			{
 				SpriteTrigger() = default;
-				explicit SpriteTrigger(sf::Vector2f const& pos, std::string const& fileName,
+				explicit SpriteTrigger(sf::Vector2f const& pos, bool isFront, std::string const& fileName,
 						sf::FloatRect const& rec, std::size_t mapIndex) :
 					positionSprite(pos),
 					trigger(rec),
+					isFront(isFront),
 					name(fileName),
 					mapIndex(mapIndex)
 				{
 				}
 				sf::Vector2f		positionSprite;
 				sf::FloatRect		trigger;
+				bool				isFront;
 				std::string			name;
 				std::size_t			mapIndex;
 			};
@@ -51,14 +53,16 @@ namespace octo
 			struct Decor
 			{
 				Decor() = default;
-				explicit Decor(sf::Vector2f const& pos, sf::Vector2f const& scale, std::string const& fileName) :
+				explicit Decor(sf::Vector2f const& pos, sf::Vector2f const& scale, bool isFront, std::string const& fileName) :
 					position(pos),
 					scale(scale),
+					isFront(isFront),
 					name(fileName)
 				{
 				}
 				sf::Vector2f		position;
 				sf::Vector2f		scale;
+				bool				isFront;
 				std::string			name;
 			};
 
