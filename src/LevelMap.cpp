@@ -1,6 +1,7 @@
 #include <LevelMap.hpp>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <string>
 
 namespace octo
@@ -89,6 +90,14 @@ namespace octo
 		return true;
 	}
 
+	bool LevelMap::loadFromFile(std::string fileName)
+	{
+		std::ifstream	file(fileName);
+		if (file.is_open() && load(file))
+			return true;
+		return false;
+	}
+
 	bool LevelMap::load(std::istream & file)
 	{
 		std::size_t			indexLine = 0;
@@ -153,6 +162,7 @@ namespace octo
 		sf::FloatRect			rec;
 		std::size_t				lastFind;
 		std::string				name;
+		bool					isFront = false;
 
 		lastFind = line.find('(');
 		name = line.substr(1, lastFind - 1);
@@ -180,18 +190,22 @@ namespace octo
 				lastFind = line.find(']');
 				sizeRec.y = std::stoi(line.substr(0, lastFind));
 				rec = sf::FloatRect(topLeftRec, sizeRec);
+				line.erase(0, lastFind + 1);
+				if (line.find('1') != std::string::npos)
+					isFront = true;
 			}
 		}
-		m_sprites.push_back(SpriteTrigger(pos, name, rec, map));
+		m_sprites.push_back(SpriteTrigger(pos, isFront, name, rec, map));
 		m_spritesCount++;
 	}
 
 	void LevelMap::addDecor(std::string & line)
 	{
-		sf::Vector2f		pos;
-		sf::Vector2f		scale;
+		sf::Vector2f			pos;
+		sf::Vector2f			scale;
 		std::size_t				lastFind;
 		std::string				name;
+		bool					isFront = false;
 
 		lastFind = line.find('(');
 		name = line.substr(1, lastFind - 1);
@@ -209,8 +223,12 @@ namespace octo
 			line.erase(0, lastFind + 1);
 			lastFind = line.find(']');
 			scale.y = std::stof(line.substr(0, lastFind));
+			line.erase(0, lastFind + 1);
+			if (line.find('1') != std::string::npos)
+				isFront = true;
+
 		}
-		m_decors.push_back(Decor(pos, scale, name));
+		m_decors.push_back(Decor(pos, scale, isFront, name));
 		m_decorsCount++;
 	}
 }

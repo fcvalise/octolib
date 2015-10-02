@@ -60,12 +60,13 @@ BOOST_AUTO_TEST_CASE( simple )
 		BOOST_CHECK(lm0.getSprite(0).positionSprite == sf::Vector2f(0, 0));
 		BOOST_CHECK_EQUAL(lm0.getSprite(0).trigger.top, 48);
 		BOOST_CHECK_EQUAL(lm0.getSprite(0).trigger.left, 0);
+		BOOST_CHECK_EQUAL(lm0.getSprite(0).isFront, false);
 
 		BOOST_CHECK_EQUAL(lm0.getDecorCount(), 1);
 		BOOST_CHECK_EQUAL(lm0.getDecor(0).name, "octo_complete.oss");
 		BOOST_CHECK(lm0.getDecor(0).position == sf::Vector2f(128, 192));
 		BOOST_CHECK(lm0.getDecor(0).scale == sf::Vector2f(0.8, 0.8));
-
+		BOOST_CHECK_EQUAL(lm0.getDecor(0).isFront, true);
 		BOOST_CHECK(lm0.getSprite(2).positionSprite == sf::Vector2f(736, 336));
 
 		BOOST_CHECK_EQUAL(lm0.getSprite(4).trigger.top, 480);
@@ -74,6 +75,7 @@ BOOST_AUTO_TEST_CASE( simple )
 		BOOST_CHECK_EQUAL(lm0.getSprite(4).trigger.height, 48);
 		BOOST_CHECK_EQUAL(lm0.getSprite(4).mapIndex, 0);
 		BOOST_CHECK_EQUAL(lm0.getSprite(4).name, "octo_complete.oss");
+		BOOST_CHECK_EQUAL(lm0.getSprite(4).isFront, false);
 
 		lm0.getSpritesByName("octo_complete.oss", sprites);
 		BOOST_CHECK_EQUAL(sprites.size(), 5);
