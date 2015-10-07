@@ -55,6 +55,7 @@ namespace octo
 		~AudioManager();
 
 		void		setup(std::size_t maxSoundCount);
+		void		reset(void);
 
 		/*!	Start sound playing.
 		 *
