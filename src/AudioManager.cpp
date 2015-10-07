@@ -33,7 +33,9 @@ namespace octo
 			bool	operator()(std::shared_ptr<sf::Sound> const& left,
 							   std::shared_ptr<sf::Sound> const& right)const
 			{
-				return (left->getStatus() < right->getStatus());
+				if (left && right)
+					return (left->getStatus() < right->getStatus());
+				return (false);
 			}
 		};
 	}
