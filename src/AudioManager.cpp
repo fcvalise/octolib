@@ -143,6 +143,20 @@ namespace octo
 		std::generate(m_sounds.begin(), m_sounds.end(), [](){return (SoundPtr(new sf::Sound()));});
 	}
 
+	/*!	Stop all sounds and release each sf::SoundBuffer used */
+	void	AudioManager::reset(void)
+	{
+		std::for_each(m_sounds.begin(), m_sounds.end(),
+					  [](SoundPtr& sound)
+					  {
+					  	if (sound)
+						{
+							sound->stop();
+							sound->resetBuffer();
+						}
+					  });
+	}
+
 	/*!	Play one sound */
 	AudioManager::SoundPtr	AudioManager::playSound(sf::SoundBuffer const& buffer, float volume,
 													float pitch, sf::Vector3f const& position,
