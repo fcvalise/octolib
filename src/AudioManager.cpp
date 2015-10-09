@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/26 02:43:03 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/13 02:21:21 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/10/09 13:42:24 by jbalestr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,9 +330,19 @@ namespace octo
 	{
 		SoundPtr	freeSound;
 
-		std::sort(m_sounds.begin(), m_sounds.end(), SortSound());
-		freeSound = m_sounds.front();
-		if (freeSound == nullptr || isPlaying(*freeSound))
+		//std::sort(m_sounds.begin(), m_sounds.end(), SortSound());
+		std::size_t i = 0u;
+		for (i = 0u; i < m_sounds.size(); i++)
+		{
+			if (m_sounds[i]->getStatus() == sf::SoundSource::Stopped)
+			{
+				freeSound = m_sounds[i];
+				break;
+			}
+		}
+		//freeSound = m_sounds.front();
+		if (i > m_sounds.size())
+		//if (freeSound == nullptr || isPlaying(*freeSound))
 		{
 			throw std::runtime_error("audio manager: not enought sounds reserved (max = " + std::to_string(m_sounds.size()) + ")");
 		}
