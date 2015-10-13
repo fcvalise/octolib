@@ -80,6 +80,10 @@ namespace octo
 
 			void	setupOptions(std::string const& optionFilePath, int argc, char **argv)
 			{
+				char *pos = strrchr(argv[0], '\\');
+				if (pos != NULL)
+				   *pos = '\0';
+				m_options.setValue("path", argv[0]);
 				m_options.load(Options::ConfigFileLoader(optionFilePath));
 				m_options.load(Options::CommandLineLoader(argc, argv));
 			}
@@ -116,7 +120,7 @@ namespace octo
 				ResourceLoadingListener	listener;
 
 				if (m_options.containsKey("package") && m_options.hasValue("package"))
-					m_resourceManager.loadPackage(m_options.getValue<std::string>("package"), &listener);
+					m_resourceManager.loadPackage(m_options.getValue<std::string>("path") + m_options.getValue<std::string>("package"), &listener);
 				else
 					std::cout << "warning no package loaded" << std::endl;
 			}
