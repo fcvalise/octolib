@@ -78,12 +78,19 @@ namespace octo
 			{
 			}
 
-			void	setupOptions(std::string const& optionFilePath, int argc, char **argv)
+			void	setupPath(char **argv)
 			{
-				char *pos = strrchr(argv[0], '\\');
+				char *pos = strrchr(argv[0], '/');
 				if (pos != NULL)
 				   *pos = '\0';
-				m_options.setValue("path", argv[0]);
+				std::string path(argv[0]);
+				path += "/";
+				m_options.setValue("path", path);
+			}
+
+			void	setupOptions(std::string const& optionFilePath, int argc, char **argv)
+			{
+				setupPath(argv);
 				m_options.load(Options::ConfigFileLoader(optionFilePath));
 				m_options.load(Options::CommandLineLoader(argc, argv));
 			}
