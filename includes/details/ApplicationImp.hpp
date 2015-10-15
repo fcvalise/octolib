@@ -91,7 +91,7 @@ namespace octo
 			void	setupOptions(std::string const& optionFilePath, int argc, char **argv)
 			{
 				setupPath(argv);
-				m_options.load(Options::ConfigFileLoader(optionFilePath));
+				m_options.load(Options::ConfigFileLoader(m_options.getValue<std::string>("path") + optionFilePath));
 				m_options.load(Options::CommandLineLoader(argc, argv));
 			}
 
