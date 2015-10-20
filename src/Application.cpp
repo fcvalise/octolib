@@ -6,7 +6,7 @@
 /*   By: irabeson <irabeson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/23 20:51:41 by irabeson          #+#    #+#             */
-/*   Updated: 2015/08/10 23:23:37 by irabeson         ###   ########.fr       */
+/*   Updated: 2015/10/20 22:18:04 by jbalestr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <SFML/Graphics/RenderTexture.hpp>
 
 #include <cassert>
+#include <cstring>
 #include <chrono>
 
 #include "details/ApplicationImp.hpp"
