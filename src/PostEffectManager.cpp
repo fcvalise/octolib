@@ -28,7 +28,9 @@ namespace octo
 	void	PostEffectManager::createRender(sf::VideoMode const& videoMode)
 	{
 		m_firstRender.create(videoMode.width, videoMode.height);
+		m_firstRender.setSmooth(true);
 		m_secondRender.create(videoMode.width, videoMode.height);
+		m_firstRender.setSmooth(true);
 	}
 
 	void	PostEffectManager::draw(sf::Drawable const& drawable, sf::RenderStates const& states)

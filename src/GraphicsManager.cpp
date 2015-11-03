@@ -199,6 +199,7 @@ namespace octo
 	{
 		if (antialiasing != m_antialiasing)
 		{
+			m_antialiasing = antialiasing;
 			createRender(m_videoMode, m_title, m_fullscreen, m_antialiasing);
 		}
 	}
@@ -217,6 +218,7 @@ namespace octo
 	{
 		if (m_fullscreen != fullscreen)
 		{
+			m_fullscreen = fullscreen;
 			createRender(m_videoMode, m_title, fullscreen, m_antialiasing);
 		}
 	}
