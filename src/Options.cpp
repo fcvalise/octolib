@@ -45,33 +45,6 @@ namespace octo
 			return (false);
 	}
 
-	template <>
-	std::string	Options::getValue(std::string const& key)const
-	{
-		auto		it = m_values.find(key);
-
-		if (it == m_values.end())
-			throw std::range_error("options: invalid key: " + key);
-		return (it->second);
-	}
-
-	template <>
-	std::string	Options::getValue(std::string const& key, std::string const& defaultValue)const
-	{
-		auto		it = m_values.find(key);
-		
-		if (it != m_values.end())
-			return (it->second);
-		else
-			return (defaultValue);
-	}
-
-	template <>
-	void		Options::setValue(std::string const& key, std::string const& value)
-	{
-		m_values[key] = value;
-	}
-
 	void		Options::clear()
 	{
 		m_values.clear();
