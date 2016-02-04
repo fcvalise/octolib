@@ -176,6 +176,13 @@ namespace octo
 		return (m_graphicsManager->mapCoordsToPixel(position, m_guiView));
 	}
 
+	void	Camera::setSize(sf::Vector2f const& size)
+	{
+		m_view.setSize(size);
+		m_guiView.setSize(size);
+		updateRectangle();
+	}
+
 	void	Camera::onResized(sf::Event::SizeEvent const& event)
 	{
 		sf::Vector2f	newSize	(event.width, event.height);
