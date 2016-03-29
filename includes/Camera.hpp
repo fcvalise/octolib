@@ -49,7 +49,7 @@ namespace octo
 		sf::Vector2i			mapCoordsToPixel(sf::Vector2f const& position)const;
 		sf::Vector2i			mapGuiCoordsToPixel(sf::Vector2f const& position)const;
 
-		void					setSize(sf::Vector2f size);
+		void					setSize(sf::Vector2f const & size);
 		void					update(sf::Time frameTime);
 	private:
 		virtual void			onResized(sf::Event::SizeEvent const& event);
