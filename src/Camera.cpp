@@ -176,7 +176,7 @@ namespace octo
 		return (m_graphicsManager->mapCoordsToPixel(position, m_guiView));
 	}
 
-	void	Camera::setSize(sf::Vector2f size)
+	void	Camera::setSize(sf::Vector2f const & size)
 	{
 		m_view.setSize(size);
 		m_guiView.setSize(size);
