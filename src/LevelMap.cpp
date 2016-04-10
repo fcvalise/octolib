@@ -119,9 +119,6 @@ namespace octo
 		nbrOfMap = std::stoi(line.substr(0, lastFind));
 		line.erase(0, lastFind + 1);
 		std::vector<std::string> sizes;
-		//lastFind = line.find('x');
-		//m_size = sf::Vector2i(std::stoi(line.substr(0 , lastFind)),
-		//		std::stoi(line.substr(lastFind + 1, line.length())));
 		split(line, 'x', sizes);
 		m_size = sf::Vector2i(std::stoi(sizes[0]), std::stoi(sizes[1]));
 		//Artefact of an old system
