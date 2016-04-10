@@ -71,6 +71,7 @@ namespace octo
 
 			/*!	Get the size of map */
 			sf::Vector2i const &	getMapSize() const;
+			int						getMapPosY() const;
 
 			/*!	Get all map 
 			 *  return all map storage in octo::Array3D
@@ -119,6 +120,7 @@ namespace octo
 		private:
 			bool							load(std::istream & file);
 			void							setup(std::size_t len);
+			void							split(std::string const & s, char delim, std::vector<std::string> &elems);
 			void							addLineAt(std::size_t map, std::size_t index, std::string & line);
 			void							addSprite(std::string & line, std::size_t map);
 			void							addDecor(std::string & line);
@@ -128,6 +130,7 @@ namespace octo
 			std::vector<SpriteTrigger>		m_sprites;
 			std::vector<Decor>				m_decors;
 			sf::Vector2i					m_size;
+			int								m_posY;
 	};
 }
 

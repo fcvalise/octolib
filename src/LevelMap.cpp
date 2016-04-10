@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <cassert>
 
 namespace octo
 {
@@ -14,6 +15,11 @@ namespace octo
 	sf::Vector2i const & LevelMap::getMapSize() const
 	{
 		return m_size;
+	}
+
+	int LevelMap::getMapPosY() const
+	{
+		return m_posY;
 	}
 
 	Array3D<LevelMap::TileType> const & LevelMap::getMap() const
@@ -106,14 +112,21 @@ namespace octo
 		std::string			line;
 		std::size_t			lastFind;
 		m_spritesCount = 0;
+		m_posY = 0;
 
 		std::getline(file, line);
 		lastFind = line.find(';');
 		nbrOfMap = std::stoi(line.substr(0, lastFind));
 		line.erase(0, lastFind + 1);
-		lastFind = line.find('x');
-		m_size = sf::Vector2i(std::stoi(line.substr(0 , lastFind)),
-				std::stoi(line.substr(lastFind + 1, line.length())));
+		std::vector<std::string> sizes;
+		//lastFind = line.find('x');
+		//m_size = sf::Vector2i(std::stoi(line.substr(0 , lastFind)),
+		//		std::stoi(line.substr(lastFind + 1, line.length())));
+		split(line, 'x', sizes);
+		m_size = sf::Vector2i(std::stoi(sizes[0]), std::stoi(sizes[1]));
+		//Artefact of an old system
+		assert(sizes.size() == 3);
+		m_posY = std::stoi(sizes[2]);
 		setup(nbrOfMap);
 		while ( std::getline(file, line) )
 		{
@@ -133,6 +146,14 @@ namespace octo
 			}
 		}
 		return true;
+	}
+
+	void	LevelMap::split(std::string const & s, char delim, std::vector<std::string> &elems)
+	{
+		std::stringstream ss(s);
+		std::string item;
+		while (std::getline(ss, item, delim))
+			elems.push_back(item);
 	}
 
 	void LevelMap::setup(std::size_t len)
