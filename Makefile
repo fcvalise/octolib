@@ -191,3 +191,4 @@ ifeq ($(RUN_DEPEND), "1")
 	@echo " - $(COLOR_ACTION)Running hatedepend...$(COLOR_OFF)"
 	@hatedepend -r -I $(INCLUDE_DIR) -S $(SRC_DIR) -O $(BUILD_DIR)
 endif
+
