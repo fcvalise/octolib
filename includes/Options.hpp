@@ -128,10 +128,14 @@ namespace octo
 		template <class T>
 		void		setValue(std::string const& key, T const& value);
 
+		void		setPath(std::string path);
+		std::string	getPath(void) const;
+
 		/*!	Remove all data */
 		void		clear();
 	private:
 		Map			m_values;
+		std::string	m_path;
 	};
 
 	/*!	Provide a way to create new data loader for option container */

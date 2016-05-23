@@ -45,6 +45,16 @@ namespace octo
 			return (false);
 	}
 
+	void		Options::setPath(std::string path)
+	{
+		m_path = path;
+	}
+
+	std::string	Options::getPath(void) const
+	{
+		return m_path;
+	}
+
 	void		Options::clear()
 	{
 		m_values.clear();
