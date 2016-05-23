@@ -83,7 +83,6 @@ namespace octo
 				std::string path(argv[0]);
 				std::size_t lastSlash = path.find_last_of("/\\");
 				path = path.substr(0, lastSlash + 1);
-				m_options.setValue("path", path);
 				m_options.setPath(path);
 			}
 
