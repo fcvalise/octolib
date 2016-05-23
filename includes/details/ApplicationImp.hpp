@@ -80,18 +80,17 @@ namespace octo
 
 			void	setupPath(char **argv)
 			{
-				char *pos = strrchr(argv[0], '/');
-				if (pos != NULL)
-				   *pos = '\0';
 				std::string path(argv[0]);
-				path += "/";
+				std::size_t lastSlash = path.find_last_of("/\\");
+				path = path.substr(0, lastSlash + 1);
 				m_options.setValue("path", path);
+				m_options.setPath(path);
 			}
 
 			void	setupOptions(std::string const& optionFilePath, int argc, char **argv)
 			{
 				setupPath(argv);
-				m_options.load(Options::ConfigFileLoader(m_options.getValue<std::string>("path") + optionFilePath));
+				m_options.load(Options::ConfigFileLoader(m_options.getPath() + optionFilePath));
 				m_options.load(Options::CommandLineLoader(argc, argv));
 			}
 
@@ -127,7 +126,7 @@ namespace octo
 				ResourceLoadingListener	listener;
 
 				if (m_options.containsKey("package") && m_options.hasValue("package"))
-					m_resourceManager.loadPackage(m_options.getValue<std::string>("path") + m_options.getValue<std::string>("package"), &listener);
+					m_resourceManager.loadPackage(m_options.getPath() + m_options.getValue<std::string>("package"), &listener);
 				else
 					std::cout << "warning no package loaded" << std::endl;
 			}
