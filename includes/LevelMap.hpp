@@ -72,6 +72,7 @@ namespace octo
 			/*!	Get the size of map */
 			sf::Vector2i const &	getMapSize() const;
 			int						getMapPosY() const;
+			bool					isMapHighlight() const;
 
 			/*!	Get all map 
 			 *  return all map storage in octo::Array3D
@@ -131,6 +132,7 @@ namespace octo
 			std::vector<Decor>				m_decors;
 			sf::Vector2i					m_size;
 			int								m_posY;
+			bool							m_isMapHighlight;
 	};
 }
 
