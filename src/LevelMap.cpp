@@ -22,6 +22,11 @@ namespace octo
 		return m_posY;
 	}
 
+	bool LevelMap::isMapHighlight() const
+	{
+		return m_isMapHighlight;
+	}
+
 	Array3D<LevelMap::TileType> const & LevelMap::getMap() const
 	{
 		return m_tileMap;
@@ -122,8 +127,12 @@ namespace octo
 		split(line, 'x', sizes);
 		m_size = sf::Vector2i(std::stoi(sizes[0]), std::stoi(sizes[1]));
 		//Artefact of an old system
-		assert(sizes.size() == 3);
+		assert(sizes.size() >= 3);
 		m_posY = std::stoi(sizes[2]);
+		if (sizes.size() == 4)
+			m_isMapHighlight = std::stoi(sizes[3]);
+		else
+			m_isMapHighlight = false;
 		setup(nbrOfMap);
 		while ( std::getline(file, line) )
 		{
