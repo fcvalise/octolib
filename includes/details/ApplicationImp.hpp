@@ -57,7 +57,11 @@ namespace octo
 									 std::uint64_t current,
 									 std::uint64_t total)
 			{
-				std::cout << "loading " << name << " [" << (int)type << "] " << current  + 1 << "/" << total << std::endl;
+				(void)name;
+				(void)type;
+				(void)current;
+				(void)total;
+				//std::cout << "loading " << name << " [" << (int)type << "] " << current  + 1 << "/" << total << std::endl;
 			}
 
 			virtual void	error(std::string const& message)
