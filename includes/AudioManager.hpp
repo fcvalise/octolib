@@ -81,12 +81,12 @@ namespace octo
 		float		getMusicVolume(void) const;
 		bool		getSoundEnabled(void) const;
 		bool		getMusicEnabled(void) const;
+		SoundPtr	getMusicSound()const;
 
 		void		update(sf::Time frameTime);
 	private:
 		SoundPtr	createSound(sf::SoundBuffer const& buffer);
 		void		setMusicSound(SoundPtr const& sound);
-		SoundPtr	getMusicSound()const;
 	private:
 		std::unique_ptr<Transition>	m_transition;
 		std::vector<SoundPtr>		m_sounds;
