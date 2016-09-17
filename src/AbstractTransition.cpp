@@ -19,7 +19,8 @@ namespace octo
 		m_outDuration(sf::Time::Zero),
 		m_currentTime(sf::Time::Zero),
 		m_action(action),
-		m_status(Status::In)
+		m_status(Status::In),
+		m_outFirstFrame(false)
 	{
 	}
 
@@ -43,6 +44,7 @@ namespace octo
 					m_action();
 					m_currentTime = m_outDuration;
 					m_status = Status::Out;
+					m_outFirstFrame = true;
 					updateTransition(frameTime, 1.f, view);
 				}
 				else
@@ -60,8 +62,13 @@ namespace octo
 				}
 				else
 				{
-					updateTransition(frameTime, std::max(m_currentTime.asSeconds() / m_outDuration.asSeconds(), 0.f), view);
-					m_currentTime -= frameTime;
+					if (m_outFirstFrame)
+						m_outFirstFrame = false;
+					else
+					{
+						updateTransition(frameTime, std::max(m_currentTime.asSeconds() / m_outDuration.asSeconds(), 0.f), view);
+						m_currentTime -= frameTime;
+					}
 				}
 				break;
 			case Status::Finished:

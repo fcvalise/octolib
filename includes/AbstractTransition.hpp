@@ -94,6 +94,7 @@ namespace octo
 		sf::Time	m_currentTime;
 		Action		m_action;
 		Status		m_status;
+		bool		m_outFirstFrame;
 	};
 }
 
