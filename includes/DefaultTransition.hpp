@@ -36,6 +36,38 @@ namespace octo
 
 	/*!
 	 *	\ingroup GameState
+	 *	Fade in then fade out
+	 */
+	class RedFadeTransition : public AbstractTransition
+	{
+	public:
+		explicit RedFadeTransition(Action action);
+
+		virtual void	draw(sf::RenderTarget& render)const;
+	private:
+		virtual void	updateTransition(sf::Time, float timePosition, sf::View const& view);
+	private:
+		sf::RectangleShape	m_shape;
+	};
+
+	/*!
+	 *	\ingroup GameState
+	 *	Fade in then fade out
+	 */
+	class BlueFadeTransition : public AbstractTransition
+	{
+	public:
+		explicit BlueFadeTransition(Action action);
+
+		virtual void	draw(sf::RenderTarget& render)const;
+	private:
+		virtual void	updateTransition(sf::Time, float timePosition, sf::View const& view);
+	private:
+		sf::RectangleShape	m_shape;
+	};
+
+	/*!
+	 *	\ingroup GameState
 	 *	Black slide moving horizontally
 	 */
 	class BlackHSlideTransition : public octo::AbstractTransition

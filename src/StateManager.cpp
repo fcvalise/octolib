@@ -66,7 +66,8 @@ namespace octo
 	//
 	StateManager::StateManager() :
 		EventManager(1),
-		m_transitionDuration(sf::seconds(0.8f)),
+		m_transitionDurationIn(sf::seconds(0.5f)),
+		m_transitionDurationOut(sf::seconds(0.5f)),
 		m_inUpdate(false)
 	{
 	}
@@ -308,7 +309,7 @@ namespace octo
 		if (it == m_transitionFactory.end())
 			throw std::range_error("state_manager: invalid transition key: " + key);
 		m_transition.reset(it->second(action));
-		m_transition->setDuration(m_transitionDuration * 0.5f, m_transitionDuration * 0.5f);
+		m_transition->setDuration(m_transitionDurationIn, m_transitionDurationOut);
 	}
 
 	StateManager::StatePtr	StateManager::currentState()const
@@ -319,9 +320,10 @@ namespace octo
 			return (m_stack.top());
 	}
 
-	void	StateManager::setTransitionDuration(sf::Time duration)
+	void	StateManager::setTransitionDuration(sf::Time durationIn, sf::Time durationOut)
 	{
-		m_transitionDuration = duration;
+		m_transitionDurationIn = durationIn;
+		m_transitionDurationOut = durationOut;
 	}
 
 	void	StateManager::update(sf::Time frameTime, sf::View const& view)
