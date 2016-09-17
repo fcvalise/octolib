@@ -138,7 +138,7 @@ namespace octo
 		void			popAll();
 	
 		/*!	Define the duration of transition */
-		void			setTransitionDuration(sf::Time duration);
+		void			setTransitionDuration(sf::Time durationIn, sf::Time durationOut);
 
 		/*!	Return true if at least one state is stacked */
 		bool			hasCurrentState()const;
@@ -182,7 +182,8 @@ namespace octo
 		StateStack			m_stack;
 		TransitionPtr		m_transition;
 		Key					m_defaultTransitionKey;
-		sf::Time			m_transitionDuration;
+		sf::Time			m_transitionDurationIn;
+		sf::Time			m_transitionDurationOut;
 		bool				m_inUpdate;
 	};
 
