@@ -36,6 +36,27 @@ namespace octo
 												 timePosition));
 	}
 
+	// White fade transition
+	WhiteFadeTransition::WhiteFadeTransition(Action action) :
+		AbstractTransition(action)
+	{
+		m_shape.setFillColor(sf::Color::White);
+	}
+
+	void	WhiteFadeTransition::draw(sf::RenderTarget& render)const
+	{
+		render.draw(m_shape);	
+	}
+	
+	void	WhiteFadeTransition::updateTransition(sf::Time, float timePosition, sf::View const& view)
+	{
+		m_shape.setSize(view.getSize());
+		m_shape.setPosition(view.getCenter() - view.getSize() / 2.f);
+		m_shape.setFillColor(cosinusInterpolation(sf::Color::Transparent,
+												 sf::Color::White,
+												 timePosition));
+	}
+
 	// Red fade transition
 	RedFadeTransition::RedFadeTransition(Action action) :
 		AbstractTransition(action)
