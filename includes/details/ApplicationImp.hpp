@@ -101,8 +101,8 @@ namespace octo
 			{
 				// Adapt resolution to screenSize
 				sf::VideoMode	videoMode = m_options.getValue<sf::VideoMode>("resolution", sf::VideoMode::getFullscreenModes().front());
-				sf::VideoMode	fullscreen = sf::VideoMode::getFullscreenModes().front();
-				videoMode.height = videoMode.width * fullscreen.height / fullscreen.width;
+				//sf::VideoMode	fullscreen = sf::VideoMode::getFullscreenModes().front();
+				//videoMode.height = videoMode.width * fullscreen.height / fullscreen.width;
 
 				// Create cameraView before createRender to use the automatic resize of the view
 				m_cameraView = sf::View(sf::FloatRect(0, 0, videoMode.width, videoMode.height));
