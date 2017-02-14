@@ -44,17 +44,17 @@ namespace octo
 		std::uint32_t				height = 0u;
 
 		is.read(textureByteCount);
-		if (texture.loadFromMemory(buffer.bytes() + is.getPosition(), textureByteCount) == false)
+		if (m_texture.loadFromMemory(buffer.bytes() + is.getPosition(), textureByteCount) == false)
 			return (false);
 		is.skip(textureByteCount);
 		is.read(width, height, rectangleCount);
 		for (std::uint32_t i = 0u; i < rectangleCount; ++i)
 		{
 			is.read(posX, posY);
-			rects.push_back(sf::IntRect(posX, posY, width, height));
+			m_subRects.push_back(sf::IntRect(posX, posY, width, height));
 		}
-		std::swap(m_texture, texture);
-		std::swap(m_subRects, rects);
+		//std::swap(m_texture, texture);
+		//std::swap(m_subRects, rects);
 		return (true);
 	}
 }
