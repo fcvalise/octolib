@@ -33,7 +33,7 @@ namespace octo
 	void	Console::GraphicsCompletion::setColors(sf::Color const& textColor,
 												   sf::Color const& bgColor)
 	{
-		m_text.setColor(textColor);
+		m_text.setFillColor(textColor);
 		m_background.setFillColor(bgColor);
 	}
 
@@ -262,7 +262,7 @@ namespace octo
 	{
 		m_palette = &palette;
 		m_needUpdate = true;
-		m_current.setColor(m_palette->getColor(Input));
+		m_current.setFillColor(m_palette->getColor(Input));
 		m_completion.setColors(m_palette->getColor(Quote), m_palette->getColor(Background));
 		m_rectangle.setFillColor(m_palette->getColor(Background));
 	}
@@ -390,7 +390,7 @@ namespace octo
 		sf::Text					text("", *m_font, m_fontSize);
 		std::vector<std::wstring>	lines;
 
-		text.setColor(color);
+		text.setFillColor(color);
 		splits(str, L'\n', lines);
 		std::reverse(lines.begin(), lines.end());
 		for (std::wstring const& line : lines)
