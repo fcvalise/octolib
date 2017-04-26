@@ -13,7 +13,6 @@
 #ifndef RESOURCEMANAGERIMP_HPP
 # define RESOURCEMANAGERIMP_HPP
 # include "PackageHeader.hpp"
-# include "PackageReader.hpp"
 # include "IResourceListener.hpp"
 # include "Palette.hpp"
 # include "ColorWheel.hpp"
